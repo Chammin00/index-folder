@@ -1,0 +1,336 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Monopoly - 8 Themed Worlds</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Local Three.js & OrbitControls with CDN fallback -->
+  <script src="js/vendor/three.min.js"></script>
+  <script>
+    if (typeof THREE === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');
+    }
+  </script>
+  <script src="js/vendor/OrbitControls.js"></script>
+  <script>
+    if (typeof THREE !== 'undefined' && typeof THREE.OrbitControls === 'undefined') {
+      document.write('<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"><\/script>');
+    }
+  </script>
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <script src="high-gloss-lacquer.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <script src="cosmic-background.js"></script>
+  <script src="mcp-baseline.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="aws-enterprise-baseline.css">
+  <script src="aws-enterprise-baseline.js"></script>
+</head>
+<body>
+
+  <!-- Living PC Screensaver Background Layer -->
+  <div id="screensaver-scene" class="breathing">
+    <div class="screensaver-layer" id="screensaver-layer-base"></div>
+    <div class="screensaver-layer" id="screensaver-layer-dark"></div>
+  </div>
+
+  <canvas id="screensaver-star-canvas"></canvas>
+
+  <div id="screensaver-planet-glow"></div>
+  <div id="screensaver-sun-flare"></div>
+  <div id="screensaver-water-shimmer"></div>
+  <div id="screensaver-city-glow"></div>
+
+  <!-- 3D Canvas Container -->
+  <div id="webgl-container"></div>
+
+  <!-- HUD Interface Overlay -->
+  <div id="ui-overlay">
+    
+    <!-- Top Navigation -->
+    <header class="top-nav glass interactive">
+      <div class="brand-section">
+        <span id="theme-icon" class="brand-icon">👻</span>
+        <div>
+          <h1 class="brand-title">3D MONOPOLY</h1>
+          <span id="theme-title" class="brand-theme-name">Haunted House</span>
+        </div>
+      </div>
+
+      <div class="nav-controls">
+        <select id="theme-select" title="Choose Game Theme">
+          <option value="haunted">👻 Haunted House</option>
+          <option value="futuristic">🚀 Futuristic</option>
+          <option value="pirates">🏴‍☠️ Pirates</option>
+          <option value="volcano">🌋 Volcano</option>
+          <option value="birthday">🎂 Birthday Cake</option>
+          <option value="beach">🏖️ Beach</option>
+          <option value="ruins">🏛️ Ruins</option>
+          <option value="factory">⚙️ Factory</option>
+        </select>
+
+        <select id="bg-select" title="Choose 360° Background Environment">
+          <option value="screensaver" selected>🌌 Cosmic Cityscape (Screensaver)</option>
+          <option value="mountain">🏔️ Mountain View</option>
+          <option value="cityscape">🏙️ Cityscape</option>
+          <option value="oceanview">🌊 Ocean View</option>
+          <option value="cabin">🏡 Cozy Cabin</option>
+          <option value="moon">🌕 Moon & Cosmos</option>
+          <option value="sunrise">🌅 Sunrise</option>
+        </select>
+
+        <button id="btn-random-theme" class="btn btn-accent" title="Select Random Theme">
+          🎲 Random Theme
+        </button>
+
+        <select id="camera-select" title="Camera Perspective">
+          <option value="cinematic" selected>🎬 Cinematic Dynamic</option>
+          <option value="isometric">🎥 Overview</option>
+          <option value="topdown">📐 Top-Down</option>
+          <option value="follow">🎯 Follow Token</option>
+        </select>
+
+        <select id="speed-select" title="Animation Speed">
+          <option value="1">⚡ 1x Normal</option>
+          <option value="2">⚡ 2x Fast</option>
+          <option value="4">⚡ 4x Turbo</option>
+          <option value="999">🚀 Instant</option>
+        </select>
+
+        <button id="btn-stats" class="btn" title="Game Analytics & Net Worth Dashboard">
+          📊 Stats
+        </button>
+
+        <button id="btn-sound-toggle" class="btn" title="Toggle Sound">
+          🔊 Sound
+        </button>
+
+        <button id="btn-jazz-toggle" class="btn btn-accent" title="Smooth Jazz Background Music">
+          🎷 Jazz: OFF
+        </button>
+
+        <select id="jazz-style-select" title="Smooth Jazz Style" style="display: none;">
+          <option value="lounge">🍸 Lounge</option>
+          <option value="bossa">🌴 Bossa Nova</option>
+          <option value="sunset">🌅 Sunset</option>
+        </select>
+
+        <button id="btn-screensaver-motion" class="btn btn-accent" title="Toggle Screensaver Motion (Parallax & Auto-Drift, or press M)">
+          ✨ Motion: ON
+        </button>
+
+        <button id="btn-new-game" class="btn btn-primary" title="New Game Setup">
+          🎮 New Game
+        </button>
+      </div>
+    </header>
+
+    <!-- Middle: Left Player Cards & Right Event Log -->
+    <main class="middle-row">
+      <!-- Player Roster HUD -->
+      <aside id="players-panel" class="players-panel interactive"></aside>
+
+      <!-- Live Event Feed -->
+      <aside class="log-panel glass interactive">
+        <div class="log-header">
+          <span>Game Activity</span>
+          <span id="turn-counter">Turn 1</span>
+        </div>
+        <div id="log-content" class="log-content"></div>
+      </aside>
+    </main>
+
+    <!-- Bottom Action Dock -->
+    <footer class="bottom-dock glass interactive">
+      <div id="turn-banner" class="turn-banner">
+        Loading 3D Board...
+      </div>
+      
+      <div id="action-buttons" class="action-buttons">
+        <button id="btn-roll" class="btn btn-large btn-primary">
+          🎲 Roll Dice
+        </button>
+        <button id="btn-buy" class="btn btn-large btn-success" style="display: none;">
+          🏠 Buy Property
+        </button>
+        <button id="btn-pass" class="btn btn-large btn-warning" style="display: none;">
+          ⏩ Pass / End Turn
+        </button>
+        <button id="btn-manage" class="btn btn-large">
+          🏗️ Manage & Build
+        </button>
+        <button id="btn-trade" class="btn btn-large">
+          ⚖️ Trade
+        </button>
+        <button id="btn-jail-pay" class="btn btn-large btn-danger" style="display: none;">
+          💸 Pay Jail Fine ($50)
+        </button>
+        <button id="btn-jail-card" class="btn btn-large btn-accent" style="display: none;">
+          🎟️ Use Jail Card
+        </button>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- MODAL: Property Deed Inspector -->
+  <div id="deed-modal" class="modal-overlay">
+    <div class="deed-card">
+      <img id="deed-img" class="deed-image" style="width: 100%; height: 140px; object-fit: cover; border-radius: 6px; margin-bottom: 10px; border: 1px solid #111;" alt="Property Artwork">
+      <div id="deed-header" class="deed-header">
+        <div class="deed-sub">TITLE DEED</div>
+        <div id="deed-title" class="deed-title">PROPERTY NAME</div>
+      </div>
+      <table class="deed-table">
+        <tr><td>Rent</td><td id="deed-rent-base">$0</td></tr>
+        <tr><td>With 1 House</td><td id="deed-rent-1">$0</td></tr>
+        <tr><td>With 2 Houses</td><td id="deed-rent-2">$0</td></tr>
+        <tr><td>With 3 Houses</td><td id="deed-rent-3">$0</td></tr>
+        <tr><td>With 4 Houses</td><td id="deed-rent-4">$0</td></tr>
+        <tr><td>With Hotel</td><td id="deed-rent-hotel">$0</td></tr>
+      </table>
+      <div id="deed-footer" class="deed-footer">
+        <div>Mortgage Value: <span id="deed-mortgage">$0</span></div>
+        <div>Houses Cost: <span id="deed-house-cost">$0</span> each</div>
+      </div>
+      <div style="margin-top: 14px; text-align: center;">
+        <button id="btn-close-deed" class="btn btn-primary" style="width: 100%;">Close Deed</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Landing Card Popup -->
+  <div id="landing-card" class="landing-card glass interactive" style="display: none;">
+    <div class="landing-card-inner">
+      <div class="landing-header">
+        <span id="landing-badge" class="badge">LANDED</span>
+        <button id="btn-close-landing" class="btn btn-sm" style="padding: 2px 8px; font-size: 11px;">✕</button>
+      </div>
+      <img id="landing-img" class="landing-image" src="" alt="Property Artwork">
+      <div class="landing-details">
+        <h3 id="landing-name" class="landing-name">Property Name</h3>
+        <p id="landing-status" class="landing-status">Status info</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Chance & Community Chest Card Popup -->
+  <div id="card-modal" class="modal-overlay">
+    <div class="modal-card glass chance-chest-modal">
+      <div id="card-icon" class="card-icon-big">❓</div>
+      <h3 id="card-deck-title" class="modal-title">CHANCE</h3>
+      <div id="card-desc" class="card-text-body">Card text description</div>
+      <button id="btn-card-ok" class="btn btn-primary btn-large" style="width: 100%;">OK</button>
+    </div>
+  </div>
+
+  <!-- MODAL: Property Management & Build -->
+  <div id="manage-modal" class="modal-overlay">
+    <div class="modal-card glass" style="max-width: 540px;">
+      <h3 class="modal-title">🏗️ Property Management</h3>
+      <div id="manage-list" class="modal-body" style="max-height: 320px; overflow-y: auto;"></div>
+      <div class="modal-actions">
+        <button id="btn-close-manage" class="btn btn-primary">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Trade Proposal -->
+  <div id="trade-modal" class="modal-overlay">
+    <div class="modal-card glass" style="max-width: 560px;">
+      <h3 class="modal-title">⚖️ Propose Trade</h3>
+      <div class="modal-body">
+        <label style="font-size: 13px; font-weight: 700; display: block; margin-bottom: 6px;">Select Trading Partner:</label>
+        <select id="trade-target-player" style="width: 100%; margin-bottom: 12px;"></select>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div>
+            <h4 style="font-size: 13px; margin-bottom: 6px;">You Offer:</h4>
+            <div id="trade-my-props" style="max-height: 160px; overflow-y: auto; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 6px;"></div>
+            <input type="number" id="trade-my-cash" placeholder="Cash offer" min="0" style="width: 100%; margin-top: 6px; padding: 6px; background: rgba(0,0,0,0.4); border: 1px solid #444; color: #fff; border-radius: 4px;">
+          </div>
+          <div>
+            <h4 style="font-size: 13px; margin-bottom: 6px;">You Request:</h4>
+            <div id="trade-their-props" style="max-height: 160px; overflow-y: auto; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 6px;"></div>
+            <input type="number" id="trade-their-cash" placeholder="Cash request" min="0" style="width: 100%; margin-top: 6px; padding: 6px; background: rgba(0,0,0,0.4); border: 1px solid #444; color: #fff; border-radius: 4px;">
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button id="btn-trade-cancel" class="btn">Cancel</button>
+        <button id="btn-trade-send" class="btn btn-success">Send Proposal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Game Setup -->
+  <div id="setup-modal" class="modal-overlay">
+    <div class="modal-card glass" style="max-width: 480px;">
+      <h3 class="modal-title">🎲 New Monopoly Game</h3>
+      <div class="modal-body">
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-weight: 700; margin-bottom: 6px;">Board Theme:</label>
+          <select id="setup-theme-select" style="width: 100%;">
+            <option value="haunted">👻 Haunted House</option>
+            <option value="futuristic">🚀 Futuristic Cyberpunk</option>
+            <option value="pirates">🏴‍☠️ Pirate Cove</option>
+            <option value="volcano">🌋 Volcano Realm</option>
+            <option value="birthday">🎂 Birthday Cake</option>
+            <option value="beach">🏖️ Tropical Beach</option>
+            <option value="ruins">🏛️ Ancient Ruins</option>
+            <option value="factory">⚙️ Steampunk Factory</option>
+          </select>
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-weight: 700; margin-bottom: 6px;">Number of Players:</label>
+          <select id="setup-player-count" style="width: 100%;">
+            <option value="2">2 Players (1 Human vs 1 AI)</option>
+            <option value="3">3 Players (1 Human vs 2 AI)</option>
+            <option value="4" selected>4 Players (1 Human vs 3 AI)</option>
+          </select>
+        </div>
+
+        <div id="setup-player-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+      </div>
+      <div class="modal-actions">
+        <button id="btn-start-game" class="btn btn-primary btn-large" style="width: 100%;">
+          Start 3D Monopoly
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Victory Screen -->
+  <div id="victory-modal" class="modal-overlay">
+    <div class="modal-card glass" style="text-align: center;">
+      <div style="font-size: 64px; margin-bottom: 12px;">🏆</div>
+      <h2 id="victory-title" class="modal-title" style="color: #fbbf24; font-size: 26px;">VICTORY!</h2>
+      <p id="victory-desc" class="modal-body" style="font-size: 16px;">Player 1 has conquered the board!</p>
+      <button id="btn-victory-restart" class="btn btn-primary btn-large" style="width: 100%;">
+        Play Again
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL: Analytics & Net Worth Dashboard -->
+  <div id="stats-modal" class="modal-overlay">
+    <div class="modal-card glass" style="max-width: 620px; width: 92%;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <h3 class="modal-title" style="margin: 0;">📊 Player Net Worth & Game Stats</h3>
+        <button id="btn-close-stats" class="btn" style="padding: 4px 10px;">✕</button>
+      </div>
+      <div class="modal-body" id="stats-body" style="max-height: 420px; overflow-y: auto;">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Core App Logic (Self-contained bundle, supports file:// and http://) -->
+  <script src="js/bundle.js"></script>
+</body>
+</html>
+

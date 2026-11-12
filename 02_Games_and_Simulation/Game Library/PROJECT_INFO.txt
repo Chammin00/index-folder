@@ -1,0 +1,18 @@
+﻿========================================================================
+PROJECT: Game Library
+CATEGORY: 02_Games_and_Simulation
+DESCRIPTION: Gaming Collection & Launcher Interface
+========================================================================
+
+Original Project Directory:
+G:\My Drive\Antigravity\Projects\Game Library
+
+Original Index File:
+G:\My Drive\Antigravity\Projects\Game Library\index.html
+
+How to Open in Antigravity:
+1. In Antigravity / VS Code: Click File -> Open Folder...
+2. Paste this path: G:\My Drive\Antigravity\Projects\Game Library
+3. Press Enter
+
+Or launch directly in browser using: Launch_Original_Index.url

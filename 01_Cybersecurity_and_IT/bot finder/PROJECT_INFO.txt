@@ -1,0 +1,18 @@
+﻿========================================================================
+PROJECT: bot finder
+CATEGORY: 01_Cybersecurity_and_IT
+DESCRIPTION: Bot Activity Detection & Network Analytics Dashboard
+========================================================================
+
+Original Project Directory:
+G:\My Drive\Antigravity\Projects\bot finder\dashboard
+
+Original Index File:
+G:\My Drive\Antigravity\Projects\bot finder\dashboard\index.html
+
+How to Open in Antigravity:
+1. In Antigravity / VS Code: Click File -> Open Folder...
+2. Paste this path: G:\My Drive\Antigravity\Projects\bot finder\dashboard
+3. Press Enter
+
+Or launch directly in browser using: Launch_Original_Index.url

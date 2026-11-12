@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Amina AAC & Phonics Studio | Universal Adaptive Communicator</title>
+  
+  <!-- PWA & Mobile Web App Meta -->
+  <meta name="theme-color" content="#090d16">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Universal AAC Communication Board and Systematic Phonics Literacy Suite with Afro-European Female Narrator Voice.">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Core Theme Stylesheets -->
+  <link rel="stylesheet" href="css/aac-theme.css">
+  
+  <!-- Canvas Confetti dynamically lazy-loaded on demand if available -->
+
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <link rel="stylesheet" href="aws-enterprise-baseline.css">
+  <script src="high-gloss-lacquer.js"></script>
+  <script src="cosmic-background.js"></script>
+  <script src="mcp-baseline.js"></script>
+  <script src="aws-enterprise-baseline.js"></script>
+</head>
+<body class="theme-dark">
+  <div id="app-container">
+    
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="brand-section">
+        <div class="brand-logo-icon">
+          <svg class="ui-icon ui-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+            <line x1="12" y1="19" x2="12" y2="22"/>
+          </svg>
+        </div>
+        <div class="brand-badge">
+          <span>AMINA AAC</span>
+        </div>
+
+        <!-- Live Detected Device Profile & Performance Badge -->
+        <button class="device-profile-pill" id="device-profile-pill" title="Detected Device Profile & Performance Tier">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/>
+            <line x1="12" y1="18" x2="12.01" y2="18"/>
+          </svg>
+          <span class="device-pill-text">Tablet</span>
+          <span class="device-pill-dot high">●</span>
+        </button>
+
+        <button class="narrator-pill" id="btn-narrator-pill" title="Default Narrator: Afro-Euro Female Voice">
+          <img src="assets/amina-avatar.svg" alt="Amina Avatar" class="narrator-avatar" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'50\' fill=\'%23f0883e\'/><circle cx=\'50\' cy=\'40\' r=\'24\' fill=\'%235c341b\'/><path d=\'M20 90 Q50 60 80 90\' fill=\'%235c341b\'/><circle cx=\'42\' cy=\'38\' r=\'3\' fill=\'%23fff\'/><circle cx=\'58\' cy=\'38\' r=\'3\' fill=\'%23fff\'/><path d=\'M42 50 Q50 58 58 50\' stroke=\'%23fff\' stroke-width=\'3\' fill=\'none\'/></svg>'">
+          <span>Amina (Afro-Euro Voice)</span>
+          <span style="color:#22c55e; font-size:0.75rem;">●</span>
+        </button>
+
+        <button class="header-btn" id="btn-quick-back" title="Go to previous folder">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          <span>Back</span>
+        </button>
+
+        <button class="header-btn" id="btn-open-search" title="Quick Search: Find any word or symbol across all boards">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <span>Find</span>
+        </button>
+
+        <div id="board-title-badge" class="interactive-density-badge" title="Quick Switch: Tap to cycle grid size (12, 24, 36, 48 buttons)" style="font-size:0.85rem; font-weight:700; color:var(--gh-accent-blue); padding:4px 8px; background:rgba(88,166,255,0.1); border-radius:6px; border:1px solid rgba(88,166,255,0.2); cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="7" r="2" fill="currentColor"/><circle cx="17" cy="7" r="2" fill="currentColor"/><circle cx="7" cy="12" r="2" fill="currentColor"/><circle cx="17" cy="12" r="2" fill="currentColor"/><circle cx="7" cy="17" r="2" fill="currentColor"/><circle cx="17" cy="17" r="2" fill="currentColor"/></svg>
+          <span>Universal Core 36 ▾</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Prominent Sorted Menu Screen Launcher -->
+        <button class="header-btn accent-menu-btn" id="btn-open-menu" title="Open Sorted Menu: Categories, Phonics, Food Wheels & Tools">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          <span style="font-weight:700;">Menu</span>
+        </button>
+
+        <!-- Desktop Navigation Tabs (Adaptive: visible on large screens, collapsed into Menu on small screens) -->
+        <div class="desktop-mode-tabs" id="desktop-mode-tabs" style="display:flex; align-items:center; gap:6px;">
+          <button class="header-btn active" id="btn-tab-aac">
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span>AAC Board</span>
+          </button>
+          <button class="header-btn" id="btn-tab-phonics">
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            <span>Phonics</span>
+          </button>
+          <button class="header-btn" id="btn-tab-wheels" title="Spin Decision Wheels for Snacks, Restaurants, and Homecooked Meals">
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m4.93 19.07 4.24-4.24"/></svg>
+            <span>Food Wheels</span>
+          </button>
+
+          <a href="read-for-me.html" class="header-btn" style="text-decoration:none; background:rgba(240,136,62,0.15); border-color:#f0883e; color:#f0883e;" title="Open Read This For Me Gaming Dialogue Camera">
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <span>Read For Me</span>
+          </a>
+
+          <a href="chance-invaders.html" class="header-btn" style="text-decoration:none; background:rgba(188,140,255,0.15); border-color:#bc8cff; color:#bc8cff;" title="Play Chance Invaders 1978 Space Invaders Arcade Game">
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4m8-2h.01m3 0h.01"/></svg>
+            <span>Chance Invaders</span>
+          </a>
+        </div>
+
+        <!-- Quick Tablet Tools -->
+        <button class="header-btn" id="btn-kiosk-fullscreen" title="Full-Screen Tablet Kiosk Mode (Safe Areas & Edge Lock)">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+          <span class="btn-text-optional">Kiosk</span>
+        </button>
+        <button class="header-btn" id="btn-edit-mode" title="Therapist/Caregiver PIN Edit Mode">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span class="btn-text-optional">Edit</span>
+        </button>
+        <button class="header-btn" id="btn-help-guide" title="Quick-Start Help Guide: How to use Amina in 30 seconds" style="color:var(--gh-accent-amber); border-color:rgba(210,153,34,0.4);">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </button>
+        <button class="header-btn" id="btn-settings" title="Settings & Accessibility">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Sentence Builder Strip (Message Bar) -->
+    <section class="sentence-strip-container">
+      <div class="sentence-display" id="sentence-display">
+        <!-- Dynamic chips injected here -->
+      </div>
+
+      <div class="strip-controls">
+        <!-- Speak Button -->
+        <button class="strip-btn btn-speak" id="btn-speak-sentence">
+          <svg class="ui-icon ui-icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+          <span>SPEAK</span>
+        </button>
+
+        <!-- Morphological Modifiers -->
+        <button class="strip-btn" id="btn-mod-s" title="Add plural/third-person 's'">
+          <span style="font-size:1rem; font-weight:800;">+S</span>
+          <span>Plural</span>
+        </button>
+        <button class="strip-btn" id="btn-mod-ing" title="Add present continuous 'ing'">
+          <span style="font-size:0.85rem; font-weight:800;">+ING</span>
+          <span>Action</span>
+        </button>
+        <button class="strip-btn" id="btn-mod-ed" title="Add past tense 'ed'">
+          <span style="font-size:0.85rem; font-weight:800;">+ED</span>
+          <span>Past</span>
+        </button>
+
+        <!-- Actions -->
+        <button class="strip-btn btn-backspace" id="btn-backspace" title="Delete last word">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+            <line x1="18" y1="9" x2="12" y2="15"/>
+            <line x1="12" y1="9" x2="18" y2="15"/>
+          </svg>
+          <span>Back</span>
+        </button>
+        <button class="strip-btn btn-clear" id="btn-clear-sentence" title="Clear all words">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h18"/>
+            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+          </svg>
+          <span>Clear</span>
+        </button>
+        <button class="strip-btn btn-undo" id="btn-undo-sentence" title="Undo accidental clear (Restore sentence)" style="display:none; color:#38bdf8; border-color:rgba(56,189,248,0.4); background:rgba(56,189,248,0.12);">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 7v6h6"/>
+            <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>
+          </svg>
+          <span>Undo</span>
+        </button>
+        <button class="strip-btn" id="btn-star-sentence" title="Save current sentence to Favorites" style="color:#eab308; border-color:rgba(234,179,8,0.4);">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+          <span>Favorite</span>
+        </button>
+        <button class="strip-btn" id="btn-copy-sentence" title="Copy text to clipboard">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+          <span>Copy</span>
+        </button>
+        <button class="strip-btn" id="btn-share-sentence" title="Share sentence">
+          <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"/>
+            <circle cx="6" cy="12" r="3"/>
+            <circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+          <span>Share</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Smart Favorites & Quick Talk Ribbon -->
+    <div class="favorites-ribbon-container" id="favorites-ribbon">
+      <!-- Injected via JavaScript -->
+    </div>
+
+    <!-- Category Folders Nav Bar -->
+    <nav class="category-nav-bar" id="category-nav">
+      <!-- Injected via JavaScript -->
+    </nav>
+
+    <!-- Main Viewport Area -->
+    <main class="main-viewport">
+      <!-- AAC View -->
+      <div id="aac-view" class="aac-grid-wrapper">
+        <div class="aac-grid" id="aac-grid">
+          <!-- Tiles injected via JavaScript -->
+        </div>
+      </div>
+
+      <!-- Phonics Learning Suite View -->
+      <div id="phonics-view" style="display:none; width:100%; height:100%;">
+        <!-- Injected via JavaScript -->
+      </div>
+
+      <!-- Food Decision Wheels View -->
+      <div id="wheels-view" style="display:none; width:100%; height:100%;">
+        <!-- Injected via JavaScript -->
+      </div>
+    </main>
+
+    <!-- Amina Narrator HUD (Bottom Floating Card) -->
+    <aside class="narrator-hud-card" id="narrator-hud">
+      <div class="narrator-portrait-wrap">
+        <img src="assets/amina-avatar.svg" alt="Amina Narrator" class="narrator-portrait" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><circle cx=\'50\' cy=\'50\' r=\'50\' fill=\'%23f0883e\'/><circle cx=\'50\' cy=\'40\' r=\'24\' fill=\'%235c341b\'/><path d=\'M20 90 Q50 60 80 90\' fill=\'%235c341b\'/><circle cx=\'42\' cy=\'38\' r=\'3\' fill=\'%23fff\'/><circle cx=\'58\' cy=\'38\' r=\'3\' fill=\'%23fff\'/><path d=\'M42 50 Q50 58 58 50\' stroke=\'%23fff\' stroke-width=\'3\' fill=\'none\'/></svg>'">
+        <span class="narrator-speech-indicator"></span>
+      </div>
+      <div>
+        <div style="font-size:0.75rem; font-weight:700; color:var(--gh-accent-amber); text-transform:uppercase;">Narrator Amina</div>
+        <div id="narrator-subtitle" style="font-size:0.85rem; color:var(--gh-text-primary); max-width:240px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+          Ready to speak with you
+        </div>
+      </div>
+      <button class="header-btn" id="btn-test-voice" onclick="window.aacAudio.speak('Hello! I am Amina, your speech and phonics companion.');" style="padding:4px 8px; font-size:0.72rem;">
+        Test Voice 🔊
+      </button>
+    </aside>
+
+    <!-- =====================================================================
+         MODALS
+         ===================================================================== -->
+
+    <!-- Settings Modal -->
+    <div class="modal-backdrop" id="settings-modal" style="display:none;">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">⚙️ AAC & Audio Settings</h3>
+          <button class="modal-close-btn" id="btn-close-settings">&times;</button>
+        </div>
+        <div class="modal-body">
+          <!-- Voice Selection -->
+          <div class="form-group">
+            <label class="form-label">Narrator Voice (Afro-Euro Female Priority)</label>
+            <div style="display:flex; gap:8px;">
+              <select id="setting-voice-select" class="form-select" style="flex:1;"></select>
+              <button class="header-btn" id="btn-open-voice-studio" style="color:#f0883e; border-color:#f0883e;">🌍 Voice Studio</button>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="form-group">
+              <label class="form-label">Voice Rate (<span id="label-voice-rate">92%</span>)</label>
+              <input type="range" id="setting-voice-rate" min="0.5" max="1.5" step="0.05" value="0.92">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Voice Pitch (<span id="label-voice-pitch">106%</span>)</label>
+              <input type="range" id="setting-voice-pitch" min="0.7" max="1.4" step="0.05" value="1.06">
+            </div>
+          </div>
+
+          <!-- Visual Display & Themes -->
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="form-group">
+              <label class="form-label">Grid Columns (Tablet Auto-Fit)</label>
+              <select id="setting-grid-density" class="form-select">
+                <option value="2">2 Columns (Toddler / Motor)</option>
+                <option value="3">3 Columns (Early Communicator)</option>
+                <option value="4">4 Columns (Standard Simple)</option>
+                <option value="6" selected>6 Columns (Universal Core)</option>
+                <option value="8">8 Columns (Tablet Full / WordPower)</option>
+                <option value="10">10 Columns (Tablet Wide 10x6)</option>
+                <option value="12">12 Columns (Advanced Core 12x7)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Visual Theme</label>
+              <select id="setting-theme-select" class="form-select">
+                <option value="dark" selected>High-Gloss Dark (Lacquer)</option>
+                <option value="high-contrast">Yellow on Black (Low Vision)</option>
+                <option value="light">Crisp Light (Classroom)</option>
+                <option value="cvi">CVI Mode (High Saturation)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Tablet & Motor Access Controls -->
+          <div class="form-group" style="background:var(--gh-canvas-inset); padding:12px; border-radius:10px; border:1px solid var(--gh-border-muted);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <strong style="font-size:0.9rem; color:var(--gh-accent-blue);">📱 Tablet & Motor Access Controls</strong>
+              <button class="header-btn" id="btn-open-kiosk-guide" style="height:28px; font-size:0.72rem; color:#38bdf8; border-color:#38bdf8;">🔒 Guided Access Setup</button>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:8px;">
+              <div>
+                <label class="form-label" style="font-size:0.75rem;">Touch Activation Mode</label>
+                <select id="setting-touch-mode" class="form-select" style="font-size:0.8rem; padding:4px 8px;">
+                  <option value="contact" selected>Touch on Contact (Immediate)</option>
+                  <option value="release">Touch on Release (Drag & Lift)</option>
+                  <option value="dwell">Dwell / Hold Duration Timer</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label" style="font-size:0.75rem;">Physical Keyguard Spacing</label>
+                <select id="setting-keyguard-mode" class="form-select" style="font-size:0.8rem; padding:4px 8px;">
+                  <option value="none" selected>None / Flush (Modern 8px gap)</option>
+                  <option value="standard">Standard Keyguard (14px inset)</option>
+                  <option value="deep">Deep Recessed (20px 3D Plate Relief)</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:8px;">
+              <div>
+                <label class="form-label" style="font-size:0.75rem;">Hold Duration (<span id="label-dwell-time">0ms / Off</span>)</label>
+                <input type="range" id="setting-dwell-slider" min="0" max="1500" step="100" value="0">
+              </div>
+              <div>
+                <label class="form-label" style="font-size:0.75rem;">Anti-Tremor Lockout (<span id="label-repeat-lockout">400ms</span>)</label>
+                <input type="range" id="setting-repeat-slider" min="0" max="1200" step="100" value="400">
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+              <div>
+                <label class="form-label" style="font-size:0.75rem;">Motor Plan Orientation</label>
+                <select id="setting-orientation-lock" class="form-select" style="font-size:0.8rem; padding:4px 8px;">
+                  <option value="auto" selected>Auto / Responsive</option>
+                  <option value="landscape">Locked Landscape (Mounts & Slant)</option>
+                  <option value="portrait">Locked Portrait (Handheld)</option>
+                </select>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px; padding-top:14px;">
+                <input type="checkbox" id="setting-palm-rejection" style="width:18px; height:18px;" checked>
+                <label for="setting-palm-rejection" style="font-size:0.75rem; color:var(--gh-text-primary); cursor:pointer;">Palm & Edge Rejection Filter</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Switch Scanning & Accessibility -->
+          <div class="form-group" style="background:var(--gh-canvas-inset); padding:12px; border-radius:10px; border:1px solid var(--gh-border-muted);">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <div>
+                <strong style="font-size:0.9rem;">Single-Switch Scanning</strong>
+                <p style="font-size:0.75rem; color:var(--gh-text-secondary);">Cycle tiles automatically with Spacebar or single switch.</p>
+              </div>
+              <input type="checkbox" id="setting-switch-scan" style="width:20px; height:20px;">
+            </div>
+          </div>
+
+          <!-- Open Board Format & Data -->
+          <div class="form-group">
+            <label class="form-label">Open Board Format (OBF) & Cloud Backup</label>
+            <div style="display:flex; gap:8px;">
+              <button class="header-btn" id="btn-export-obf" style="flex:1;">⬇️ Export OBF (.obf)</button>
+              <button class="header-btn" id="btn-import-obf" style="flex:1;">⬆️ Import OBF File</button>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; padding-top:8px; border-top:1px solid var(--gh-border-muted);">
+            <button class="header-btn" id="btn-reset-defaults" style="color:#f85149;">⚠️ Reset All to Default</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tablet Guided Access & Kiosk Guide Modal -->
+    <div class="modal-backdrop" id="kiosk-guide-modal" style="display:none;">
+      <div class="modal-card" style="max-width:620px;">
+        <div class="modal-header">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="font-size:1.6rem;">🔒</div>
+            <div>
+              <h3 class="modal-title" style="margin:0;">Tablet Kiosk & Guided Access Setup</h3>
+              <p style="font-size:0.75rem; color:var(--gh-text-secondary); margin:0;">Clinical Lock-in for Apple iPad & Android Tablets</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="btn-close-kiosk-guide">&times;</button>
+        </div>
+        <div class="modal-body" style="line-height:1.5; font-size:0.85rem;">
+          <div style="background:rgba(56,189,248,0.1); border:1px solid #38bdf8; border-radius:10px; padding:12px; margin-bottom:12px;">
+            <strong style="color:#38bdf8; display:block; margin-bottom:4px;">🍎 Apple iPad Guided Access (Clinical Standard):</strong>
+            <ol style="margin-left:18px; color:var(--gh-text-primary); font-size:0.8rem;">
+              <li>Open iPad <strong>Settings</strong> ➔ <strong>Accessibility</strong> ➔ <strong>Guided Access</strong>.</li>
+              <li>Toggle Guided Access <strong>ON</strong> and set a Passcode.</li>
+              <li>Launch <strong>Amina AAC</strong> in Safari or from your Home Screen.</li>
+              <li><strong>Triple-click</strong> the Top Power button (or Home button) to start Guided Access!</li>
+              <li><em>Result:</em> The communicator cannot swipe out to YouTube, games, or close the app.</li>
+            </ol>
+          </div>
+
+          <div style="background:rgba(34,197,94,0.1); border:1px solid #22c55e; border-radius:10px; padding:12px; margin-bottom:12px;">
+            <strong style="color:#22c55e; display:block; margin-bottom:4px;">🤖 Android Tablet App Pinning (Samsung Galaxy Tab / Fire HD / Lenovo):</strong>
+            <ol style="margin-left:18px; color:var(--gh-text-primary); font-size:0.8rem;">
+              <li>Open Android <strong>Settings</strong> ➔ <strong>Security</strong> (or Biometrics) ➔ <strong>App Pinning</strong>.</li>
+              <li>Toggle App Pinning <strong>ON</strong>.</li>
+              <li>Open Amina AAC ➔ Swipe up to Recent Apps ➔ Tap the Amina app icon ➔ Select <strong>"Pin"</strong>.</li>
+              <li><em>Result:</em> The navigation bar is locked until the caregiver unpins with a PIN.</li>
+            </ol>
+          </div>
+
+          <div style="background:var(--gh-canvas-inset); border:1px solid var(--gh-border-muted); border-radius:10px; padding:10px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <strong style="font-size:0.85rem; color:#f0883e;">📊 Speech Therapy (SLP) Session Data</strong>
+              <p style="font-size:0.75rem; color:var(--gh-text-secondary); margin:0;">Export communication usage for IEP documentation.</p>
+            </div>
+            <button class="header-btn" id="btn-export-session-csv" style="color:var(--gh-accent-green); border-color:var(--gh-accent-green); font-size:0.78rem;">
+              ⬇️ Export Session CSV
+            </button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="header-btn accent-btn" id="btn-start-fullscreen-now" style="width:100%;">
+            🖥️ Enter Fullscreen Kiosk Mode Now
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Amina Afro-European Voice Studio Modal -->
+    <div class="modal-backdrop" id="voice-studio-modal" style="display:none;">
+      <div class="modal-card" style="max-width:580px;">
+        <div class="modal-header">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <img src="assets/amina-avatar.svg" alt="Amina" style="width:36px; height:36px; border-radius:50%; border:2px solid #f0883e;">
+            <div>
+              <h3 class="modal-title" style="margin:0;">Amina Voice Studio</h3>
+              <p style="font-size:0.75rem; color:var(--gh-text-secondary); margin:0;">Afro-European Narrator & Accent Tuner</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="btn-close-voice-studio">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+          <!-- Active Status Banner -->
+          <div class="voice-status-banner" style="background:linear-gradient(135deg, rgba(240,136,62,0.15) 0%, rgba(210,153,34,0.15) 100%); border:1px solid #f0883e; border-radius:12px; padding:12px; margin-bottom:14px; display:flex; align-items:center; gap:12px;">
+            <div style="font-size:2rem;">🌍</div>
+            <div style="flex:1;">
+              <div style="display:flex; align-items:center; gap:6px;">
+                <strong id="active-voice-title" style="font-size:0.95rem; color:#fff;">Amina (Afro-European Female)</strong>
+                <span id="active-voice-badge" style="font-size:0.7rem; background:#238636; color:#fff; padding:2px 6px; border-radius:10px; font-weight:700;">ACTIVE</span>
+              </div>
+              <p id="active-voice-engine-name" style="font-size:0.75rem; color:var(--gh-text-secondary); margin-top:2px;">Loading speech engine...</p>
+            </div>
+            <button class="header-btn accent-btn" id="btn-test-voice-studio" style="height:36px; padding:0 14px;">
+              <span>🔊 Test Voice</span>
+            </button>
+          </div>
+
+          <!-- Regional Accent Presets -->
+          <div class="form-group">
+            <label class="form-label">Voice & Accent Profiles</label>
+            <div class="voice-presets-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+              <button class="preset-btn active" data-preset="afro_euro">
+                <span class="preset-flag">🌍</span>
+                <span class="preset-title">Afro-British (Amina)</span>
+                <span class="preset-sub">Warm, melodic & rhythmic</span>
+              </button>
+              <button class="preset-btn" data-preset="nigerian">
+                <span class="preset-flag">🇳🇬</span>
+                <span class="preset-title">Nigerian English (Zainab)</span>
+                <span class="preset-sub">Syllable-timed, lively</span>
+              </button>
+              <button class="preset-btn" data-preset="south_african">
+                <span class="preset-flag">🇿🇦</span>
+                <span class="preset-title">South African (Nandi)</span>
+                <span class="preset-sub">Crisp, articulate tone</span>
+              </button>
+              <button class="preset-btn" data-preset="uk_multicultural">
+                <span class="preset-flag">🇬🇧</span>
+                <span class="preset-title">UK Multicultural (Serena)</span>
+                <span class="preset-sub">Clear classroom prosody</span>
+              </button>
+              <button class="preset-btn" data-preset="screen_reader" id="preset-btn-screenreader" style="grid-column: 1 / -1; border-color: rgba(56,189,248,0.4); background: rgba(56,189,248,0.08);">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span class="preset-flag" style="margin-bottom:0;">🖥️</span>
+                  <div>
+                    <span class="preset-title" style="color:#38bdf8;">Screen Reader App Voice (System Default & Live Sync)</span>
+                    <span class="preset-sub" style="display:block;">Syncs with your device screen reader (Narrator / NVDA / TalkBack / VoiceOver)</span>
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Voice Dropdown Selection -->
+          <div class="form-group">
+            <label class="form-label">Available System / Browser Speech Voices</label>
+            <select id="voice-studio-select" class="form-select" style="font-size:0.85rem;"></select>
+          </div>
+
+          <!-- Pacing & Pitch Sliders -->
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="form-group">
+              <label class="form-label">Speed / Cadence (<span id="studio-label-rate">92%</span>)</label>
+              <input type="range" id="studio-rate-slider" min="0.5" max="1.5" step="0.02" value="0.92">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Pitch / Musicality (<span id="studio-label-pitch">106%</span>)</label>
+              <input type="range" id="studio-pitch-slider" min="0.7" max="1.4" step="0.02" value="1.06">
+            </div>
+          </div>
+
+          <!-- Quick Interactive Test Phrases -->
+          <div class="form-group">
+            <label class="form-label">Tap to Hear Sample Phrases with Amina's Voice:</label>
+            <div style="display:flex; flex-wrap:wrap; gap:6px;">
+              <button class="test-phrase-btn" data-phrase="Hello, I am Amina! How are you feeling today?">💬 "Hello, I am Amina!"</button>
+              <button class="test-phrase-btn" data-phrase="I would like a glass of water please.">💧 "I want water please"</button>
+              <button class="test-phrase-btn" data-phrase="Let's learn new words and play together!">🔤 "Let's learn new words"</button>
+              <button class="test-phrase-btn" data-phrase="Can you please read this dialogue for me?">🎮 "Read this for me"</button>
+            </div>
+          </div>
+
+          <!-- Caregiver Guide Accordion -->
+          <details class="caregiver-voice-guide" style="background:var(--gh-canvas-inset); border:1px solid var(--gh-border-muted); border-radius:8px; padding:8px 12px; margin-top:8px;">
+            <summary style="font-size:0.8rem; font-weight:700; color:var(--gh-accent-blue); cursor:pointer;">
+              💡 How to install authentic African & UK voices on your device
+            </summary>
+            <div style="font-size:0.75rem; color:var(--gh-text-secondary); margin-top:8px; line-height:1.4;">
+              <p>• <strong>Windows 10/11:</strong> Settings ➔ Time & Language ➔ Speech ➔ Add voices ➔ Search "English (United Kingdom)" or "English (Nigeria)" or "English (South Africa)".</p>
+              <p>• <strong>Android / Chromebook:</strong> Settings ➔ Accessibility ➔ Text-to-speech output ➔ Install voice data ➔ English (Nigeria / UK / South Africa).</p>
+              <p>• <strong>iPad & iPhone:</strong> Settings ➔ Accessibility ➔ Spoken Content ➔ Voices ➔ English ➔ Download Serena, Stephanie, or Tessa.</p>
+            </div>
+          </details>
+        </div>
+
+        <div class="modal-footer">
+          <button class="header-btn" id="btn-save-voice-studio" style="background:var(--gh-accent-green); color:#fff; font-weight:700; width:100%;">
+            ✅ Keep Afro-European Voice
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Tile Modal (Therapist / Caregiver Customization) -->
+    <div class="modal-backdrop" id="edit-tile-modal" style="display:none;">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title">✏️ Customize Communication Button</h3>
+          <button class="modal-close-btn" id="btn-close-edit-tile">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="form-group">
+              <label class="form-label">Button Label</label>
+              <input type="text" id="edit-tile-label" class="form-input" placeholder="e.g. Water">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Spoken Speech Text</label>
+              <input type="text" id="edit-tile-speech" class="form-input" placeholder="e.g. I would like water">
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="form-group">
+              <label class="form-label">Icon / Symbol</label>
+              <input type="text" id="edit-tile-icon" class="form-input" placeholder="Emoji or character (e.g. 💧)">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Fitzgerald Color Category</label>
+              <select id="edit-tile-category" class="form-select">
+                <option value="people">Yellow - People / Pronouns</option>
+                <option value="verb">Green - Verbs / Actions</option>
+                <option value="noun">Orange - Nouns / Things</option>
+                <option value="adjective">Blue - Descriptors / Adjectives</option>
+                <option value="social">Pink - Social / Greetings</option>
+                <option value="question">Purple - Questions</option>
+                <option value="misc">White/Gray - Prepositions / Little Words</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Folder Link (Optional)</label>
+            <select id="edit-tile-target-board" class="form-select"></select>
+          </div>
+
+          <!-- Real Voice Recorder -->
+          <div class="form-group" style="background:var(--gh-canvas-inset); padding:12px; border-radius:10px; border:1px solid var(--gh-border-muted);">
+            <label class="form-label">🎙️ Custom Voice Recording</label>
+            <p id="label-record-status" style="font-size:0.75rem; margin-bottom:8px;">No custom recording</p>
+            <button class="header-btn" id="btn-record-voice">🎙️ Record Real Voice</button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="header-btn" id="btn-delete-tile" style="color:#f85149; margin-right:auto;">🗑️ Delete</button>
+          <button class="header-btn accent-btn" id="btn-save-tile">💾 Save Button</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Search & Symbol Finder Modal -->
+    <div class="modal-backdrop" id="search-modal" style="display:none;">
+      <div class="modal-card" style="max-width:680px; max-height:85vh;">
+        <div class="modal-header">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:1.4rem;">🔍</span>
+            <div>
+              <h3 class="modal-title" style="margin:0;">Symbol & Word Finder</h3>
+              <p style="font-size:0.75rem; color:var(--gh-text-secondary); margin:0;">Search words across all boards and folders</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="btn-close-search">&times;</button>
+        </div>
+        <div class="modal-body" style="gap:12px;">
+          <div style="position:relative;">
+            <input type="text" id="symbol-search-input" class="form-input" placeholder="Type to find a word (e.g. water, apple, play, help, go, mom)..." style="font-size:1.05rem; padding:12px 14px; border-radius:10px; border-color:var(--gh-accent-blue);">
+          </div>
+          
+          <div id="search-results-summary" style="font-size:0.78rem; color:var(--gh-text-secondary); display:flex; justify-content:space-between; align-items:center;">
+            <span>Tap any symbol to add directly to your message strip</span>
+            <span id="search-result-count" style="font-weight:700; color:var(--gh-accent-blue);">0 words</span>
+          </div>
+
+          <!-- Results Grid -->
+          <div id="search-results-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:10px; max-height:48vh; overflow-y:auto; padding:4px;">
+            <!-- Injected via JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Help & Caregiver Walkthrough Modal -->
+    <div class="modal-backdrop" id="help-guide-modal" style="display:none;">
+      <div class="modal-card" style="max-width:640px; max-height:90vh;">
+        <div class="modal-header">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:1.5rem;">🌟</span>
+            <div>
+              <h3 class="modal-title" style="margin:0;">Quick Guide: Amina in 30 Seconds</h3>
+              <p style="font-size:0.75rem; color:var(--gh-text-secondary); margin:0;">Everything you need to know for toddlers, kids, and adults</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="btn-close-help">&times;</button>
+        </div>
+        <div class="modal-body" style="gap:14px; line-height:1.45;">
+          
+          <!-- Card 1: Sentences -->
+          <div style="background:var(--gh-canvas-inset); border:1px solid var(--gh-border-default); border-radius:12px; padding:12px; display:flex; gap:12px; align-items:flex-start;">
+            <div style="font-size:2rem; background:rgba(35,134,54,0.15); border-radius:10px; width:44px; height:44px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">💬</div>
+            <div>
+              <strong style="color:var(--gh-accent-green); font-size:0.95rem;">1. Build Sentences & Speak</strong>
+              <p style="font-size:0.8rem; color:var(--gh-text-primary); margin:2px 0 0 0;">Tap colored symbols in order (e.g. <em>I ➔ WANT ➔ EAT ➔ APPLE</em>), then tap the green <strong>SPEAK</strong> button! Use <strong>+S</strong>, <strong>+ING</strong>, or <strong>+ED</strong> to expand grammar.</p>
+            </div>
+          </div>
+
+          <!-- Card 2: Accidental Clear Protection -->
+          <div style="background:var(--gh-canvas-inset); border:1px solid var(--gh-border-default); border-radius:12px; padding:12px; display:flex; gap:12px; align-items:flex-start;">
+            <div style="font-size:2rem; background:rgba(56,189,248,0.15); border-radius:10px; width:44px; height:44px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">↩️</div>
+            <div>
+              <strong style="color:#38bdf8; font-size:0.95rem;">2. Accidental Clear Protection</strong>
+              <p style="font-size:0.8rem; color:var(--gh-text-primary); margin:2px 0 0 0;">Did a child accidentally tap <strong>🗑️ Clear</strong>? An <strong>↩️ Undo</strong> button appears automatically so you can restore their sentence with a single tap!</p>
+            </div>
+          </div>
+
+          <!-- Card 3: Favorites -->
+          <div style="background:var(--gh-canvas-inset); border:1px solid var(--gh-border-default); border-radius:12px; padding:12px; display:flex; gap:12px; align-items:flex-start;">
+            <div style="font-size:2rem; background:rgba(234,179,8,0.15); border-radius:10px; width:44px; height:44px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">⭐</div>
+            <div>
+              <strong style="color:#eab308; font-size:0.95rem;">3. Star Favorite Phrases</strong>
+              <p style="font-size:0.8rem; color:var(--gh-text-primary); margin:2px 0 0 0;">Build a phrase you use all the time (like <em>"I need water please"</em>) and tap the golden <strong>⭐ Favorite</strong> button. It keeps it ready at the top forever!</p>
+            </div>
+          </div>
+
+          <!-- Card 4: Phonics & Wheels -->
+          <div style="background:var(--gh-canvas-inset); border:1px solid var(--gh-border-default); border-radius:12px; padding:12px; display:flex; gap:12px; align-items:flex-start;">
+            <div style="background:rgba(240,136,62,0.15); border-radius:10px; width:44px; height:44px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <svg class="ui-icon ui-icon-lg" style="color:#f0883e;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            </div>
+            <div>
+              <strong style="color:#f0883e; font-size:0.95rem;">4. Phonics & Food Decision Wheels</strong>
+              <p style="font-size:0.8rem; color:var(--gh-text-primary); margin:2px 0 0 0;">Switch tabs anytime to practice reading on the <strong>Phonics</strong> blending board, or spin the <strong>Food Wheels</strong> when a child is stuck deciding what to eat!</p>
+            </div>
+          </div>
+
+          <!-- Card 5: Tablet Keyguards -->
+          <div style="background:var(--gh-canvas-inset); border:1px solid var(--gh-border-default); border-radius:12px; padding:12px; display:flex; gap:12px; align-items:flex-start;">
+            <div style="background:rgba(139,92,246,0.15); border-radius:10px; width:44px; height:44px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+              <svg class="ui-icon ui-icon-lg" style="color:#a78bfa;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            </div>
+            <div>
+              <strong style="color:#a78bfa; font-size:0.95rem;">5. Clinical Tablet Access & Keyguards</strong>
+              <p style="font-size:0.8rem; color:var(--gh-text-primary); margin:2px 0 0 0;">Have a child with tremors or cerebral palsy? Open <strong>Settings</strong> to enable <em>Touch on Release</em>, <em>Hold Duration (Dwell)</em>, or <em>Deep Keyguard Insets</em>.</p>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button class="header-btn accent-btn" id="btn-got-it-help" style="width:100%;">
+            👍 Got it! Let's Communicate
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sorted Master Menu Screen Modal (Categories, Phonics, Food Wheels & Clinical Tools) -->
+    <div class="modal-backdrop" id="menu-screen-modal" style="display:none;">
+      <div class="modal-card menu-screen-card" style="max-width:980px; max-height:92vh; display:flex; flex-direction:column;">
+        <div class="modal-header">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span style="font-size:1.6rem;">📱</span>
+            <div>
+              <h3 class="modal-title" style="margin:0;">Amina Communication & Features Menu</h3>
+              <p style="font-size:0.75rem; color:var(--gh-text-secondary); margin:0;">Organized categories, learning suites, and clinical tablet settings</p>
+            </div>
+          </div>
+          <div class="menu-header-right" style="display:flex; align-items:center; gap:10px;">
+            <div id="menu-device-badge" class="device-spec-badge" title="Live Hardware Profile">
+              <span id="menu-device-icon">📱</span>
+              <span id="menu-device-desc">Detecting device...</span>
+            </div>
+            <button class="modal-close-btn" id="btn-close-menu">&times;</button>
+          </div>
+        </div>
+
+        <div class="modal-body menu-screen-body" style="overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:20px;">
+          
+          <!-- SECTION 1: URGENT & HIGH-PRIORITY COMMUNICATION -->
+          <div class="menu-section">
+            <div class="menu-section-header">
+              <span class="menu-section-icon" style="background:rgba(248,81,73,0.15); color:#f85149; border-color:rgba(248,81,73,0.4);">
+                <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+              </span>
+              <div>
+                <h4 class="menu-section-title" style="color:#f85149;">1. Urgent & Immediate Assistance</h4>
+                <p class="menu-section-subtitle">High-priority buttons for restroom, emergency help, pain, and sensory regulation</p>
+              </div>
+            </div>
+            <div class="menu-cards-grid">
+              <button class="menu-card urgent-card" data-action="speak-urgent" data-phrase="I need to go to the bathroom" data-board="urgent_needs">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#38bdf8;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="3"/><path d="M9 22V12h6v10"/><path d="M9 12H7a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <strong class="menu-card-name">Bathroom / Restroom</strong>
+                  <span class="menu-card-desc">"I need to go to the bathroom"</span>
+                </div>
+              </button>
+              <button class="menu-card urgent-card" data-action="speak-urgent" data-phrase="I need help right now please" data-board="urgent_needs">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#f85149;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <strong class="menu-card-name">Need Help!</strong>
+                  <span class="menu-card-desc">"I need help right now please"</span>
+                </div>
+              </button>
+              <button class="menu-card urgent-card" data-action="speak-urgent" data-phrase="Something hurts me" data-board="urgent_needs">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#eab308;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <strong class="menu-card-name">Pain / Hurt</strong>
+                  <span class="menu-card-desc">"Something hurts me"</span>
+                </div>
+              </button>
+              <button class="menu-card urgent-card" data-action="speak-urgent" data-phrase="I need a sensory break and quiet time" data-board="urgent_needs">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#bc8cff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <strong class="menu-card-name">Sensory Break</strong>
+                  <span class="menu-card-desc">"I need quiet time"</span>
+                </div>
+              </button>
+              <button class="menu-card urgent-card" data-action="speak-urgent" data-phrase="I need a drink of water please" data-board="food_drinks">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#38bdf8;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <strong class="menu-card-name">Need Water</strong>
+                  <span class="menu-card-desc">"Drink of water please"</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- SECTION 2: SORTED TOPIC VOCABULARY FOLDERS -->
+          <div class="menu-section">
+            <div class="menu-section-header">
+              <span class="menu-section-icon" style="background:rgba(56,189,248,0.15); color:#38bdf8; border-color:rgba(56,189,248,0.4);">
+                <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
+              </span>
+              <div>
+                <h4 class="menu-section-title" style="color:#38bdf8;">2. Sorted Topic Folders & Core Vocabularies</h4>
+                <p class="menu-section-subtitle">Fitzgerald Key communication boards organized by frequency and daily life</p>
+              </div>
+            </div>
+            <div class="menu-cards-grid" id="menu-categories-grid">
+              <button class="menu-card category-card" data-nav-board="core_master">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#58a6ff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="7" r="2" fill="currentColor"/><circle cx="17" cy="7" r="2" fill="currentColor"/><circle cx="7" cy="12" r="2" fill="currentColor"/><circle cx="17" cy="12" r="2" fill="currentColor"/><circle cx="7" cy="17" r="2" fill="currentColor"/><circle cx="17" cy="17" r="2" fill="currentColor"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong class="menu-card-name">Universal Core 36</strong>
+                    <span class="menu-card-badge">36 Words</span>
+                  </div>
+                  <span class="menu-card-desc">Master Fitzgerald Key communication grid</span>
+                </div>
+              </button>
+              <button class="menu-card category-card" data-nav-board="board_favorites" style="border-color:rgba(234,179,8,0.4);">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#eab308;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong class="menu-card-name" style="color:#fef08a;">Smart Favorites</strong>
+                    <span class="menu-card-badge" style="background:#eab308; color:#000;">Frequent</span>
+                  </div>
+                  <span class="menu-card-desc">Your pinned phrases & top learned words</span>
+                </div>
+              </button>
+              <button class="menu-card category-card" data-nav-board="urgent_needs">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#f85149;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong class="menu-card-name">Urgent & Health</strong>
+                    <span class="menu-card-badge">12 Words</span>
+                  </div>
+                  <span class="menu-card-desc">Medical, sensory, and urgent bodily assistance</span>
+                </div>
+              </button>
+              <button class="menu-card category-card" data-nav-board="food_drinks">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#f0883e;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong class="menu-card-name">Food & Drinks</strong>
+                    <span class="menu-card-badge">12 Words</span>
+                  </div>
+                  <span class="menu-card-desc">Meals, snacks, drinks & Food Decision Wheels</span>
+                </div>
+              </button>
+              <button class="menu-card category-card" data-nav-board="feelings">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#eab308;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong class="menu-card-name">Feelings & Emotions</strong>
+                    <span class="menu-card-badge">12 Words</span>
+                  </div>
+                  <span class="menu-card-desc">Emotional regulation and internal state expression</span>
+                </div>
+              </button>
+              <button class="menu-card category-card" data-nav-board="actions_play">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#22c55e;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong class="menu-card-name">Activities & Play</strong>
+                    <span class="menu-card-badge">12 Words</span>
+                  </div>
+                  <span class="menu-card-desc">Games, sensory toys, drawing, music, and rest</span>
+                </div>
+              </button>
+              <button class="menu-card category-card" data-nav-board="people_family">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#3b82f6;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong class="menu-card-name">People & Family</strong>
+                    <span class="menu-card-badge">8 Words</span>
+                  </div>
+                  <span class="menu-card-desc">Mom, Dad, Teachers, Therapists, Friends, Doctor</span>
+                </div>
+              </button>
+              <button class="menu-card category-card" data-nav-board="places">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#bc8cff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong class="menu-card-name">Places & Locations</strong>
+                    <span class="menu-card-badge">8 Words</span>
+                  </div>
+                  <span class="menu-card-desc">Home, School, Park, Store, Car, Doctor</span>
+                </div>
+              </button>
+              <button class="menu-card category-card" data-nav-board="core_starter">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#eab308;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong class="menu-card-name">Starter Core 12</strong>
+                    <span class="menu-card-badge">Toddler</span>
+                  </div>
+                  <span class="menu-card-desc">High-impact oversized targets for early communicators</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- SECTION 3: LEARNING, PHONICS & INTERACTIVE SUITES -->
+          <div class="menu-section">
+            <div class="menu-section-header">
+              <span class="menu-section-icon" style="background:rgba(34,197,94,0.15); color:#22c55e; border-color:rgba(34,197,94,0.4);">
+                <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              </span>
+              <div>
+                <h4 class="menu-section-title" style="color:#22c55e;">3. Learning, Phonics & Decision Tools</h4>
+                <p class="menu-section-subtitle">Systematic reading instruction, decision wheels, and gaming dialogue screen reader</p>
+              </div>
+            </div>
+            <div class="menu-cards-grid">
+              <button class="menu-card suite-card" data-switch-tab="phonics" data-phonics-sub="blender">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#22c55e;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 2v5"/><path d="M8 2v5"/><path d="M12 12v4"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <strong class="menu-card-name">Phonics Blending Board</strong>
+                  <span class="menu-card-desc">3-tile onset/vowel/coda blending with audio sounds</span>
+                </div>
+              </button>
+              <button class="menu-card suite-card" data-switch-tab="phonics" data-phonics-sub="soundwall">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#38bdf8;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <strong class="menu-card-name">Articulation Sound Wall</strong>
+                  <span class="menu-card-desc">Phoneme mouth visualizer & vowel valley</span>
+                </div>
+              </button>
+              <button class="menu-card suite-card" data-switch-tab="phonics" data-phonics-sub="stories">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#bc8cff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <strong class="menu-card-name">Decodable Stories</strong>
+                  <span class="menu-card-desc">Level-graded CVC reading integrated with AAC words</span>
+                </div>
+              </button>
+              <button class="menu-card suite-card" data-switch-tab="wheels">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#f0883e;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m4.93 19.07 4.24-4.24"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <strong class="menu-card-name">Food Decision Wheels</strong>
+                  <span class="menu-card-desc">Spin to decide Snacks, Restaurants, or Homecooked meals</span>
+                </div>
+              </button>
+              <a href="read-for-me.html" class="menu-card suite-card" style="text-decoration:none;">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#f0883e;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <strong class="menu-card-name" style="color:#f0883e;">Read For Me (Game Lens)</strong>
+                  <span class="menu-card-desc">Camera text reader, RPG dialogue OCR & audio translation</span>
+                </div>
+              </a>
+              <a href="chance-invaders.html" class="menu-card suite-card" style="text-decoration:none;">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#bc8cff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4m8-2h.01m3 0h.01"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <strong class="menu-card-name" style="color:#bc8cff;">Chance Invaders 1978</strong>
+                  <span class="menu-card-desc">Arcade space shooter, motor skills training & 1-switch play</span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <!-- SECTION 4: CLINICAL TABLET TOOLS & DEVICE OPTIMIZATION -->
+          <div class="menu-section">
+            <div class="menu-section-header">
+              <span class="menu-section-icon" style="background:rgba(167,139,250,0.15); color:#a78bfa; border-color:rgba(167,139,250,0.4);">
+                <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              </span>
+              <div>
+                <h4 class="menu-section-title" style="color:#a78bfa;">4. Clinical Tablet Access & Device Optimization</h4>
+                <p class="menu-section-subtitle">Real-time device scaling, keyguards, voice studio, and therapist IEP tools</p>
+              </div>
+            </div>
+            <div class="menu-cards-grid">
+              <button class="menu-card tool-card" id="menu-btn-kiosk">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#38bdf8;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <strong class="menu-card-name">Tablet Kiosk Mode</strong>
+                  <span class="menu-card-desc">Full-screen lock with gesture bar suppression</span>
+                </div>
+              </button>
+              <button class="menu-card tool-card" id="menu-btn-voice-studio">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#f0883e;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <strong class="menu-card-name">Amina Voice Studio</strong>
+                  <span class="menu-card-desc">Afro-Euro narrator accents & screen reader sync</span>
+                </div>
+              </button>
+              <button class="menu-card tool-card" id="menu-btn-edit-mode">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#22c55e;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <strong class="menu-card-name">Therapist Edit Mode</strong>
+                  <span class="menu-card-desc">PIN-protected custom tile builder and board creator</span>
+                </div>
+              </button>
+              <button class="menu-card tool-card" id="menu-btn-slp-export">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#58a6ff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <strong class="menu-card-name">SLP Session CSV Export</strong>
+                  <span class="menu-card-desc">Download IEP-compliant clinical therapy logs</span>
+                </div>
+              </button>
+              <button class="menu-card tool-card" id="menu-btn-help-guide">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#eab308;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <strong class="menu-card-name">30-Second Guide</strong>
+                  <span class="menu-card-desc">Illustrated caregiver & educator walkthrough</span>
+                </div>
+              </button>
+              <button class="menu-card tool-card" id="menu-btn-open-settings">
+                <span class="menu-card-icon">
+                  <svg class="ui-icon ui-icon-lg" style="color:#a78bfa;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                </span>
+                <div class="menu-card-content">
+                  <strong class="menu-card-name">Settings & Access</strong>
+                  <span class="menu-card-desc">Dwell time, release touch, keyguard insets & themes</span>
+                </div>
+              </button>
+            </div>
+
+            <!-- Live Hardware & Device Inspector Box -->
+            <div class="device-inspector-panel" id="device-inspector-panel" style="background:var(--gh-canvas-inset); border:1px solid var(--gh-border-default); border-radius:12px; padding:14px; margin-top:8px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span style="display:flex; align-items:center; justify-content:center;">
+                    <svg class="ui-icon ui-icon-lg" style="color:#58a6ff;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                  </span>
+                  <div>
+                    <strong style="color:var(--gh-text-primary); font-size:0.9rem;" id="inspector-device-title">Device Profile Inspector</strong>
+                    <p style="font-size:0.75rem; color:var(--gh-text-secondary); margin:2px 0 0 0;" id="inspector-device-specs">Detecting hardware specs...</p>
+                  </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <label class="form-label" style="margin:0; font-size:0.8rem; cursor:pointer;" for="checkbox-auto-scale">Auto-Scale to Screen:</label>
+                  <input type="checkbox" id="checkbox-auto-scale" checked style="width:18px; height:18px; cursor:pointer;">
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- In-App Chance Invaders Arcade Modal (Quick Play without leaving active board) -->
+  <div class="modal-backdrop" id="arcade-game-modal" style="display:none; z-index:9000;">
+    <div class="modal-card" style="max-width:680px; width:95vw; height:92vh; padding:0; display:flex; flex-direction:column; background:#000; overflow:hidden;">
+      <div class="modal-header" style="padding:10px 16px; background:#0d1117; border-bottom:1px solid #30363d;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:1.2rem;">👾</span>
+          <h3 class="modal-title" style="margin:0; font-size:1rem;">Chance Invaders 1978 Arcade</h3>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <a href="chance-invaders.html" target="_blank" class="header-btn" style="text-decoration:none; font-size:0.75rem;" title="Open in Full Window">↗️ Full Window</a>
+          <button class="modal-close-btn" id="btn-close-arcade-modal">&times;</button>
+        </div>
+      </div>
+      <div style="flex:1; width:100%; height:100%; overflow:hidden;">
+        <iframe id="arcade-modal-iframe" src="" style="width:100%; height:100%; border:none;" title="Chance Invaders Game"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Logic Scripts -->
+  <script src="js/aac-audio.js?v=8"></script>
+  <script src="js/aac-data.js?v=8"></script>
+  <script src="js/phonics-data.js?v=8"></script>
+  <script src="js/food-wheel.js?v=8"></script>
+  <script src="js/favorites-engine.js?v=8"></script>
+  <script src="js/device-engine.js?v=8"></script>
+  <script src="js/aac-app.js?v=8"></script>
+
+  <!-- Service Worker Registration for Offline PWA -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(err => console.log('SW notice:', err));
+      });
+    }
+  </script>
+</body>
+</html>

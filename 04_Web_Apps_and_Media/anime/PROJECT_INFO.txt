@@ -1,0 +1,18 @@
+﻿========================================================================
+PROJECT: anime
+CATEGORY: 04_Web_Apps_and_Media
+DESCRIPTION: Anime Streaming & Tracking Portal
+========================================================================
+
+Original Project Directory:
+G:\My Drive\Antigravity\Projects\anime
+
+Original Index File:
+G:\My Drive\Antigravity\Projects\anime\index.html
+
+How to Open in Antigravity:
+1. In Antigravity / VS Code: Click File -> Open Folder...
+2. Paste this path: G:\My Drive\Antigravity\Projects\anime
+3. Press Enter
+
+Or launch directly in browser using: Launch_Original_Index.url

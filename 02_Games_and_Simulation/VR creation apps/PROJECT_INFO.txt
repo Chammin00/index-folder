@@ -1,0 +1,18 @@
+﻿========================================================================
+PROJECT: VR creation apps
+CATEGORY: 02_Games_and_Simulation
+DESCRIPTION: WebXR & Virtual Reality 3D Experience
+========================================================================
+
+Original Project Directory:
+G:\My Drive\Antigravity\Projects\VR creation apps
+
+Original Index File:
+G:\My Drive\Antigravity\Projects\VR creation apps\index.html
+
+How to Open in Antigravity:
+1. In Antigravity / VS Code: Click File -> Open Folder...
+2. Paste this path: G:\My Drive\Antigravity\Projects\VR creation apps
+3. Press Enter
+
+Or launch directly in browser using: Launch_Original_Index.url

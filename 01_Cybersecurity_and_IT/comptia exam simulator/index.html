@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CompTIA Security+ (SY0-701) Exam Simulator & Mastery Hub | Enterprise Studio</title>
+  <meta name="description" content="Realistic Pearson VUE style CompTIA Security+ SY0-701 Exam Simulator with PBQ simulations, flashcards, port drills, audio reader, and readiness analytics.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Base Application Stylesheet -->
+  <link rel="stylesheet" href="styles/app.css">
+  
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <link rel="stylesheet" href="aws-enterprise-baseline.css">
+  <script src="high-gloss-lacquer.js" defer></script>
+  <script src="cosmic-background.js" defer></script>
+  <script src="mcp-baseline.js" defer></script>
+  <script src="aws-enterprise-baseline.js" defer></script>
+
+  <style>
+    /* AWS Enterprise Fullscreen Layout Overrides */
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden !important;
+      background-color: var(--gh-canvas-default, #090d16);
+      color: var(--gh-text-primary, #ffffff);
+      margin: 0;
+      padding: 0;
+    }
+
+    #app-shell.app-root {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .workspace-body {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - var(--header-height, 52px));
+      overflow: hidden;
+      position: relative;
+    }
+
+    .app-main-viewport {
+      flex: 1;
+      height: 100%;
+      overflow-y: auto;
+      background: var(--gh-canvas-default, #090d16);
+      padding: 1.5rem 2rem;
+      position: relative;
+    }
+
+    .app-main-viewport .view-panel {
+      display: none;
+      width: 100%;
+      max-width: 100%;
+      padding: 0;
+      margin: 0;
+    }
+
+    .app-main-viewport .view-panel.active-panel {
+      display: block;
+    }
+
+    /* Top Command Header Styling */
+    .top-header {
+      height: var(--header-height, 52px);
+      min-height: var(--header-height, 52px);
+      background: var(--gh-canvas-subtle, #0d1117);
+      border-bottom: 1px solid var(--gh-border-default, #30363d);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.25rem;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .header-left, .header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .header-center {
+      flex: 1;
+      max-width: 540px;
+      margin: 0 1.5rem;
+    }
+
+    .sidebar-toggle-btn {
+      background: transparent;
+      border: 1px solid var(--gh-border-default, #30363d);
+      color: var(--gh-text-secondary, #e2e8f0);
+      border-radius: 6px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .sidebar-toggle-btn:hover {
+      background: var(--gh-border-muted, #21262d);
+      color: #ffffff;
+    }
+
+    .repo-breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.88rem;
+    }
+
+    .brand-mark-splus {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #f0883e 0%, #ff9900 100%);
+      color: #000;
+      font-weight: 900;
+      font-size: 0.78rem;
+    }
+
+    .crumb-org {
+      color: var(--gh-text-secondary, #e2e8f0);
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .crumb-sep {
+      color: var(--gh-text-muted, #8b949e);
+    }
+
+    .crumb-repo {
+      color: var(--gh-text-primary, #ffffff);
+      font-weight: 700;
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.15rem 0.55rem;
+      border-radius: 9999px;
+      background: rgba(63, 185, 80, 0.12);
+      border: 1px solid rgba(63, 185, 80, 0.3);
+      color: #3fb950;
+      font-family: var(--font-mono, monospace);
+    }
+
+    .badge-status::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #3fb950;
+      box-shadow: 0 0 6px #3fb950;
+    }
+
+    /* Sidebar sections */
+    .sidebar-section {
+      padding: 0.75rem 0.5rem;
+      border-bottom: 1px solid var(--gh-border-muted, #21262d);
+    }
+
+    .sidebar-header {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gh-text-muted, #8b949e);
+      padding: 0.35rem 0.75rem;
+      margin-bottom: 0.25rem;
+    }
+
+    /* Sidebar Footer */
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 0.75rem;
+      border-top: 1px solid var(--gh-border-default, #30363d);
+      font-size: 0.74rem;
+      color: var(--gh-text-muted, #8b949e);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="app-shell" class="app-root">
+    <!-- Top Global Command Header -->
+    <header class="top-header">
+      <div class="header-left">
+        <button class="sidebar-toggle-btn" onclick="AntigravityEnterprise.toggleSidebar()" title="Toggle Sidebar (Ctrl+B)">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1 2.75C1 2.336 1.336 2 1.75 2h12.5c.414 0 .75.336.75.75v10.5a.75.75 0 01-.75.75H1.75a.75.75 0 01-.75-.75V2.75zM2.5 3.5v9h2v-9h-2zm3.5 9h7.5v-9H6v9z"/></svg>
+        </button>
+        <div class="repo-breadcrumbs">
+          <span class="brand-mark-splus">SY0</span>
+          <a href="#" class="crumb-org" onclick="window.app.showView('dashboard'); return false;">CompTIA Security+</a>
+          <span class="crumb-sep">/</span>
+          <span class="crumb-repo">SY0-701 Mastery Hub</span>
+        </div>
+        <span class="badge-status">PASS BENCHMARK (750/900)</span>
+      </div>
+
+      <div class="header-center">
+        <div class="command-search-box">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" style="color:var(--gh-text-muted); flex-shrink:0;"><path d="M10.68 11.74a6 6 0 0 1-7.922-8.982 6 6 0 0 1 8.982 7.922l3.04 3.04a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-3.04-3.04zM11.5 7a4.5 4.5 0 1 0-9 0 4.5 4.5 0 0 0 9 0z"/></svg>
+          <input type="text" id="global-search-input" placeholder="Search 450+ questions, 160+ acronyms, PBQ labs, ports... (Press Ctrl+K)" />
+          <span class="command-kbd">Ctrl+K</span>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <button class="gh-btn" onclick="window.openCompTIAInspectorHelp()" title="Inspect Exam Blueprint & Key Objectives">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM6.92 6.085h.001a.749.749 0 1 1-1.342-.67 3.003 3.003 0 0 1 5.341 1.67c0 1.09-.643 1.76-1.272 2.197-.534.372-.948.657-.948 1.218a.75.75 0 0 1-1.5 0c0-1.22.756-1.854 1.378-2.29.47-.33.742-.56.742-.925a1.502 1.502 0 0 0-2.4-.999zM8 13.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
+          Inspector
+        </button>
+        <button class="gh-btn" onclick="AntigravityEnterprise.toggleFullscreen()" title="Fullscreen Viewport">
+          ⛶ Fullscreen
+        </button>
+        <button id="btn-theme-toggle" class="gh-btn">
+          🌙 Dark SOC
+        </button>
+      </div>
+    </header>
+
+    <!-- Workspace Body -->
+    <div class="workspace-body">
+      <!-- Collapsible Left Navigation Sidebar -->
+      <aside class="app-sidebar">
+        <!-- Study Modes Navigation -->
+        <div class="sidebar-section">
+          <div class="sidebar-header">Core Modules</div>
+          <ul class="sidebar-nav-list">
+            <li><a href="#" class="sidebar-item nav-link active" data-view="dashboard"><span>🏠</span> <span class="sidebar-label">Dashboard</span></a></li>
+            <li><a href="#" class="sidebar-item nav-link" data-view="audio-reader"><span>🔊</span> <span class="sidebar-label">Audio Reader</span> <span class="nav-badge">160+</span></a></li>
+            <li><a href="#" class="sidebar-item nav-link" data-view="exam"><span>⏱️</span> <span class="sidebar-label">Timed Exam</span> <span class="nav-badge">90m</span></a></li>
+            <li><a href="#" class="sidebar-item nav-link" data-view="practice"><span>📚</span> <span class="sidebar-label">Study Mode</span> <span class="nav-badge">450Q</span></a></li>
+            <li><a href="#" class="sidebar-item nav-link" data-view="pbq"><span>🛠️</span> <span class="sidebar-label">PBQ Labs</span> <span class="nav-badge">14 Labs</span></a></li>
+            <li><a href="#" class="sidebar-item nav-link" data-view="drills"><span>⚡</span> <span class="sidebar-label">Speed Drills</span> <span class="nav-badge">Ports</span></a></li>
+            <li><a href="#" class="sidebar-item nav-link" data-view="matching"><span>🧩</span> <span class="sidebar-label">Definition Match</span></a></li>
+            <li><a href="#" class="sidebar-item nav-link" data-view="flashcards"><span>📇</span> <span class="sidebar-label">Flashcards</span></a></li>
+            <li><a href="#" class="sidebar-item nav-link" data-view="analytics"><span>📊</span> <span class="sidebar-label">Analytics</span></a></li>
+          </ul>
+        </div>
+
+        <!-- Official SY0-701 Domains -->
+        <div class="sidebar-section">
+          <div class="sidebar-header">Exam Domains</div>
+          <ul class="sidebar-nav-list">
+            <li><a href="#" class="sidebar-item" onclick="window.app.startDomainPractice(1); return false;"><span style="color:#58a6ff;">●</span> <span class="sidebar-label">1.0 Concepts (12%)</span></a></li>
+            <li><a href="#" class="sidebar-item" onclick="window.app.startDomainPractice(2); return false;"><span style="color:#f0883e;">●</span> <span class="sidebar-label">2.0 Threats & Mitigations (22%)</span></a></li>
+            <li><a href="#" class="sidebar-item" onclick="window.app.startDomainPractice(3); return false;"><span style="color:#3fb950;">●</span> <span class="sidebar-label">3.0 Architecture (18%)</span></a></li>
+            <li><a href="#" class="sidebar-item" onclick="window.app.startDomainPractice(4); return false;"><span style="color:#bc8cff;">●</span> <span class="sidebar-label">4.0 Operations (28%)</span></a></li>
+            <li><a href="#" class="sidebar-item" onclick="window.app.startDomainPractice(5); return false;"><span style="color:#f778ba;">●</span> <span class="sidebar-label">5.0 Program Mgmt (20%)</span></a></li>
+          </ul>
+        </div>
+
+        <!-- Readiness Tracker Box -->
+        <div class="sidebar-readiness-box">
+          <div class="readiness-header">
+            <span>Overall Readiness</span>
+            <span id="side-readiness-val">0%</span>
+          </div>
+          <div class="progress-track">
+            <div id="side-readiness-bar" class="progress-fill" style="width: 0%;"></div>
+          </div>
+          <div class="readiness-meta">
+            <span>Target: 750 / 900</span>
+            <span>Pass Benchmark</span>
+          </div>
+        </div>
+
+        <!-- Sidebar Footer -->
+        <div class="sidebar-footer">
+          <a href="Security_Plus_Cheatsheet_Zero_To_Mastery_V1.01.pdf" target="_blank" class="gh-btn" style="width:100%; justify-content:center;">
+            📄 Download Cheatsheet (PDF)
+          </a>
+          <a href="diagnose.html" class="gh-btn" style="width:100%; justify-content:center;">
+            🩺 System Diagnostic
+          </a>
+        </div>
+      </aside>
+
+      <!-- Center Fluid Viewport -->
+      <main class="app-main-viewport">
+        <!-- VIEW 1: DASHBOARD -->
+        <div id="view-dashboard" class="view-panel active-panel">
+          <!-- Hero Banner -->
+          <section class="dashboard-hero">
+            <div class="dash-welcome">
+              <h1>CompTIA Security+ SY0-701</h1>
+              <p>Full-spectrum cybersecurity certification simulator with audio reader, realistic Pearson VUE exam engine, interactive Performance-Based Questions (PBQs), and automated readiness diagnostics.</p>
+            </div>
+
+            <div class="hero-readiness-widget">
+              <div class="readiness-label">Exam Readiness</div>
+              <div class="readiness-value-row">
+                <span id="dash-readiness-num" class="readiness-score-big">0%</span>
+                <span id="dash-readiness-tag" class="readiness-tag badge-neutral">Not Started</span>
+              </div>
+              <div id="dash-readiness-advice" class="readiness-sub-advice">Take a timed exam to evaluate your score</div>
+            </div>
+          </section>
+
+          <!-- Launch Modes Grid -->
+          <section class="dashboard-actions-grid">
+            <div class="launch-card" style="border-color: rgba(56, 189, 248, 0.4);">
+              <div class="card-icon-big">🔊</div>
+              <h3>Audio Cheat Sheet (Read Aloud)</h3>
+              <p>Listen to 160+ official CompTIA Security+ acronyms, terms, and definitions aloud using voice synthesis with interactive Next/Previous navigation and continuous auto-play.</p>
+              <button class="exam-nav-btn primary" onclick="window.app.showView('audio-reader')">Open Audio Reader →</button>
+            </div>
+
+            <div class="launch-card">
+              <div class="card-icon-big">⏱️</div>
+              <h3>Full Timed Simulation</h3>
+              <p>CompTIA standard format: 90 scenario questions, 90-minute timer, scaled scoring (100–900, passing: 750), strike-through, flag for review, and Pearson VUE interface.</p>
+              <button id="btn-start-full-exam" class="exam-nav-btn primary" onclick="window.app.startFullExam()">Launch Full Exam (90m)</button>
+            </div>
+
+            <div class="launch-card" style="border-color: rgba(52, 211, 153, 0.4);">
+              <div class="card-icon-big">🛠️</div>
+              <h3>Hands-on Security Labs & PBQs</h3>
+              <p>14 interactive practical labs: Linux Hardening, Nmap Scanner, Firewall ACL, SOC SIEM Triage, WLC 802.1X, OWASP SQLi, PKI, Forensics, IR Playbook, Network Architecture, Crypto Matrix, Controls Matrix, IAM Auditor, & MDM Policies.</p>
+              <div style="display: flex; gap: 0.5rem; margin-top: auto;">
+                <button class="exam-nav-btn primary" onclick="window.app.startPbqLab(0)" style="flex: 1;">Launch Labs (14) →</button>
+                <button class="exam-nav-btn secondary" onclick="window.app.startPbqStudy()" style="flex: 1;">PBQ Study (82)</button>
+              </div>
+            </div>
+
+            <div class="launch-card" style="border-color: rgba(168, 85, 247, 0.4);">
+              <div class="card-icon-big">🧩</div>
+              <h3>Definition & Word Matcher</h3>
+              <p>Interactive matching drill powered by the updated CompTIA acronyms doc: Match words & acronyms to definitions with Column Match, Cyber Grid, and 60-second Speed Rush!</p>
+              <button class="exam-nav-btn primary" onclick="window.app.showView('matching')">Launch Matcher (70+ Terms) →</button>
+            </div>
+
+            <div class="launch-card">
+              <div class="card-icon-big">📚</div>
+              <h3>Domain Study Mode</h3>
+              <p>Instant answer verification with comprehensive rationales and distractor breakdown. Filter by official SY0-701 exam domain, PBQs, or review bookmarked questions.</p>
+              <button class="exam-nav-btn secondary" onclick="window.app.showView('practice', 'all')">Enter Study Mode</button>
+            </div>
+          </section>
+
+          <!-- Quick Vault / Targeted Practice -->
+          <section class="dashboard-actions-grid" style="margin-bottom: 2rem;">
+            <div class="launch-card" style="border-color: rgba(245, 158, 11, 0.4);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <h3>🎯 Weak Area Vault</h3>
+                <span id="dash-missed-count" class="readiness-tag badge-warn" style="font-size: 0.9rem;">0</span>
+              </div>
+              <p>Questions answered incorrectly in previous attempts are automatically stored here for targeted remediation.</p>
+              <button id="btn-dash-missed" class="exam-nav-btn secondary" onclick="window.app.startMissedPractice()">Drill Missed Questions</button>
+            </div>
+
+            <div class="launch-card" style="border-color: rgba(56, 189, 248, 0.4);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <h3>⭐ Bookmarked Questions</h3>
+                <span id="dash-bookmark-count" class="readiness-tag badge-info" style="font-size: 0.9rem;">0</span>
+              </div>
+              <p>Review and practice items you manually flagged or bookmarked during your study sessions.</p>
+              <button id="btn-dash-bookmarks" class="exam-nav-btn secondary" onclick="window.app.showView('practice', 'bookmarked')">Review Bookmarks</button>
+            </div>
+
+            <div class="launch-card" style="border-color: rgba(168, 85, 247, 0.4);">
+              <h3>⚙️ Custom Exam Builder</h3>
+              <p>Create a customized exam with your choice of question count (10, 25, 50, 90), time limit, and specific domains or PBQs.</p>
+              <button id="btn-custom-exam" class="exam-nav-btn neutral" onclick="window.app.openCustomExamModal()">Build Custom Exam</button>
+            </div>
+          </section>
+
+          <!-- Mock Exam Series (Exams 1 to 5 + Dedicated PBQ Exam) -->
+          <section style="margin-bottom: 2rem;">
+            <h2 class="dash-section-title">📝 Official-Style Mock Exam Series & PBQ Practice (450 Questions + 14 Labs)</h2>
+            <div class="dashboard-actions-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+              <div class="launch-card" style="border-top: 4px solid #38bdf8; border-color: rgba(56, 189, 248, 0.4);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <h3>🛠️ PBQ Practice Exam</h3>
+                  <span class="readiness-tag badge-info" style="font-size: 0.75rem;">82 PBQs</span>
+                </div>
+                <p>Dedicated simulation of all Matching, Ordering sequence, and Multi-select PBQs.</p>
+                <div style="display: flex; gap: 0.5rem; margin-top: auto;">
+                  <button class="exam-nav-btn primary btn-launch-exam-set" data-set="PBQ Practice Exam" onclick="window.app.startPbqExam()" style="flex: 1; font-size: 0.85rem; padding: 0.5rem 0.75rem;">⏱️ Timed</button>
+                  <button class="exam-nav-btn secondary btn-launch-study-set" data-filter="pbq-all" onclick="window.app.startPbqStudy()" style="flex: 1; font-size: 0.85rem; padding: 0.5rem 0.75rem;">📚 Study</button>
+                </div>
+              </div>
+
+              <div class="launch-card" style="border-top: 4px solid var(--accent-blue);">
+                <h3>Mock Exam 1</h3>
+                <p>90 Questions • 90 Mins • Scaled 100-900. Authentic format with PBQs upfront.</p>
+                <div style="display: flex; gap: 0.5rem; margin-top: auto;">
+                  <button class="exam-nav-btn primary btn-launch-exam-set" data-set="Practice Exam 1" onclick="window.app.launchExamSet('Practice Exam 1')" style="flex: 1; font-size: 0.85rem; padding: 0.5rem 0.75rem;">⏱️ Timed</button>
+                  <button class="exam-nav-btn secondary btn-launch-study-set" data-filter="exam-1" onclick="window.app.launchStudySet('exam-1')" style="flex: 1; font-size: 0.85rem; padding: 0.5rem 0.75rem;">📚 Study</button>
+                </div>
+              </div>
+
+              <div class="launch-card" style="border-top: 4px solid var(--accent-green);">
+                <h3>Mock Exam 2</h3>
+                <p>90 Questions • 90 Mins • In-depth architecture & operations scenarios.</p>
+                <div style="display: flex; gap: 0.5rem; margin-top: auto;">
+                  <button class="exam-nav-btn primary btn-launch-exam-set" data-set="Practice Exam 2" onclick="window.app.launchExamSet('Practice Exam 2')" style="flex: 1; font-size: 0.85rem; padding: 0.5rem 0.75rem;">⏱️ Timed</button>
+                  <button class="exam-nav-btn secondary btn-launch-study-set" data-filter="exam-2" onclick="window.app.launchStudySet('exam-2')" style="flex: 1; font-size: 0.85rem; padding: 0.5rem 0.75rem;">📚 Study</button>
+                </div>
+              </div>
+
+              <div class="launch-card" style="border-top: 4px solid var(--accent-amber);">
+                <h3>Mock Exam 3</h3>
+                <p>90 Questions • 90 Mins • Advanced threats, cloud & forensics questions.</p>
+                <div style="display: flex; gap: 0.5rem; margin-top: auto;">
+                  <button class="exam-nav-btn primary btn-launch-exam-set" data-set="Practice Exam 3" onclick="window.app.launchExamSet('Practice Exam 3')" style="flex: 1; font-size: 0.85rem; padding: 0.5rem 0.75rem;">⏱️ Timed</button>
+                  <button class="exam-nav-btn secondary btn-launch-study-set" data-filter="exam-3" onclick="window.app.launchStudySet('exam-3')" style="flex: 1; font-size: 0.85rem; padding: 0.5rem 0.75rem;">📚 Study</button>
+                </div>
+              </div>
+
+              <div class="launch-card" style="border-top: 4px solid var(--accent-purple);">
+                <h3>Mock Exam 4</h3>
+                <p>90 Questions • 90 Mins • Threat management & governance deep-dive.</p>
+                <div style="display: flex; gap: 0.5rem; margin-top: auto;">
+                  <button class="exam-nav-btn primary btn-launch-exam-set" data-set="Practice Exam 4" onclick="window.app.launchExamSet('Practice Exam 4')" style="flex: 1; font-size: 0.85rem; padding: 0.5rem 0.75rem;">⏱️ Timed</button>
+                  <button class="exam-nav-btn secondary btn-launch-study-set" data-filter="exam-4" onclick="window.app.launchStudySet('exam-4')" style="flex: 1; font-size: 0.85rem; padding: 0.5rem 0.75rem;">📚 Study</button>
+                </div>
+              </div>
+
+              <div class="launch-card" style="border-top: 4px solid var(--accent-red);">
+                <h3>Practice Exam 05</h3>
+                <p>90 Questions • 90 Mins • Comprehensive final test readiness exam.</p>
+                <div style="display: flex; gap: 0.5rem; margin-top: auto;">
+                  <button class="exam-nav-btn primary btn-launch-exam-set" data-set="Practice Exam 5" onclick="window.app.launchExamSet('Practice Exam 5')" style="flex: 1; font-size: 0.85rem; padding: 0.5rem 0.75rem;">⏱️ Timed</button>
+                  <button class="exam-nav-btn secondary btn-launch-study-set" data-filter="exam-5" onclick="window.app.launchStudySet('exam-5')" style="flex: 1; font-size: 0.85rem; padding: 0.5rem 0.75rem;">📚 Study</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Domain Mastery Section -->
+          <section>
+            <h2 class="dash-section-title">CompTIA Security+ SY0-701 Domain Breakdown</h2>
+            <div id="dash-domain-bars" class="domain-bars-grid">
+              <!-- Rendered dynamically by app.js -->
+            </div>
+          </section>
+        </div>
+
+        <!-- VIEW 2: AUDIO READER (READ ALOUD) -->
+        <div id="view-audio-reader" class="view-panel">
+          <div id="audio-reader-screen-container"></div>
+        </div>
+
+        <!-- VIEW 3: TIMED EXAM -->
+        <div id="view-exam" class="view-panel">
+          <div id="exam-screen-container"></div>
+        </div>
+
+        <!-- VIEW 4: PRACTICE / STUDY MODE -->
+        <div id="view-practice" class="view-panel">
+          <div id="practice-screen-container"></div>
+        </div>
+
+        <!-- VIEW 5: PBQ LABS -->
+        <div id="view-pbq" class="view-panel">
+          <div id="pbq-screen-container"></div>
+        </div>
+
+        <!-- VIEW 6: SPEED DRILLS -->
+        <div id="view-drills" class="view-panel">
+          <div id="drills-screen-container"></div>
+        </div>
+
+        <!-- VIEW 7: FLASHCARDS -->
+        <div id="view-flashcards" class="view-panel">
+          <div id="flashcard-screen-container"></div>
+        </div>
+
+        <!-- VIEW 8: DEFINITION & WORD MATCHER -->
+        <div id="view-matching" class="view-panel">
+          <div id="matching-screen-container"></div>
+        </div>
+
+        <!-- VIEW 9: ANALYTICS -->
+        <div id="view-analytics" class="view-panel">
+          <div id="analytics-screen-container"></div>
+        </div>
+      </main>
+
+      <!-- Center / Left / Right Dockable Inspector Panel -->
+      <div class="inspector-backdrop" onclick="AntigravityEnterprise.closeInspector()"></div>
+      <aside id="app-inspector" class="app-inspector mode-center hidden">
+        <div class="inspector-head">
+          <div class="inspector-head-title">
+            <span id="insp-icon">🛡️</span>
+            <span id="insp-title">CompTIA Security+ SY0-701 Inspector</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <div class="dock-mode-bar">
+              <button class="dock-mode-btn" data-dock="left" onclick="AntigravityEnterprise.setInspectorDock('left')" title="Dock Left">⇱ Left</button>
+              <button class="dock-mode-btn active" data-dock="center" onclick="AntigravityEnterprise.setInspectorDock('center')" title="Focus Center Modal">⛶ Center</button>
+              <button class="dock-mode-btn" data-dock="right" onclick="AntigravityEnterprise.setInspectorDock('right')" title="Dock Right">⇲ Right</button>
+            </div>
+            <button class="btn-close-icon" onclick="AntigravityEnterprise.closeInspector()" title="Close (Esc)">&times;</button>
+          </div>
+        </div>
+        <div id="insp-body-content" class="inspector-body">
+          <div class="detail-card">
+            <div class="detail-heading">🛡️ Official Exam Blueprint</div>
+            <div class="detail-text">
+              CompTIA Security+ SY0-701 validates foundational cybersecurity knowledge across 5 core domains with a passing score of 750 (scaled 100–900).
+            </div>
+          </div>
+          <div class="detail-card">
+            <div class="detail-heading">🔑 Domain Weight Distribution</div>
+            <table style="width:100%; border-collapse:collapse; font-size:0.82rem; margin-top:0.4rem;">
+              <tr><td style="color:var(--gh-text-muted); padding:3px 0;">1.0 General Security Concepts</td><td style="color:#58a6ff; font-weight:700; text-align:right;">12%</td></tr>
+              <tr><td style="color:var(--gh-text-muted); padding:3px 0;">2.0 Threats, Vulnerabilities & Mitigations</td><td style="color:#f0883e; font-weight:700; text-align:right;">22%</td></tr>
+              <tr><td style="color:var(--gh-text-muted); padding:3px 0;">3.0 Security Architecture</td><td style="color:#3fb950; font-weight:700; text-align:right;">18%</td></tr>
+              <tr><td style="color:var(--gh-text-muted); padding:3px 0;">4.0 Security Operations</td><td style="color:#bc8cff; font-weight:700; text-align:right;">28%</td></tr>
+              <tr><td style="color:var(--gh-text-muted); padding:3px 0;">5.0 Security Program Management & Oversight</td><td style="color:#f778ba; font-weight:700; text-align:right;">20%</td></tr>
+            </table>
+          </div>
+          <div class="detail-card">
+            <div class="detail-heading">⚡ Inspection Quick Actions</div>
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+              <button class="gh-btn" onclick="window.app.showView('audio-reader'); AntigravityEnterprise.closeInspector();" style="flex:1;">🔊 Audio Cheat Sheet</button>
+              <button class="gh-btn" onclick="window.app.startPbqLab(0); AntigravityEnterprise.closeInspector();" style="flex:1;">🛠️ Launch Labs (14)</button>
+              <a href="Security_Plus_Cheatsheet_Zero_To_Mastery_V1.01.pdf" target="_blank" class="gh-btn-primary" style="flex:1; text-align:center;">📄 PDF Cheatsheet</a>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- MODAL: Custom Exam Builder -->
+    <div id="modal-custom-exam" class="modal-overlay">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Custom Exam Configuration</h3>
+          <button class="modal-close-btn">&times;</button>
+        </div>
+        <form id="custom-exam-form">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="custom-exam-set">Exam Source</label>
+              <select id="custom-exam-set" class="form-input">
+                <option value="all" selected>All Questions (Complete 450 Question Pool)</option>
+                <option value="PBQ Practice Exam">🛠️ PBQ Practice Exam (All 82 Performance-Based Questions)</option>
+                <option value="Practice Exam 1">📝 Mock Exam 1 (90 Questions)</option>
+                <option value="Practice Exam 2">📝 Mock Exam 2 (90 Questions)</option>
+                <option value="Practice Exam 3">📝 Mock Exam 3 (90 Questions)</option>
+                <option value="Practice Exam 4">📝 Mock Exam 4 (90 Questions)</option>
+                <option value="Practice Exam 5">📝 Security+ Practice Exam 05 (90 Questions)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="custom-q-count">Number of Questions</label>
+              <select id="custom-q-count" class="form-input">
+                <option value="10">10 Questions (Quick Check - 15 mins)</option>
+                <option value="25" selected>25 Questions (Standard - 30 mins)</option>
+                <option value="50">50 Questions (Half Exam - 60 mins)</option>
+                <option value="90">90 Questions (Full CompTIA Simulator - 90 mins)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="custom-time-limit">Time Limit (Minutes)</label>
+              <input type="number" id="custom-time-limit" class="form-input" value="30" min="5" max="180">
+            </div>
+
+            <div class="form-group">
+              <label>Select Target Domains</label>
+              <div class="checkbox-group">
+                <label class="cb-label"><input type="checkbox" class="custom-domain-cb" value="1" checked> Domain 1: General Security Concepts (12%)</label>
+                <label class="cb-label"><input type="checkbox" class="custom-domain-cb" value="2" checked> Domain 2: Threats, Vulnerabilities & Mitigations (22%)</label>
+                <label class="cb-label"><input type="checkbox" class="custom-domain-cb" value="3" checked> Domain 3: Security Architecture (18%)</label>
+                <label class="cb-label"><input type="checkbox" class="custom-domain-cb" value="4" checked> Domain 4: Security Operations (28%)</label>
+                <label class="cb-label"><input type="checkbox" class="custom-domain-cb" value="5" checked> Domain 5: Security Program Management & Oversight (20%)</label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="exam-nav-btn secondary modal-close-btn">Cancel</button>
+            <button type="submit" class="exam-nav-btn primary">Start Custom Exam</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL: Scratchpad / Notes -->
+    <div id="modal-scratchpad" class="modal-overlay">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 id="scratchpad-modal-title">Scratchpad & Study Notes</h3>
+          <button class="modal-close-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+            Type personal notes, mnemonic acronyms, or scratch work for this question. Notes are saved automatically to your local storage.
+          </p>
+          <textarea id="scratchpad-textarea" class="scratchpad-area" placeholder="Write your notes here..."></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="exam-nav-btn primary modal-close-btn">Done / Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inspector & Search Integration Helper Script -->
+  <script>
+    window.openCompTIAInspectorHelp = function() {
+      window.openCompTIAInspector();
+    };
+
+    window.openCompTIAInspector = function(data) {
+      if (!window.AntigravityEnterprise) return;
+      if (data) {
+        if (data.title && document.getElementById('insp-title')) {
+          document.getElementById('insp-title').textContent = data.title;
+        }
+        if (data.content && document.getElementById('insp-body-content')) {
+          document.getElementById('insp-body-content').innerHTML = data.content;
+        }
+      }
+      AntigravityEnterprise.openInspector(data);
+    };
+
+    // Global Ctrl+K Search Handler
+    document.addEventListener('DOMContentLoaded', () => {
+      // Sync sidebar readiness progress with dashboard
+      const dashReadiness = document.getElementById('dash-readiness-num');
+      const sideReadinessVal = document.getElementById('side-readiness-val');
+      const sideReadinessBar = document.getElementById('side-readiness-bar');
+      if (dashReadiness && sideReadinessVal && sideReadinessBar) {
+        const obs = new MutationObserver(() => {
+          sideReadinessVal.textContent = dashReadiness.textContent;
+          sideReadinessBar.style.width = dashReadiness.textContent;
+        });
+        obs.observe(dashReadiness, { childList: true, characterData: true, subtree: true });
+      }
+
+      const searchInput = document.getElementById('global-search-input');
+      if (searchInput) {
+        searchInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            const query = searchInput.value.trim().toLowerCase();
+            if (!query) return;
+
+            let foundAcronym = null;
+            if (typeof ACRONYMS !== 'undefined') {
+              foundAcronym = ACRONYMS.find(a => a.acronym.toLowerCase() === query || a.acronym.toLowerCase().includes(query));
+            }
+
+            let foundQ = null;
+            if (typeof SECURITY_PLUS_QUESTIONS !== 'undefined') {
+              foundQ = SECURITY_PLUS_QUESTIONS.find(q => q.question.toLowerCase().includes(query));
+            }
+
+            if (foundAcronym) {
+              window.openCompTIAInspector({
+                title: `Acronym: ${foundAcronym.acronym}`,
+                content: `
+                  <div class="detail-card">
+                    <div class="detail-heading">📖 Meaning</div>
+                    <div class="detail-text" style="font-size:1.05rem; font-weight:700; color:var(--gh-text-primary);">${foundAcronym.meaning}</div>
+                  </div>
+                  <div class="detail-card">
+                    <div class="detail-heading">🛡️ Technical Context</div>
+                    <div class="detail-text">${foundAcronym.description || foundAcronym.context || 'Official CompTIA Security+ SY0-701 technical acronym.'}</div>
+                  </div>
+                `
+              });
+            } else if (foundQ) {
+              window.openCompTIAInspector({
+                title: `Question Scenario (#${foundQ.id})`,
+                content: `
+                  <div class="detail-card">
+                    <div class="detail-heading">📝 Scenario</div>
+                    <div class="detail-text">${foundQ.question}</div>
+                  </div>
+                  <div class="detail-card">
+                    <div class="detail-heading">✅ Rationale</div>
+                    <div class="detail-text">${foundQ.explanation || 'Refer to practice mode for full explanation.'}</div>
+                  </div>
+                `
+              });
+            } else {
+              window.openCompTIAInspector({
+                title: `Search: "${query}"`,
+                content: `
+                  <div class="detail-card">
+                    <div class="detail-heading">Search Results</div>
+                    <div class="detail-text">No exact match found for "<strong>${query}</strong>". Try terms like <em>AES</em>, <em>Zero Trust</em>, <em>SIEM</em>, <em>WPA3</em>, <em>OWASP</em>, or <em>Port 443</em>.</div>
+                  </div>
+                `
+              });
+            }
+          }
+        });
+      }
+    });
+  </script>
+
+  <!-- Application Data & Engine Scripts -->
+  <script src="js/data/questions.js"></script>
+  <script src="js/data/pbqData.js"></script>
+  <script src="js/data/portsData.js"></script>
+  <script src="js/data/acronymsData.js"></script>
+  <script src="js/data/flashcardsData.js"></script>
+  <script src="js/data/cheatsheetData.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/examEngine.js"></script>
+  <script src="js/practiceEngine.js"></script>
+  <script src="js/pbqEngine.js"></script>
+  <script src="js/flashcardEngine.js"></script>
+  <script src="js/matchingEngine.js"></script>
+  <script src="js/audioReaderEngine.js"></script>
+  <script src="js/analytics.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+﻿========================================================================
+PROJECT: game studio - shadow blade
+CATEGORY: 02_Games_and_Simulation
+DESCRIPTION: Shadow Blade Battle Royale Action Game
+========================================================================
+
+Original Project Directory:
+G:\My Drive\Antigravity\Projects\game studio\shadow_blade_br
+
+Original Index File:
+G:\My Drive\Antigravity\Projects\game studio\shadow_blade_br\index.html
+
+How to Open in Antigravity:
+1. In Antigravity / VS Code: Click File -> Open Folder...
+2. Paste this path: G:\My Drive\Antigravity\Projects\game studio\shadow_blade_br
+3. Press Enter
+
+Or launch directly in browser using: Launch_Original_Index.url

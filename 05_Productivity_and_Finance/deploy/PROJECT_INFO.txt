@@ -1,0 +1,18 @@
+﻿========================================================================
+PROJECT: deploy
+CATEGORY: 05_Productivity_and_Finance
+DESCRIPTION: Application Deployment & Hosting Operations Console
+========================================================================
+
+Original Project Directory:
+G:\My Drive\Antigravity\Projects\deploy
+
+Original Index File:
+G:\My Drive\Antigravity\Projects\deploy\index.html
+
+How to Open in Antigravity:
+1. In Antigravity / VS Code: Click File -> Open Folder...
+2. Paste this path: G:\My Drive\Antigravity\Projects\deploy
+3. Press Enter
+
+Or launch directly in browser using: Launch_Original_Index.url

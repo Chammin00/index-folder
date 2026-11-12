@@ -1,0 +1,2807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>First Grade Learning Hub</title>
+<meta name="description" content="A fun, colorful first grade learning adventure covering Reading, Math, Writing, Science, Social Studies, and Arts!"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="high-gloss-lacquer.css">
+<link rel="stylesheet" href="children-learning-baseline.css">
+<script src="high-gloss-lacquer.js"></script>
+<script src="children-learning-baseline.js"></script>
+<style>
+:root {
+  --pbs-blue:   #1E3FA2;
+  --pbs-green:  #3DAA2F;
+  --pbs-yellow: #FFD000;
+  --pbs-red:    #E8302A;
+  --pbs-purple: #7C34A6;
+  --pbs-orange: #F47920;
+  --pbs-sky:    #00AEEF;
+  --pbs-pink:   #EE3F8C;
+  --white:      #FFFFFF;
+  --off-white:  #F5F9FF;
+  --dark:       #1A1A2E;
+  --text:       #1A2744;
+  --muted:      #5A6A85;
+  --shadow-card: 0 8px 0 rgba(0,0,0,0.18), 0 12px 32px rgba(0,0,0,0.10);
+  --r-xl: 32px; --r-lg: 24px; --r-md: 18px; --r-sm: 12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"Nunito",sans-serif;background:var(--off-white);min-height:100vh;overflow-x:hidden;color:var(--text);font-size:17px;}
+h1,h2,h3{font-family:"Fredoka One",cursive;}
+
+/* HEADER */
+#app-header{background:linear-gradient(135deg,var(--pbs-blue) 0%,#2857D6 100%);padding:0 20px;height:70px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;border-bottom:5px solid #152E8A;box-shadow:0 4px 20px rgba(30,63,162,0.5);}
+.header-brand{display:flex;align-items:center;gap:12px;}
+.header-logo{width:44px;height:44px;background:var(--pbs-yellow);border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:"Fredoka One",cursive;font-size:1.5rem;color:var(--dark);border:3px solid #C9A000;box-shadow:0 4px 0 #C9A000;flex-shrink:0;}
+#app-header h1{color:white;font-size:1.45rem;text-shadow:3px 3px 0 rgba(0,0,0,0.25);}
+#wallet-display{display:flex;align-items:center;gap:8px;background:var(--pbs-yellow);border-radius:50px;padding:8px 18px;cursor:pointer;border:3px solid #C9A000;box-shadow:0 5px 0 #C9A000;transition:all 0.15s;}
+#wallet-display:hover{transform:translateY(2px);box-shadow:0 3px 0 #C9A000;}
+#wallet-display:active{transform:translateY(5px);box-shadow:none;}
+#wallet-icon{font-size:1.4rem;animation:wBounce 2s ease-in-out infinite;}
+@keyframes wBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+#wallet-amount{color:var(--dark);font-weight:900;font-size:1.1rem;font-family:"Fredoka One",cursive;}
+#wallet-name{color:#5A3E00;font-size:0.72rem;font-weight:800;line-height:1;}
+
+/* INLINE READ BUTTON */
+.read-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;background:var(--pbs-pink);color:white;border:3px solid #B5006A;box-shadow:0 5px 0 #B5006A;border-radius:50px;cursor:pointer;font-family:"Fredoka One",cursive;font-size:1rem;transition:all 0.15s;margin-top:2px;}
+.read-btn:hover{transform:translateY(-2px);box-shadow:0 7px 0 #B5006A;}
+.read-btn:active{transform:translateY(3px);box-shadow:0 2px 0 #B5006A;}
+.read-btn.speaking{animation:readPulse 1s ease-in-out infinite;background:#C2006A;box-shadow:0 5px 0 #8A004A;}
+@keyframes readPulse{0%,100%{box-shadow:0 5px 0 #8A004A,0 0 0 0 rgba(238,63,140,0)}50%{box-shadow:0 5px 0 #8A004A,0 0 0 10px rgba(238,63,140,0.2)}}
+.lesson-box-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
+.lesson-box-header h2{margin-bottom:0;}
+
+/* CURRENCY MODAL */
+#currency-modal{display:none;position:fixed;inset:0;background:rgba(0,0,30,0.65);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(6px);}
+#currency-modal.open{display:flex;}
+#currency-box{background:white;border-radius:var(--r-xl);padding:36px 32px;max-width:520px;width:94%;box-shadow:0 10px 0 rgba(0,0,0,0.2),0 20px 60px rgba(0,0,0,0.3);border:5px solid var(--pbs-blue);animation:popIn 0.35s cubic-bezier(.175,.885,.32,1.4);}
+@keyframes popIn{from{opacity:0;transform:scale(0.6) rotate(-5deg)}to{opacity:1;transform:scale(1) rotate(0deg)}}
+#currency-box h2{font-size:2rem;text-align:center;margin-bottom:6px;color:var(--pbs-blue);}
+#currency-box > p{text-align:center;color:var(--muted);margin-bottom:20px;font-size:1rem;font-weight:700;}
+.currency-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.currency-option{border:4px solid #dde3ee;border-radius:var(--r-lg);padding:16px 12px;cursor:pointer;text-align:center;transition:all 0.18s;background:var(--off-white);box-shadow:0 4px 0 #dde3ee;}
+.currency-option:hover{border-color:var(--pbs-blue);transform:translateY(-3px);box-shadow:0 7px 0 #152E8A;}
+.currency-option.selected{border-color:var(--pbs-green);background:#F0FFF0;box-shadow:0 4px 0 #1E7A12;}
+.currency-option .c-icon{font-size:2.8rem;display:block;margin-bottom:6px;}
+.currency-option .c-game{font-weight:900;font-size:0.9rem;color:var(--text);}
+.currency-option .c-name{font-size:0.78rem;color:var(--muted);font-weight:700;margin-top:2px;}
+#close-currency{display:block;margin:22px auto 0;padding:14px 44px;background:var(--pbs-green);color:white;border:4px solid #1E7A12;box-shadow:0 6px 0 #1E7A12;border-radius:50px;cursor:pointer;font-family:"Fredoka One",cursive;font-size:1.2rem;transition:all 0.15s;}
+#close-currency:hover{transform:translateY(-2px);box-shadow:0 8px 0 #1E7A12;}
+#close-currency:active{transform:translateY(4px);box-shadow:0 2px 0 #1E7A12;}
+
+/* COIN & CONFETTI */
+.coin-fly{position:fixed;font-size:2.2rem;pointer-events:none;z-index:999;animation:coinFly 1.1s ease-out forwards;}
+@keyframes coinFly{0%{opacity:1;transform:translateY(0) scale(1)}50%{opacity:1;transform:translateY(-50px) scale(1.4)}100%{opacity:0;transform:translateY(-100px) scale(0.8)}}
+.confetti-piece{position:fixed;width:12px;height:12px;pointer-events:none;z-index:998;animation:confettiFall 2.5s ease-in forwards;}
+@keyframes confettiFall{0%{opacity:1;transform:translateY(-10px) rotate(0deg) scale(1)}100%{opacity:0;transform:translateY(100vh) rotate(900deg) scale(0.5)}}
+
+/* REWARD BANNER */
+#reward-banner{position:fixed;top:78px;left:50%;transform:translateX(-50%) translateY(-200%);background:var(--pbs-yellow);color:var(--dark);padding:14px 36px;border-radius:50px;font-family:"Fredoka One",cursive;font-size:1.4rem;box-shadow:0 6px 0 #C9A000,0 12px 32px rgba(0,0,0,0.2);border:4px solid #C9A000;z-index:600;text-align:center;white-space:nowrap;transition:transform 0.4s cubic-bezier(.175,.885,.32,1.4);}
+#reward-banner.show{transform:translateX(-50%) translateY(0);}
+
+/* SCREENS */
+.screen{display:none;min-height:calc(100vh - 70px);}
+.screen.active{display:block;animation:fadeSlide 0.4s ease;}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* HOME */
+#screen-home{background:linear-gradient(170deg,#0D2B8A 0%,#1A4ECC 40%,#0099C8 100%);padding:0 16px 100px;position:relative;overflow:hidden;}
+.bg-blob{position:absolute;pointer-events:none;border-radius:50%;opacity:0.10;}
+.bg-blob-1{width:320px;height:320px;background:white;top:-90px;left:-90px;animation:floatB 8s ease-in-out infinite;}
+.bg-blob-2{width:220px;height:220px;background:var(--pbs-yellow);top:180px;right:-70px;animation:floatB 6s ease-in-out infinite 1s;}
+.bg-blob-3{width:160px;height:160px;background:#55EFC4;bottom:220px;left:8%;animation:floatB 7s ease-in-out infinite 2s;}
+.bg-blob-4{width:110px;height:110px;background:white;bottom:120px;right:14%;animation:floatB 5s ease-in-out infinite 0.5s;}
+@keyframes floatB{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-22px) scale(1.05)}}
+.home-hero{text-align:center;padding:44px 16px 22px;position:relative;z-index:2;}
+.home-mascot-ring{width:110px;height:110px;background:rgba(255,255,255,0.18);border:4px solid rgba(255,255,255,0.35);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;animation:mascotBounce 2.5s ease-in-out infinite;box-shadow:0 8px 32px rgba(0,0,0,0.2);}
+.home-mascot-ring span{font-size:4rem;filter:drop-shadow(2px 4px 8px rgba(0,0,0,0.25));}
+@keyframes mascotBounce{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-12px) scale(1.04)}}
+.home-title{font-family:"Fredoka One",cursive;font-size:clamp(2rem,6vw,3.2rem);color:white;text-shadow:4px 4px 0 rgba(0,0,0,0.25);line-height:1.15;margin-bottom:10px;}
+.home-subtitle{color:rgba(255,255,255,0.90);font-size:1.05rem;font-weight:800;}
+.wave-div{position:relative;z-index:2;width:100%;overflow:hidden;line-height:0;margin-bottom:-2px;}
+.wave-div svg{display:block;width:100%;height:50px;}
+.subject-section{background:var(--off-white);padding:28px 16px 40px;position:relative;z-index:2;}
+.section-label{text-align:center;font-family:"Fredoka One",cursive;font-size:1.5rem;color:var(--pbs-blue);margin-bottom:22px;}
+.subject-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;max-width:960px;margin:0 auto;}
+.subject-card{border-radius:var(--r-xl);padding:26px 22px 22px;cursor:pointer;position:relative;border:5px solid transparent;box-shadow:var(--shadow-card);transition:all 0.2s cubic-bezier(.175,.885,.32,1.275);text-align:left;background:white;}
+.subject-card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 16px 0 rgba(0,0,0,0.2),0 20px 48px rgba(0,0,0,0.12);}
+.subject-card:active{transform:translateY(3px);box-shadow:0 4px 0 rgba(0,0,0,0.15);}
+.subject-card.s-reading {border-color:var(--pbs-red);   background:linear-gradient(145deg,#fff5f5,#fff);}
+.subject-card.s-math    {border-color:var(--pbs-blue);  background:linear-gradient(145deg,#f5f8ff,#fff);}
+.subject-card.s-writing {border-color:var(--pbs-green); background:linear-gradient(145deg,#f5fff5,#fff);}
+.subject-card.s-science {border-color:var(--pbs-orange);background:linear-gradient(145deg,#fff8f0,#fff);}
+.subject-card.s-social  {border-color:var(--pbs-purple);background:linear-gradient(145deg,#f8f5ff,#fff);}
+.subject-card.s-arts    {border-color:var(--pbs-pink);  background:linear-gradient(145deg,#fff5f9,#fff);}
+.subject-card.s-anatomy {border-color:#00B4D8;          background:linear-gradient(145deg,#E0F7FA,#fff);}
+.s-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+.s-big-emoji{font-size:3.6rem;filter:drop-shadow(3px 3px 6px rgba(0,0,0,0.15));display:block;line-height:1;}
+.s-done-badge{font-size:0.72rem;font-weight:900;padding:5px 12px;border-radius:50px;color:white;white-space:nowrap;font-family:"Nunito",sans-serif;}
+.s-reading  .s-done-badge{background:var(--pbs-red);}
+.s-math     .s-done-badge{background:var(--pbs-blue);}
+.s-writing  .s-done-badge{background:var(--pbs-green);}
+.s-science  .s-done-badge{background:var(--pbs-orange);}
+.s-social   .s-done-badge{background:var(--pbs-purple);}
+.s-arts     .s-done-badge{background:var(--pbs-pink);}
+.s-anatomy  .s-done-badge{background:#0096C7;}
+.subject-card h3{font-size:1.35rem;color:var(--text);margin-bottom:4px;}
+.s-card-desc{color:var(--muted);font-size:0.85rem;font-weight:700;margin-bottom:14px;}
+.prog-bar-bg{background:#E8EDF5;border-radius:50px;height:10px;overflow:hidden;border:2px solid #D0D8E8;}
+.prog-bar-fill{height:100%;border-radius:50px;transition:width 0.6s ease;}
+.s-reading  .prog-bar-fill{background:linear-gradient(90deg,var(--pbs-red),#FF8A80);}
+.s-math     .prog-bar-fill{background:linear-gradient(90deg,var(--pbs-blue),var(--pbs-sky));}
+.s-writing  .prog-bar-fill{background:linear-gradient(90deg,var(--pbs-green),#8BC34A);}
+.s-science  .prog-bar-fill{background:linear-gradient(90deg,var(--pbs-orange),#FFD000);}
+.s-social   .prog-bar-fill{background:linear-gradient(90deg,var(--pbs-purple),#CE93D8);}
+.s-arts     .prog-bar-fill{background:linear-gradient(90deg,var(--pbs-pink),#F48FB1);}
+.s-anatomy  .prog-bar-fill{background:linear-gradient(90deg,#00B4D8,#48CAE4);}
+.prog-label{font-size:0.8rem;font-weight:800;color:var(--muted);margin-top:5px;}
+
+/* SUBJECT SCREEN */
+#screen-subject{background:var(--off-white);padding-bottom:80px;}
+.subject-hero{padding:28px 24px 50px;color:white;position:relative;overflow:hidden;}
+.subject-hero::after{content:"";position:absolute;bottom:-1px;left:0;right:0;height:36px;background:var(--off-white);border-radius:40px 40px 0 0;}
+#subject-hero.s-reading {background:linear-gradient(135deg,#C62828,var(--pbs-red));}
+#subject-hero.s-math    {background:linear-gradient(135deg,#0D2B8A,var(--pbs-blue));}
+#subject-hero.s-writing {background:linear-gradient(135deg,#1B5E20,var(--pbs-green));}
+#subject-hero.s-science {background:linear-gradient(135deg,#BF360C,var(--pbs-orange));}
+#subject-hero.s-social  {background:linear-gradient(135deg,#4A148C,var(--pbs-purple));}
+#subject-hero.s-arts    {background:linear-gradient(135deg,#880E4F,var(--pbs-pink));}
+#subject-hero.s-anatomy {background:linear-gradient(135deg,#0077B6,#00B4D8);}
+.subject-hero h2{font-size:2.2rem;text-shadow:3px 3px 0 rgba(0,0,0,0.2);}
+.subject-hero p{opacity:0.9;margin-top:6px;font-weight:700;font-size:1rem;}
+#back-btn{background:rgba(255,255,255,0.25);border:3px solid rgba(255,255,255,0.5);color:white;border-radius:50px;padding:8px 20px;cursor:pointer;font-family:"Nunito",sans-serif;font-weight:900;font-size:0.9rem;margin-bottom:18px;display:inline-flex;align-items:center;gap:6px;transition:all 0.2s;}
+#back-btn:hover{background:rgba(255,255,255,0.4);}
+.lesson-list{padding:20px 20px 0;max-width:820px;margin:0 auto;}
+.lesson-card{background:white;border-radius:var(--r-lg);padding:18px 22px;margin-bottom:14px;cursor:pointer;display:flex;align-items:center;gap:16px;border:4px solid #E0E8F0;box-shadow:0 5px 0 #D0D8E8,0 8px 20px rgba(0,0,0,0.06);transition:all 0.18s;}
+.lesson-card:hover{border-color:var(--pbs-blue);transform:translateY(-3px);box-shadow:0 8px 0 #152E8A,0 12px 28px rgba(30,63,162,0.15);}
+.lesson-card:active{transform:translateY(3px);box-shadow:0 2px 0 #D0D8E8;}
+.lesson-card.completed{border-color:var(--pbs-green);background:#F2FFF2;box-shadow:0 5px 0 #1E7A12;}
+.lesson-icon{font-size:2.4rem;flex-shrink:0;filter:drop-shadow(2px 2px 4px rgba(0,0,0,0.12));}
+.lesson-title{font-weight:900;font-size:1.05rem;color:var(--text);}
+.lesson-desc{font-size:0.83rem;color:var(--muted);margin-top:3px;font-weight:700;}
+.lesson-status{margin-left:auto;font-size:1.5rem;flex-shrink:0;}
+
+/* LESSON SCREEN */
+#screen-lesson{background:var(--off-white);padding:20px 16px 100px;max-width:880px;margin:0 auto;}
+#lesson-back{background:white;border:4px solid #D0D8E8;color:var(--text);border-radius:50px;padding:10px 22px;cursor:pointer;font-family:"Nunito",sans-serif;font-weight:900;font-size:0.92rem;margin-bottom:20px;display:inline-flex;align-items:center;gap:7px;box-shadow:0 5px 0 #C0C8D8;transition:all 0.15s;}
+#lesson-back:hover{border-color:var(--pbs-blue);color:var(--pbs-blue);transform:translateY(-2px);box-shadow:0 7px 0 #152E8A;}
+#lesson-back:active{transform:translateY(3px);box-shadow:0 2px 0 #C0C8D8;}
+
+/* LESSON BOXES */
+.lesson-box{background:white;border-radius:var(--r-xl);padding:30px 28px;box-shadow:0 6px 0 #D0D8E8,0 12px 32px rgba(0,0,0,0.08);border:4px solid #E4EAF5;margin-bottom:20px;}
+.big-text{font-size:1.08rem;line-height:1.75;font-weight:700;color:var(--text);}
+.highlight-box{background:linear-gradient(135deg,#EEF3FF,#F5F0FF);border-left:6px solid var(--pbs-blue);border-radius:var(--r-md);padding:18px 22px;margin:16px 0;font-size:1rem;line-height:1.8;border:3px solid #C8D5FF;border-left:6px solid var(--pbs-blue);}
+
+/* PRIMARY BUTTON */
+.btn-primary{display:block;margin:20px auto 0;padding:16px 40px;background:var(--pbs-green);color:white;border:4px solid #1E7A12;box-shadow:0 7px 0 #1E7A12;border-radius:50px;cursor:pointer;font-family:"Fredoka One",cursive;font-size:1.25rem;transition:all 0.15s;text-align:center;width:auto;}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 0 #1E7A12;}
+.btn-primary:active{transform:translateY(5px);box-shadow:0 2px 0 #1E7A12;}
+.btn-primary:disabled{opacity:0.55;cursor:default;transform:none;box-shadow:0 3px 0 #1E7A12;}
+
+/* ALPHABET */
+.alpha-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:10px;margin:18px 0;}
+.alpha-btn{aspect-ratio:1;border-radius:18px;border:4px solid #e0e8f0;cursor:pointer;font-family:"Fredoka One",cursive;font-size:1.7rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:all 0.18s;background:white;box-shadow:0 5px 0 #C8D0DC;}
+.alpha-btn:hover{transform:scale(1.12) rotate(-5deg);box-shadow:0 8px 0 #A0A8B4;}
+.alpha-btn:active{transform:scale(0.95);box-shadow:0 2px 0 #C8D0DC;}
+.alpha-btn .alpha-word{font-size:0.48rem;font-family:"Nunito",sans-serif;font-weight:900;color:var(--muted);}
+.alpha-detail{border-radius:var(--r-xl);padding:28px;color:white;text-align:center;margin-top:16px;animation:popIn 0.35s ease;border:5px solid #152E8A;box-shadow:0 8px 0 #152E8A;background:linear-gradient(135deg,var(--pbs-blue),#2857D6);}
+.alpha-detail .big-letter{font-family:"Fredoka One",cursive;font-size:5.5rem;line-height:1;text-shadow:4px 4px 0 rgba(0,0,0,0.2);}
+.alpha-detail .sound-text{font-size:1.15rem;opacity:0.9;margin-top:8px;font-weight:700;}
+.alpha-detail .example-word{font-size:2rem;font-family:"Fredoka One",cursive;margin-top:12px;}
+
+/* FLASHCARD (sight words) */
+.flashcard-wrap{perspective:1200px;margin:22px auto;max-width:400px;}
+.flashcard{width:100%;padding-top:58%;position:relative;cursor:pointer;transform-style:preserve-3d;transition:transform 0.65s cubic-bezier(.4,0,.2,1);border-radius:var(--r-xl);}
+.flashcard.flipped{transform:rotateY(180deg);}
+.fc-front,.fc-back{position:absolute;inset:0;border-radius:var(--r-xl);display:flex;flex-direction:column;align-items:center;justify-content:center;backface-visibility:hidden;box-shadow:0 8px 0 rgba(0,0,0,0.2),0 14px 40px rgba(0,0,0,0.12);}
+.fc-front{background:linear-gradient(135deg,var(--pbs-blue),#3060E0);color:white;border:5px solid #152E8A;}
+.fc-back {background:linear-gradient(135deg,var(--pbs-red),#FF5252);color:white;transform:rotateY(180deg);border:5px solid #B71C1C;}
+.fc-front .word{font-family:"Fredoka One",cursive;font-size:3.5rem;text-shadow:3px 3px 0 rgba(0,0,0,0.2);}
+.fc-front .hint{font-size:0.9rem;opacity:0.8;margin-top:10px;font-weight:800;background:rgba(255,255,255,0.15);padding:5px 14px;border-radius:50px;}
+.fc-back .meaning{font-family:"Fredoka One",cursive;font-size:1.5rem;text-align:center;padding:16px;line-height:1.5;}
+.sw-controls{display:flex;align-items:center;justify-content:space-between;margin-top:18px;gap:10px;flex-wrap:wrap;}
+.sw-nav-group{display:flex;gap:10px;}
+.fc-nav-btn{padding:12px 22px;border-radius:50px;cursor:pointer;font-family:"Fredoka One",cursive;font-size:1rem;transition:all 0.15s;}
+.fc-nav-btn.prev{background:white;color:var(--muted);border:4px solid #D0D8E8;box-shadow:0 5px 0 #C0C8D8;}
+.fc-nav-btn.prev:hover{transform:translateY(-2px);box-shadow:0 7px 0 #B0B8C8;}
+.fc-nav-btn.next{background:var(--pbs-blue);color:white;border:4px solid #152E8A;box-shadow:0 5px 0 #152E8A;}
+.fc-nav-btn.next:hover{transform:translateY(-2px);box-shadow:0 7px 0 #0D2270;}
+.fc-nav-btn:active{transform:translateY(4px) !important;box-shadow:0 1px 0 currentColor !important;}
+.fc-counter{text-align:center;font-weight:900;color:var(--muted);margin-top:10px;font-size:0.92rem;}
+
+/* MATH */
+.math-problem{text-align:center;font-family:"Fredoka One",cursive;font-size:3.8rem;color:var(--text);margin:18px 0;background:white;border-radius:var(--r-xl);padding:28px;border:4px solid #D0DCF0;box-shadow:0 6px 0 #C0CCE0,0 10px 30px rgba(0,0,0,0.08);}
+.math-choices{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:18px;}
+.math-choice{padding:18px 32px;border-radius:var(--r-md);border:4px solid #C8D5FF;cursor:pointer;font-family:"Fredoka One",cursive;font-size:2rem;background:white;color:var(--text);box-shadow:0 6px 0 #B0BEEC;transition:all 0.15s;min-width:96px;text-align:center;}
+.math-choice:hover{border-color:var(--pbs-blue);transform:translateY(-3px);box-shadow:0 9px 0 #152E8A;color:var(--pbs-blue);}
+.math-choice:active{transform:translateY(4px);box-shadow:0 2px 0 #B0BEEC;}
+.math-choice.correct{background:var(--pbs-green);border-color:#1E7A12;color:white;box-shadow:0 6px 0 #1E7A12;animation:correctBounce 0.45s;}
+.math-choice.wrong  {background:var(--pbs-red);  border-color:#B71C1C;color:white;box-shadow:0 6px 0 #B71C1C;animation:shakeIt 0.45s;}
+@keyframes correctBounce{0%,100%{transform:scale(1)}30%{transform:scale(1.25)}60%{transform:scale(0.95)}}
+@keyframes shakeIt{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+.math-score{text-align:center;font-weight:900;font-size:1.1rem;color:var(--pbs-blue);margin-top:14px;background:#EEF3FF;border-radius:var(--r-sm);padding:8px;}
+
+/* SCRATCHPAD */
+.scratchpad-wrap{margin:16px 0;border-radius:var(--r-lg);overflow:hidden;border:4px solid #E0D890;box-shadow:0 5px 0 #C8C070,0 8px 24px rgba(0,0,0,0.06);}
+.sp-topbar{background:linear-gradient(90deg,#FFF9C4,#FFFDE7);border-bottom:3px solid #E8DC60;padding:9px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.sp-title{font-weight:900;font-size:0.92rem;color:#7A6000;flex:1;display:flex;align-items:center;gap:6px;}
+.sp-colors{display:flex;gap:6px;align-items:center;}
+.sp-color-btn{width:28px;height:28px;border-radius:50%;border:3px solid rgba(0,0,0,0.12);cursor:pointer;transition:all 0.15s;box-shadow:0 2px 0 rgba(0,0,0,0.1);flex-shrink:0;}
+.sp-color-btn.active{transform:scale(1.22);box-shadow:0 0 0 3px white,0 0 0 5px rgba(0,0,0,0.5);}
+.sp-tool-btn{padding:5px 12px;border-radius:50px;border:3px solid #D0D8E8;background:white;cursor:pointer;font-weight:900;font-size:0.78rem;color:var(--muted);transition:all 0.15s;white-space:nowrap;}
+.sp-tool-btn:hover{border-color:var(--pbs-blue);color:var(--pbs-blue);}
+.sp-tool-btn.active{border-color:var(--pbs-blue);color:var(--pbs-blue);background:#EEF3FF;}
+.sp-tool-btn.danger{border-color:#FFCDD2;color:#C62828;background:#FFEBEE;}
+.sp-tool-btn.danger:hover{background:#FFCDD2;}
+.sp-paper canvas{display:block;width:100%;cursor:crosshair;touch-action:none;}
+
+/* QUIZ */
+.quiz-q{font-family:"Fredoka One",cursive;font-size:1.65rem;margin-bottom:18px;line-height:1.3;color:var(--text);}
+.quiz-choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.quiz-choice{padding:16px 14px;border-radius:var(--r-md);border:4px solid #D0D8E8;cursor:pointer;font-size:0.95rem;font-weight:900;background:white;color:var(--text);transition:all 0.15s;text-align:center;box-shadow:0 5px 0 #C0C8D8;}
+.quiz-choice:hover{border-color:var(--pbs-blue);color:var(--pbs-blue);transform:translateY(-2px);box-shadow:0 7px 0 #152E8A;}
+.quiz-choice:active{transform:translateY(3px);box-shadow:0 2px 0 #C0C8D8;}
+.quiz-choice.correct{background:var(--pbs-green);border-color:#1E7A12;color:white;box-shadow:0 5px 0 #1E7A12;}
+.quiz-choice.wrong  {background:var(--pbs-red);  border-color:#B71C1C;color:white;box-shadow:0 5px 0 #B71C1C;}
+.quiz-feedback{text-align:center;font-size:1.1rem;font-weight:900;margin-top:14px;min-height:30px;}
+
+/* INFO CARDS */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;margin-top:16px;}
+.info-card{background:white;border-radius:var(--r-lg);padding:20px 16px;border:4px solid #E4EAF5;box-shadow:0 5px 0 #D0D8E8;text-align:center;transition:all 0.2s;}
+.info-card:hover{transform:translateY(-5px);box-shadow:0 10px 0 #B8C4D8,0 14px 32px rgba(0,0,0,0.1);border-color:var(--pbs-blue);}
+.info-card .ic-icon{font-size:3rem;display:block;margin-bottom:10px;filter:drop-shadow(2px 2px 6px rgba(0,0,0,0.12));}
+.info-card .ic-title{font-weight:900;font-size:1rem;color:var(--text);font-family:"Fredoka One",cursive;}
+.info-card .ic-desc{font-size:0.8rem;color:var(--muted);margin-top:5px;line-height:1.55;font-weight:700;}
+
+/* TRACE */
+.trace-canvas-wrap{text-align:center;margin:16px 0;}
+#trace-canvas{border:5px dashed #B8C4D8;border-radius:var(--r-lg);cursor:crosshair;background:white;touch-action:none;box-shadow:inset 0 2px 12px rgba(0,0,0,0.05);}
+.trace-wrap{position:relative;display:inline-block;}
+.trace-controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px;}
+.trace-btn{padding:11px 24px;border-radius:50px;font-family:"Fredoka One",cursive;font-size:1rem;cursor:pointer;border:4px solid transparent;transition:all 0.15s;}
+.trace-btn.clear{background:white;color:var(--muted);border-color:#D0D8E8;box-shadow:0 5px 0 #C0C8D8;}
+.trace-btn.prev-l{background:var(--pbs-sky);color:white;border-color:#007AA8;box-shadow:0 5px 0 #007AA8;}
+.trace-btn.next-l{background:var(--pbs-green);color:white;border-color:#1E7A12;box-shadow:0 5px 0 #1E7A12;}
+.trace-btn:hover{transform:translateY(-2px);}
+.trace-btn:active{transform:translateY(3px);box-shadow:0 1px 0 currentColor !important;}
+
+/* SEASONS */
+.season-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px;}
+.season-card{border-radius:var(--r-lg);padding:20px;cursor:pointer;text-align:center;border:4px solid #E0E8F0;transition:all 0.2s;box-shadow:0 5px 0 #D0D8E8;background:white;}
+.season-card:hover{transform:translateY(-3px);box-shadow:0 8px 0 #B8C4D8;}
+.season-card.active{border-color:var(--pbs-blue);background:#EEF3FF;box-shadow:0 5px 0 #152E8A;}
+.season-card .s-icon{font-size:3.2rem;display:block;margin-bottom:8px;}
+.season-card .s-name{font-family:"Fredoka One",cursive;font-size:1.25rem;color:var(--text);}
+.season-detail{background:white;border-radius:var(--r-lg);padding:22px;margin-top:16px;border:4px solid #D0D8E8;box-shadow:0 5px 0 #C0C8D8;animation:fadeSlide 0.3s ease;}
+.season-detail p{margin-bottom:9px;font-size:1rem;font-weight:700;line-height:1.6;}
+
+/* STORY */
+.story-title{font-family:"Fredoka One",cursive;font-size:1.9rem;margin-bottom:14px;color:var(--pbs-blue);}
+.story-text{font-size:1.1rem;line-height:2.3;font-weight:700;}
+.story-text span{border-radius:8px;padding:2px 5px;transition:background 0.35s;}
+.story-text span.highlight{background:var(--pbs-yellow);border-radius:8px;}
+.story-controls{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap;}
+.story-btn{padding:12px 26px;border-radius:50px;cursor:pointer;font-family:"Fredoka One",cursive;font-size:1.05rem;transition:all 0.15s;border:4px solid transparent;}
+.story-btn.play{background:var(--pbs-blue);color:white;border-color:#152E8A;box-shadow:0 5px 0 #152E8A;}
+.story-btn.play:hover{transform:translateY(-2px);box-shadow:0 7px 0 #152E8A;}
+.story-btn.reset{background:white;color:var(--muted);border-color:#D0D8E8;box-shadow:0 5px 0 #C0C8D8;}
+.story-btn.reset:hover{transform:translateY(-2px);}
+.story-btn:active{transform:translateY(3px) !important;box-shadow:0 1px 0 currentColor !important;}
+
+/* SHAPES */
+.shape-display{text-align:center;font-size:7.5rem;margin:14px 0;animation:popIn 0.35s ease;filter:drop-shadow(4px 6px 10px rgba(0,0,0,0.18));}
+.shape-info{text-align:center;}
+.shape-info h3{color:var(--pbs-blue);font-size:2.2rem;}
+
+@media(max-width:640px){
+  .alpha-grid{grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:7px;}
+  .quiz-choices{grid-template-columns:1fr;}
+  .subject-grid{grid-template-columns:1fr;}
+  .currency-grid{grid-template-columns:1fr;}
+  .season-grid{grid-template-columns:1fr;}
+  .math-problem{font-size:2.8rem;padding:18px;}
+  .home-title{font-size:1.9rem;}
+  #app-header h1{font-size:1.1rem;}
+  #wallet-display{padding:7px 14px;}
+  .lesson-box{padding:22px 18px;}
+  .sw-controls{flex-direction:column;align-items:center;}
+  .char-banner{flex-direction:column;text-align:center;}
+  .login-grid{grid-template-columns:1fr 1fr;}
+}
+
+/* ── LOGIN SCREEN ──────────────────────────────────────────────── */
+#screen-login{background:linear-gradient(170deg,#0D2B8A 0%,#1A4ECC 45%,#0099C8 100%);min-height:100vh;padding-bottom:60px;}
+.login-hero{text-align:center;padding:36px 16px 20px;color:white;}
+.login-hero h2{font-family:"Fredoka One",cursive;font-size:clamp(1.8rem,5vw,2.8rem);text-shadow:3px 3px 0 rgba(0,0,0,.22);margin-bottom:7px;}
+.login-hero p{opacity:.9;font-weight:800;font-size:.95rem;}
+.login-wrap{background:#F5F9FF;padding:24px 16px 0;}
+.login-title{text-align:center;font-family:"Fredoka One",cursive;font-size:1.35rem;color:var(--pbs-blue);margin-bottom:18px;}
+.login-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;max-width:820px;margin:0 auto;}
+.profile-card{position:relative;background:white;border-radius:32px;padding:22px 16px;cursor:pointer;border:5px solid #D0D8E8;box-shadow:0 6px 0 #C0C8D8,0 10px 28px rgba(0,0,0,.07);transition:all .2s cubic-bezier(.175,.885,.32,1.275);text-align:center;}
+.profile-card:hover{transform:translateY(-5px) scale(1.03);box-shadow:0 11px 0 #A0A8B8;}
+.profile-card:active{transform:translateY(3px);box-shadow:0 3px 0 #C0C8D8;}
+.pc-del-btn{position:absolute;top:10px;right:10px;width:28px;height:28px;border-radius:50%;background:#FFEAEA;border:2px solid #FFCDD2;color:#D32F2F;font-size:16px;font-weight:900;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0.6;transition:all .2s;}
+.pc-del-btn:hover{opacity:1;background:#FFCDD2;transform:scale(1.1);}
+.pc-char{font-size:3.8rem;display:block;margin-bottom:8px;filter:drop-shadow(2px 4px 8px rgba(0,0,0,.12));animation:pcFloat 2.5s ease-in-out infinite;}
+@keyframes pcFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.pc-name{font-family:"Fredoka One",cursive;font-size:1.3rem;margin-bottom:4px;}
+.pc-coins{font-size:.82rem;font-weight:800;color:var(--muted);}
+.pc-prog{font-size:.75rem;font-weight:800;color:var(--pbs-green);margin-top:3px;}
+.add-profile-card{background:white;border-radius:32px;padding:22px 16px;cursor:pointer;border:5px dashed #C0C8D8;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:all .2s;min-height:160px;}
+.add-profile-card:hover{border-color:var(--pbs-blue);background:#EEF3FF;transform:translateY(-3px);}
+.add-icon{font-size:2.5rem;color:#B0B8C8;}
+.add-label{font-family:"Fredoka One",cursive;font-size:1.1rem;color:var(--muted);}
+
+/* New Player Form */
+.new-player-form{background:white;border-radius:var(--r-xl);padding:28px 24px;max-width:480px;margin:20px auto;border:5px solid #D0D8E8;box-shadow:0 6px 0 #C0C8D8;}
+.npf-title{font-family:"Fredoka One",cursive;font-size:1.5rem;color:var(--pbs-blue);text-align:center;margin-bottom:18px;}
+.npf-label{font-weight:900;color:var(--muted);font-size:.88rem;margin-bottom:6px;display:block;}
+.npf-input{width:100%;padding:14px 18px;border:4px solid #D0D8E8;border-radius:50px;font-family:"Fredoka One",cursive;font-size:1.3rem;color:var(--dark);outline:none;text-align:center;box-shadow:inset 0 2px 8px rgba(0,0,0,.05);transition:border-color .2s;margin-bottom:18px;}
+.npf-input:focus{border-color:var(--pbs-blue);}
+.char-pick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+.char-pick-btn{border-radius:20px;padding:14px 8px;border:4px solid #D0D8E8;background:white;cursor:pointer;text-align:center;transition:all .18s;box-shadow:0 4px 0 #C0C8D8;}
+.char-pick-btn:hover{transform:translateY(-3px);box-shadow:0 7px 0 #B0B8C8;}
+.char-pick-btn.selected{border-color:var(--pbs-yellow);background:#FFFDE7;box-shadow:0 4px 0 #C9A000,0 0 0 4px rgba(255,208,0,.25);transform:scale(1.05);}
+.char-pick-btn .cp-emoji{font-size:2.4rem;display:block;margin-bottom:5px;}
+.char-pick-btn .cp-name{font-weight:900;font-size:.75rem;color:var(--muted);}
+.npf-submit{display:block;width:100%;padding:15px;background:var(--pbs-green);color:white;border:4px solid #1E7A12;box-shadow:0 6px 0 #1E7A12;border-radius:50px;font-family:"Fredoka One",cursive;font-size:1.2rem;cursor:pointer;transition:all .15s;}
+.npf-submit:hover{transform:translateY(-2px);box-shadow:0 8px 0 #1E7A12;}
+.npf-submit:active{transform:translateY(4px);box-shadow:0 2px 0 #1E7A12;}
+.npf-cancel{display:block;width:100%;padding:10px;background:none;border:none;font-weight:900;color:var(--muted);cursor:pointer;margin-top:10px;font-size:.9rem;}
+
+/* Header player chip */
+.hdr-player{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.18);border:3px solid rgba(255,255,255,.35);border-radius:50px;padding:5px 14px 5px 8px;cursor:pointer;transition:all .2s;flex-shrink:0;}
+.hdr-player:hover{background:rgba(255,255,255,.3);}
+#hdr-char{font-size:1.45rem;line-height:1;}
+#hdr-player-name{color:white;font-weight:900;font-size:.85rem;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hdr-switch{background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.4);color:white;border-radius:50px;padding:5px 13px;cursor:pointer;font-size:.75rem;font-weight:900;transition:all .2s;white-space:nowrap;}
+.hdr-switch:hover{background:rgba(255,255,255,.4);}
+
+/* Home character banner */
+.char-banner{display:flex;align-items:center;gap:20px;background:white;border-radius:var(--r-xl);padding:18px 22px;margin:0 16px 8px;border:5px solid #D0D8E8;box-shadow:0 6px 0 #C0C8D8,0 10px 28px rgba(0,0,0,.07);max-width:860px;margin-left:auto;margin-right:auto;position:relative;z-index:2;}
+.cb-char{font-size:3.8rem;flex-shrink:0;animation:pcFloat 3s ease-in-out infinite;filter:drop-shadow(2px 4px 8px rgba(0,0,0,.12));}
+.cb-info{flex:1;}
+.cb-name{font-family:"Fredoka One",cursive;font-size:1.4rem;color:var(--dark);}
+.cb-sub{font-size:.82rem;font-weight:800;color:var(--muted);margin-top:2px;}
+.cb-prog{font-size:.78rem;font-weight:800;color:var(--pbs-green);margin-top:4px;}
+.cb-btns{display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;}
+.cb-btn{padding:8px 16px;border-radius:50px;font-family:"Fredoka One",cursive;font-size:.85rem;cursor:pointer;border:3px solid transparent;transition:all .15s;}
+.cb-btn.change{background:var(--pbs-yellow);color:var(--dark);border-color:#C9A000;box-shadow:0 4px 0 #C9A000;}
+.cb-btn.change:hover{transform:translateY(-2px);box-shadow:0 6px 0 #C9A000;}
+.cb-btn.switch{background:white;color:var(--muted);border-color:#D0D8E8;box-shadow:0 4px 0 #C0C8D8;}
+.cb-btn.switch:hover{border-color:var(--pbs-blue);color:var(--pbs-blue);}
+
+/* ── CLOCK & TELL TIME ────────────────────────────────────────── */
+.clock-modes{display:flex;gap:10px;justify-content:center;margin-bottom:18px;flex-wrap:wrap;}
+.clock-mode-btn{padding:10px 20px;border-radius:50px;font-family:"Fredoka One",cursive;font-size:1.02rem;cursor:pointer;border:4px solid #D0D8E8;background:white;color:var(--text);box-shadow:0 4px 0 #C0C8D8;transition:all .15s;}
+.clock-mode-btn:hover{border-color:var(--pbs-blue);color:var(--pbs-blue);transform:translateY(-2px);}
+.clock-mode-btn.active{background:var(--pbs-blue);color:white;border-color:#152E8A;box-shadow:0 4px 0 #152E8A;}
+.clock-card{background:linear-gradient(145deg,#FFFFFF,#F7FAFF);border-radius:var(--r-xl);padding:24px 20px;border:4px solid #DCE6F5;box-shadow:0 6px 0 #C8D8ED,0 12px 28px rgba(0,0,0,.06);text-align:center;max-width:540px;margin:0 auto 20px;}
+.clock-stage{position:relative;width:260px;height:260px;margin:0 auto 16px;touch-action:none;}
+.clock-svg{width:100%;height:100%;filter:drop-shadow(0 6px 16px rgba(0,0,0,.15));}
+.clock-digital{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--dark);color:#00FFCC;padding:10px 26px;border-radius:18px;font-family:"Fredoka One",cursive;font-size:2.2rem;letter-spacing:2px;box-shadow:inset 0 2px 10px rgba(0,0,0,.5),0 4px 0 rgba(0,0,0,.3);border:3px solid #2B3A5A;margin:8px auto 14px;}
+.clock-spoken{font-family:"Fredoka One",cursive;font-size:1.35rem;color:var(--pbs-blue);margin-bottom:14px;min-height:32px;}
+.clock-parts-legend{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:12px 0 16px;}
+.c-legend-item{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:50px;background:white;border:3px solid #D0D8E8;font-weight:900;font-size:.85rem;}
+.c-legend-dot{width:14px;height:14px;border-radius:50%;}
+.c-legend-dot.hour{background:#E53935;}
+.c-legend-dot.min{background:#1E3FA2;}
+.time-btn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin:14px 0;}
+.time-preset-btn{padding:10px 8px;border-radius:16px;border:3px solid #D0D8E8;background:white;font-family:"Fredoka One",cursive;font-size:1rem;color:var(--text);cursor:pointer;box-shadow:0 4px 0 #C0C8D8;transition:all .15s;}
+.time-preset-btn:hover{border-color:var(--pbs-green);transform:translateY(-2px);box-shadow:0 6px 0 #1E7A12;}
+.time-preset-btn.active{background:#F0FFF0;border-color:var(--pbs-green);color:#1E7A12;box-shadow:0 3px 0 #1E7A12;}
+.time-steppers{display:flex;gap:10px;justify-content:center;margin:12px 0 8px;flex-wrap:wrap;}
+.time-step-btn{padding:9px 18px;border-radius:50px;font-family:"Fredoka One",cursive;font-size:.95rem;background:white;border:3px solid #D0D8E8;color:var(--text);cursor:pointer;box-shadow:0 4px 0 #C0C8D8;transition:all .15s;}
+.time-step-btn:hover{border-color:var(--pbs-blue);transform:translateY(-2px);}
+.time-step-btn:active{transform:translateY(3px);box-shadow:0 1px 0 #C0C8D8;}
+
+/* ── INTERACTIVE SKELETON & ADVANCED ANATOMY ──────────────────── */
+.skeleton-box{background:linear-gradient(145deg,#FFFFFF,#F0F7FF);border-radius:var(--r-xl);padding:24px 20px;border:4px solid #D0E2F5;box-shadow:0 6px 0 #BCD2ED,0 12px 30px rgba(0,0,0,.06);margin-bottom:20px;}
+.skeleton-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+@media(max-width:720px){.skeleton-layout{grid-template-columns:1fr;}}
+.sk-viewport{position:relative;background:radial-gradient(circle at 50% 40%,#1A2C4C,#0D172A);border-radius:24px;border:4px solid #334E78;padding:16px;box-shadow:inset 0 4px 18px rgba(0,0,0,.45);text-align:center;}
+.sk-svg-wrap{position:relative;display:inline-block;width:100%;max-width:280px;}
+.sk-svg{width:100%;height:auto;filter:drop-shadow(0 4px 14px rgba(72,202,228,.2));}
+.sk-bone-target{cursor:pointer;transition:all .18s;outline:none;}
+.sk-bone-target:hover{filter:drop-shadow(0 0 8px #FFD000);stroke:#FFD000!important;stroke-width:3!important;}
+.sk-bone-target.active-bone{filter:drop-shadow(0 0 12px #FFD000) drop-shadow(0 0 20px #00FFCC);stroke:#00FFCC!important;stroke-width:3.5!important;}
+.sk-info-panel{background:white;border-radius:22px;border:4px solid #D0E2F5;box-shadow:0 5px 0 #BCD2ED;padding:22px 20px;text-align:left;}
+.sk-bone-badge{display:inline-flex;align-items:center;gap:6px;background:#E0F7FA;color:#0077B6;padding:4px 14px;border-radius:50px;font-weight:900;font-size:.82rem;margin-bottom:8px;}
+.sk-bone-title{font-family:"Fredoka One",cursive;font-size:1.75rem;color:var(--pbs-blue);margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.sk-sci-name{font-family:"Nunito",sans-serif;font-style:italic;color:#5A6A85;font-size:.95rem;font-weight:800;margin-bottom:12px;}
+.sk-bone-desc{font-size:.98rem;line-height:1.75;font-weight:700;color:var(--text);margin-bottom:14px;}
+.sk-fact-box{background:#FFFDE7;border:3px dashed #FFD000;border-radius:16px;padding:12px 14px;font-size:.88rem;font-weight:800;color:#5A3E00;margin-bottom:16px;}
+.sk-chips-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+.sk-chip{padding:6px 12px;border-radius:50px;border:3px solid #D0D8E8;background:#F8FAFD;font-family:"Fredoka One",cursive;font-size:.82rem;color:var(--text);cursor:pointer;transition:all .15s;}
+.sk-chip:hover{border-color:var(--pbs-blue);color:var(--pbs-blue);transform:translateY(-1px);}
+.sk-chip.active{background:var(--pbs-blue);color:white;border-color:#152E8A;box-shadow:0 3px 0 #152E8A;}
+.ap-level-badge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#6A1B9A,#AB47BC);color:white;padding:5px 14px;border-radius:50px;font-family:"Fredoka One",cursive;font-size:.85rem;box-shadow:0 3px 0 #4A148C;margin-bottom:10px;}
+</style>
+
+  <!-- Antigravity Baseline Integration -->
+  <script src="cosmic-background.js"></script>
+  <script src="mcp-baseline.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="aws-enterprise-baseline.css">
+  <script src="aws-enterprise-baseline.js"></script>
+</head>
+<body>
+
+<header id="app-header">
+  <div class="header-brand">
+    <div class="header-logo">1st</div>
+    <h1>Learning Hub</h1>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <div class="hdr-player" onclick="showLogin()" title="Switch player">
+      <span id="hdr-char">&#128016;</span>
+      <span id="hdr-player-name">Player</span>
+    </div>
+    <a href="jumpstart.html" style="background: linear-gradient(135deg, #fde047, #f59e0b); color: #0f172a; text-decoration: none; padding: 7px 16px; border-radius: 50px; font-family: 'Fredoka One', cursive; font-size: 0.92rem; border: 3px solid #0f172a; box-shadow: 0 4px 0 #0f172a; display: inline-flex; align-items: center; gap: 6px; transition: transform 0.15s ease;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+      🎒 JumpStart Adventure
+    </a>
+    <div id="wallet-display" onclick="openCurrencyModal()" title="Click to change your reward!">
+      <span id="wallet-icon" style="font-size:1.4rem;">&#128142;</span>
+      <div>
+        <div id="wallet-amount">0</div>
+        <div id="wallet-name">Emeralds</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div id="reward-banner">+5 Emeralds!</div>
+
+<div id="currency-modal">
+  <div id="currency-box">
+    <h2>Pick Your Reward!</h2>
+    <p>Which game currency do you want to earn?</p>
+    <div class="currency-grid" id="currency-grid"></div>
+    <button id="close-currency" onclick="closeCurrencyModal()">Save and Play!</button>
+  </div>
+</div>
+
+<!-- LOGIN / PROFILE SELECT -->
+<div id="screen-login" class="screen active">
+  <div class="login-hero">
+    <span style="font-size:4rem;display:block;margin-bottom:12px;animation:mascotBounce 2.5s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(0,0,0,.3));">&#127483;</span>
+    <h2>Who's Playing Today?</h2>
+    <p>Choose your name to start your adventure!</p>
+  </div>
+  <div class="wave-div"><svg viewBox="0 0 1200 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,50 C300,0 900,50 1200,0 L1200,50 Z" fill="#F5F9FF"/></svg></div>
+  <div class="login-wrap">
+    <div class="login-title">&#127775; Pick Your Player!</div>
+    <div class="login-grid" id="login-grid"></div>
+    <div id="new-player-area"></div>
+  </div>
+</div>
+
+<!-- HOME -->
+<div id="screen-home" class="screen">
+  <div class="bg-blob bg-blob-1"></div>
+  <div class="bg-blob bg-blob-2"></div>
+  <div class="bg-blob bg-blob-3"></div>
+  <div class="bg-blob bg-blob-4"></div>
+  <div class="home-hero">
+    <div class="home-mascot-ring"><span id="hero-char">&#128016;</span></div>
+    <div class="home-title" id="home-title">First Grade<br>Learning Hub!</div>
+    <div class="home-subtitle">Pick a subject and earn rewards!</div>
+  </div>
+  <div class="wave-div">
+    <svg viewBox="0 0 1200 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,50 C300,0 900,50 1200,0 L1200,50 Z" fill="#F5F9FF"/>
+    </svg>
+  </div>
+  <!-- Character banner -->
+  <div id="char-banner" class="char-banner" style="margin-top:-10px;">
+    <div class="cb-char" id="cb-char">&#128016;</div>
+    <div class="cb-info">
+      <div class="cb-name" id="cb-name">Player</div>
+      <div class="cb-sub" id="cb-sub">Goat Explorer</div>
+      <div class="cb-prog" id="cb-prog">0 of 22 lessons complete</div>
+    </div>
+    <div class="cb-btns">
+      <button class="cb-btn change" onclick="openCharPicker()">&#10024; Change Character</button>
+      <button class="cb-btn switch" onclick="showLogin()">&#128100; Switch Player</button>
+    </div>
+  </div>
+  <div class="subject-section">
+    <div class="section-label">Choose a Subject to Learn!</div>
+    <div class="subject-grid" id="subject-grid"></div>
+  </div>
+</div>
+
+<!-- SUBJECT -->
+<div id="screen-subject" class="screen">
+  <div id="subject-hero" class="subject-hero">
+    <button id="back-btn" onclick="showHome()">&#8592; Back Home</button>
+    <h2 id="subject-title"></h2>
+    <p id="subject-desc"></p>
+  </div>
+  <div class="lesson-list" id="lesson-list"></div>
+</div>
+
+<!-- LESSON -->
+<div id="screen-lesson" class="screen">
+  <button id="lesson-back" onclick="showSubject()">&#8592; Back</button>
+  <div id="lesson-content"></div>
+</div>
+
+<script>
+/* ================================================================
+   CHARACTERS — Goat, Giraffe, Goose, Squirrel
+   ================================================================ */
+var CHARACTERS = {
+  goat:     {id:"goat",     name:"Goat",     emoji:"&#128016;", color:"#8BC34A", bg:"#F1F8E9"},
+  giraffe:  {id:"giraffe",  name:"Giraffe",  emoji:"&#129426;", color:"#FFC107", bg:"#FFFDE7"},
+  goose:    {id:"goose",    name:"Goose",    emoji:"&#129719;", color:"#00BCD4", bg:"#E0F7FA"},
+  squirrel: {id:"squirrel", name:"Squirrel", emoji:"&#128063;&#65039;", color:"#795548", bg:"#EFEBE9"},
+};
+
+/* ================================================================
+   SAFE STORAGE & DOM HELPERS
+   ================================================================ */
+function safeJsonParse(key, fallback) {
+  try {
+    var raw = localStorage.getItem(key);
+    if (!raw) return fallback;
+    var parsed = JSON.parse(raw);
+    return (parsed !== null && parsed !== undefined) ? parsed : fallback;
+  } catch(e) {
+    return fallback;
+  }
+}
+function setElText(id, txt) {
+  var el = document.getElementById(id);
+  if (el) el.textContent = (txt !== null && txt !== undefined) ? txt : "";
+}
+function setElHtml(id, html) {
+  var el = document.getElementById(id);
+  if (el) el.innerHTML = (html !== null && html !== undefined) ? html : "";
+}
+
+/* ================================================================
+   CURRENCIES & DEFAULT PROFILES
+   ================================================================ */
+var CURRENCIES = [
+  {id:"emerald", game:"Minecraft",      name:"Emeralds",     icon:"&#128142;", color:"#00b894"},
+  {id:"robux",   game:"Roblox",         name:"Robux",        icon:"&#128176;", color:"#e74c3c"},
+  {id:"vbucks",  game:"Fortnite",       name:"V-Bucks",      icon:"&#9889;",   color:"#6c5ce7"},
+  {id:"poke",    game:"Pokemon",        name:"Poke Dollars", icon:"&#129683;", color:"#f9ca24"},
+  {id:"coins",   game:"Super Mario",    name:"Coins",        icon:"&#11088;",  color:"#e17055"},
+  {id:"bells",   game:"Animal Crossing",name:"Bells",        icon:"&#128276;", color:"#00cec9"},
+];
+
+function genId(){ return Math.random().toString(36).substr(2,12); }
+
+function getProfiles() {
+  var list = safeJsonParse("ag1_profiles", []);
+  if (!Array.isArray(list)) list = [];
+  if (list.length === 0) {
+    var defs = [
+      { id:"p-goat",     name:"Goat Explorer",    character:"goat",     wallet:0, currency:CURRENCIES[0], done:[], typingProg:{}, created:"2026-01-01" },
+      { id:"p-giraffe",  name:"Giraffe Scout",    character:"giraffe",  wallet:0, currency:CURRENCIES[0], done:[], typingProg:{}, created:"2026-01-01" },
+      { id:"p-goose",    name:"Goose Buddy",      character:"goose",    wallet:0, currency:CURRENCIES[0], done:[], typingProg:{}, created:"2026-01-01" },
+      { id:"p-squirrel", name:"Squirrel Scout",   character:"squirrel", wallet:0, currency:CURRENCIES[0], done:[], typingProg:{}, created:"2026-01-01" }
+    ];
+    saveProfiles(defs);
+    return defs;
+  }
+  return list;
+}
+
+function saveProfiles(p){
+  try { localStorage.setItem("ag1_profiles", JSON.stringify(p || [])); } catch(e){}
+}
+function getActiveId(){ return localStorage.getItem("ag1_active_id") || null; }
+
+var currentProfile = null;
+
+function activateProfile(id) {
+  try {
+    var profiles = getProfiles();
+    var p = null;
+    if (id) {
+      p = profiles.find(function(x){ return x && x.id === id; });
+    }
+    if (!p && profiles.length > 0) p = profiles[0];
+    if (!p) {
+      p = createProfile("Goat Explorer", "goat");
+      profiles = getProfiles();
+    }
+
+    var charKey = (p.character && CHARACTERS[p.character]) ? p.character : "goat";
+    p.character = charKey;
+    p.name = (p.name && typeof p.name === "string" && p.name.trim()) ? p.name.trim() : "Player";
+    p.wallet = (typeof p.wallet === "number") ? p.wallet : (parseInt(p.wallet) || 0);
+    p.done = Array.isArray(p.done) ? p.done : [];
+    p.typingProg = (p.typingProg && typeof p.typingProg === "object") ? p.typingProg : {};
+
+    if (!p.currency || !p.currency.icon || !p.currency.name) {
+      p.currency = CURRENCIES[0];
+    }
+
+    localStorage.setItem("ag1_active_id", p.id);
+    currentProfile = p;
+
+    localStorage.setItem("ag1_currency", JSON.stringify(p.currency));
+    localStorage.setItem("ag1_wallet", p.wallet);
+    localStorage.setItem("ag1_done", JSON.stringify(p.done));
+    localStorage.setItem("ag1_typing_prog", JSON.stringify(p.typingProg));
+
+    if (typeof state !== "undefined" && state) {
+      state.currency = p.currency;
+      state.wallet = p.wallet;
+      state.done = p.done;
+    }
+
+    updateHeaderUI();
+    if (typeof updateWalletUI === "function") updateWalletUI();
+    return p;
+  } catch(err) {
+    console.error("activateProfile error:", err);
+  }
+}
+
+function persistProfile() {
+  if (!currentProfile) return;
+  try {
+    currentProfile.wallet = parseInt(localStorage.getItem("ag1_wallet") || "0") || 0;
+    var cur = safeJsonParse("ag1_currency", null);
+    if (cur && cur.icon && cur.name) currentProfile.currency = cur;
+    var d = safeJsonParse("ag1_done", []);
+    if (Array.isArray(d)) currentProfile.done = d;
+    var tp = safeJsonParse("ag1_typing_prog", {});
+    if (tp && typeof tp === "object") currentProfile.typingProg = tp;
+
+    var profiles = getProfiles();
+    var idx = -1;
+    for (var i = 0; i < profiles.length; i++){
+      if (profiles[i] && profiles[i].id === currentProfile.id) { idx = i; break; }
+    }
+    if (idx >= 0) profiles[idx] = currentProfile; else profiles.push(currentProfile);
+    saveProfiles(profiles);
+  } catch(err) {
+    console.error("persistProfile error:", err);
+  }
+}
+
+function createProfile(name, charId) {
+  var cleanName = (name && typeof name === "string" && name.trim()) ? name.trim() : "Player";
+  var cleanChar = (charId && CHARACTERS[charId]) ? charId : "goat";
+  var p = {
+    id: genId(),
+    name: cleanName,
+    character: cleanChar,
+    wallet: 0,
+    currency: CURRENCIES[0],
+    done: [],
+    typingProg: {},
+    created: new Date().toISOString().substr(0,10)
+  };
+  var profiles = getProfiles();
+  profiles.push(p);
+  saveProfiles(profiles);
+  return p;
+}
+
+function deleteProfile(id, ev) {
+  if (ev) { ev.stopPropagation(); ev.preventDefault(); }
+  var profiles = getProfiles();
+  if (profiles.length <= 1) {
+    alert("You need at least one player profile!");
+    return;
+  }
+  var p = profiles.find(function(x){ return x && x.id === id; });
+  var pName = p ? p.name : "this player";
+  if (!confirm("Are you sure you want to remove " + pName + "?")) return;
+  profiles = profiles.filter(function(x){ return x && x.id !== id; });
+  saveProfiles(profiles);
+  if (getActiveId() === id) {
+    localStorage.removeItem("ag1_active_id");
+    currentProfile = null;
+  }
+  renderLoginScreen();
+}
+
+function updateHeaderUI() {
+  if (!currentProfile) return;
+  try {
+    var charKey = (currentProfile.character && CHARACTERS[currentProfile.character]) ? currentProfile.character : "goat";
+    var ch = CHARACTERS[charKey] || CHARACTERS.goat;
+    var rawName = (currentProfile.name && typeof currentProfile.name === "string" && currentProfile.name.trim()) ? currentProfile.name.trim() : "Player";
+    var firstName = rawName.split(" ")[0] || rawName;
+
+    setElHtml("hdr-char", ch.emoji);
+    setElText("hdr-player-name", firstName);
+    setElHtml("hero-char", ch.emoji);
+    setElHtml("cb-char", ch.emoji);
+    setElText("cb-name", rawName + "'s Dashboard");
+    setElText("cb-sub", ch.name + " Explorer");
+
+    var doneList = Array.isArray(currentProfile.done) ? currentProfile.done : [];
+    setElText("cb-prog", doneList.length + " of 22 lessons complete");
+    setElHtml("home-title", rawName + "'s<br>Learning Hub!");
+  } catch(err) {
+    console.error("updateHeaderUI error:", err);
+  }
+}
+
+/* â”€â”€ LOGIN SCREEN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+function showLogin() {
+  persistProfile();
+  renderLoginScreen();
+  showScreen("screen-login");
+}
+
+function renderLoginScreen() {
+  var grid = document.getElementById("login-grid");
+  if (!grid) return;
+  grid.innerHTML = "";
+  var newArea = document.getElementById("new-player-area");
+  if (newArea) newArea.innerHTML = "";
+  var profiles = getProfiles();
+
+  profiles.forEach(function(p) {
+    var charKey = (p.character && CHARACTERS[p.character]) ? p.character : "goat";
+    var ch = CHARACTERS[charKey] || CHARACTERS.goat;
+    var doneCount = Array.isArray(p.done) ? p.done.length : 0;
+    var card = document.createElement("div");
+    card.className = "profile-card";
+    card.style.borderColor = ch.color;
+    card.style.boxShadow = "0 6px 0 " + ch.color + "55, 0 10px 28px rgba(0,0,0,.07)";
+    card.title = "Play as " + p.name + "!";
+
+    var curIcon = (p.currency && p.currency.icon) ? p.currency.icon : "&#128142;";
+    var curCoins = (typeof p.wallet === "number") ? p.wallet : (parseInt(p.wallet) || 0);
+
+    card.innerHTML =
+      (profiles.length > 1 ? "<button class=\"pc-del-btn\" onclick=\"deleteProfile('" + p.id + "', event)\" title=\"Remove player\">&times;</button>" : "") +
+      "<span class=\"pc-char\">" + ch.emoji + "</span>" +
+      "<div class=\"pc-name\">" + p.name + "</div>" +
+      "<div class=\"pc-coins\">" + curIcon + " " + curCoins + " coins</div>" +
+      "<div class=\"pc-prog\">&#9989; " + doneCount + "/22 lessons</div>" +
+      "<div style=\"margin-top:10px;\"><span style=\"display:inline-block;background:" + ch.color + ";color:white;border-radius:50px;padding:6px 18px;font-family:'Fredoka One',cursive;font-size:0.95rem;box-shadow:0 3px 0 rgba(0,0,0,.15);\">&#9654; Play!</span></div>";
+
+    card.onclick = function(e) {
+      if (e.target && e.target.classList.contains("pc-del-btn")) return;
+      activateProfile(p.id);
+      showHome();
+    };
+    grid.appendChild(card);
+  });
+
+  if (profiles.length < 6) {
+    var add = document.createElement("div");
+    add.className = "add-profile-card";
+    add.innerHTML = "<div class=\"add-icon\">&#43;</div><div class=\"add-label\">Add New Player</div>";
+    add.onclick = function(){ renderNewPlayerForm(); };
+    grid.appendChild(add);
+  }
+}
+
+var pickedChar = "goat";
+function renderNewPlayerForm() {
+  pickedChar = "goat";
+  var area = document.getElementById("new-player-area");
+  if (!area) return;
+  area.innerHTML =
+    "<div class=\"new-player-form\">" +
+    "<div class=\"npf-title\">&#128100; New Player!</div>" +
+    "<label class=\"npf-label\">What&#39;s your name?</label>" +
+    "<input class=\"npf-input\" id=\"npf-name\" type=\"text\" placeholder=\"Type your name...\" maxlength=\"16\" autocomplete=\"off\"/>" +
+    "<label class=\"npf-label\">Pick your character!</label>" +
+    "<div class=\"char-pick-grid\" id=\"char-pick-grid\"></div>" +
+    "<button class=\"npf-submit\" id=\"npf-submit-btn\" onclick=\"submitNewPlayer()\">&#127775; Let&#39;s Go!</button>" +
+    "<button class=\"npf-cancel\" onclick=\"cancelNewPlayer()\">Cancel</button>" +
+    "</div>";
+  renderCharPicker("char-pick-grid", pickedChar, function(cid){ pickedChar = cid; });
+  var nameEl = document.getElementById("npf-name");
+  if (nameEl) {
+    nameEl.onkeydown = function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        submitNewPlayer();
+      }
+    };
+    setTimeout(function(){ nameEl.focus(); }, 80);
+  }
+  area.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function renderCharPicker(gridId, currentCharId, onSelect) {
+  var grid = document.getElementById(gridId); if (!grid) return;
+  grid.innerHTML = "";
+  Object.values(CHARACTERS).forEach(function(ch) {
+    var btn = document.createElement("button"); btn.className = "char-pick-btn" + (ch.id === (currentCharId||"goat") ? " selected" : "");
+    btn.innerHTML = "<span class=\"cp-emoji\">" + ch.emoji + "</span><span class=\"cp-name\">" + ch.name + "</span>";
+    btn.onclick = function(){
+      grid.querySelectorAll(".char-pick-btn").forEach(function(b){ b.classList.remove("selected"); });
+      btn.classList.add("selected");
+      onSelect(ch.id);
+    };
+    grid.appendChild(btn);
+  });
+}
+
+function submitNewPlayer() {
+  var nameEl = document.getElementById("npf-name");
+  var name = (nameEl ? nameEl.value.trim() : "");
+  if (!name) {
+    if (nameEl) {
+      nameEl.style.borderColor = "#E53935";
+      nameEl.focus();
+    }
+    return;
+  }
+  var p = createProfile(name, pickedChar);
+  activateProfile(p.id);
+  showHome();
+}
+function cancelNewPlayer() {
+  var area = document.getElementById("new-player-area");
+  if (area) area.innerHTML = "";
+}
+
+/* ── CHARACTER PICKER from home ──────────────────────────────────── */
+function openCharPicker() {
+  if (!currentProfile) return;
+  /* Quick inline modal */
+  var overlay = document.createElement("div");
+  overlay.style.cssText = "position:fixed;inset:0;background:rgba(0,0,30,.6);z-index:900;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);";
+  var box = document.createElement("div");
+  box.style.cssText = "background:white;border-radius:32px;padding:32px 28px;max-width:400px;width:94%;border:5px solid var(--pbs-blue);box-shadow:0 10px 0 rgba(0,0,0,.2),0 20px 60px rgba(0,0,0,.3);animation:popIn .35s cubic-bezier(.175,.885,.32,1.4);";
+  box.innerHTML = "<h2 style=\"font-family:Fredoka One,cursive;font-size:1.7rem;text-align:center;color:var(--pbs-blue);margin-bottom:18px;\">Pick Your Character!</h2>" +
+    "<div class=\"char-pick-grid\" id=\"char-modal-grid\"></div>" +
+    "<button style=\"display:block;width:100%;padding:14px;background:var(--pbs-green);color:white;border:4px solid #1E7A12;box-shadow:0 5px 0 #1E7A12;border-radius:50px;font-family:Fredoka One,cursive;font-size:1.1rem;cursor:pointer;margin-top:6px;\" onclick=\"savePickedChar('#char-overlay')\">Save!</button>";
+  overlay.id = "char-overlay"; overlay.appendChild(box); document.body.appendChild(overlay);
+  var tmpChar = currentProfile.character;
+  renderCharPicker("char-modal-grid", tmpChar, function(cid){ tmpChar = cid; window._tmpChar = cid; });
+}
+function savePickedChar(overlayId) {
+  if (window._tmpChar && currentProfile) {
+    currentProfile.character = window._tmpChar;
+    persistProfile(); updateHeaderUI();
+  }
+  var o = document.getElementById("char-overlay"); if(o) o.remove();
+}
+
+/* ================================================================
+   TTS ENGINE — Clear English Voice Priority & Smart Anti-Repeat
+   ================================================================ */
+var ttsVoices = [];
+var ttsLastSpoken = "";   // track last spoken text to prevent repeats
+var ttsActive    = false;
+
+// Load voices (async in most browsers)
+function loadVoices() {
+  ttsVoices = window.speechSynthesis ? speechSynthesis.getVoices() : [];
+}
+if ("speechSynthesis" in window) {
+  loadVoices();
+  speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+// Pick the clearest English speaking voice available (natural studio/child-friendly quality)
+function pickClearEnglishVoice() {
+  if (!ttsVoices.length) ttsVoices = window.speechSynthesis ? speechSynthesis.getVoices() : [];
+
+  // 1. First priority: High-clarity natural neural / online voices (Natural, Neural, Online, Google, Samantha, Jenny, Ava, Guy, Zira)
+  var clearPriorities = ["natural","neural","google uk english","google us english","samantha","jenny","ava","guy","zira","serena","oliver","george","hazel"];
+  for (var i = 0; i < clearPriorities.length; i++) {
+    var kw = clearPriorities[i];
+    var matched = ttsVoices.find(function(v){
+      return v.lang && v.lang.indexOf("en") === 0 && v.name.toLowerCase().indexOf(kw) !== -1;
+    });
+    if (matched) return matched;
+  }
+
+  // 2. Second priority: Standard en-US or en-GB voices
+  var enStandard = ttsVoices.find(function(v){
+    return (v.lang === "en-US" || v.lang === "en-GB") && !v.name.toLowerCase().includes("whisper");
+  });
+  if (enStandard) return enStandard;
+
+  // 3. Fallback: Any English voice
+  return ttsVoices.find(function(v){ return v.lang && v.lang.indexOf("en") === 0; }) || null;
+}
+
+// Core speak function — skips if same text was just spoken
+function speak(text, force) {
+  if (!("speechSynthesis" in window)) return;
+  var clean = text.trim().replace(/\s+/g," ");
+  if (!force && clean === ttsLastSpoken) return; // anti-repeat guard
+  window.speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(clean);
+  u.rate = 0.90;   // natural, crisp cadence ideal for learning
+  u.pitch = 1.04;  // friendly, clear tone
+  var voice = pickClearEnglishVoice();
+  if (voice) u.voice = voice;
+  u.onend  = function(){ ttsActive = false; };
+  u.onerror= function(){ ttsActive = false; };
+  speechSynthesis.speak(u);
+  ttsLastSpoken = clean;
+  ttsActive = true;
+}
+function stopSpeak() {
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+  ttsActive = false;
+  ttsLastSpoken = "";
+}
+
+// Generic box reader — reads visible text from an element, skipping already-read content
+function makeReadBtn(labelId, getTextFn) {
+  var btn = document.createElement("button");
+  btn.className = "read-btn";
+  btn.id = labelId || ("rb-" + Date.now());
+  btn.innerHTML = "&#128266; Read Aloud";
+  btn.onclick = function() {
+    if (ttsActive) {
+      stopSpeak();
+      btn.innerHTML = "&#128266; Read Aloud";
+      btn.classList.remove("speaking");
+      return;
+    }
+    var text = getTextFn();
+    if (!text) return;
+    speak(text, true); // force=true for manual button press
+    btn.innerHTML = "&#9646;&#9646; Stop";
+    btn.classList.add("speaking");
+    // reset button when done
+    var checkDone = setInterval(function(){
+      if (!ttsActive) {
+        clearInterval(checkDone);
+        btn.innerHTML = "&#128266; Read Aloud";
+        btn.classList.remove("speaking");
+      }
+    }, 500);
+  };
+  return btn;
+}
+
+/* ================================================================
+   DATA
+   ================================================================ */
+/* CURRENCIES moved to profile section */
+
+var SUBJECTS = [
+  {id:"reading", emoji:"&#128218;", name:"Reading and Phonics", desc:"Alphabet, sounds, sight words and stories", color:"s-reading", lessons:["alphabet","sight-words","story-read"]},
+  {id:"math",    emoji:"&#128290;", name:"Math",                desc:"Counting, adding, subtracting, shapes and telling time", color:"s-math", lessons:["counting","addition","subtraction","shapes","tell-time"]},
+  {id:"writing", emoji:"&#9999;&#65039;",  name:"Writing",      desc:"Letters, tracing and building sentences",   color:"s-writing", lessons:["letter-trace","sentences"]},
+  {id:"science", emoji:"&#127807;", name:"Science",             desc:"Animals, plants, weather and the world",    color:"s-science", lessons:["animals","plants","weather"]},
+  {id:"anatomy", emoji:"&#129505;", name:"Anatomy & Physiology",desc:"Body parts, how organs work, and our 5 senses", color:"s-anatomy", lessons:["body-parts","organs-systems","five-senses"]},
+  {id:"social",  emoji:"&#127758;", name:"Social Studies",      desc:"Family, community, maps and our country",   color:"s-social",  lessons:["family","community","maps"]},
+  {id:"arts",    emoji:"&#127912;", name:"Arts and Fun",        desc:"Colors, rhymes, songs and creativity",      color:"s-arts",    lessons:["colors","rhymes","counting-song"]},
+];
+
+var ALPHA_DATA = [
+  {l:"A",sound:"ah",  word:"Apple",   emoji:"&#127822;"},{l:"B",sound:"buh", word:"Ball",    emoji:"&#9917;"},
+  {l:"C",sound:"kuh", word:"Cat",     emoji:"&#128049;"},{l:"D",sound:"duh", word:"Dog",     emoji:"&#128054;"},
+  {l:"E",sound:"eh",  word:"Egg",     emoji:"&#129370;"},{l:"F",sound:"fuh", word:"Fish",    emoji:"&#128031;"},
+  {l:"G",sound:"guh", word:"Goat",    emoji:"&#128016;"},{l:"H",sound:"huh", word:"Hat",     emoji:"&#127913;"},
+  {l:"I",sound:"ih",  word:"Igloo",   emoji:"&#127968;"},{l:"J",sound:"juh", word:"Jar",     emoji:"&#129467;"},
+  {l:"K",sound:"kuh", word:"Kite",    emoji:"&#129641;"},{l:"L",sound:"luh", word:"Lion",    emoji:"&#129409;"},
+  {l:"M",sound:"muh", word:"Moon",    emoji:"&#127769;"},{l:"N",sound:"nuh", word:"Net",     emoji:"&#127907;"},
+  {l:"O",sound:"oh",  word:"Owl",     emoji:"&#129417;"},{l:"P",sound:"puh", word:"Pig",     emoji:"&#128055;"},
+  {l:"Q",sound:"kwuh",word:"Queen",   emoji:"&#128081;"},{l:"R",sound:"ruh", word:"Rain",    emoji:"&#127783;&#65039;"},
+  {l:"S",sound:"suh", word:"Sun",     emoji:"&#9728;&#65039;"},{l:"T",sound:"tuh",word:"Tree",emoji:"&#127795;"},
+  {l:"U",sound:"uh",  word:"Umbrella",emoji:"&#9730;&#65039;"},{l:"V",sound:"vuh",word:"Van", emoji:"&#128656;"},
+  {l:"W",sound:"wuh", word:"Water",   emoji:"&#128167;"},{l:"X",sound:"ks",  word:"X-Ray",   emoji:"&#129467;"},
+  {l:"Y",sound:"yuh", word:"Yarn",    emoji:"&#129526;"},{l:"Z",sound:"zuh", word:"Zebra",   emoji:"&#129427;"},
+];
+var ALPHA_COLORS = ["#E53935","#F4511E","#F9A825","#388E3C","#1565C0","#6A1B9A","#AD1457",
+  "#00838F","#2E7D32","#BF360C","#00695C","#558B2F","#F06292","#4FC3F7","#FFB300",
+  "#1A237E","#BCA800","#880E4F","#A52714","#0D47A1","#006064","#1B5E20","#003c8f",
+  "#4A148C","#FF8F00","#D84315"];
+
+var SIGHT_WORDS = [
+  {word:"the",  use:"The cat sat on the mat."},
+  {word:"and",  use:"Mom and Dad are home."},
+  {word:"a",    use:"I have a big dog."},
+  {word:"is",   use:"She is very happy!"},
+  {word:"in",   use:"The toy is in the box."},
+  {word:"it",   use:"It is so hot today."},
+  {word:"of",   use:"A cup of milk, please!"},
+  {word:"to",   use:"I want to play outside."},
+  {word:"can",  use:"I can jump very high!"},
+  {word:"you",  use:"Can you help me?"},
+  {word:"he",   use:"He likes to run fast."},
+  {word:"she",  use:"She has a red backpack."},
+  {word:"we",   use:"We are best friends."},
+  {word:"my",   use:"This is my favorite book."},
+  {word:"like", use:"I like to eat pizza."},
+  {word:"have", use:"I have a new pet fish."},
+  {word:"go",   use:"Let us go to the park!"},
+  {word:"see",  use:"I see a colorful bird."},
+  {word:"me",   use:"Please come with me."},
+  {word:"are",  use:"They are coming here."},
+  {word:"said", use:"She said hello to me."},
+  {word:"for",  use:"This gift is for you!"},
+  {word:"with", use:"I played with my friend."},
+  {word:"up",   use:"Look up at the stars!"},
+  {word:"look", use:"Look at that big elephant!"},
+];
+
+var STORY_SENTENCES = [
+  "Once upon a time, there was a little red hen.",
+  "She lived on a farm with a cat, a dog, and a duck.",
+  "One day, she found some wheat seeds.",
+  "Who will help me plant these seeds? she asked.",
+  "Not I said the cat. Not I said the dog. Not I said the duck.",
+  "Then I will do it myself! said the little red hen.",
+  "She planted all the seeds by herself.",
+  "The seeds grew tall and turned into golden wheat.",
+  "Who will help me make the bread? she asked again.",
+  "Not I said her friends once more.",
+  "So she baked the bread all by herself.",
+  "The bread smelled warm and delicious!",
+  "Who will help me eat the bread? she asked with a smile.",
+  "I will said the cat. I will said the dog. I will said the duck.",
+  "No, said the little red hen. I made it myself, so I shall eat it myself!",
+  "And she ate every last crumb. The End!",
+];
+
+var SHAPES_DATA = [
+  {name:"Circle",   emoji:"&#11093;",sides:0,desc:"A circle has no corners or sides. It is perfectly round!",           ex:"Moon, Pizza, Ball"},
+  {name:"Square",   emoji:"&#128999;",sides:4,desc:"A square has 4 equal sides and 4 corners.",                        ex:"Dice face, Picture frame"},
+  {name:"Triangle", emoji:"&#128314;",sides:3,desc:"A triangle has 3 sides and 3 corners.",                            ex:"Pizza slice, Mountain"},
+  {name:"Rectangle",emoji:"&#128998;",sides:4,desc:"A rectangle has 4 sides. Two are long and two are short.",         ex:"Phone, TV screen"},
+  {name:"Diamond",  emoji:"&#128311;",sides:4,desc:"A diamond has 4 equal sides that go in a slanted direction.",      ex:"Gemstone, Playing card"},
+  {name:"Star",     emoji:"&#11088;", sides:5,desc:"A star shape has 5 points! Look up at the sky at night.",          ex:"Gold star, Sparkle"},
+  {name:"Oval",     emoji:"&#128993;",sides:0,desc:"An oval is like a stretched-out circle, like an egg!",             ex:"Egg, Football"},
+  {name:"Pentagon", emoji:"&#11040;", sides:5,desc:"A pentagon has 5 sides and 5 corners.",                            ex:"Home plate in baseball"},
+  {name:"Hexagon",  emoji:"&#11041;", sides:6,desc:"A hexagon has 6 sides, just like a honeycomb cell!",               ex:"Honeycomb, Soccer ball panel"},
+  {name:"Cube",     emoji:"&#127922;",sides:6,desc:"A cube is a 3D shape with 6 square faces, like a dice!",           ex:"Dice, Ice cube"},
+];
+
+var SEASONS = [
+  {name:"Spring",color:"#AD1457",bg:"#FFF0F6",icon:"&#127800;",
+   weather:"Warm and rainy",temps:"50 to 70 degrees",
+   activities:"Plant gardens, fly kites, watch flowers bloom!",
+   animals:"Birds build nests. Butterflies appear. Baby animals are born!",
+   clothes:"Light jacket and umbrella"},
+  {name:"Summer",color:"#E65100",bg:"#FFF8E1",icon:"&#9728;&#65039;",
+   weather:"Hot and sunny",temps:"70 to 100 degrees",
+   activities:"Swimming, picnics, camping, playing outside all day!",
+   animals:"Insects are everywhere. Bears are very active. Birds sing loudly.",
+   clothes:"T-shirt, shorts, sunscreen, sunglasses"},
+  {name:"Fall",  color:"#BF360C",bg:"#FBE9E7",icon:"&#127810;",
+   weather:"Cool and windy. Leaves turn orange and red.",temps:"40 to 65 degrees",
+   activities:"Rake leaves, pick apples, carve pumpkins, go on hay rides!",
+   animals:"Squirrels gather nuts. Some birds fly south. Bears eat extra food.",
+   clothes:"Sweater, light jacket, jeans"},
+  {name:"Winter",color:"#1565C0",bg:"#E3F2FD",icon:"&#10052;&#65039;",
+   weather:"Cold and snowy or icy",temps:"10 to 40 degrees",
+   activities:"Build snowmen, sled down hills, drink hot cocoa, go ice skating!",
+   animals:"Bears hibernate and sleep all winter. Deer search for food under snow.",
+   clothes:"Coat, boots, hat, mittens, scarf"},
+];
+
+/* ================================================================
+   STATE
+   ================================================================ */
+var state = {
+  currency: JSON.parse(localStorage.getItem("ag1_currency") || "null") || CURRENCIES[0],
+  wallet:   parseInt(localStorage.getItem("ag1_wallet") || "0"),
+  done:     JSON.parse(localStorage.getItem("ag1_done") || "[]"),
+  currentSubject: null, currentLesson: null,
+};
+function saveState() {
+  localStorage.setItem("ag1_currency", JSON.stringify(state.currency));
+  localStorage.setItem("ag1_wallet",   state.wallet);
+  localStorage.setItem("ag1_done",     JSON.stringify(state.done));
+  persistProfile();
+}
+
+/* ================================================================
+   NAV
+   ================================================================ */
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(function(s){ s.classList.remove("active"); });
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0,0); stopSpeak();
+}
+function showHome()    {
+  showScreen("screen-home"); renderHome();
+  if (currentProfile) updateHeaderUI();
+}
+function showSubject(id) {
+  if (id) state.currentSubject = id;
+  var subj = SUBJECTS.find(function(s){ return s.id === state.currentSubject; });
+  var hero = document.getElementById("subject-hero");
+  hero.className = "subject-hero " + subj.color;
+  document.getElementById("subject-title").innerHTML = subj.emoji + " " + subj.name;
+  document.getElementById("subject-desc").textContent = subj.desc;
+  renderLessonList(subj); showScreen("screen-subject");
+}
+function showLesson(lid) {
+  state.currentLesson = lid;
+  document.getElementById("lesson-content").innerHTML = "";
+  LESSONS[lid].render(document.getElementById("lesson-content"));
+  showScreen("screen-lesson");
+}
+
+/* ================================================================
+   HOME
+   ================================================================ */
+function renderHome() {
+  var grid = document.getElementById("subject-grid");
+  if (!grid) return;
+  grid.innerHTML = "";
+  if (!state) state = {};
+  if (!Array.isArray(state.done)) state.done = [];
+  SUBJECTS.forEach(function(subj) {
+    var total = subj.lessons.length;
+    var done  = subj.lessons.filter(function(l){ return state.done && state.done.includes(l); }).length;
+    var pct   = Math.round(done / total * 100);
+    var card  = document.createElement("button");
+    card.className = "subject-card " + subj.color;
+    card.innerHTML =
+      "<div class=\"s-card-top\"><span class=\"s-big-emoji\">" + subj.emoji + "</span><span class=\"s-done-badge\">" + done + "/" + total + " done</span></div>" +
+      "<h3>" + subj.name + "</h3>" +
+      "<p class=\"s-card-desc\">" + subj.desc + "</p>" +
+      "<div class=\"prog-bar-bg\"><div class=\"prog-bar-fill\" style=\"width:" + pct + "%\"></div></div>" +
+      "<div class=\"prog-label\">" + (pct === 0 ? "Tap to start!" : pct === 100 ? "All done!" : pct + "% complete") + "</div>";
+    card.onclick = function(){ showSubject(subj.id); };
+    grid.appendChild(card);
+  });
+}
+
+function renderLessonList(subj) {
+  var list = document.getElementById("lesson-list"); list.innerHTML = "";
+  subj.lessons.forEach(function(lid) {
+    var l    = LESSONS[lid];
+    var done = state.done.includes(lid);
+    var card = document.createElement("div");
+    card.className = "lesson-card" + (done ? " completed" : "");
+    card.innerHTML =
+      "<span class=\"lesson-icon\">" + l.icon + "</span>" +
+      "<div><div class=\"lesson-title\">" + l.title + "</div><div class=\"lesson-desc\">" + l.desc + "</div></div>" +
+      "<span class=\"lesson-status\">" + (done ? "Done!" : "Play") + "</span>";
+    card.onclick = function(){ showLesson(lid); };
+    list.appendChild(card);
+  });
+}
+
+/* ================================================================
+   WALLET
+   ================================================================ */
+function updateWalletUI() {
+  if (!state || !state.currency) {
+    var defCur = (typeof CURRENCIES !== "undefined" && CURRENCIES[0]) ? CURRENCIES[0] : {id:"emerald", game:"Minecraft", name:"Emeralds", icon:"&#128142;", color:"#00b894"};
+    if (!state) state = {};
+    state.currency = defCur;
+    state.wallet = state.wallet || 0;
+  }
+  setElHtml("wallet-icon", (state.currency && state.currency.icon) ? state.currency.icon : "&#128142;");
+  setElText("wallet-amount", (typeof state.wallet === "number" ? state.wallet : 0).toLocaleString());
+  setElText("wallet-name", (state.currency && state.currency.name) ? state.currency.name : "Emeralds");
+}
+function earnCurrency(amount, x, y) {
+  state.wallet += amount; saveState(); updateWalletUI();
+  spawnCoins(amount, x, y);
+  showRewardBanner("+" + amount + " " + state.currency.name + "!");
+}
+function spawnCoins(n, x, y) {
+  var count = Math.min(n, 8);
+  for (var i = 0; i < count; i++) {
+    var coin = document.createElement("div"); coin.className = "coin-fly"; coin.innerHTML = state.currency.icon;
+    var cx = (x || window.innerWidth / 2) + (Math.random() - 0.5) * 70;
+    var cy = (y || 200) + (Math.random() - 0.5) * 40;
+    coin.style.left = cx + "px"; coin.style.top = cy + "px";
+    coin.style.animationDelay = (i * 0.1) + "s";
+    document.body.appendChild(coin);
+    setTimeout(function(){ coin.remove(); }, 1400);
+  }
+}
+function showRewardBanner(msg) {
+  var b = document.getElementById("reward-banner");
+  b.textContent = msg; b.classList.add("show");
+  setTimeout(function(){ b.classList.remove("show"); }, 2300);
+}
+function confetti() {
+  var cols = ["#E53935","#FFD000","#3DAA2F","#7C34A6","#EE3F8C","#00AEEF","#F47920"];
+  for (var i = 0; i < 70; i++) {
+    var c = document.createElement("div"); c.className = "confetti-piece";
+    c.style.background = cols[i % cols.length];
+    c.style.left = Math.random() * 100 + "vw"; c.style.top = "-12px";
+    c.style.animationDuration = (1.5 + Math.random()) + "s";
+    c.style.animationDelay    = (Math.random() * 0.6) + "s";
+    c.style.borderRadius = Math.random() > 0.5 ? "50%" : "3px";
+    c.style.width  = (8 + Math.random() * 8) + "px"; c.style.height = c.style.width;
+    document.body.appendChild(c);
+    setTimeout(function(){ c.remove(); }, 3200);
+  }
+}
+function markDone(lid) {
+  if (!state.done.includes(lid)) {
+    state.done.push(lid); saveState(); confetti(); earnCurrency(LESSONS[lid].reward);
+  }
+}
+
+/* ================================================================
+   CURRENCY MODAL
+   ================================================================ */
+function openCurrencyModal() {
+  var grid = document.getElementById("currency-grid"); grid.innerHTML = "";
+  CURRENCIES.forEach(function(c) {
+    var opt = document.createElement("div");
+    opt.className = "currency-option" + (state.currency.id === c.id ? " selected" : "");
+    opt.innerHTML = "<span class=\"c-icon\">" + c.icon + "</span><div class=\"c-game\">" + c.game + "</div><div class=\"c-name\">" + c.name + "</div>";
+    opt.onclick = function() {
+      state.currency = c; saveState(); updateWalletUI();
+      grid.querySelectorAll(".currency-option").forEach(function(el){ el.classList.remove("selected"); });
+      opt.classList.add("selected");
+    };
+    grid.appendChild(opt);
+  });
+  document.getElementById("currency-modal").classList.add("open");
+}
+function closeCurrencyModal() { document.getElementById("currency-modal").classList.remove("open"); }
+
+/* ================================================================
+   HELPERS
+   ================================================================ */
+function mkBtn(text, onclick) {
+  var b = document.createElement("button");
+  b.className = "btn-primary"; b.textContent = text; b.onclick = onclick; return b;
+}
+
+// Box header with h2 + read button side by side
+function mkBoxHeader(h2Text, getReadTextFn) {
+  var hdr = document.createElement("div"); hdr.className = "lesson-box-header";
+  var h2  = document.createElement("h2"); h2.textContent = h2Text;
+  hdr.appendChild(h2);
+  if (getReadTextFn) {
+    var rb = makeReadBtn(null, getReadTextFn);
+    hdr.appendChild(rb);
+  }
+  return hdr;
+}
+
+function makeQuiz(container, lid, questions) {
+  var qi = 0, qscore = 0;
+  var qbox = document.createElement("div"); qbox.className = "lesson-box";
+  var area = document.createElement("div"); area.id = "gq-" + lid + "-area";
+  qbox.innerHTML = "";
+  qbox.appendChild(mkBoxHeader("Quick Quiz", null));
+  qbox.appendChild(area);
+  container.appendChild(qbox);
+  var btn = mkBtn("All done! Collect Reward!", function(){ markDone(lid); btn.disabled = true; btn.textContent = "Reward collected!"; });
+  container.appendChild(btn);
+  var render = function() {
+    if (qi >= questions.length) {
+      area.innerHTML =
+        "<div style=\"text-align:center;padding:20px;background:#F0FFF0;border-radius:18px;border:3px solid #3DAA2F;\">" +
+        "<div style=\"font-size:3rem;margin-bottom:8px;\">&#127881;</div>" +
+        "<div style=\"font-family:Fredoka One,cursive;font-size:1.7rem;color:#3DAA2F;\">Quiz Complete!</div>" +
+        "<div style=\"font-size:1.1rem;font-weight:800;color:#5A6A85;margin-top:6px;\">Score: " + qscore + " out of " + questions.length + " - Amazing!</div></div>";
+      return;
+    }
+    var q = questions[qi];
+    var html = "<div class=\"quiz-q\">" + q.q + "</div><div class=\"quiz-choices\">";
+    q.opts.forEach(function(o, i){ html += "<button class=\"quiz-choice\" onclick=\"gqa_" + lid + "(" + i + ")\">" + o + "</button>"; });
+    html += "</div><div class=\"quiz-feedback\" id=\"gq-" + lid + "-fb\"></div>";
+    area.innerHTML = html;
+    // Auto-read the question (new question only — anti-repeat handled by speak())
+    speak(q.q, false);
+  };
+  window["gqa_" + lid] = function(i) {
+    var q = questions[qi];
+    var choices = document.querySelectorAll("#gq-" + lid + "-area .quiz-choice");
+    choices.forEach(function(c, j){ c.disabled = true; if (j === q.ans) c.classList.add("correct"); else if (j === i) c.classList.add("wrong"); });
+    var fb = document.getElementById("gq-" + lid + "-fb");
+    if (i === q.ans) { qscore++; fb.innerHTML = "<span style=\"color:#3DAA2F\">Correct! Great job!</span>"; earnCurrency(1); speak("Correct! Great job!", true); }
+    else { fb.innerHTML = "<span style=\"color:#E8302A\">Not quite! The answer was: <strong>" + q.opts[q.ans] + "</strong></span>"; speak("Not quite. The answer was " + q.opts[q.ans], true); }
+    qi++; setTimeout(render, 1900);
+  };
+  render();
+}
+
+/* ================================================================
+   LESSON RENDERERS
+   ================================================================ */
+function renderAlphabet(container) {
+  var box = document.createElement("div"); box.className = "lesson-box";
+  box.appendChild(mkBoxHeader("Alphabet Explorer", function(){
+    return "Click any letter below to hear its name, sound, and an example word!";
+  }));
+  var intro = document.createElement("p"); intro.className = "big-text";
+  intro.textContent = "Click any letter to hear its sound and see an example word!";
+  box.appendChild(intro);
+  var grid = document.createElement("div"); grid.className = "alpha-grid"; grid.id = "alpha-grid";
+  box.appendChild(grid);
+  var detail = document.createElement("div"); detail.id = "alpha-detail"; detail.style.marginTop = "18px";
+  box.appendChild(detail);
+  container.appendChild(box);
+  var btn = mkBtn("I know my ABCs! Collect Reward!", function(){ markDone("alphabet"); btn.disabled = true; btn.textContent = "Reward collected!"; });
+  container.appendChild(btn);
+  setTimeout(function() {
+    ALPHA_DATA.forEach(function(a, i) {
+      var b = document.createElement("button"); b.className = "alpha-btn";
+      b.style.background = "linear-gradient(145deg," + ALPHA_COLORS[i] + "22," + ALPHA_COLORS[i] + "08)";
+      b.style.borderColor = ALPHA_COLORS[i] + "99";
+      b.innerHTML = "<span>" + a.l + "</span><span class=\"alpha-word\">" + a.word + "</span>";
+      b.onclick = function() {
+        document.getElementById("alpha-grid").querySelectorAll(".alpha-btn").forEach(function(x, j){
+          x.style.borderColor = (j === i ? ALPHA_COLORS[j] : ALPHA_COLORS[j] + "66");
+        });
+        document.getElementById("alpha-detail").innerHTML =
+          "<div class=\"alpha-detail\">" +
+          "<div class=\"big-letter\">" + a.l + " " + a.l.toLowerCase() + "</div>" +
+          "<div class=\"sound-text\">Sound: <strong>" + a.sound + "</strong></div>" +
+          "<div class=\"example-word\">" + a.emoji + " " + a.word + "</div></div>";
+        // Read: letter name, sound, example word
+        speak(a.l + ". The sound is " + a.sound + ". " + a.word + " starts with " + a.l + ".", true);
+      };
+      grid.appendChild(b);
+    });
+  }, 50);
+}
+
+function renderSightWords(container) {
+  var idx = 0;
+  var lastReadIdx = -1;    // which card index was last read
+  var lastReadSide = "";   // "front" or "back"
+
+  var box = document.createElement("div"); box.className = "lesson-box";
+
+  // Header row: title + Read button
+  var hdr = document.createElement("div"); hdr.className = "lesson-box-header";
+  var h2  = document.createElement("h2"); h2.textContent = "Sight Word Flashcards";
+  hdr.appendChild(h2);
+  // Dedicated Read button for sight words
+  var readBtn = document.createElement("button"); readBtn.className = "read-btn"; readBtn.id = "sw-read-btn";
+  readBtn.innerHTML = "&#128266; Read Word";
+  readBtn.onclick = function() {
+    if (ttsActive) { stopSpeak(); readBtn.innerHTML = "&#128266; Read Word"; readBtn.classList.remove("speaking"); return; }
+    var card = document.getElementById("sw-card");
+    var isFlipped = card.classList.contains("flipped");
+    var text = isFlipped
+      ? SIGHT_WORDS[idx].word + ". " + SIGHT_WORDS[idx].use
+      : SIGHT_WORDS[idx].word + ". " + SIGHT_WORDS[idx].word;
+    speak(text, true);
+    lastReadIdx = idx; lastReadSide = isFlipped ? "back" : "front";
+    readBtn.innerHTML = "&#9646;&#9646; Stop"; readBtn.classList.add("speaking");
+    var chk = setInterval(function(){
+      if (!ttsActive) { clearInterval(chk); readBtn.innerHTML = "&#128266; Read Word"; readBtn.classList.remove("speaking"); }
+    }, 400);
+  };
+  hdr.appendChild(readBtn);
+  box.appendChild(hdr);
+
+  var intro = document.createElement("p"); intro.className = "big-text";
+  intro.textContent = "Click the card to flip and see the word in a sentence!";
+  box.appendChild(intro);
+
+  // Flashcard
+  var fcWrap = document.createElement("div"); fcWrap.className = "flashcard-wrap";
+  fcWrap.innerHTML =
+    "<div class=\"flashcard\" id=\"sw-card\">" +
+    "<div class=\"fc-front\"><div class=\"word\" id=\"sw-word\"></div><div class=\"hint\">Tap to flip!</div></div>" +
+    "<div class=\"fc-back\"><div class=\"meaning\" id=\"sw-use\"></div></div>" +
+    "</div>";
+  box.appendChild(fcWrap);
+
+  // Counter + controls all in one row
+  var counter = document.createElement("div"); counter.className = "fc-counter"; counter.id = "sw-counter";
+  box.appendChild(counter);
+
+  var swCtrl = document.createElement("div"); swCtrl.className = "sw-controls";
+  var navGrp = document.createElement("div"); navGrp.className = "sw-nav-group";
+  var prevBtn = document.createElement("button"); prevBtn.className = "fc-nav-btn prev"; prevBtn.textContent = "Previous"; prevBtn.onclick = function(){ swPrev(); };
+  var nextBtn = document.createElement("button"); nextBtn.className = "fc-nav-btn next"; nextBtn.textContent = "Next";     nextBtn.onclick = function(){ swNext(); };
+  navGrp.appendChild(prevBtn); navGrp.appendChild(nextBtn);
+  swCtrl.appendChild(navGrp);
+  box.appendChild(swCtrl);
+
+  container.appendChild(box);
+  var doneBtn = mkBtn("I practiced all words! Collect Reward!", function(){ markDone("sight-words"); doneBtn.disabled = true; doneBtn.textContent = "Reward collected!"; });
+  container.appendChild(doneBtn);
+
+  var updateCard = function(autoRead) {
+    var w = SIGHT_WORDS[idx];
+    document.getElementById("sw-word").textContent = w.word;
+    document.getElementById("sw-use").textContent  = w.use;
+    document.getElementById("sw-counter").textContent = "Word " + (idx + 1) + " of " + SIGHT_WORDS.length;
+    var card = document.getElementById("sw-card");
+    card.classList.remove("flipped");
+    lastReadSide = "";
+
+    // Flip handler: reads the sentence when flipped, word when flipped back
+    card.onclick = function() {
+      card.classList.toggle("flipped");
+      var flipped = card.classList.contains("flipped");
+      // Only speak if this side has not been read yet for this card
+      if (flipped && lastReadSide !== "back") {
+        speak(w.use, true);
+        lastReadSide = "back";
+        readBtn.innerHTML = "&#128266; Read Sentence"; readBtn.classList.remove("speaking");
+      } else if (!flipped && lastReadSide !== "front") {
+        speak(w.word, true);
+        lastReadSide = "front";
+        readBtn.innerHTML = "&#128266; Read Word"; readBtn.classList.remove("speaking");
+      }
+    };
+
+    // Auto-read the word when navigating to a new card
+    if (autoRead && idx !== lastReadIdx) {
+      setTimeout(function(){ speak(w.word, true); lastReadIdx = idx; lastReadSide = "front"; }, 300);
+    }
+    readBtn.innerHTML = "&#128266; Read Word";
+    readBtn.classList.remove("speaking");
+  };
+
+  window.swPrev = function(){ idx = (idx - 1 + SIGHT_WORDS.length) % SIGHT_WORDS.length; updateCard(true); };
+  window.swNext = function(){ idx = (idx + 1) % SIGHT_WORDS.length; updateCard(true); };
+  updateCard(false); // first load — don't auto-read, let child press the button
+}
+
+function renderStory(container) {
+  var idx = 0;
+  var box = document.createElement("div"); box.className = "lesson-box";
+  var spans = STORY_SENTENCES.map(function(s, i){ return "<span id=\"ss-" + i + "\">" + s + " </span>"; }).join("");
+  box.appendChild(mkBoxHeader("Story Time!", null));
+  box.innerHTML +=
+    "<div class=\"story-title\">The Little Red Hen</div>" +
+    "<div class=\"story-text\">" + spans + "</div>" +
+    "<div class=\"story-controls\">" +
+    "<button class=\"story-btn play\" id=\"story-play-btn\" onclick=\"storyPlay()\">Read Next Sentence</button>" +
+    "<button class=\"story-btn reset\" onclick=\"storyReset()\">Start Over</button></div>";
+  container.appendChild(box);
+  var btn = mkBtn("Finished the story! Collect Reward!", function(){ markDone("story-read"); btn.disabled = true; btn.textContent = "Reward collected!"; });
+  container.appendChild(btn);
+  window.storyPlay = function() {
+    if (idx >= STORY_SENTENCES.length) return;
+    document.querySelectorAll(".story-text span").forEach(function(s){ s.classList.remove("highlight"); });
+    var sp = document.getElementById("ss-" + idx);
+    sp.classList.add("highlight"); sp.scrollIntoView({behavior:"smooth", block:"nearest"});
+    speak(STORY_SENTENCES[idx], true);   // force=true — each sentence is unique
+    idx++;
+    if (idx >= STORY_SENTENCES.length) document.getElementById("story-play-btn").textContent = "The End!";
+  };
+  window.storyReset = function() {
+    idx = 0; ttsLastSpoken = "";
+    document.querySelectorAll(".story-text span").forEach(function(s){ s.classList.remove("highlight"); });
+    document.getElementById("story-play-btn").textContent = "Read Next Sentence";
+  };
+}
+
+/* ================================================================
+   SCRATCHPAD — notebook paper canvas for working out math problems
+   ================================================================ */
+function makeScratchPad(mountEl) {
+  if (!mountEl) return function(){};
+
+  /* --- build DOM --- */
+  var wrap = document.createElement("div"); wrap.className = "scratchpad-wrap";
+
+  /* topbar */
+  var tb = document.createElement("div"); tb.className = "sp-topbar";
+
+  var title = document.createElement("div"); title.className = "sp-title";
+  title.innerHTML = "&#9999;&#65039; Work it out here!";
+  tb.appendChild(title);
+
+  /* color swatches */
+  var colorRow = document.createElement("div"); colorRow.className = "sp-colors";
+  var COLORS = [
+    {c:"#1A2744", label:"Pencil"},
+    {c:"#E53935", label:"Red"},
+    {c:"#1565C0", label:"Blue"},
+    {c:"#2E7D32", label:"Green"},
+  ];
+  var curColor   = COLORS[0].c;
+  var eraserMode = false;
+  var colorBtns  = [];
+
+  COLORS.forEach(function(cl, i) {
+    var btn = document.createElement("div");
+    btn.className = "sp-color-btn" + (i === 0 ? " active" : "");
+    btn.style.background = cl.c;
+    btn.title = cl.label;
+    btn.onclick = function() {
+      eraserMode = false;
+      curColor = cl.c;
+      colorBtns.forEach(function(b){ b.classList.remove("active"); });
+      btn.classList.add("active");
+      eraserBtn.classList.remove("active");
+      canvas.style.cursor = "crosshair";
+    };
+    colorBtns.push(btn);
+    colorRow.appendChild(btn);
+  });
+  tb.appendChild(colorRow);
+
+  /* eraser */
+  var eraserBtn = document.createElement("button"); eraserBtn.className = "sp-tool-btn";
+  eraserBtn.textContent = "Erase";
+  eraserBtn.onclick = function() {
+    eraserMode = true;
+    colorBtns.forEach(function(b){ b.classList.remove("active"); });
+    eraserBtn.classList.add("active");
+    canvas.style.cursor = "cell";
+  };
+  tb.appendChild(eraserBtn);
+
+  /* clear */
+  var clearBtn = document.createElement("button"); clearBtn.className = "sp-tool-btn danger";
+  clearBtn.innerHTML = "&#128465; Clear";
+  clearBtn.onclick = function() { drawPaper(); };
+  tb.appendChild(clearBtn);
+
+  wrap.appendChild(tb);
+
+  /* paper */
+  var paper = document.createElement("div"); paper.className = "sp-paper";
+  var canvas = document.createElement("canvas"); canvas.height = 220;
+  paper.appendChild(canvas); wrap.appendChild(paper);
+  mountEl.appendChild(wrap);
+
+  /* --- canvas drawing --- */
+  var ctx = canvas.getContext("2d");
+  var drawing = false;
+
+  function drawPaper() {
+    var w = canvas.width || 400;
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, w, canvas.height);
+    /* blue horizontal lines every 28px */
+    ctx.strokeStyle = "#BBDEFB"; ctx.lineWidth = 1;
+    for (var y = 28; y < canvas.height; y += 28) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+    }
+    /* red margin line */
+    ctx.strokeStyle = "#FFCDD2"; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(46, 0); ctx.lineTo(46, canvas.height); ctx.stroke();
+  }
+
+  function resize() {
+    var w = canvas.parentElement ? canvas.parentElement.clientWidth : 400;
+    if (!w) w = 400;
+    canvas.width = w;
+    drawPaper();
+    /* reset stroke style after resize wipes ctx state */
+    ctx.lineCap = "round"; ctx.lineJoin = "round";
+  }
+
+  function getPos(e) {
+    var r   = canvas.getBoundingClientRect();
+    var scX = canvas.width  / r.width;
+    var scY = canvas.height / r.height;
+    var src = e.touches ? e.touches[0] : e;
+    return { x: (src.clientX - r.left) * scX, y: (src.clientY - r.top) * scY };
+  }
+
+  function startStroke(e) {
+    drawing = true;
+    ctx.lineWidth   = eraserMode ? 24 : 3.5;
+    ctx.strokeStyle = eraserMode ? "white" : curColor;
+    ctx.lineCap = "round"; ctx.lineJoin = "round";
+    var p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y);
+  }
+  function moveStroke(e) {
+    if (!drawing) return;
+    var p = getPos(e); ctx.lineTo(p.x, p.y); ctx.stroke();
+  }
+  function endStroke() { drawing = false; }
+
+  canvas.addEventListener("mousedown",  startStroke);
+  canvas.addEventListener("mousemove",  moveStroke);
+  canvas.addEventListener("mouseup",    endStroke);
+  canvas.addEventListener("mouseleave", endStroke);
+  canvas.addEventListener("touchstart", function(e){ e.preventDefault(); startStroke(e); }, {passive:false});
+  canvas.addEventListener("touchmove",  function(e){ e.preventDefault(); moveStroke(e);  }, {passive:false});
+  canvas.addEventListener("touchend",   endStroke);
+
+  /* init after a small delay so the element is in the DOM and has width */
+  setTimeout(resize, 80);
+
+  /* return a clear function the math games can call between problems */
+  return function clearPad(){ drawPaper(); };
+}
+
+function renderCounting(container) {
+  var emojis = ["&#127822;","&#11088;","&#128054;","&#127800;","&#127936;","&#129419;","&#127829;","&#128056;","&#127752;","&#129412;"];
+  var score = 0, total = 10, qi = 0, answered = false;
+  var box = document.createElement("div"); box.className = "lesson-box";
+  box.appendChild(mkBoxHeader("Counting 1 to 20", null));
+  var inner = document.createElement("div");
+  inner.innerHTML =
+    "<p class=\"big-text\">Count the items and pick the right number!</p>" +
+    "<div id=\"count-icons\" style=\"font-size:1.9rem;text-align:center;min-height:60px;line-height:1.9;margin:12px 0;word-break:break-all;background:#EEF3FF;border-radius:18px;padding:14px;border:3px solid #C8D5FF;\"></div>" +
+    "<div class=\"math-problem\" id=\"count-q\"></div>" +
+    "<div id=\"count-sp\"></div>" +
+    "<div class=\"math-choices\" id=\"count-ch\"></div>" +
+    "<div class=\"math-score\" id=\"count-score\">Score: 0 / 0</div>" +
+    "<button class=\"btn-primary\" id=\"count-next\" onclick=\"countNext()\" disabled style=\"margin-top:16px;\">Next</button>";
+  box.appendChild(inner);
+  container.appendChild(box);
+  var clearSP = makeScratchPad(document.getElementById("count-sp"));
+  window.countNext = function() {
+    if (qi >= total) { markDone("counting"); document.getElementById("count-next").textContent = "All done!"; return; }
+    answered = false; document.getElementById("count-next").disabled = true;
+    clearSP();
+    var n  = Math.floor(Math.random() * 15) + 1;
+    var em = emojis[Math.floor(Math.random() * emojis.length)];
+    document.getElementById("count-icons").innerHTML = em.repeat(n);
+    document.getElementById("count-q").innerHTML = "How many are there?";
+    speak("How many are there?", true);
+    var ws = new Set();
+    while (ws.size < 3) { var w = n + Math.floor(Math.random() * 7) - 3; if (w > 0 && w !== n) ws.add(w); }
+    var opts = [n, ...ws].sort(function(){ return Math.random() - 0.5; });
+    var ch = document.getElementById("count-ch"); ch.innerHTML = "";
+    opts.forEach(function(o) {
+      var b = document.createElement("button"); b.className = "math-choice"; b.textContent = o;
+      b.onclick = function() {
+        if (answered) return; answered = true;
+        if (o === n) { b.classList.add("correct"); score++; earnCurrency(1, b.getBoundingClientRect().left, b.getBoundingClientRect().top); speak("Correct! Well done!", true); }
+        else { b.classList.add("wrong"); ch.querySelectorAll(".math-choice").forEach(function(x){ if (parseInt(x.textContent) === n) x.classList.add("correct"); }); speak("The answer was " + n, true); }
+        document.getElementById("count-score").textContent = "Score: " + score + " / " + (qi + 1);
+        qi++; document.getElementById("count-next").disabled = false;
+        if (qi >= total) document.getElementById("count-next").textContent = "Collect Reward!";
+      };
+      ch.appendChild(b);
+    });
+  };
+  countNext();
+}
+
+
+function makeMathGame(container, lid, title, op) {
+  var score = 0, total = 10, qi = 0, answered = false;
+  var box = document.createElement("div"); box.className = "lesson-box";
+  box.appendChild(mkBoxHeader(title, null));
+  var inner = document.createElement("div");
+  inner.innerHTML =
+    "<p class=\"big-text\">Solve the problems! You can do it!</p>" +
+    "<div class=\"math-problem\" id=\"" + lid + "-prob\"></div>" +
+    "<div id=\"" + lid + "-sp\"></div>" +
+    "<div class=\"math-choices\" id=\"" + lid + "-ch\"></div>" +
+    "<div class=\"math-score\" id=\"" + lid + "-score\">Score: 0 / 0</div>" +
+    "<button class=\"btn-primary\" id=\"" + lid + "-next\" onclick=\"" + lid + "Next()\" disabled style=\"margin-top:16px;\">Next</button>";
+  box.appendChild(inner);
+  container.appendChild(box);
+  var clearSP = makeScratchPad(document.getElementById(lid + "-sp"));
+  window[lid + "Next"] = function() {
+    if (qi >= total) { markDone(lid); return; }
+    answered = false; document.getElementById(lid + "-next").disabled = true;
+    clearSP();
+    var a, b, ans;
+    if (op === "+") { a = Math.floor(Math.random() * 10) + 1; b = Math.floor(Math.random() * (21 - a)); ans = a + b; }
+    else            { a = Math.floor(Math.random() * 15) + 5; b = Math.floor(Math.random() * a); ans = a - b; }
+    var probText = a + " " + op + " " + b + " equals what?";
+    document.getElementById(lid + "-prob").textContent = a + " " + op + " " + b + " = ?";
+    speak(probText, true);
+    var ws = new Set();
+    while (ws.size < 3) { var w = ans + Math.floor(Math.random() * 7) - 3; if (w >= 0 && w !== ans) ws.add(w); }
+    var opts = [ans, ...ws].sort(function(){ return Math.random() - 0.5; });
+    var ch = document.getElementById(lid + "-ch"); ch.innerHTML = "";
+    opts.forEach(function(o) {
+      var b2 = document.createElement("button"); b2.className = "math-choice"; b2.textContent = o;
+      b2.onclick = function() {
+        if (answered) return; answered = true;
+        if (o === ans) { b2.classList.add("correct"); score++; earnCurrency(1, b2.getBoundingClientRect().left, b2.getBoundingClientRect().top); speak("Correct! The answer is " + ans, true); }
+        else { b2.classList.add("wrong"); ch.querySelectorAll(".math-choice").forEach(function(x){ if (parseInt(x.textContent) === ans) x.classList.add("correct"); }); speak("The answer is " + ans, true); }
+        document.getElementById(lid + "-score").textContent = "Score: " + score + " / " + (qi + 1);
+        qi++; document.getElementById(lid + "-next").disabled = false;
+        if (qi >= total) document.getElementById(lid + "-next").textContent = "Collect Reward!";
+      };
+      ch.appendChild(b2);
+    });
+  };
+  window[lid + "Next"]();
+}
+function renderAddition(c)    { makeMathGame(c, "addition",    "Addition to 20",    "+"); }
+function renderSubtraction(c) { makeMathGame(c, "subtraction", "Subtraction to 20", "-"); }
+
+var shapeIdx = 0;
+function renderShapes(container) {
+  var box = document.createElement("div"); box.className = "lesson-box";
+  box.appendChild(mkBoxHeader("Shapes Explorer", function(){
+    var s = SHAPES_DATA[shapeIdx];
+    return s.name + ". " + s.desc + " " + (s.sides > 0 ? "It has " + s.sides + " sides." : "") + " Examples: " + s.ex;
+  }));
+  var inner = document.createElement("div");
+  inner.innerHTML =
+    "<p class=\"big-text\">Use the arrows to explore different shapes!</p>" +
+    "<div class=\"shape-display\" id=\"shape-emoji\"></div>" +
+    "<div class=\"shape-info\"><h3 id=\"shape-name\"></h3>" +
+    "<p id=\"shape-desc\" class=\"big-text\" style=\"margin:10px 0;\"></p>" +
+    "<p id=\"shape-sides\" style=\"font-weight:900;color:var(--pbs-blue);font-size:1rem;\"></p>" +
+    "<p id=\"shape-ex\" style=\"font-size:0.88rem;color:var(--muted);margin-top:5px;font-weight:700;\"></p></div>" +
+    "<div style=\"display:flex;gap:14px;justify-content:center;margin-top:18px;\">" +
+    "<button class=\"fc-nav-btn prev\" onclick=\"shapePrev()\">Previous</button>" +
+    "<button class=\"fc-nav-btn next\" onclick=\"shapeNext()\">Next</button></div>" +
+    "<div class=\"fc-counter\" id=\"shape-counter\"></div>";
+  box.appendChild(inner);
+  container.appendChild(box);
+  var btn = mkBtn("I know my shapes! Collect Reward!", function(){ markDone("shapes"); btn.disabled = true; btn.textContent = "Reward collected!"; });
+  container.appendChild(btn);
+  var upd = function(autoSpeak) {
+    var s = SHAPES_DATA[shapeIdx];
+    document.getElementById("shape-emoji").innerHTML  = s.emoji;
+    document.getElementById("shape-name").textContent  = s.name;
+    document.getElementById("shape-desc").textContent  = s.desc;
+    document.getElementById("shape-sides").textContent = s.sides > 0 ? "Number of sides: " + s.sides : "No straight sides!";
+    document.getElementById("shape-ex").textContent    = "Examples: " + s.ex;
+    document.getElementById("shape-counter").textContent = "Shape " + (shapeIdx + 1) + " of " + SHAPES_DATA.length;
+    if (autoSpeak) speak(s.name + ". " + s.desc, false); // anti-repeat: won't re-say same shape
+  };
+  window.shapeNext = function(){ shapeIdx = (shapeIdx + 1) % SHAPES_DATA.length; upd(true); };
+  window.shapePrev = function(){ shapeIdx = (shapeIdx - 1 + SHAPES_DATA.length) % SHAPES_DATA.length; upd(true); };
+  upd(false);
+}
+
+/* ================================================================
+   TELL TIME EXPLORER & CLOCK PRACTICE
+   ================================================================ */
+function getClockSvg(h, m, showGuides) {
+  var cx = 130, cy = 130, r = 108;
+  var mAngle = (m * 6); // 360 deg / 60 min
+  var hAngle = ((h % 12) * 30) + (m * 0.5); // 30 deg per hour + 0.5 deg per min
+
+  var svg = '<svg class="clock-svg" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">';
+  // Outer bezel
+  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + (r + 14) + '" fill="#152E8A"/>';
+  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + (r + 8) + '" fill="#FFD000"/>';
+  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="#FFFFFF" stroke="#D0DCEE" stroke-width="3"/>';
+
+  // Minute tick marks and 5-min numbers
+  for (var i = 0; i < 60; i++) {
+    var ang = (i * 6) * Math.PI / 180;
+    var is5 = (i % 5 === 0);
+    var p1 = is5 ? (r - 16) : (r - 8);
+    var p2 = r - 3;
+    var x1 = cx + p1 * Math.sin(ang), y1 = cy - p1 * Math.cos(ang);
+    var x2 = cx + p2 * Math.sin(ang), y2 = cy - p2 * Math.cos(ang);
+    var strokeColor = is5 ? "#1E3FA2" : "#A0B2CE";
+    var sw = is5 ? 3 : 1.5;
+    svg += '<line x1="' + x1.toFixed(1) + '" y1="' + y1.toFixed(1) + '" x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '" stroke="' + strokeColor + '" stroke-width="' + sw + '" stroke-linecap="round"/>';
+  }
+
+  // Hour numerals 1 to 12
+  for (var num = 1; num <= 12; num++) {
+    var nAng = (num * 30) * Math.PI / 180;
+    var nx = cx + (r - 28) * Math.sin(nAng);
+    var ny = cy - (r - 28) * Math.cos(nAng) + 6;
+    svg += '<text x="' + nx.toFixed(1) + '" y="' + ny.toFixed(1) + '" text-anchor="middle" font-family="Fredoka One,cursive" font-size="20" font-weight="900" fill="#1A2744">' + num + '</text>';
+  }
+
+  // Hour hand (red, shorter, thicker)
+  svg += '<g transform="rotate(' + hAngle.toFixed(1) + ' ' + cx + ' ' + cy + ')">';
+  svg += '<line x1="' + cx + '" y1="' + (cy + 14) + '" x2="' + cx + '" y2="' + (cy - 56) + '" stroke="#E53935" stroke-width="8" stroke-linecap="round"/>';
+  svg += '<polygon points="' + cx + ',' + (cy - 66) + ' ' + (cx - 7) + ',' + (cy - 52) + ' ' + (cx + 7) + ',' + (cy - 52) + '" fill="#E53935"/>';
+  svg += '</g>';
+
+  // Minute hand (blue, longer)
+  svg += '<g transform="rotate(' + mAngle.toFixed(1) + ' ' + cx + ' ' + cy + ')">';
+  svg += '<line x1="' + cx + '" y1="' + (cy + 18) + '" x2="' + cx + '" y2="' + (cy - 86) + '" stroke="#1E3FA2" stroke-width="5" stroke-linecap="round"/>';
+  svg += '<polygon points="' + cx + ',' + (cy - 96) + ' ' + (cx - 6) + ',' + (cy - 82) + ' ' + (cx + 6) + ',' + (cy - 82) + '" fill="#1E3FA2"/>';
+  svg += '</g>';
+
+  // Center pin
+  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="8" fill="#FFD000" stroke="#152E8A" stroke-width="3"/>';
+  svg += '<circle cx="' + cx + '" cy="' + cy + '" r="3" fill="#152E8A"/>';
+  svg += '</svg>';
+  return svg;
+}
+
+function formatDigitalTime(h, m) {
+  var mm = m < 10 ? ("0" + m) : m;
+  return h + ":" + mm;
+}
+
+function formatSpokenTime(h, m) {
+  if (m === 0) return h + " o'clock";
+  if (m === 30) return "Half past " + h;
+  if (m === 15) return "Quarter past " + h;
+  if (m === 45) {
+    var nextH = (h % 12) + 1;
+    return "Quarter to " + nextH;
+  }
+  return h + " " + (m < 10 ? "0" + m : m);
+}
+
+function renderTellTime(container) {
+  var box = document.createElement("div"); box.className = "lesson-box";
+  box.appendChild(mkBoxHeader("Teach Me How to Tell Time", function(){
+    return "Telling time on an analog clock! The short red hand shows the hour. The long blue hand shows the minutes. When the long hand points straight up to 12, it is o'clock! When it points down to 6, it is half past!";
+  }));
+
+  var inner = document.createElement("div");
+  inner.innerHTML =
+    "<p class=\"big-text\">First graders learn to read the clock by the hour (o'clock) and half past (:30)!</p>" +
+    "<div class=\"clock-parts-legend\">" +
+    "  <div class=\"c-legend-item\"><span class=\"c-legend-dot hour\"></span> Short Red Hand = Hour</div>" +
+    "  <div class=\"c-legend-item\"><span class=\"c-legend-dot min\"></span> Long Blue Hand = Minute</div>" +
+    "</div>" +
+    "<div class=\"clock-modes\">" +
+    "  <button class=\"clock-mode-btn active\" id=\"c-mode-explore\" onclick=\"switchClockMode('explore')\">&#128065;&#65039; Interactive Clock</button>" +
+    "  <button class=\"clock-mode-btn\" id=\"c-mode-quiz\" onclick=\"switchClockMode('quiz')\">&#127919; Clock Quiz Game</button>" +
+    "</div>" +
+    "<div id=\"clock-view-area\"></div>";
+  box.appendChild(inner);
+  container.appendChild(box);
+
+  var btnReward = mkBtn("I can tell time! Collect Reward!", function(){
+    markDone("tell-time");
+    btnReward.disabled = true;
+    btnReward.textContent = "Reward collected!";
+  });
+  container.appendChild(btnReward);
+
+  var curHour = 3, curMin = 0;
+  var quizHour = 3, quizMin = 0, quizScore = 0, quizTotal = 8, quizIndex = 0, quizAnswered = false;
+  var currentMode = "explore";
+
+  window.switchClockMode = function(m) {
+    currentMode = m;
+    var btnExp = document.getElementById("c-mode-explore");
+    var btnQz  = document.getElementById("c-mode-quiz");
+    if (m === "explore") {
+      btnExp.classList.add("active"); btnQz.classList.remove("active");
+      renderExploreView();
+    } else {
+      btnQz.classList.add("active"); btnExp.classList.remove("active");
+      quizIndex = 0; quizScore = 0;
+      renderQuizView();
+    }
+  };
+
+  function renderExploreView() {
+    var area = document.getElementById("clock-view-area");
+    area.innerHTML =
+      "<div class=\"clock-card\">" +
+      "  <div class=\"clock-stage\" id=\"clock-svg-stage\"></div>" +
+      "  <div class=\"clock-digital\" id=\"clock-digital-disp\">3:00</div>" +
+      "  <div class=\"clock-spoken\" id=\"clock-spoken-disp\">3 o'clock</div>" +
+      "  <button class=\"read-btn\" onclick=\"speakExploreTime()\" style=\"margin-bottom:12px;\">&#128266; Read Time</button>" +
+      "  <div class=\"time-steppers\">" +
+      "    <button class=\"time-step-btn\" onclick=\"adjustTime(-1, 0)\">&#8722; 1 Hour</button>" +
+      "    <button class=\"time-step-btn\" onclick=\"adjustTime(1, 0)\">&#43; 1 Hour</button>" +
+      "    <button class=\"time-step-btn\" onclick=\"adjustTime(0, -30)\">&#8722; 30 Min</button>" +
+      "    <button class=\"time-step-btn\" onclick=\"adjustTime(0, 30)\">&#43; 30 Min</button>" +
+      "  </div>" +
+      "  <p style=\"font-weight:900;color:var(--muted);font-size:.85rem;margin-top:14px;\">Tap any time to see the hands move:</p>" +
+      "  <div class=\"time-btn-grid\" id=\"time-presets\"></div>" +
+      "</div>";
+
+    var presets = [
+      {h:1,m:0},{h:2,m:0},{h:3,m:0},{h:4,m:0},{h:6,m:0},{h:8,m:0},
+      {h:1,m:30},{h:2,m:30},{h:4,m:30},{h:7,m:30},{h:9,m:30},{h:11,m:30}
+    ];
+    var pGrid = document.getElementById("time-presets");
+    presets.forEach(function(p){
+      var b = document.createElement("button");
+      b.className = "time-preset-btn" + (p.h === curHour && p.m === curMin ? " active" : "");
+      b.textContent = formatDigitalTime(p.h, p.m);
+      b.onclick = function(){
+        curHour = p.h; curMin = p.m;
+        pGrid.querySelectorAll(".time-preset-btn").forEach(function(x){ x.classList.remove("active"); });
+        b.classList.add("active");
+        updateExploreClock(true);
+      };
+      pGrid.appendChild(b);
+    });
+    updateExploreClock(false);
+  }
+
+  function updateExploreClock(autoSpeak) {
+    var stage = document.getElementById("clock-svg-stage");
+    if (!stage) return;
+    stage.innerHTML = getClockSvg(curHour, curMin, true);
+    document.getElementById("clock-digital-disp").textContent = formatDigitalTime(curHour, curMin);
+    var spoken = formatSpokenTime(curHour, curMin);
+    document.getElementById("clock-spoken-disp").textContent = spoken;
+    if (autoSpeak) speak(spoken, true);
+  }
+
+  window.adjustTime = function(dh, dm) {
+    curHour = ((curHour - 1 + dh + 12) % 12) + 1;
+    curMin = (curMin + dm + 60) % 60;
+    var pGrid = document.getElementById("time-presets");
+    if (pGrid) {
+      pGrid.querySelectorAll(".time-preset-btn").forEach(function(b){
+        b.classList.toggle("active", b.textContent === formatDigitalTime(curHour, curMin));
+      });
+    }
+    updateExploreClock(true);
+  };
+
+  window.speakExploreTime = function() {
+    speak(formatSpokenTime(curHour, curMin), true);
+  };
+
+  function renderQuizView() {
+    var area = document.getElementById("clock-view-area");
+    if (quizIndex >= quizTotal) {
+      area.innerHTML =
+        "<div style=\"text-align:center;padding:26px 20px;background:#F0FFF0;border-radius:24px;border:4px solid #3DAA2F;max-width:520px;margin:0 auto;\">" +
+        "  <div style=\"font-size:3.5rem;margin-bottom:8px;\">&#127881;</div>" +
+        "  <div style=\"font-family:Fredoka One,cursive;font-size:2rem;color:#3DAA2F;\">Time Wizard!</div>" +
+        "  <div style=\"font-size:1.15rem;font-weight:800;color:#5A6A85;margin:8px 0 16px;\">You scored " + quizScore + " out of " + quizTotal + "!</div>" +
+        "  <button class=\"btn-primary\" onclick=\"switchClockMode('quiz')\" style=\"margin-top:0;\">&#128260; Play Again</button>" +
+        "</div>";
+      return;
+    }
+
+    quizAnswered = false;
+    // Generate 1st grade time problem: either on the hour or half-past
+    quizHour = Math.floor(Math.random() * 12) + 1;
+    quizMin = Math.random() > 0.5 ? 0 : 30;
+
+    var correctStr = formatDigitalTime(quizHour, quizMin);
+    var spokenPrompt = formatSpokenTime(quizHour, quizMin);
+
+    var wrongSet = new Set();
+    while (wrongSet.size < 3) {
+      var wh = Math.floor(Math.random() * 12) + 1;
+      var wm = Math.random() > 0.5 ? 0 : 30;
+      var ws = formatDigitalTime(wh, wm);
+      if (ws !== correctStr) wrongSet.add(ws);
+    }
+    var choices = [correctStr, ...wrongSet].sort(function(){ return Math.random() - 0.5; });
+
+    area.innerHTML =
+      "<div class=\"clock-card\">" +
+      "  <div style=\"display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;\">" +
+      "    <span style=\"font-family:Fredoka One,cursive;font-size:1.1rem;color:var(--pbs-blue);\">Question " + (quizIndex + 1) + " of " + quizTotal + "</span>" +
+      "    <span style=\"font-weight:900;color:var(--pbs-green);font-size:1rem;\">&#11088; Score: " + quizScore + "</span>" +
+      "  </div>" +
+      "  <div class=\"clock-stage\">" + getClockSvg(quizHour, quizMin, true) + "</div>" +
+      "  <div class=\"quiz-q\" style=\"font-size:1.45rem;margin:12px 0 16px;\">What time does this clock show?</div>" +
+      "  <div class=\"quiz-choices\" id=\"clock-quiz-opts\"></div>" +
+      "  <div class=\"quiz-feedback\" id=\"clock-quiz-fb\"></div>" +
+      "  <button class=\"btn-primary\" id=\"clock-quiz-next\" onclick=\"clockQuizNext()\" disabled style=\"margin-top:14px;\">Next Clock</button>" +
+      "</div>";
+
+    speak("What time does this clock show?", true);
+
+    var optCont = document.getElementById("clock-quiz-opts");
+    choices.forEach(function(chText){
+      var btn = document.createElement("button");
+      btn.className = "quiz-choice";
+      btn.style.fontSize = "1.35rem";
+      btn.textContent = chText;
+      btn.onclick = function(){
+        if (quizAnswered) return;
+        quizAnswered = true;
+        var fb = document.getElementById("clock-quiz-fb");
+        if (chText === correctStr) {
+          btn.classList.add("correct");
+          quizScore++;
+          earnCurrency(2, btn.getBoundingClientRect().left, btn.getBoundingClientRect().top);
+          fb.innerHTML = "<span style=\"color:#3DAA2F;\">&#127881; Correct! It is " + spokenPrompt + "!</span>";
+          speak("Correct! It is " + spokenPrompt, true);
+        } else {
+          btn.classList.add("wrong");
+          optCont.querySelectorAll(".quiz-choice").forEach(function(b){
+            if (b.textContent === correctStr) b.classList.add("correct");
+          });
+          fb.innerHTML = "<span style=\"color:#E53935;\">&#10060; The answer is " + correctStr + " (" + spokenPrompt + ")</span>";
+          speak("The clock shows " + spokenPrompt, true);
+        }
+        document.getElementById("clock-quiz-next").disabled = false;
+      };
+      optCont.appendChild(btn);
+    });
+  }
+
+  window.clockQuizNext = function() {
+    quizIndex++;
+    renderQuizView();
+  };
+
+  renderExploreView();
+}
+
+var TRACE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split("");
+var traceIdx = 0, traceDrawing = false, traceCtx = null, traceCanvas = null;
+function renderLetterTrace(container) {
+  var box = document.createElement("div"); box.className = "lesson-box";
+  box.appendChild(mkBoxHeader("Letter Tracing", null));
+  var inner = document.createElement("div");
+  inner.innerHTML =
+    "<p class=\"big-text\">Trace the big grey letter with your mouse or finger!</p>" +
+    "<div style=\"text-align:center;font-family:Fredoka One,cursive;font-size:1.15rem;color:var(--pbs-blue);margin:10px 0;background:#EEF3FF;border-radius:12px;padding:8px;\" id=\"trace-label\"></div>" +
+    "<div class=\"trace-canvas-wrap\"><div class=\"trace-wrap\"><canvas id=\"trace-canvas\" width=\"300\" height=\"280\"></canvas></div></div>" +
+    "<div class=\"trace-controls\">" +
+    "<button class=\"trace-btn prev-l\" onclick=\"tracePrev()\">Previous</button>" +
+    "<button class=\"trace-btn clear\" onclick=\"traceClear()\">Clear</button>" +
+    "<button class=\"trace-btn next-l\" onclick=\"traceNextL()\">Next</button></div>";
+  box.appendChild(inner);
+  container.appendChild(box);
+  var btn = mkBtn("Done practicing! Collect Reward!", function(){ markDone("letter-trace"); btn.disabled = true; btn.textContent = "Reward collected!"; });
+  container.appendChild(btn);
+  setTimeout(function() {
+    traceCanvas = document.getElementById("trace-canvas"); traceCtx = traceCanvas.getContext("2d");
+    drawTraceLetter();
+    traceCtx.strokeStyle = "#1E3FA2"; traceCtx.lineWidth = 6; traceCtx.lineCap = "round"; traceCtx.lineJoin = "round";
+    var gp = function(e){ var r = traceCanvas.getBoundingClientRect(); var s = e.touches ? e.touches[0] : e; return {x: s.clientX - r.left, y: s.clientY - r.top}; };
+    traceCanvas.addEventListener("mousedown",  function(e){ traceDrawing = true; var p = gp(e); traceCtx.beginPath(); traceCtx.moveTo(p.x, p.y); });
+    traceCanvas.addEventListener("mousemove",  function(e){ if (!traceDrawing) return; var p = gp(e); traceCtx.lineTo(p.x, p.y); traceCtx.stroke(); });
+    traceCanvas.addEventListener("mouseup",    function(){ traceDrawing = false; });
+    traceCanvas.addEventListener("touchstart", function(e){ e.preventDefault(); traceDrawing = true; var p = gp(e); traceCtx.beginPath(); traceCtx.moveTo(p.x, p.y); }, {passive:false});
+    traceCanvas.addEventListener("touchmove",  function(e){ e.preventDefault(); if (!traceDrawing) return; var p = gp(e); traceCtx.lineTo(p.x, p.y); traceCtx.stroke(); }, {passive:false});
+    traceCanvas.addEventListener("touchend",   function(){ traceDrawing = false; });
+    updateTraceLabel();
+    window.traceClear  = function(){ traceCtx.clearRect(0,0,300,280); drawTraceLetter(); traceCtx.strokeStyle="#1E3FA2"; traceCtx.lineWidth=6; traceCtx.lineCap="round"; traceCtx.lineJoin="round"; };
+    window.traceNextL  = function(){ traceIdx=(traceIdx+1)%TRACE_LETTERS.length; traceClear(); updateTraceLabel(); speak(TRACE_LETTERS[traceIdx], true); };
+    window.tracePrev   = function(){ traceIdx=(traceIdx-1+TRACE_LETTERS.length)%TRACE_LETTERS.length; traceClear(); updateTraceLabel(); speak(TRACE_LETTERS[traceIdx], true); };
+  }, 80);
+}
+function drawTraceLetter() {
+  if (!traceCtx) return;
+  traceCtx.clearRect(0,0,300,280);
+  traceCtx.font = "220px Fredoka One,cursive"; traceCtx.fillStyle = "#D0D8E8";
+  traceCtx.textAlign = "center"; traceCtx.textBaseline = "middle";
+  traceCtx.fillText(TRACE_LETTERS[traceIdx], 150, 150);
+}
+function updateTraceLabel() {
+  var l = document.getElementById("trace-label");
+  if (l) l.textContent = "Letter " + (traceIdx + 1) + " of " + TRACE_LETTERS.length + ": " + TRACE_LETTERS[traceIdx];
+}
+
+// Generic info-page renderer with inline Read button
+function renderInfoPage(container, lid, title, htmlContent, quizQuestions) {
+  var readableText = "";
+  var box = document.createElement("div"); box.className = "lesson-box";
+  box.appendChild(mkBoxHeader(title, function(){ return readableText; }));
+  var inner = document.createElement("div"); inner.innerHTML = htmlContent; box.appendChild(inner);
+  container.appendChild(box);
+  // Build readable text from the HTML content (strip tags)
+  var tmp = document.createElement("div"); tmp.innerHTML = htmlContent;
+  readableText = tmp.innerText.replace(/\s+/g," ").trim();
+  makeQuiz(container, lid, quizQuestions);
+}
+
+function renderSentences(container) {
+  var box = document.createElement("div"); box.className = "lesson-box";
+  var readText = "A great sentence follows 5 rules. " +
+    "Start with a capital letter. " +
+    "End with punctuation such as a period, question mark, or exclamation point. " +
+    "Have a subject and a verb. " +
+    "Use spaces between words. " +
+    "Express a complete thought.";
+  box.appendChild(mkBoxHeader("Sentence Rules", function(){ return readText; }));
+  var rules = [
+    {rule:"Start with a Capital Letter",good:"The dog ran fast.",bad:"the dog ran fast."},
+    {rule:"End with Punctuation (period, question mark, or exclamation point)",good:"I love pizza!",bad:"I love pizza"},
+    {rule:"Has a subject and a verb",good:"The bird flies.",bad:"The bird."},
+    {rule:"Use spaces between words",good:"She runs fast.",bad:"Sherunsfast."},
+    {rule:"Expresses a complete thought",good:"He ate the apple.",bad:"He ate."},
+  ];
+  var inner = document.createElement("div");
+  inner.innerHTML = "<p class=\"big-text\">Great sentences follow these 5 important rules:</p>" +
+    rules.map(function(r){ return "<div class=\"highlight-box\"><strong>" + r.rule + "</strong><br>Correct: <em>" + r.good + "</em><br>Incorrect: <em>" + r.bad + "</em></div>"; }).join("");
+  box.appendChild(inner);
+  container.appendChild(box);
+  makeQuiz(container, "sentences", [
+    {q:"Which sentence is correct?",opts:["the cat is big.","The cat is big.","The cat is big","the Cat is big."],ans:1},
+    {q:"Which sentence ends correctly?",opts:["I like dogs","I like dogs!","i like dogs.","I likes dogs"],ans:1},
+    {q:"Which is a complete thought?",opts:["Ran.","The boy ran.","The boy.","Fast."],ans:1},
+    {q:"Choose the correct sentence:",opts:["she loves books","She loves books.","she Loves books.","She loves books"],ans:1},
+    {q:"Which uses a capital letter correctly?",opts:["my name is Sam.","My name is sam.","My name is Sam.","my Name is Sam."],ans:2},
+  ]);
+}
+
+function renderAnimals(container) {
+  var animals = [
+    {emoji:"&#129409;",name:"Lion",      habitat:"Savanna",              diet:"Meat - Carnivore",    fact:"Lions live in groups called prides."},
+    {emoji:"&#128039;",name:"Penguin",   habitat:"Antarctica",           diet:"Fish - Carnivore",    fact:"Penguins cannot fly but are excellent swimmers!"},
+    {emoji:"&#128024;",name:"Elephant",  habitat:"Grasslands and Forests",diet:"Plants - Herbivore", fact:"Elephants use their trunks to drink water!"},
+    {emoji:"&#128044;",name:"Dolphin",   habitat:"Ocean",                diet:"Fish - Carnivore",    fact:"Dolphins breathe air even though they live in water!"},
+    {emoji:"&#129445;",name:"Eagle",     habitat:"Mountains and Forests", diet:"Meat - Carnivore",   fact:"Eagles have super sharp eyesight!"},
+    {emoji:"&#128007;",name:"Rabbit",    habitat:"Meadows and Forests",   diet:"Plants - Herbivore", fact:"Rabbits have big ears to hear danger!"},
+    {emoji:"&#128056;",name:"Frog",      habitat:"Ponds and Wetlands",    diet:"Insects - Carnivore",fact:"Frogs start life as tadpoles in water!"},
+    {emoji:"&#128059;",name:"Bear",      habitat:"Forests and Mountains", diet:"Both - Omnivore",    fact:"Bears hibernate in winter and sleep for months!"},
+    {emoji:"&#129419;",name:"Butterfly", habitat:"Gardens and Meadows",   diet:"Nectar - Herbivore", fact:"Butterflies grow from caterpillars!"},
+    {emoji:"&#129416;",name:"Shark",     habitat:"Ocean",                diet:"Fish and Seals",      fact:"Sharks have been on Earth for 450 million years!"},
+  ];
+  var readText = animals.map(function(a){ return a.name + " lives in " + a.habitat + ". It eats " + a.diet + ". " + a.fact; }).join(" ");
+  var box = document.createElement("div"); box.className = "lesson-box";
+  box.appendChild(mkBoxHeader("Animals and Habitats", function(){ return readText; }));
+  var inner = document.createElement("div");
+  inner.innerHTML = "<p class=\"big-text\">Learn where animals live and what they eat!</p>" +
+    "<div class=\"info-grid\">" +
+    animals.map(function(a){ return "<div class=\"info-card\"><span class=\"ic-icon\">" + a.emoji + "</span><div class=\"ic-title\">" + a.name + "</div><div class=\"ic-desc\">Home: " + a.habitat + "<br>Food: " + a.diet + "<br>Fun fact: " + a.fact + "</div></div>"; }).join("") +
+    "</div>";
+  box.appendChild(inner);
+  container.appendChild(box);
+  makeQuiz(container, "animals", [
+    {q:"Where do penguins live?",opts:["Desert","Antarctica","Rainforest","Mountains"],ans:1},
+    {q:"What do elephants eat?",opts:["Meat","Fish","Plants","Insects"],ans:2},
+    {q:"What is a group of lions called?",opts:["Flock","Pack","Pride","Herd"],ans:2},
+    {q:"What are butterflies before they have wings?",opts:["Eggs only","Caterpillars","Tadpoles","Worms"],ans:1},
+    {q:"Where do frogs start life?",opts:["In trees","In sand","In water","In caves"],ans:2},
+  ]);
+}
+
+function renderPlants(container) {
+  var parts = [
+    {emoji:"&#127793;",name:"Seed",   desc:"A seed is where every plant begins!"},
+    {emoji:"&#127807;",name:"Roots",  desc:"Roots drink water and hold the plant in soil."},
+    {emoji:"&#129715;",name:"Stem",   desc:"The stem holds the plant up and carries water."},
+    {emoji:"&#127811;",name:"Leaves", desc:"Leaves capture sunlight to make food through photosynthesis!"},
+    {emoji:"&#127800;",name:"Flower", desc:"Flowers attract bees to spread pollen for new plants."},
+    {emoji:"&#127822;",name:"Fruit",  desc:"Fruit holds seeds so new plants can grow!"},
+  ];
+  var needs = [
+    {emoji:"&#9728;&#65039;",name:"Sunlight",desc:"Plants need sunlight to make food."},
+    {emoji:"&#128167;",      name:"Water",   desc:"Water helps plants grow and stay healthy."},
+    {emoji:"&#127758;",      name:"Soil",    desc:"Soil gives plants nutrients and anchors roots."},
+    {emoji:"&#128168;",      name:"Air",     desc:"Plants breathe in carbon dioxide and breathe out oxygen!"},
+  ];
+  var readText = parts.map(function(p){ return p.name + ": " + p.desc; }).join(" ") + " " +
+                 needs.map(function(n){ return n.name + ": " + n.desc; }).join(" ");
+  var box = document.createElement("div"); box.className = "lesson-box";
+  box.appendChild(mkBoxHeader("Parts of a Plant", function(){ return readText; }));
+  var inner = document.createElement("div");
+  inner.innerHTML = "<p class=\"big-text\">Every plant has important parts!</p>" +
+    "<div class=\"info-grid\">" + parts.map(function(p){ return "<div class=\"info-card\"><span class=\"ic-icon\">" + p.emoji + "</span><div class=\"ic-title\">" + p.name + "</div><div class=\"ic-desc\">" + p.desc + "</div></div>"; }).join("") + "</div>" +
+    "<h3 style=\"margin:22px 0 12px;font-size:1.5rem;color:#3DAA2F;\">What Plants Need to Survive</h3>" +
+    "<div class=\"info-grid\">" + needs.map(function(n){ return "<div class=\"info-card\"><span class=\"ic-icon\">" + n.emoji + "</span><div class=\"ic-title\">" + n.name + "</div><div class=\"ic-desc\">" + n.desc + "</div></div>"; }).join("") + "</div>";
+  box.appendChild(inner);
+  container.appendChild(box);
+  makeQuiz(container, "plants", [
+    {q:"What do roots do?",opts:["Make flowers","Absorb water","Make food from sunlight","Spread seeds"],ans:1},
+    {q:"What do leaves use to make food?",opts:["Rain","Wind","Sunlight","Soil alone"],ans:2},
+    {q:"What carries water up the plant?",opts:["Roots","Leaves","Fruit","Stem"],ans:3},
+    {q:"What is photosynthesis?",opts:["Drinking water","Making food using sunlight","Growing roots","Making seeds"],ans:1},
+    {q:"What holds seeds for new plants?",opts:["Stem","Roots","Fruit","Leaves"],ans:2},
+  ]);
+}
+
+function renderWeather(container) {
+  var box = document.createElement("div"); box.className = "lesson-box";
+  box.appendChild(mkBoxHeader("Weather and Seasons", function(){
+    var detail = document.getElementById("season-detail");
+    return detail ? detail.innerText : "Click a season to learn about it!";
+  }));
+  var inner = document.createElement("div");
+  inner.innerHTML = "<p class=\"big-text\">Click a season to learn about it!</p><div class=\"season-grid\" id=\"season-grid\"></div><div id=\"season-detail\"></div>";
+  box.appendChild(inner);
+  container.appendChild(box);
+  var btn = mkBtn("I know all 4 seasons! Collect Reward!", function(){ markDone("weather"); btn.disabled = true; btn.textContent = "Reward collected!"; });
+  container.appendChild(btn);
+  var grid = inner.querySelector("#season-grid");
+  SEASONS.forEach(function(s, i) {
+    var card = document.createElement("div");
+    card.className = "season-card" + (i === 0 ? " active" : "");
+    card.style.background = s.bg;
+    card.innerHTML = "<span class=\"s-icon\">" + s.icon + "</span><div class=\"s-name\">" + s.name + "</div>";
+    card.onclick = function() {
+      grid.querySelectorAll(".season-card").forEach(function(c){ c.classList.remove("active"); });
+      card.classList.add("active");
+      var detail = document.getElementById("season-detail");
+      detail.innerHTML =
+        "<div class=\"season-detail\">" +
+        "<h3 style=\"font-size:1.4rem;color:" + s.color + ";margin-bottom:12px;\">" + s.name + "</h3>" +
+        "<p><strong>Temperature:</strong> " + s.temps + "</p>" +
+        "<p><strong>Weather:</strong> " + s.weather + "</p>" +
+        "<p><strong>Fun Activities:</strong> " + s.activities + "</p>" +
+        "<p><strong>Animals:</strong> " + s.animals + "</p>" +
+        "<p><strong>What to Wear:</strong> " + s.clothes + "</p></div>";
+      speak(s.name + ". Temperature: " + s.temps + ". Weather: " + s.weather + ". " + s.activities + " " + s.animals, false);
+    };
+    grid.appendChild(card);
+    if (i === 0) card.click();
+  });
+}
+
+function renderFamily(container) {
+  var members = [
+    {emoji:"&#128104;",name:"Father or Dad",       role:"Provides for and protects the family with love!"},
+    {emoji:"&#128105;",name:"Mother or Mom",        role:"Cares deeply for everyone and makes important decisions."},
+    {emoji:"&#128102;",name:"Son or Brother",       role:"A male child who helps with chores and shares!"},
+    {emoji:"&#128103;",name:"Daughter or Sister",   role:"A female child who is kind, caring, and thoughtful."},
+    {emoji:"&#128116;",name:"Grandfather or Grandpa",role:"Your parent's father, full of wisdom and great stories!"},
+    {emoji:"&#128117;",name:"Grandmother or Grandma",role:"Your parent's mother, often great at cooking!"},
+    {emoji:"&#129489;",name:"Aunt or Uncle",        role:"Your parent's sibling, fun to visit on holidays!"},
+    {emoji:"&#128118;",name:"Baby or Cousin",        role:"Younger family members who need lots of love!"},
+  ];
+  var readText = members.map(function(m){ return m.name + ": " + m.role; }).join(" ");
+  var box = document.createElement("div"); box.className = "lesson-box";
+  box.appendChild(mkBoxHeader("Family Members", function(){ return readText; }));
+  var inner = document.createElement("div");
+  inner.innerHTML = "<p class=\"big-text\">Families come in all shapes and sizes. They all share love!</p>" +
+    "<div class=\"info-grid\">" + members.map(function(m){ return "<div class=\"info-card\"><span class=\"ic-icon\">" + m.emoji + "</span><div class=\"ic-title\">" + m.name + "</div><div class=\"ic-desc\">" + m.role + "</div></div>"; }).join("") + "</div>";
+  box.appendChild(inner);
+  container.appendChild(box);
+  makeQuiz(container, "family", [
+    {q:"What do we call our dad's mother?",opts:["Aunt","Sister","Grandmother","Cousin"],ans:2},
+    {q:"Who is your parent's brother?",opts:["Uncle","Grandfather","Cousin","Brother"],ans:0},
+    {q:"What is the word for a female child in a family?",opts:["Son","Brother","Uncle","Daughter"],ans:3},
+    {q:"What do families do for each other?",opts:["Ignore each other","Love and care for each other","Live far apart","Never talk"],ans:1},
+  ]);
+}
+
+function renderCommunity(container) {
+  var helpers = [
+    {emoji:"&#128110;",name:"Police Officer",       role:"Keeps our community safe and enforces the law."},
+    {emoji:"&#128658;",name:"Firefighter",           role:"Puts out fires and rescues people in emergencies."},
+    {emoji:"&#128104;&#8205;&#9877;&#65039;",name:"Doctor and Nurse",role:"Helps sick and injured people get healthy again."},
+    {emoji:"&#128105;&#8205;&#127979;",name:"Teacher",role:"Helps children learn, grow, and discover new things!"},
+    {emoji:"&#129489;&#8205;&#127859;",name:"Chef and Baker",role:"Cooks and prepares delicious food for people."},
+    {emoji:"&#128652;",name:"Bus Driver",            role:"Safely drives people to school, work, and more."},
+    {emoji:"&#128139;",name:"Mail Carrier",           role:"Delivers letters and packages to your door."},
+    {emoji:"&#129529;",name:"Sanitation Worker",      role:"Keeps our streets and neighborhoods clean."},
+    {emoji:"&#127959;&#65039;",name:"Construction Worker",role:"Builds roads, bridges, schools, and buildings!"},
+    {emoji:"&#127795;",name:"Farmer",                 role:"Grows the fruits and vegetables that feed everyone."},
+  ];
+  var readText = helpers.map(function(h){ return h.name + ": " + h.role; }).join(" ");
+  var box = document.createElement("div"); box.className = "lesson-box";
+  box.appendChild(mkBoxHeader("Community Helpers", function(){ return readText; }));
+  var inner = document.createElement("div");
+  inner.innerHTML = "<p class=\"big-text\">These amazing people help make our community a great place to live!</p>" +
+    "<div class=\"info-grid\">" + helpers.map(function(h){ return "<div class=\"info-card\"><span class=\"ic-icon\">" + h.emoji + "</span><div class=\"ic-title\">" + h.name + "</div><div class=\"ic-desc\">" + h.role + "</div></div>"; }).join("") + "</div>";
+  box.appendChild(inner);
+  container.appendChild(box);
+  makeQuiz(container, "community", [
+    {q:"Who helps put out fires?",opts:["Teacher","Firefighter","Farmer","Mail Carrier"],ans:1},
+    {q:"Who delivers your mail?",opts:["Doctor","Police Officer","Mail Carrier","Chef"],ans:2},
+    {q:"Who grows food for our community?",opts:["Farmer","Bus Driver","Teacher","Construction Worker"],ans:0},
+    {q:"Who helps you learn at school?",opts:["Doctor","Teacher","Police Officer","Baker"],ans:1},
+    {q:"Who keeps our neighborhoods clean?",opts:["Firefighter","Doctor","Sanitation Worker","Farmer"],ans:2},
+  ]);
+}
+
+function renderMaps(container) {
+  var readText = "A map is a drawing that shows where places are located. " +
+    "There are 4 cardinal directions. Up is North. Down is South. Left is West. Right is East. " +
+    "Remember Never Eat Soggy Waffles, which stands for North, East, South, West. " +
+    "The United States of America has 50 states. The capital city is Washington D.C. " +
+    "A map legend explains what all the symbols mean. A compass rose shows directions.";
+  var box = document.createElement("div"); box.className = "lesson-box";
+  box.appendChild(mkBoxHeader("Maps and Directions", function(){ return readText; }));
+  var inner = document.createElement("div");
+  inner.innerHTML =
+    "<p class=\"big-text\">A map is a drawing that shows where places are located!</p>" +
+    "<div class=\"highlight-box\"><strong>The 4 Cardinal Directions</strong><br><br>" +
+    "Up = North<br>Down = South<br>Left = West<br>Right = East<br><br>" +
+    "Memory tip: Never Eat Soggy Waffles = North, East, South, West!</div>" +
+    "<div class=\"highlight-box\" style=\"margin-top:14px;\"><strong>USA Fast Facts</strong><br>" +
+    "Country name: United States of America<br>Capital city: Washington, D.C.<br>" +
+    "Number of states: 50<br>Famous landmarks: Statue of Liberty, Mount Rushmore, Grand Canyon</div>" +
+    "<div class=\"highlight-box\" style=\"margin-top:14px;\"><strong>Parts of a Map</strong><br>" +
+    "Symbol: A small picture that stands for something<br>" +
+    "Map Key or Legend: Explains what all the symbols mean<br>" +
+    "Compass Rose: A star that shows directions North, South, East, West<br>" +
+    "Scale: Shows how far a real distance is on the map</div>";
+  box.appendChild(inner);
+  container.appendChild(box);
+  makeQuiz(container, "maps", [
+    {q:"What direction is Up on a map?",opts:["South","West","North","East"],ans:2},
+    {q:"How many states are in the USA?",opts:["48","50","52","45"],ans:1},
+    {q:"What is the capital city of the USA?",opts:["New York","Los Angeles","Chicago","Washington D.C."],ans:3},
+    {q:"What does a Map Legend tell you?",opts:["The weather","What map symbols mean","How old the map is","Who made the map"],ans:1},
+    {q:"Which direction is Right on a map?",opts:["North","South","West","East"],ans:3},
+  ]);
+}
+
+function renderColors(container) {
+  var readText = "There are 3 primary colors: Red, Blue, and Yellow. " +
+    "When you mix Red and Blue you get Purple. When you mix Red and Yellow you get Orange. " +
+    "When you mix Blue and Yellow you get Green. " +
+    "The rainbow colors in order are: Red, Orange, Yellow, Green, Blue, Indigo, Violet. Remember ROY G BIV!";
+  var box = document.createElement("div"); box.className = "lesson-box";
+  box.appendChild(mkBoxHeader("Colors and Color Mixing", function(){ return readText; }));
+  var inner = document.createElement("div");
+  inner.innerHTML =
+    "<p class=\"big-text\">There are 3 primary colors. Mix them to make new ones!</p>" +
+    "<div class=\"info-grid\" style=\"grid-template-columns:repeat(3,1fr);margin-bottom:18px;\">" +
+    "<div class=\"info-card\"><span class=\"ic-icon\" style=\"color:#DD0000;font-size:3rem;\">&#9679;</span><div class=\"ic-title\">Red</div><div class=\"ic-desc\">Primary Color</div></div>" +
+    "<div class=\"info-card\"><span class=\"ic-icon\" style=\"color:#0000DD;font-size:3rem;\">&#9679;</span><div class=\"ic-title\">Blue</div><div class=\"ic-desc\">Primary Color</div></div>" +
+    "<div class=\"info-card\"><span class=\"ic-icon\" style=\"color:#DDCC00;font-size:3rem;\">&#9679;</span><div class=\"ic-title\">Yellow</div><div class=\"ic-desc\">Primary Color</div></div>" +
+    "</div><h3 style=\"font-size:1.4rem;margin-bottom:12px;color:var(--pbs-purple);\">Mix Colors Together!</h3>" +
+    "<div class=\"info-grid\" style=\"grid-template-columns:repeat(3,1fr);\">" +
+    "<div class=\"info-card\"><span class=\"ic-icon\" style=\"color:#800080;font-size:2.8rem;\">&#9679;</span><div class=\"ic-title\">Purple</div><div class=\"ic-desc\">Red + Blue</div></div>" +
+    "<div class=\"info-card\"><span class=\"ic-icon\" style=\"color:#FFA500;font-size:2.8rem;\">&#9679;</span><div class=\"ic-title\">Orange</div><div class=\"ic-desc\">Red + Yellow</div></div>" +
+    "<div class=\"info-card\"><span class=\"ic-icon\" style=\"color:#008000;font-size:2.8rem;\">&#9679;</span><div class=\"ic-title\">Green</div><div class=\"ic-desc\">Blue + Yellow</div></div>" +
+    "</div><div class=\"highlight-box\" style=\"margin-top:18px;\"><strong>Rainbow Order:</strong> Red, Orange, Yellow, Green, Blue, Indigo, Violet<br>Remember ROY G BIV!</div>";
+  box.appendChild(inner);
+  container.appendChild(box);
+  makeQuiz(container, "colors", [
+    {q:"What are the 3 primary colors?",opts:["Red, Green, Blue","Red, Blue, Yellow","Orange, Purple, Green","Pink, Black, White"],ans:1},
+    {q:"Red + Blue = ?",opts:["Green","Orange","Purple","Pink"],ans:2},
+    {q:"Blue + Yellow = ?",opts:["Purple","Green","Orange","Brown"],ans:1},
+    {q:"What is the first color of the rainbow?",opts:["Orange","Yellow","Blue","Red"],ans:3},
+    {q:"Red + Yellow = ?",opts:["Purple","Orange","Green","Brown"],ans:1},
+  ]);
+}
+
+function renderRhymes(container) {
+  var rhymes = [
+    {title:"Twinkle Twinkle",
+     text:"Twinkle, twinkle, little star,\nHow I wonder what you are!\nUp above the world so high,\nLike a diamond in the sky.\nTwinkle, twinkle, little star,\nHow I wonder what you are!",
+     pairs:["star / are","high / sky"]},
+    {title:"Jack and Jill",
+     text:"Jack and Jill went up the hill\nTo fetch a pail of water.\nJack fell down and broke his crown,\nAnd Jill came tumbling after!",
+     pairs:["hill / Jill","water / after","crown / down"]},
+    {title:"Humpty Dumpty",
+     text:"Humpty Dumpty sat on a wall,\nHumpty Dumpty had a great fall!\nAll the kings horses and all the kings men\nCould not put Humpty together again.",
+     pairs:["wall / fall","men / again"]},
+    {title:"Mary Had a Little Lamb",
+     text:"Mary had a little lamb,\nIts fleece was white as snow!\nAnd everywhere that Mary went,\nThe lamb was sure to go.",
+     pairs:["lamb / am","snow / go"]},
+  ];
+  var ri = 0;
+  var box = document.createElement("div"); box.className = "lesson-box";
+  box.appendChild(mkBoxHeader("Nursery Rhymes", function(){
+    return rhymes[ri].title + ". " + rhymes[ri].text.replace(/\n/g," ");
+  }));
+  var inner = document.createElement("div");
+  inner.innerHTML = "<p class=\"big-text\">Words that end with the same sound are called rhyming words!</p>" +
+    "<div id=\"rhyme-display\"></div>" +
+    "<div class=\"sw-controls\" style=\"margin-top:16px;\">" +
+    "<div class=\"sw-nav-group\">" +
+    "<button class=\"fc-nav-btn prev\" onclick=\"rhymePrev()\">Previous</button>" +
+    "<button class=\"fc-nav-btn next\" onclick=\"rhymeNext()\">Next</button></div></div>" +
+    "<div class=\"fc-counter\" id=\"rhyme-counter\"></div>";
+  box.appendChild(inner);
+  container.appendChild(box);
+  var btn = mkBtn("I love rhymes! Collect Reward!", function(){ markDone("rhymes"); btn.disabled = true; btn.textContent = "Reward collected!"; });
+  container.appendChild(btn);
+  var show = function() {
+    var r = rhymes[ri];
+    document.getElementById("rhyme-display").innerHTML =
+      "<div class=\"highlight-box\"><strong style=\"font-size:1.2rem;\">" + r.title + "</strong><br><br>" +
+      "<div style=\"font-size:1.05rem;line-height:2.4;white-space:pre-wrap;\">" + r.text + "</div><br>" +
+      "<strong>Rhyming pairs:</strong> " +
+      r.pairs.map(function(p){ return "<span style=\"background:var(--pbs-yellow);border-radius:8px;padding:3px 12px;margin:3px;display:inline-block;font-weight:900;\">" + p + "</span>"; }).join(" ") +
+      "</div>";
+    document.getElementById("rhyme-counter").textContent = "Rhyme " + (ri + 1) + " of " + rhymes.length;
+  };
+  window.rhymeNext = function(){ ri = (ri + 1) % rhymes.length; show(); };
+  window.rhymePrev = function(){ ri = (ri - 1 + rhymes.length) % rhymes.length; show(); };
+  show();
+}
+
+function renderCountingSong(container) {
+  var songs = [
+    {title:"1, 2, 3, 4, 5",
+     text:"1, 2, 3, 4, 5,\nOnce I caught a fish alive!\n6, 7, 8, 9, 10,\nThen I let him go again.\nWhy did you let him go?\nBecause he bit my finger so!\nWhich finger did he bite?\nThis little finger on my right!",
+     nums:[1,2,3,4,5,6,7,8,9,10]},
+    {title:"Ten Green Bottles",
+     text:"Ten green bottles hanging on the wall,\nTen green bottles hanging on the wall!\nAnd if one green bottle should accidentally fall,\nThere would be nine green bottles hanging on the wall.\n\nCount down from 10 all the way to 0!",
+     nums:[10,9,8,7,6,5,4,3,2,1,0]},
+    {title:"Five Little Ducks",
+     text:"Five little ducks went out one day,\nOver the hill and far away.\nMother duck said Quack, quack, quack!\nAnd only four little ducks came back!\nCount down to zero, then they all came back!",
+     nums:[5,4,3,2,1,0]},
+  ];
+  var si = 0;
+  var box = document.createElement("div"); box.className = "lesson-box";
+  box.appendChild(mkBoxHeader("Counting Songs", function(){
+    return songs[si].title + ". " + songs[si].text.replace(/\n/g," ");
+  }));
+  var inner = document.createElement("div");
+  inner.innerHTML = "<p class=\"big-text\">Singing makes counting super fun and easy to remember!</p>" +
+    "<div id=\"song-display\"></div>" +
+    "<div class=\"sw-controls\" style=\"margin-top:16px;\"><div class=\"sw-nav-group\">" +
+    "<button class=\"fc-nav-btn prev\" onclick=\"songPrev()\">Previous Song</button>" +
+    "<button class=\"fc-nav-btn next\" onclick=\"songNext()\">Next Song</button></div></div>" +
+    "<div class=\"fc-counter\" id=\"song-counter\"></div>";
+  box.appendChild(inner);
+  container.appendChild(box);
+  var btn = mkBtn("I love counting songs! Collect Reward!", function(){ markDone("counting-song"); btn.disabled = true; btn.textContent = "Reward collected!"; });
+  container.appendChild(btn);
+  var show = function() {
+    var s = songs[si];
+    document.getElementById("song-display").innerHTML =
+      "<div class=\"highlight-box\"><strong style=\"font-size:1.2rem;\">" + s.title + "</strong><br><br>" +
+      "<div style=\"font-size:1.05rem;line-height:2.4;white-space:pre-wrap;\">" + s.text + "</div><br>" +
+      "<strong>Numbers in this song:</strong>" +
+      "<div style=\"display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;\">" +
+      s.nums.map(function(n){ return "<span style=\"background:linear-gradient(135deg,var(--pbs-blue),var(--pbs-sky));color:white;border-radius:50%;width:42px;height:42px;display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:1.1rem;box-shadow:0 4px 0 #0D2270;border:3px solid #152E8A;\">" + n + "</span>"; }).join("") +
+      "</div></div>";
+    document.getElementById("song-counter").textContent = "Song " + (si + 1) + " of " + songs.length;
+  };
+  window.songNext = function(){ si = (si + 1) % songs.length; show(); };
+  window.songPrev = function(){ si = (si - 1 + songs.length) % songs.length; show(); };
+  show();
+}
+
+/* ================================================================
+   ANATOMY & PHYSIOLOGY LESSONS — SKELETON & ADVANCED PLACEMENT
+   ================================================================ */
+
+/* 1. SKELETON EXPLORER & POINT TO BONES */
+var SKELETON_BONES = [
+  {id:"skull", name:"Skull", sci:"Cranium", emoji:"&#128128;", desc:"The skull is a strong bone helmet made of 22 fused bones. Its most important job is protecting your precious brain, eyes, and inner ears!", facts:"Babies are born with soft spots called fontanelles that knit together as they grow.", questions:"Which organ is sealed safely inside your cranium?", apNotes:"Cranial and facial bones shield the central nervous system."},
+  {id:"mandible", name:"Jawbone", sci:"Mandible", emoji:"&#129467;", desc:"The mandible is the strongest and only movable bone in your entire skull. It holds your bottom teeth and lets you chew and talk!", facts:"You chew with muscles that can exert over 150 pounds of force on your molars!", questions:"Why does the mandible move while the rest of the skull stays still?", apNotes:"Forms the temporomandibular joint (TMJ) with the temporal bone."},
+  {id:"clavicle", name:"Collarbone", sci:"Clavicle", emoji:"&#128084;", desc:"Your clavicle is a slender, S-shaped strut connecting your breastbone to your shoulder blade. You can feel it right below your neck!", facts:"The clavicle is one of the most commonly broken bones in sports and falls.", questions:"Touch your collarbone. How does it help your arm swing freely?", apNotes:"Acts as a mechanical strut that holds the upper limb away from the thorax."},
+  {id:"ribs", name:"Rib Cage", sci:"Costae & Sternum", emoji:"&#129497;", desc:"Humans have 12 pairs of curved ribs (24 total). They form a protective cage around your beating heart and spongy lungs!", facts:"Ribs expand outward and upward every time you inhale fresh oxygen.", questions:"What two vital organs are shielded inside the thoracic cage?", apNotes:"True ribs connect directly to the sternum; false and floating ribs attach indirectly or not at all."},
+  {id:"spine", name:"Spine / Backbone", sci:"Vertebral Column", emoji:"&#129460;", desc:"Your spine is an S-curved column made of 33 vertebrae bones with soft cushioning discs in between so you can bend, twist, and stand tall!", facts:"The hollow tunnel inside your spine protects the spinal cord—your body''s main nerve highway.", questions:"How do the jelly-like discs between your vertebrae help when you jump?", apNotes:"Divided into Cervical (7), Thoracic (12), Lumbar (5), Sacrum (5 fused), and Coccyx (4 fused)."},
+  {id:"humerus", name:"Upper Arm Bone", sci:"Humerus", emoji:"&#128170;", desc:"The long bone that runs from your shoulder socket down to your elbow. When you hit your 'funny bone', you are actually bumping the ulnar nerve against this bone!", facts:"It connects at the top with a ball-and-socket joint that can turn in a complete circle.", questions:"What kind of joint connects your humerus to your shoulder?", apNotes:"Articulates with the glenoid cavity of the scapula and the radius and ulna at the elbow."},
+  {id:"radius_ulna", name:"Forearm Bones", sci:"Radius & Ulna", emoji:"&#128400;&#65039;", desc:"You have TWO bones in your lower arm! The radius is on your thumb side, and the ulna is on your pinky side. When you turn your hand palm-up, they cross!", facts:"The radius rotates over the ulna whenever you turn a doorknob or key.", questions:"Which forearm bone is on the same side as your thumb?", apNotes:"The radioulnar joints allow pronation and supination of the hand."},
+  {id:"pelvis", name:"Hip Bone", sci:"Pelvis", emoji:"&#129463;", desc:"Your pelvis is a sturdy basin of bone that connects your trunk to your legs. It bears the entire weight of your upper body when you sit or stand!", facts:"The pelvis protects your lower digestive organs and bladder.", questions:"Why does the pelvis need to be much wider and stronger than arm bones?", apNotes:"Composed of the ilium, ischium, and pubis fused together."},
+  {id:"femur", name:"Thigh Bone", sci:"Femur", emoji:"&#129461;", desc:"The femur is the LONGEST, HEAVIEST, and STRONGEST bone in the human body! It supports up to 30 times your body weight when you run and leap!", facts:"Your femur is stronger than solid concrete of the same size!", questions:"Can you locate your femur? Where is it on your body?", apNotes:"Articulates with the acetabulum of the pelvis at the hip and with the tibia and patella at the knee."},
+  {id:"patella", name:"Kneecap", sci:"Patella", emoji:"&#129470;", desc:"The patella is a smooth, teardrop-shaped bone sitting over the front of your knee joint to protect it and give leg muscles extra leverage!", facts:"The patella is a sesamoid bone—it grows inside a tendon like a protective shield.", questions:"Bend and straighten your leg. Can you feel your kneecap slide?", apNotes:"Increases the angle of pull of the quadriceps femoris tendon across the knee joint."},
+  {id:"tibia_fibula", name:"Shin & Calf Bones", sci:"Tibia & Fibula", emoji:"&#129462;", desc:"Your lower leg has two bones: the thick Tibia (shinbone) that carries your weight, and the slender Fibula that stabilizes your ankle!", facts:"If you tap the front of your leg below the knee, you are feeling your tibia directly under your skin.", questions:"Which of the two lower leg bones bears almost all your body weight?", apNotes:"The tibia is the medial weight-bearing bone; the lateral fibula anchors calf muscles."}
+];
+var curBoneIdx = 0;
+
+function getSkeletonSvg(activeId) {
+  var svg = "<svg class=\"sk-svg\" viewBox=\"0 0 280 440\" xmlns=\"http://www.w3.org/2000/svg\">";
+  // Background grid subtle glow
+  svg += "<defs><radialGradient id=\"skGlow\" cx=\"50%\" cy=\"50%\" r=\"50%\"><stop offset=\"0%\" stop-color=\"#48CAE4\" stop-opacity=\"0.3\"/><stop offset=\"100%\" stop-color=\"#000\" stop-opacity=\"0\"/></radialGradient></defs>";
+  svg += "<circle cx=\"140\" cy=\"220\" r=\"130\" fill=\"url(#skGlow)\"/>";
+
+  function bClass(id){ return "sk-bone-target" + (id === activeId ? " active-bone" : ""); }
+  function bFill(id){ return id === activeId ? "#FFD000" : "#E2EEF9"; }
+  function bStroke(id){ return id === activeId ? "#00FFCC" : "#A2BFDE"; }
+
+  // 1. Skull
+  svg += "<g class=\"" + bClass("skull") + "\" onclick=\"selectBone('skull')\">";
+  svg += "<circle cx=\"140\" cy=\"42\" r=\"26\" fill=\"" + bFill("skull") + "\" stroke=\"" + bStroke("skull") + "\" stroke-width=\"2.5\"/>";
+  svg += "<circle cx=\"131\" cy=\"44\" r=\"4.5\" fill=\"#1A2C4C\"/><circle cx=\"149\" cy=\"44\" r=\"4.5\" fill=\"#1A2C4C\"/>";
+  svg += "<polygon points=\"140,51 137,57 143,57\" fill=\"#1A2C4C\"/>";
+  svg += "<text x=\"140\" y=\"24\" text-anchor=\"middle\" font-size=\"10\" font-family=\"Fredoka One\" fill=\"" + (activeId==="skull"?"#FFD000":"#8CB9E6") + "\">SKULL</text>";
+  svg += "</g>";
+
+  // 2. Mandible (Jaw)
+  svg += "<g class=\"" + bClass("mandible") + "\" onclick=\"selectBone('mandible')\">";
+  svg += "<path d=\"M128,62 Q140,74 152,62 L150,67 Q140,76 130,67 Z\" fill=\"" + bFill("mandible") + "\" stroke=\"" + bStroke("mandible") + "\" stroke-width=\"2\"/>";
+  svg += "</g>";
+
+  // Cervical spine neck
+  svg += "<rect x=\"137\" y=\"74\" width=\"6\" height=\"12\" rx=\"2\" fill=\"#C5DAED\" stroke=\"#8CB9E6\" stroke-width=\"1.5\"/>";
+
+  // 3. Clavicles (Collarbones)
+  svg += "<g class=\"" + bClass("clavicle") + "\" onclick=\"selectBone('clavicle')\">";
+  svg += "<path d=\"M140,88 Q118,84 96,93\" stroke=\"" + bFill("clavicle") + "\" stroke-width=\"5\" stroke-linecap=\"round\" fill=\"none\"/>";
+  svg += "<path d=\"M140,88 Q162,84 184,93\" stroke=\"" + bFill("clavicle") + "\" stroke-width=\"5\" stroke-linecap=\"round\" fill=\"none\"/>";
+  svg += "</g>";
+
+  // 4. Rib cage & Sternum
+  svg += "<g class=\"" + bClass("ribs") + "\" onclick=\"selectBone('ribs')\">";
+  // Sternum
+  svg += "<rect x=\"137\" y=\"94\" width=\"6\" height=\"42\" rx=\"3\" fill=\"" + bFill("ribs") + "\" stroke=\"" + bStroke("ribs") + "\" stroke-width=\"2\"/>";
+  // Rib pairs
+  var rY = [98, 107, 117, 126, 134];
+  var rW = [24, 30, 32, 28, 22];
+  for (var i = 0; i < rY.length; i++){
+    svg += "<path d=\"M137," + rY[i] + " Q" + (140 - rW[i]) + "," + (rY[i]+4) + " 137," + (rY[i]+8) + "\" stroke=\"" + bFill("ribs") + "\" stroke-width=\"3\" fill=\"none\"/>";
+    svg += "<path d=\"M143," + rY[i] + " Q" + (140 + rW[i]) + "," + (rY[i]+4) + " 143," + (rY[i]+8) + "\" stroke=\"" + bFill("ribs") + "\" stroke-width=\"3\" fill=\"none\"/>";
+  }
+  svg += "</g>";
+
+  // 5. Spine (Vertebrae)
+  svg += "<g class=\"" + bClass("spine") + "\" onclick=\"selectBone('spine')\">";
+  for (var s = 0; s < 5; s++){
+    var sy = 142 + s * 8;
+    svg += "<rect x=\"136\" y=\"" + sy + "\" width=\"8\" height=\"6\" rx=\"2\" fill=\"" + bFill("spine") + "\" stroke=\"" + bStroke("spine") + "\" stroke-width=\"1.5\"/>";
+  }
+  svg += "</g>";
+
+  // 6. Pelvis (Hip)
+  svg += "<g class=\"" + bClass("pelvis") + "\" onclick=\"selectBone('pelvis')\">";
+  svg += "<path d=\"M116,182 Q140,172 164,182 Q176,204 154,212 Q140,214 126,212 Q104,204 116,182 Z\" fill=\"" + bFill("pelvis") + "\" stroke=\"" + bStroke("pelvis") + "\" stroke-width=\"2.5\"/>";
+  svg += "<circle cx=\"128\" cy=\"195\" r=\"5\" fill=\"#1A2C4C\"/><circle cx=\"152\" cy=\"195\" r=\"5\" fill=\"#1A2C4C\"/>";
+  svg += "</g>";
+
+  // 7. Left & Right Humerus (Upper arms)
+  svg += "<g class=\"" + bClass("humerus") + "\" onclick=\"selectBone('humerus')\">";
+  svg += "<line x1=\"94\" y1=\"96\" x2=\"74\" y2=\"152\" stroke=\"" + bFill("humerus") + "\" stroke-width=\"7\" stroke-linecap=\"round\"/>";
+  svg += "<line x1=\"186\" y1=\"96\" x2=\"206\" y2=\"152\" stroke=\"" + bFill("humerus") + "\" stroke-width=\"7\" stroke-linecap=\"round\"/>";
+  svg += "</g>";
+
+  // 8. Left & Right Radius / Ulna (Forearms)
+  svg += "<g class=\"" + bClass("radius_ulna") + "\" onclick=\"selectBone('radius_ulna')\">";
+  svg += "<line x1=\"72\" y1=\"156\" x2=\"56\" y2=\"208\" stroke=\"" + bFill("radius_ulna") + "\" stroke-width=\"4.5\" stroke-linecap=\"round\"/>";
+  svg += "<line x1=\"77\" y1=\"156\" x2=\"61\" y2=\"208\" stroke=\"" + bFill("radius_ulna") + "\" stroke-width=\"3\" stroke-linecap=\"round\"/>";
+  svg += "<line x1=\"208\" y1=\"156\" x2=\"224\" y2=\"208\" stroke=\"" + bFill("radius_ulna") + "\" stroke-width=\"4.5\" stroke-linecap=\"round\"/>";
+  svg += "<line x1=\"203\" y1=\"156\" x2=\"219\" y2=\"208\" stroke=\"" + bFill("radius_ulna") + "\" stroke-width=\"3\" stroke-linecap=\"round\"/>";
+  // Hands
+  svg += "<circle cx=\"53\" cy=\"216\" r=\"6\" fill=\"" + bFill("radius_ulna") + "\"/>";
+  svg += "<circle cx=\"227\" cy=\"216\" r=\"6\" fill=\"" + bFill("radius_ulna") + "\"/>";
+  svg += "</g>";
+
+  // 9. Left & Right Femur (Thighs)
+  svg += "<g class=\"" + bClass("femur") + "\" onclick=\"selectBone('femur')\">";
+  svg += "<line x1=\"126\" y1=\"212\" x2=\"114\" y2=\"296\" stroke=\"" + bFill("femur") + "\" stroke-width=\"9\" stroke-linecap=\"round\"/>";
+  svg += "<line x1=\"154\" y1=\"212\" x2=\"166\" y2=\"296\" stroke=\"" + bFill("femur") + "\" stroke-width=\"9\" stroke-linecap=\"round\"/>";
+  svg += "</g>";
+
+  // 10. Patella (Kneecaps)
+  svg += "<g class=\"" + bClass("patella") + "\" onclick=\"selectBone('patella')\">";
+  svg += "<circle cx=\"114\" cy=\"304\" r=\"6.5\" fill=\"" + bFill("patella") + "\" stroke=\"" + bStroke("patella") + "\" stroke-width=\"2\"/>";
+  svg += "<circle cx=\"166\" cy=\"304\" r=\"6.5\" fill=\"" + bFill("patella") + "\" stroke=\"" + bStroke("patella") + "\" stroke-width=\"2\"/>";
+  svg += "</g>";
+
+  // 11. Tibia & Fibula (Lower legs)
+  svg += "<g class=\"" + bClass("tibia_fibula") + "\" onclick=\"selectBone('tibia_fibula')\">";
+  svg += "<line x1=\"114\" y1=\"312\" x2=\"110\" y2=\"394\" stroke=\"" + bFill("tibia_fibula") + "\" stroke-width=\"6.5\" stroke-linecap=\"round\"/>";
+  svg += "<line x1=\"108\" y1=\"314\" x2=\"104\" y2=\"392\" stroke=\"" + bFill("tibia_fibula") + "\" stroke-width=\"2.5\" stroke-linecap=\"round\"/>";
+  svg += "<line x1=\"166\" y1=\"312\" x2=\"170\" y2=\"394\" stroke=\"" + bFill("tibia_fibula") + "\" stroke-width=\"6.5\" stroke-linecap=\"round\"/>";
+  svg += "<line x1=\"172\" y1=\"314\" x2=\"176\" y2=\"392\" stroke=\"" + bFill("tibia_fibula") + "\" stroke-width=\"2.5\" stroke-linecap=\"round\"/>";
+  // Feet
+  svg += "<ellipse cx=\"106\" cy=\"404\" rx=\"10\" ry=\"5\" fill=\"" + bFill("tibia_fibula") + "\"/>";
+  svg += "<ellipse cx=\"174\" cy=\"404\" rx=\"10\" ry=\"5\" fill=\"" + bFill("tibia_fibula") + "\"/>";
+  svg += "</g>";
+
+  svg += "</svg>";
+  return svg;
+}
+
+function renderBodyParts(container) {
+  var box = document.createElement("div"); box.className = "lesson-box";
+  box.appendChild(mkBoxHeader("Interactive Skeleton: Point to the Bones!", function(){
+    var b = SKELETON_BONES[curBoneIdx];
+    return b.name + ", scientific name " + b.sci + ". " + b.desc + " Fun fact: " + b.facts;
+  }));
+
+  var inner = document.createElement("div");
+  inner.innerHTML =
+    "<p class=\"big-text\">Touch or click any bone on the glowing skeleton to explore your skeletal anatomy!</p>" +
+    "<div class=\"skeleton-box\">" +
+    "  <div class=\"skeleton-layout\">" +
+    "    <div class=\"sk-viewport\">" +
+    "      <div class=\"sk-svg-wrap\" id=\"sk-svg-container\"></div>" +
+    "      <div style=\"color:#8CB9E6;font-size:.8rem;font-weight:800;margin-top:6px;\">&#128070; Click directly on bones!</div>" +
+    "    </div>" +
+    "    <div class=\"sk-info-panel\" id=\"sk-panel-content\"></div>" +
+    "  </div>" +
+    "  <div style=\"margin-top:16px;\">" +
+    "    <div style=\"font-weight:900;color:var(--muted);font-size:.85rem;margin-bottom:6px;\">Or pick a bone from the anatomical list:</div>" +
+    "    <div class=\"sk-chips-grid\" id=\"sk-bone-chips\"></div>" +
+    "  </div>" +
+    "</div>";
+  box.appendChild(inner);
+  container.appendChild(box);
+
+  // Advanced Placement Skeletal Quiz
+  var apQuizData = [
+    {q:"What is the longest, strongest, and heaviest bone in the entire human body?", opts:["The Femur (thigh bone)","The Humerus","The Tibia","The Clavicle"], ans:0},
+    {q:"Which bone is the ONLY freely movable bone in the human skull?", opts:["Mandible (jawbone)","Frontal bone","Nasal bone","Maxilla"], ans:0},
+    {q:"How many pairs of ribs form the human thoracic cage that shields the heart and lungs?", opts:["6 pairs (12 ribs)","10 pairs (20 ribs)","12 pairs (24 ribs)","16 pairs (32 ribs)"], ans:2},
+    {q:"The central nervous system highway—the spinal cord—is protected inside which skeletal structure?", opts:["The Vertebral Column (Spine)","The Sternum","The Pelvis","The Femur"], ans:0},
+    {q:"What type of bone is the kneecap (patella), which develops inside a tendon?", opts:["A Sesamoid bone","A Flat bone","An Irregular bone","A Long bone"], ans:0},
+    {q:"Which two bones make up the human forearm between the elbow and the wrist?", opts:["Radius and Ulna","Tibia and Fibula","Femur and Patella","Clavicle and Scapula"], ans:0}
+  ];
+  makeQuiz(container, "body-parts", apQuizData);
+
+  window.selectBone = function(boneId) {
+    var idx = SKELETON_BONES.findIndex(function(b){ return b.id === boneId; });
+    if (idx >= 0) {
+      curBoneIdx = idx;
+      updateSkeletonView(true);
+    }
+  };
+
+  function updateSkeletonView(autoSpeak) {
+    var b = SKELETON_BONES[curBoneIdx];
+    document.getElementById("sk-svg-container").innerHTML = getSkeletonSvg(b.id);
+
+    var panel = document.getElementById("sk-panel-content");
+    panel.innerHTML =
+      "<div class=\"sk-bone-badge\">&#129460; Bone " + (curBoneIdx + 1) + " of " + SKELETON_BONES.length + "</div>" +
+      "<div class=\"sk-bone-title\"><span>" + b.emoji + " " + b.name + "</span>" +
+      "  <button class=\"read-btn\" onclick=\"speakBone()\" style=\"margin:0;\">&#128266; Read</button></div>" +
+      "<div class=\"sk-sci-name\">Scientific Term: <strong>" + b.sci + "</strong></div>" +
+      "<p class=\"sk-bone-desc\">" + b.desc + "</p>" +
+      "<div class=\"sk-fact-box\"><strong>&#129504; Science Fact:</strong> " + b.facts + "</div>" +
+      "<div style=\"background:#F0F7FF;border:3px solid #C8E1FF;border-radius:14px;padding:10px 14px;font-size:.85rem;font-weight:800;color:var(--pbs-blue);\">" +
+      "<strong>&#127891; AP Anatomy Concept:</strong> " + b.apNotes + "</div>";
+
+    // Update chips active state
+    var chips = document.getElementById("sk-bone-chips");
+    chips.querySelectorAll(".sk-chip").forEach(function(c, i){
+      c.classList.toggle("active", i === curBoneIdx);
+    });
+
+    if (autoSpeak) speak(b.name + ". Scientific name: " + b.sci + ". " + b.desc, false);
+  }
+
+  window.speakBone = function(){
+    var b = SKELETON_BONES[curBoneIdx];
+    speak(b.name + ". " + b.desc + " Fun fact: " + b.facts, true);
+  };
+
+  // Render chips
+  var chips = document.getElementById("sk-bone-chips");
+  SKELETON_BONES.forEach(function(bone, i){
+    var chip = document.createElement("button");
+    chip.className = "sk-chip" + (i === 0 ? " active" : "");
+    chip.innerHTML = bone.emoji + " " + bone.name;
+    chip.onclick = function(){ curBoneIdx = i; updateSkeletonView(true); };
+    chips.appendChild(chip);
+  });
+
+  updateSkeletonView(false);
+}
+
+/* 2. SUPER ORGANS & IN-DEPTH PHYSIOLOGY (Cellular, Tissue, and System Biology) */
+var ORGANS_DATA = [
+  {name:"The Brain & Nervous System", sci:"Encephalon & Neurons", emoji:"&#129504;", job:"Processes thoughts, sensory data, signals & voluntary motion", desc:"Your brain contains roughly 86 billion neurons communicating through rapid electrical impulses and neurotransmitters. Its cerebrum handles reasoning and creativity, the cerebellum coordinates balance, and the brainstem governs autonomic heart rate and breathing!", facts:"Your brain uses 20% of your body's total oxygen and glucose despite weighing only about 3 pounds.", apNotes:"Central Nervous System (CNS) integrates input; Peripheral Nervous System (PNS) transmits motor/sensory signals."},
+  {name:"The Heart & Circulatory System", sci:"Cardiac Muscle & Vasculature", emoji:"&#129505;", job:"Pumps blood through 60,000 miles of blood vessels", desc:"Your heart is a four-chambered double pump. The right side pumps deoxygenated blood to the lungs for pulmonary gas exchange, while the left side propels oxygen-rich blood through the systemic circuit to the entire body via the aorta!", facts:"A child's heart pumps about 2,000 gallons of blood every single day without taking a rest.", apNotes:"Sinoatrial (SA) node functions as the physiological pacemaker generating rhythmic action potentials."},
+  {name:"The Lungs & Respiratory System", sci:"Pulmonary Alveoli", emoji:"&#129656;", job:"Gas exchange: Absorbs O2 and expels CO2", desc:"You have hundreds of millions of microscopic air sacs called alveoli in your lungs. Their ultra-thin membranes allow life-giving oxygen to diffuse into red blood cell hemoglobin while exchanging carbon dioxide waste to be exhaled!", facts:"If you unfolded all the alveoli in both human lungs, they would cover a whole tennis court!", apNotes:"Inhalation is an active process driven by diaphragm contraction decreasing intrapleural pressure."},
+  {name:"The Stomach & Digestive Tract", sci:"Gastric Mucosa & Peristalsis", emoji:"&#129379;", job:"Mechanical and chemical enzymatic catabolism", desc:"The stomach secretes concentrated hydrochloric acid (pH 1.5–2) and the digestive enzyme pepsin to break down proteins into amino acids. Strong muscular walls churn food through peristalsis into a semi-liquid blend called chyme before moving to the small intestine for nutrient absorption!", facts:"A thick layer of mucous protects the stomach lining from digesting itself!", apNotes:"Duodenum receives bile from the liver/gallbladder to emulsify lipids and pancreatic juices to neutralize acid."},
+  {name:"The Kidneys & Excretory System", sci:"Renal Nephrons", emoji:"&#129704;", job:"Filters metabolic toxins and maintains fluid homeostasis", desc:"You have two bean-shaped kidneys that clean your blood 40 times each day! Millions of microscopic nephron filters remove urea and excess sodium, converting waste into urine while regulating your blood pressure and hydration!", facts:"Your kidneys filter approximately 50 gallons of blood fluid every day!", apNotes:"Glomerular filtration, tubular reabsorption, and secretion balance blood pH and osmolarity."},
+  {name:"The Liver (The Chemical Factory)", sci:"Hepatic Lobules", emoji:"&#127981;", job:"Produces bile, detoxifies chemicals, and stores glucose glycogen", desc:"The liver is your body's primary metabolic powerhouse! It produces bile to break down fats, neutralizes harmful toxins, stores glucose in the form of glycogen for emergency energy, and manufactures clotting proteins!", facts:"The liver is the only internal organ capable of regenerating and regrowing lost tissue!", apNotes:"Hepatic portal vein brings nutrient-rich venous blood directly from intestines to liver sinusoids."}
+];
+var organIdx = 0;
+
+function renderOrgansSystems(container) {
+  var box = document.createElement("div"); box.className = "lesson-box";
+  box.appendChild(mkBoxHeader("Advanced Physiology: Organs & Biological Systems", function(){
+    var o = ORGANS_DATA[organIdx];
+    return o.name + ", scientific description: " + o.sci + ". Primary function: " + o.job + ". " + o.desc + " Fun fact: " + o.facts;
+  }));
+
+  var inner = document.createElement("div");
+  inner.innerHTML =
+    "<div class=\"ap-level-badge\">&#127891; Advanced Placement Anatomy & Physiology</div>" +
+    "<p class=\"big-text\">Explore human organ systems at an in-depth biological and cellular level!</p>" +
+    "<div class=\"highlight-box\" style=\"text-align:center;padding:24px;\">" +
+    "  <div id=\"organ-emoji\" style=\"font-size:5.2rem;margin-bottom:8px;\"></div>" +
+    "  <h3 id=\"organ-name\" style=\"font-size:1.85rem;color:var(--pbs-blue);margin-bottom:4px;\"></h3>" +
+    "  <div id=\"organ-sci\" style=\"font-family:Nunito,sans-serif;font-style:italic;color:#5A6A85;font-weight:800;font-size:1rem;margin-bottom:8px;\"></div>" +
+    "  <div id=\"organ-job\" style=\"font-weight:900;color:#0096C7;font-size:1.05rem;margin-bottom:12px;\"></div>" +
+    "  <p id=\"organ-desc\" class=\"big-text\" style=\"max-width:660px;margin:0 auto 12px;text-align:left;line-height:1.8;\"></p>" +
+    "  <div style=\"background:#E8F5E9;border:3px solid #81C784;border-radius:18px;padding:12px 18px;display:inline-block;margin-top:6px;text-align:left;max-width:640px;\">" +
+    "    <span style=\"font-weight:900;color:#1B5E20;\">&#128161; Biological Discovery: </span><span id=\"organ-fact\" style=\"font-weight:800;color:var(--text);\"></span>" +
+    "  </div>" +
+    "  <div style=\"background:#F3E5F5;border:3px solid #BA68C8;border-radius:18px;padding:12px 18px;display:block;margin:12px auto 0;text-align:left;max-width:640px;\">" +
+    "    <span style=\"font-weight:900;color:#6A1B9A;\">&#127891; AP Physiology Note: </span><span id=\"organ-ap\" style=\"font-weight:800;color:var(--text);\"></span>" +
+    "  </div>" +
+    "</div>" +
+    "<div class=\"sw-controls\" style=\"margin-top:16px;\"><div class=\"sw-nav-group\">" +
+    "  <button class=\"fc-nav-btn prev\" onclick=\"organPrev()\">Previous System</button>" +
+    "  <button class=\"fc-nav-btn next\" onclick=\"organNext()\">Next System</button>" +
+    "</div></div>" +
+    "<div class=\"fc-counter\" id=\"organ-counter\"></div>";
+  box.appendChild(inner);
+  container.appendChild(box);
+
+  // In-depth AP questions for Organs
+  var apOrganQuiz = [
+    {q:"Which specialized heart structure acts as the physiological pacemaker to generate rhythmic electrical contractions?", opts:["The Sinoatrial (SA) Node","The Mitral Valve","The Coronary Sinus","The Pericardium"], ans:0},
+    {q:"In the pulmonary respiratory system, gas exchange of oxygen and carbon dioxide takes place across the thin membranes of which structures?", opts:["Microscopic Alveoli","The Trachea","The Bronchi","The Epiglottis"], ans:0},
+    {q:"What acidic chemical (pH 1.5–2) does the gastric mucosa secrete to break down proteins and kill harmful bacteria?", opts:["Hydrochloric Acid (HCl)","Lactic Acid","Citric Acid","Sulfuric Acid"], ans:0},
+    {q:"Which internal organ has the unique capability of regenerating and regrowing tissue after damage or resection?", opts:["The Liver (Hepatic organ)","The Brain","The Heart","The Pancreas"], ans:0},
+    {q:"Millions of microscopic filtration units inside the kidneys that clean metabolic toxins from blood are called:", opts:["Nephrons","Neurons","Alveoli","Villi"], ans:0},
+    {q:"Which subdivision of the brain coordinates complex muscle synergy, balance, and motor precision?", opts:["The Cerebellum","The Cerebrum","The Hypothalamus","The Medulla"], ans:0}
+  ];
+  makeQuiz(container, "organs-systems", apOrganQuiz);
+
+  var upd = function(autoSpeak) {
+    var o = ORGANS_DATA[organIdx];
+    document.getElementById("organ-emoji").innerHTML = o.emoji;
+    document.getElementById("organ-name").textContent = o.name;
+    document.getElementById("organ-sci").textContent = "Anatomical Focus: " + o.sci;
+    document.getElementById("organ-job").innerHTML = "&#128736;&#65039; Function: " + o.job;
+    document.getElementById("organ-desc").textContent = o.desc;
+    document.getElementById("organ-fact").textContent = o.facts;
+    document.getElementById("organ-ap").textContent = o.apNotes;
+    document.getElementById("organ-counter").textContent = "Organ System " + (organIdx + 1) + " of " + ORGANS_DATA.length;
+    if (autoSpeak) speak(o.name + ". " + o.desc, false);
+  };
+  window.organNext = function(){ organIdx = (organIdx + 1) % ORGANS_DATA.length; upd(true); };
+  window.organPrev = function(){ organIdx = (organIdx - 1 + ORGANS_DATA.length) % ORGANS_DATA.length; upd(true); };
+  upd(false);
+}
+
+/* 3. THE FIVE SENSES & NEUROPHYSIOLOGY (Sensory Receptors and Transduction) */
+var SENSES_DATA = [
+  {sense:"Vision & Photoreceptors (Sight)", organ:"Eye Retina & Optic Nerve", emoji:"&#128064;", desc:"Light passes through your cornea and lens onto the retina at the back of the eye. Over 120 million rod cells detect dim light and shapes, while 6 million cone cells detect vibrant colors (red, green, blue). The optic nerve transmits these signals directly to the occipital lobe of your brain!", examples:"Color differentiation, depth perception, visual reading", apNotes:"Rods contain rhodopsin for scotopic vision; cones enable high-acuity photopic color vision."},
+  {sense:"Audition & Mechanoreceptors (Hearing)", organ:"Cochlea & Auditory Nerve", emoji:"&#128066;", desc:"Acoustic sound waves enter the ear canal and vibrate the tympanic membrane (eardrum). Three tiny ossicle bones (malleus, incus, stapes) amplify vibrations into the fluid-filled cochlea, where specialized stereocilia hair cells convert mechanical vibrations into neural impulses!", facts:"The stapes (stirrup) in the middle ear is the smallest bone in your body—the size of a grain of rice!", examples:"Musical pitch, spatial sound localization, speech recognition", apNotes:"Frequency (pitch) is mapped tonotopically along the basilar membrane in the cochlea."},
+  {sense:"Olfaction & Chemical Chemoreceptors (Smell)", organ:"Olfactory Bulb & Epithelium", emoji:"&#128067;", desc:"Volatile airborne odorant molecules bind to specialized receptor proteins on olfactory cilia in the nasal cavity. Olfactory neurons bypass the thalamus and project directly to the olfactory cortex and limbic system, explaining why smells trigger powerful memories and emotions!", facts:"Humans can distinguish over 1 trillion unique odorant combinations!", examples:"Food detection, smoke hazard warning, aromatic flowers", apNotes:"Olfactory neurons are among the few neuronal populations that continuously regenerate throughout life."},
+  {sense:"Gustation & Taste Receptors (Taste)", organ:"Lingual Papillae & Taste Buds", emoji:"&#128069;", desc:"Your tongue contains thousands of taste buds housed within papillae. Each taste bud contains gustatory receptor cells tuned to 5 distinct modalities: Sweet (sugars), Salty (sodium ions), Sour (hydrogen ions), Bitter (alkaloids), and Umami/Savory (glutamate amino acids)!", facts:"Much of what we experience as 'flavor' is actually a combination of taste and olfactory smell!", examples:"Nutrient recognition, toxic alkaloid detection (bitter)", apNotes:"Sweet, umami, and bitter signal through G-protein coupled receptors; salty and sour act through ion channels."},
+  {sense:"Somatosensory System & Mechanoreception (Touch)", organ:"Cutaneous Dermis & Nerve Endings", emoji:"&#128400;&#65039;", desc:"Your skin houses diverse specialized sensory receptors: Meissner corpuscles detect light touch, Pacinian corpuscles sense rapid vibrations and deep pressure, Merkel discs detect texture, Ruffini endings sense stretch, and free nerve endings detect temperature and nociception (pain)!", facts:"Your fingertips and lips have the highest density of touch receptors in your entire body!", examples:"Thermoreception (heat/cold), proprioception, tactile identification", apNotes:"Signals travel via the dorsal column-medial lemniscal and spinothalamic tracts to the primary somatosensory cortex."}
+];
+var senseIdx = 0;
+
+function renderFiveSenses(container) {
+  var box = document.createElement("div"); box.className = "lesson-box";
+  box.appendChild(mkBoxHeader("Sensory Physiology: Receptors & Neural Pathways", function(){
+    var s = SENSES_DATA[senseIdx];
+    return s.sense + " via the " + s.organ + ". " + s.desc + " Examples: " + s.examples;
+  }));
+
+  var inner = document.createElement("div");
+  inner.innerHTML =
+    "<div class=\"ap-level-badge\">&#127891; Advanced Placement Neurophysiology</div>" +
+    "<p class=\"big-text\">Discover how specialized photoreceptors, mechanoreceptors, and chemoreceptors translate our world into neural signals!</p>" +
+    "<div class=\"highlight-box\" style=\"text-align:center;padding:24px;\">" +
+    "  <div id=\"sense-emoji\" style=\"font-size:5.2rem;margin-bottom:8px;\"></div>" +
+    "  <h3 id=\"sense-title\" style=\"font-size:1.85rem;color:var(--pbs-blue);margin-bottom:4px;\"></h3>" +
+    "  <div id=\"sense-organ\" style=\"font-weight:900;color:#0096C7;font-size:1.1rem;margin-bottom:12px;\"></div>" +
+    "  <p id=\"sense-desc\" class=\"big-text\" style=\"max-width:660px;margin:0 auto 12px;text-align:left;line-height:1.8;\"></p>" +
+    "  <div style=\"background:#FFF0F6;border:3px solid #F48FB1;border-radius:18px;padding:12px 18px;display:inline-block;text-align:left;max-width:640px;\">" +
+    "    <span style=\"font-weight:900;color:#C2185B;\">&#127800; Sensory Modality: </span><span id=\"sense-ex\" style=\"font-weight:800;color:var(--text);\"></span>" +
+    "  </div>" +
+    "  <div style=\"background:#EDE7F6;border:3px solid #B39DDB;border-radius:18px;padding:12px 18px;display:block;margin:12px auto 0;text-align:left;max-width:640px;\">" +
+    "    <span style=\"font-weight:900;color:#4A148C;\">&#127891; AP Neurobiology: </span><span id=\"sense-ap\" style=\"font-weight:800;color:var(--text);\"></span>" +
+    "  </div>" +
+    "</div>" +
+    "<div class=\"sw-controls\" style=\"margin-top:16px;\"><div class=\"sw-nav-group\">" +
+    "  <button class=\"fc-nav-btn prev\" onclick=\"sensePrev()\">Previous Sense</button>" +
+    "  <button class=\"fc-nav-btn next\" onclick=\"senseNext()\">Next Sense</button>" +
+    "</div></div>" +
+    "<div class=\"fc-counter\" id=\"sense-counter\"></div>";
+  box.appendChild(inner);
+  container.appendChild(box);
+
+  // In-depth AP questions for Senses
+  var apSenseQuiz = [
+    {q:"In the human retina, which specialized photoreceptor cells are responsible for detecting color vision under bright light?", opts:["Cone cells","Rod cells","Bipolar cells","Glial cells"], ans:0},
+    {q:"What is the smallest bone in the human body, located within the middle ear ossicular chain?", opts:["The Stapes (Stirrup)","The Malleus (Hammer)","The Incus (Anvil)","The Hyoid"], ans:0},
+    {q:"Which sensory pathway is unique because its olfactory neurons project directly to the cortex and limbic system without first synapsing in the thalamus?", opts:["The Sense of Smell (Olfaction)","The Sense of Vision","The Sense of Hearing","The Sense of Taste"], ans:0},
+    {q:"The microscopic sensory hair cells that convert mechanical sound vibrations into electrical nerve impulses reside inside which spiral structure?", opts:["The Cochlea","The Semicircular Canals","The Cornea","The Tympanic Membrane"], ans:0},
+    {q:"Which deep mechanoreceptors in human skin are specialized for detecting rapid vibrations and deep pressure?", opts:["Pacinian Corpuscles","Meissner Corpuscles","Merkel Discs","Ruffini Endings"], ans:0},
+    {q:"Which of the five primary taste modalities is triggered by the amino acid glutamate and gives foods a savory, brothy flavor?", opts:["Umami","Sour","Bitter","Sweet"], ans:0}
+  ];
+  makeQuiz(container, "five-senses", apSenseQuiz);
+
+  var upd = function(autoSpeak) {
+    var s = SENSES_DATA[senseIdx];
+    document.getElementById("sense-emoji").innerHTML = s.emoji;
+    document.getElementById("sense-title").textContent = s.sense;
+    document.getElementById("sense-organ").innerHTML = "&#128065; Receptor Pathway: " + s.organ;
+    document.getElementById("sense-desc").textContent = s.desc;
+    document.getElementById("sense-ex").textContent = s.examples;
+    document.getElementById("sense-ap").textContent = s.apNotes;
+    document.getElementById("sense-counter").textContent = "Sensory System " + (senseIdx + 1) + " of " + SENSES_DATA.length;
+    if (autoSpeak) speak(s.sense + " using your " + s.organ + ". " + s.desc, false);
+  };
+  window.senseNext = function(){ senseIdx = (senseIdx + 1) % SENSES_DATA.length; upd(true); };
+  window.sensePrev = function(){ senseIdx = (senseIdx - 1 + SENSES_DATA.length) % SENSES_DATA.length; upd(true); };
+  upd(false);
+}
+
+/* ================================================================
+   LESSONS REGISTRY
+   ================================================================ */
+var LESSONS = {
+  "alphabet":     {title:"Alphabet Explorer",    icon:"&#128288;",desc:"Learn all 26 letters A to Z with sounds!",          reward:5, render:renderAlphabet},
+  "sight-words":  {title:"Sight Word Flashcards", icon:"&#128065;&#65039;",desc:"Learn the most common words by sight!",     reward:5, render:renderSightWords},
+  "story-read":   {title:"Story Time",            icon:"&#128214;",desc:"Read a short story sentence by sentence.",         reward:8, render:renderStory},
+  "counting":     {title:"Counting 1 to 20",      icon:"&#128290;",desc:"Practice counting with a fun quiz!",              reward:5, render:renderCounting},
+  "addition":     {title:"Addition to 20",        icon:"&#10133;", desc:"Add numbers and find the right answer!",           reward:6, render:renderAddition},
+  "subtraction":  {title:"Subtraction to 20",     icon:"&#10134;", desc:"Subtract numbers, you can do it!",                reward:6, render:renderSubtraction},
+  "shapes":       {title:"Shapes Explorer",       icon:"&#128311;",desc:"Learn 2D and 3D shapes!",                         reward:5, render:renderShapes},
+  "tell-time":    {title:"Tell Time Explorer",    icon:"&#9200;",  desc:"Learn the hour hand, half past, and practice reading clocks!", reward:7, render:renderTellTime},
+  "letter-trace": {title:"Letter Tracing",        icon:"&#9999;&#65039;",desc:"Trace uppercase and lowercase letters!",     reward:5, render:renderLetterTrace},
+  "sentences":    {title:"Build a Sentence",      icon:"&#128221;",desc:"Capital letters, punctuation and sentences!",      reward:5, render:renderSentences},
+  "animals":      {title:"Animals and Habitats",  icon:"&#129409;",desc:"Where animals live and what they eat!",           reward:5, render:renderAnimals},
+  "plants":       {title:"Plants and Growth",     icon:"&#127793;",desc:"See how plants grow from tiny seeds!",            reward:5, render:renderPlants},
+  "weather":      {title:"Weather and Seasons",   icon:"&#127782;&#65039;",desc:"Explore the four seasons and weather!",   reward:5, render:renderWeather},
+  "family":       {title:"Family and Roles",      icon:"&#128106;",desc:"Learn about different family members.",           reward:4, render:renderFamily},
+  "community":    {title:"Community Helpers",     icon:"&#127960;&#65039;",desc:"Meet the helpers who keep us safe!",      reward:5, render:renderCommunity},
+  "maps":         {title:"Maps and Directions",   icon:"&#128506;&#65039;",desc:"Maps, directions, and the USA!",          reward:5, render:renderMaps},
+  "colors":       {title:"Colors and Mixing",     icon:"&#127912;",desc:"Primary colors and what happens when you mix!",  reward:4, render:renderColors},
+  "rhymes":       {title:"Nursery Rhymes",        icon:"&#127925;",desc:"Classic rhymes and rhyming words!",              reward:4, render:renderRhymes},
+  "counting-song":{title:"Counting Songs",        icon:"&#127926;",desc:"Fun songs that make counting easy!",             reward:4, render:renderCountingSong},
+  "body-parts":   {title:"My Amazing Body",       icon:"&#129497;",desc:"Explore parts of your body from head to toes!",   reward:6, render:renderBodyParts},
+  "organs-systems":{title:"Super Organs & Systems",icon:"&#129505;",desc:"Brain, heart, lungs, and stomach at work!",      reward:6, render:renderOrgansSystems},
+  "five-senses":  {title:"The Five Senses",       icon:"&#128064;",desc:"Sight, hearing, smell, taste, and touch!",       reward:6, render:renderFiveSenses},
+};
+
+/* ================================================================
+   INIT
+   ================================================================ */
+(function initApp() {
+  var savedId = getActiveId();
+  var profiles = getProfiles();
+  var savedProfile = savedId ? profiles.find(function(p){ return p && p.id === savedId; }) : null;
+
+  if (savedProfile) {
+    activateProfile(savedProfile.id);
+    showHome();
+  } else {
+    renderLoginScreen();
+    showScreen("screen-login");
+    updateWalletUI();
+  }
+})();
+</script>
+</body>
+</html>

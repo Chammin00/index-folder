@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Antigravity Baseline Engine | Enterprise Standards Observatory</title>
+
+  <!-- Tailwind CSS Engine -->
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+
+  <!-- AWS Enterprise Baseline + High-Gloss Lacquer & Cosmic Engine -->
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <link rel="stylesheet" href="aws-enterprise-baseline.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="high-gloss-lacquer.js" defer></script>
+  <script src="cosmic-background.js" defer></script>
+  <script src="mcp-baseline.js" defer></script>
+  <script src="aws-enterprise-baseline.js" defer></script>
+</head>
+<body class="bg-[#050B18] text-slate-100 min-h-screen selection:bg-[#C5A059] selection:text-[#050B18] overflow-hidden font-sans">
+
+  <div class="app-root">
+
+    <!-- Top Global Header (AWS Enterprise Architecture Baseline) -->
+    <header class="top-header">
+      <div class="header-left">
+        <button class="sidebar-toggle-btn text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition-colors" onclick="AntigravityEnterprise.toggleSidebar()" title="Toggle Sidebar (Ctrl+B)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#C5A059] via-[#DFBA73] to-[#38BDF8] p-[1.5px] shadow-md shadow-[#C5A059]/20">
+            <div class="w-full h-full bg-[#050B18] rounded-[6px] flex items-center justify-center text-sm">
+              ⚡
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-bold tracking-tight text-white">Antigravity Baseline Studio</span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                100% Enforced
+              </span>
+            </div>
+            <p class="text-[11px] text-slate-400 hidden sm:block">
+              AWS Enterprise Fullscreen Baseline Architecture
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center Search (Ctrl+K) -->
+      <div class="hidden md:flex items-center flex-1 max-w-md mx-6">
+        <div class="w-full relative">
+          <input type="text" id="global-search-input" placeholder="Search baselines, rules, or habits (Ctrl+K)..."
+                 class="w-full bg-[#050B18] border border-[rgba(197,160,89,0.25)] rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#C5A059] transition-all">
+          <span class="absolute right-2.5 top-1.5 text-[10px] font-mono text-slate-500 border border-white/10 px-1 rounded">⌘K</span>
+        </div>
+      </div>
+
+      <!-- Header Controls -->
+      <div class="header-right">
+        <button id="open-mcp-hud-btn" class="px-3 py-1 rounded-lg text-xs font-semibold bg-[#0E1D3A] text-[#DFBA73] border border-[#C5A059]/30 hover:border-[#C5A059] hover:bg-[#16284D] transition-all flex items-center gap-1.5">
+          <span>⚡</span> MCP HUD
+        </button>
+        <button class="px-3 py-1 rounded-lg text-xs font-semibold bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 transition-all flex items-center gap-1.5" onclick="AntigravityEnterprise.toggleFullscreen()" title="Toggle Fullscreen">
+          <span>⛶</span> Fullscreen
+        </button>
+      </div>
+    </header>
+
+    <!-- Workspace Body: Left Sidebar + Center Viewport + Centered/Dockable Inspector -->
+    <div class="workspace-body">
+
+      <!-- Left Collapsible Navigation Sidebar -->
+      <aside class="app-sidebar" id="app-sidebar">
+        <div class="p-3 border-b border-white/5">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-[#C5A059] mb-2 sidebar-label">Filter Domains</div>
+          <ul class="sidebar-nav-list">
+            <li>
+              <div class="sidebar-item active filter-btn" data-filter="all">
+                <span class="sidebar-icon">🌌</span>
+                <span class="sidebar-label">All Baselines</span>
+                <span class="ml-auto text-[10px] font-mono text-slate-400 nav-badge">8</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item filter-btn" data-filter="gaming">
+                <span class="sidebar-icon">🎥</span>
+                <span class="sidebar-label">Gaming & YouTube</span>
+                <span class="ml-auto text-[10px] font-mono text-slate-400 nav-badge">363</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item filter-btn" data-filter="ui">
+                <span class="sidebar-icon">✨</span>
+                <span class="sidebar-label">UI & High-Gloss</span>
+                <span class="ml-auto text-[10px] font-mono text-slate-400 nav-badge">36</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item filter-btn" data-filter="slop">
+                <span class="sidebar-icon">🛡️</span>
+                <span class="sidebar-label">Anti-Slop Quality</span>
+                <span class="ml-auto text-[10px] font-mono text-slate-400 nav-badge">12</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item filter-btn" data-filter="rhel">
+                <span class="sidebar-icon">🐧</span>
+                <span class="sidebar-label">Red Hat & Linux</span>
+                <span class="ml-auto text-[10px] font-mono text-slate-400 nav-badge">47</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item filter-btn" data-filter="deal">
+                <span class="sidebar-icon">🏷️</span>
+                <span class="sidebar-label">Hardware & Deals</span>
+                <span class="ml-auto text-[10px] font-mono text-slate-400 nav-badge">16</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item filter-btn" data-filter="ollama">
+                <span class="sidebar-icon">🦙</span>
+                <span class="sidebar-label">Local AI & Ollama</span>
+                <span class="ml-auto text-[10px] font-mono text-slate-400 nav-badge">20</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item filter-btn" data-filter="visual">
+                <span class="sidebar-icon">⚛️</span>
+                <span class="sidebar-label">Visual-to-Code React</span>
+                <span class="ml-auto text-[10px] font-mono text-emerald-400 nav-badge">ACTIVE</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item filter-btn" data-filter="multi_agent">
+                <span class="sidebar-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+                </span>
+                <span class="sidebar-label">Godot & Blender Workflow</span>
+                <span class="ml-auto text-[10px] font-mono text-cyan-400 nav-badge">NEW</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Sidebar Readiness Box -->
+        <div class="p-3 mt-auto sidebar-readiness-box border-t border-white/5">
+          <div class="flex items-center justify-between text-xs font-bold text-white mb-1.5">
+            <span>Workspace Sync</span>
+            <span class="text-emerald-400 font-mono">100%</span>
+          </div>
+          <div class="w-full bg-[#050B18] h-1.5 rounded-full overflow-hidden border border-white/5 mb-2">
+            <div class="bg-gradient-to-r from-[#C5A059] to-emerald-400 h-full w-full"></div>
+          </div>
+          <div class="text-[10px] text-slate-400 font-mono flex items-center justify-between">
+            <span>34 Web Hubs</span>
+            <span>70 Projects</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Center Fluid Viewport (Zero Dead Margins) -->
+      <main class="app-main-viewport">
+
+        <!-- Top Hero Strip -->
+        <section class="glass-panel p-5 rounded-xl border border-[rgba(197,160,89,0.25)] flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl font-extrabold text-white tracking-tight flex items-center gap-2">
+              <span>AWS Enterprise HTML Baseline</span>
+              <span class="text-xs font-mono px-2 py-0.5 rounded bg-[#0E1D3A] text-[#DFBA73] border border-[#C5A059]/30">Active Standard</span>
+            </h2>
+            <p class="text-xs text-[#E2E8F0] mt-1 max-w-2xl leading-relaxed">
+              Standardized 100vw x 100vh layout with collapsible navigation, high-detectability WCAG AAA typography, centered modal inspector (with dual left/right dock controls), and Still Cosmic Backdrop.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-4 bg-[#050B18] border border-white/10 px-4 py-2.5 rounded-lg">
+            <div>
+              <div class="text-[10px] font-bold uppercase text-slate-400">Total Prompts</div>
+              <div class="text-lg font-bold text-white font-mono" id="stat-total-prompts">1,128</div>
+            </div>
+            <div class="w-px h-8 bg-white/10"></div>
+            <div>
+              <div class="text-[10px] font-bold uppercase text-slate-400">Active Modules</div>
+              <div class="text-lg font-bold text-[#DFBA73] font-mono" id="stat-baselines-count">8</div>
+            </div>
+            <div class="w-px h-8 bg-white/10"></div>
+            <div>
+              <div class="text-[10px] font-bold uppercase text-slate-400">Inspector Position</div>
+              <div class="text-xs font-bold text-cyan-400 font-mono">Centered Focus (Default)</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Multi-Agent Design & Development Workflows (Mobile App & Godot 4 + Blender Game Baseline) -->
+        <section class="glass-panel p-5 rounded-xl border border-[rgba(197,160,89,0.3)]">
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-white/10">
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-base font-extrabold text-white tracking-tight uppercase">Multi-Agent Workflows for Design &amp; Development</h3>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-300 border border-cyan-500/40">Godot 4 + Blender (bpy) Scope Baseline</span>
+              </div>
+              <p class="text-xs text-[#94A3B8] mt-0.5">
+                Enforced 3-agent orchestration pipelines for Mobile App Design (Expo/React Native) and Video Game Design (Godot 4 Node3D + Headless Blender .glb Pipeline when scope matches)
+              </p>
+            </div>
+            <a href="MULTI_AGENT_WORKFLOWS_BASELINE.md" target="_blank" class="px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-[#0E1D3A] text-[#DFBA73] border border-[#C5A059]/40 hover:border-[#C5A059] transition-all">
+              View Full Spec (MULTI_AGENT_WORKFLOWS_BASELINE.md)
+            </a>
+          </div>
+
+          <div class="grid grid-cols-1 xl:grid-cols-2 gap-5">
+            <!-- Left Workflow: Mobile App Design Workflow (Multi-Agent) -->
+            <div class="rounded-xl bg-[#050B18]/90 border border-emerald-500/30 p-4">
+              <div class="text-xs font-extrabold uppercase tracking-wider text-center py-2 mb-3 rounded-lg bg-emerald-950/50 border border-emerald-500/30 text-emerald-300">
+                Mobile App Design Workflow (Multi-Agent)
+              </div>
+              <div class="grid grid-cols-3 gap-2.5 text-[11px]">
+                <!-- Column 1: Product Agent -->
+                <div class="space-y-2 bg-emerald-950/20 border border-emerald-500/20 rounded-lg p-2.5">
+                  <div class="font-bold text-emerald-400 border-b border-emerald-500/20 pb-1.5 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span>Product Agent</span>
+                  </div>
+                  <div class="p-2 rounded bg-[#091326] border border-emerald-500/30 text-slate-200">1. Receive App Requirements</div>
+                  <div class="p-2 rounded bg-[#091326] border border-emerald-500/30 text-slate-200">2. User Research &amp; Persona Generation</div>
+                  <div class="p-2 rounded bg-[#091326] border border-emerald-500/30 text-slate-200">3. Define Feature Set &amp; User Journey</div>
+                  <div class="p-2 rounded bg-[#091326] border border-emerald-500/40 text-emerald-200 font-semibold">7. Drafting Front-End Views &amp; Layouts</div>
+                  <div class="p-2 rounded bg-emerald-500/20 border border-emerald-400 text-white font-bold text-center">8. App Spec &amp; Prototype Delivery</div>
+                </div>
+
+                <!-- Column 2: UI/UX Agent -->
+                <div class="space-y-2 bg-cyan-950/20 border border-cyan-500/20 rounded-lg p-2.5">
+                  <div class="font-bold text-cyan-400 border-b border-cyan-500/20 pb-1.5 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                    <span>UI/UX Agent</span>
+                  </div>
+                  <div class="p-2 rounded bg-[#091326] border border-cyan-500/30 text-slate-200">4. Generate Wireframes &amp; Info Architecture</div>
+                  <div class="p-2 rounded bg-cyan-950/60 border border-cyan-400/50 text-cyan-200 font-mono text-[10px]">
+                    ◆ Gate: UX Review &amp; Flow Check<br>
+                    <span class="text-emerald-400">Pass →</span> High-Fi Prototypes<br>
+                    <span class="text-rose-400">Fail →</span> Revise Feature Set
+                  </div>
+                  <div class="p-2 rounded bg-[#091326] border border-cyan-500/30 text-slate-200">6. Design System &amp; High-Fi UI Prototypes (WCAG AAA / Zero Emoji)</div>
+                </div>
+
+                <!-- Column 3: Tech Architect Agent -->
+                <div class="space-y-2 bg-amber-950/20 border border-amber-500/20 rounded-lg p-2.5">
+                  <div class="font-bold text-amber-400 border-b border-amber-500/20 pb-1.5 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                    <span>Tech Architect Agent</span>
+                  </div>
+                  <div class="p-2 rounded bg-[#091326] border border-amber-500/30 text-slate-200">5. Backend Architecture &amp; API Definition</div>
+                  <div class="p-2 rounded bg-amber-950/60 border border-amber-400/50 text-amber-200 font-mono text-[10px]">
+                    ◆ Gate: Cross-Platform Feasibility?<br>
+                    <span class="text-emerald-400">Yes →</span> Front-End Views<br>
+                    <span class="text-rose-400">No →</span> Refactor API / Stack
+                  </div>
+                  <div class="p-2 rounded bg-[#091326] border border-amber-500/20 text-slate-300 text-[10px] font-mono">
+                    Stack: Expo SDK 55 + React Native + TypeScript + WebAudio/Haptics
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Workflow: Video Game Design Workflow (Multi-Agent — Godot 4 + Blender Baseline) -->
+            <div class="rounded-xl bg-[#050B18]/90 border border-purple-500/30 p-4">
+              <div class="text-xs font-extrabold uppercase tracking-wider text-center py-2 mb-3 rounded-lg bg-purple-950/50 border border-purple-500/30 text-purple-300">
+                Video Game Design Workflow (Multi-Agent — Godot 4 + Blender Baseline)
+              </div>
+              <div class="grid grid-cols-3 gap-2.5 text-[11px]">
+                <!-- Column 1: Game Director Agent -->
+                <div class="space-y-2 bg-blue-950/20 border border-blue-500/20 rounded-lg p-2.5">
+                  <div class="font-bold text-blue-400 border-b border-blue-500/20 pb-1.5 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                    <span>Game Director Agent</span>
+                  </div>
+                  <div class="p-2 rounded bg-[#091326] border border-blue-500/30 text-slate-200">1. Receive Game Concept &amp; Genre</div>
+                  <div class="p-2 rounded bg-[#091326] border border-blue-500/30 text-slate-200">2. Establish Game Lore &amp; World-building</div>
+                  <div class="p-2 rounded bg-[#091326] border border-blue-500/30 text-slate-200">3. Define Player Progression &amp; Core Loops</div>
+                  <div class="p-2 rounded bg-blue-950/50 border border-blue-400/40 text-blue-200">↺ Revise World &amp; Mechanics (On Feasibility Handoff)</div>
+                </div>
+
+                <!-- Column 2: Content & Art Agent (Blender bpy Pipeline) -->
+                <div class="space-y-2 bg-fuchsia-950/20 border border-fuchsia-500/20 rounded-lg p-2.5">
+                  <div class="font-bold text-fuchsia-400 border-b border-fuchsia-500/20 pb-1.5 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-fuchsia-400"></span>
+                    <span>Content &amp; Art (Blender)</span>
+                  </div>
+                  <div class="p-2 rounded bg-[#091326] border border-fuchsia-500/30 text-slate-200">4. Develop Levels, Quests &amp; Env Art Style</div>
+                  <div class="p-2 rounded bg-fuchsia-950/60 border border-fuchsia-400/50 text-fuchsia-200 font-mono text-[10px]">
+                    ◆ Gate: Concept Art &amp; Mechanics Review<br>
+                    <span class="text-emerald-400">Pass →</span> Blender 3D + Systems<br>
+                    <span class="text-rose-400">Fail →</span> Core Loops
+                  </div>
+                  <div class="p-2 rounded bg-[#091326] border border-fuchsia-500/30 text-slate-200">5. Blender <code class="text-fuchsia-300">bpy</code> 3D Rigging, PBR &amp; NLA <code class="text-fuchsia-300">.glb</code> Export</div>
+                  <div class="p-2 rounded bg-[#091326] border border-fuchsia-500/40 text-fuchsia-200 font-semibold">7. Draft Blockouts &amp; Behavior Scripts (<code class="text-fuchsia-300">Main.gd</code>)</div>
+                  <div class="p-2 rounded bg-fuchsia-500/20 border border-fuchsia-400 text-white font-bold text-center">8. GDD, Asset List &amp; Godot 4 Build</div>
+                </div>
+
+                <!-- Column 3: Systems & Gameplay Agent (Godot 4 Engine) -->
+                <div class="space-y-2 bg-amber-950/20 border border-amber-500/20 rounded-lg p-2.5">
+                  <div class="font-bold text-amber-400 border-b border-amber-500/20 pb-1.5 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                    <span>Systems &amp; Gameplay (Godot)</span>
+                  </div>
+                  <div class="p-2 rounded bg-[#091326] border border-amber-500/30 text-slate-200">6. Determine Game Engine &amp; Physics Rules (Godot 4 + Blender Scope Baseline)</div>
+                  <div class="p-2 rounded bg-amber-950/60 border border-amber-400/50 text-amber-200 font-mono text-[10px]">
+                    ◆ Gate: Resource &amp; Platform Feasibility?<br>
+                    <span class="text-emerald-400">Yes →</span> Draft Blockouts &amp; Scripts<br>
+                    <span class="text-rose-400">No →</span> Revise World &amp; Mechanics
+                  </div>
+                  <div class="p-2 rounded bg-[#091326] border border-amber-500/20 text-slate-300 text-[10px] font-mono">
+                    Baseline: Godot 4.7 Forward+ Node3D + Camera3D + Blender 5.1 .glb NLA Actions
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Active Baselines Grid -->
+        <section>
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <h3 class="text-base font-bold text-white">Active Baseline Modules</h3>
+              <p class="text-xs text-[#94A3B8]">Click any baseline card to open its detailed inspector modal centered on screen</p>
+            </div>
+          </div>
+
+          <div id="baselines-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <!-- Dynamically populated by app.js -->
+          </div>
+        </section>
+
+        <!-- Top Recurring Habits -->
+        <section class="glass-panel p-5 rounded-xl border border-[rgba(197,160,89,0.25)]">
+          <div class="mb-3">
+            <h3 class="text-base font-bold text-white">Discovered User Habits & Recurring Task Directives</h3>
+            <p class="text-xs text-[#94A3B8]">Top repeated requests quantified across 1,128 archived interaction steps</p>
+          </div>
+          <div id="habits-list" class="space-y-2">
+            <!-- Rendered by app.js -->
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Centered Modal & Multi-Dock Inspector (AWS Baseline Standard) -->
+      <div class="inspector-backdrop" id="inspector-backdrop" onclick="AntigravityEnterprise.closeInspector()"></div>
+      <aside class="app-inspector mode-center hidden" id="app-inspector">
+        <div class="inspector-head">
+          <div class="inspector-head-title">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="color: var(--gh-accent-gold);">
+              <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13Z"/>
+            </svg>
+            <span id="insp-header-title">Baseline Detail Inspector</span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <!-- Dock Mode Selector (Center Modal default, Left, Right) -->
+            <div class="dock-mode-bar">
+              <button class="dock-mode-btn" data-dock="left" onclick="AntigravityEnterprise.setInspectorDock('left')" title="Dock to Left Side">⇱ Left</button>
+              <button class="dock-mode-btn active" data-dock="center" onclick="AntigravityEnterprise.setInspectorDock('center')" title="Center Focus Modal">⛶ Center</button>
+              <button class="dock-mode-btn" data-dock="right" onclick="AntigravityEnterprise.setInspectorDock('right')" title="Dock to Right Side">⇲ Right</button>
+            </div>
+
+            <button class="btn-close-icon" onclick="AntigravityEnterprise.closeInspector()" title="Close (Esc)">
+              ✕
+            </button>
+          </div>
+        </div>
+
+        <div class="inspector-body">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-[#0E1D3A] border border-[#C5A059]/40 flex items-center justify-center text-xl shadow-md">
+              ⚡
+            </div>
+            <div>
+              <div id="insp-title" class="text-lg font-extrabold text-white">Module Title</div>
+              <div id="insp-category" class="text-xs text-[#38BDF8] font-mono">Category / Scope</div>
+            </div>
+          </div>
+
+          <div class="detail-card">
+            <div class="detail-heading">
+              <span>Production Enforced Directive</span>
+            </div>
+            <div class="detail-text font-mono text-xs text-[#E2E8F0]" id="insp-role">
+              Active baseline rule definition.
+            </div>
+          </div>
+
+          <div class="detail-card">
+            <div class="detail-heading">
+              <span>Learned Prompt Triggers</span>
+            </div>
+            <div class="detail-text text-xs text-[#E2E8F0]" id="insp-triggers">
+              Sample prompts extracted from transcripts.
+            </div>
+          </div>
+
+          <div class="detail-card">
+            <div class="detail-heading">
+              <span>Telemetry & Parameters</span>
+            </div>
+            <table class="w-full text-xs text-left" id="insp-params">
+              <!-- Parameters table -->
+            </table>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

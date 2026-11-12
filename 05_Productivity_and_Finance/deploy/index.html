@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Antigravity Deployment & Project Management Hub</title>
+  <script src="cosmic-background.js"></script>
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <script src="high-gloss-lacquer.js"></script>
+  <style>
+    :root {
+      /* Signature Brand & High-Gloss Lacquer Colors */
+      --c-navy: #0E1D3A;
+      --c-navy-deep: #050B18;
+      --c-navy-mid: #0B162C;
+      --c-navy-light: #16284D;
+      --c-tan: #C5A059;
+      --c-tan-bright: #DFBA73;
+      --c-tan-glow: rgba(197, 160, 89, 0.28);
+      --c-glaze: #0E1D3A;
+
+      /* High-Gloss Optical Layers */
+      --bg-primary: #050B18;
+      --bg-gradient: radial-gradient(circle at 50% -10%, #0B162C 0%, #050B18 80%);
+      --bg-card: #0E1D3A;
+      --bg-card-hover: #122448;
+      --border-color: rgba(197, 160, 89, 0.28);
+      --border-hover: rgba(223, 186, 115, 0.85);
+      --text-main: #f0f4f8;
+      --text-muted: #94a3b8;
+      --text-tan: #DFBA73;
+      --accent-deploy: #10b981;
+      --accent-test: #C5A059;
+      --accent-incomp: #64748b;
+      --accent-blue: #38bdf8;
+      --accent-purple: #a855f7;
+
+      /* Physical Lacquer Clear-Coat Mechanics */
+      --lacquer-shadow: 0 8px 32px -4px rgba(2, 6, 18, 0.8), 0 2px 8px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.35);
+      --lacquer-hover-shadow: 0 16px 48px -4px rgba(2, 6, 18, 0.95), 0 0 28px rgba(197, 160, 89, 0.28), inset 0 1px 2px rgba(255, 255, 255, 0.65);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg-primary);
+      background-image: var(--bg-gradient);
+      color: var(--text-main);
+      line-height: 1.5;
+      padding: 0;
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .main-viewport {
+      flex: 1;
+      min-width: 0;
+      padding: 2rem 2.25rem;
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .top-action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .hub-title h1 {
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      letter-spacing: -0.01em;
+    }
+
+    .hub-title h1 .accent {
+      color: var(--c-tan-bright);
+      text-shadow: 0 0 16px rgba(223, 186, 115, 0.4);
+    }
+
+    .hub-title p {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      margin-top: 0.25rem;
+    }
+
+    .stat-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    /* High-Gloss Lacquer Tile Base */
+    .stat-card {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(145deg, #0E1D3A 0%, rgba(14, 29, 58, 0.9) 60%, rgba(5, 11, 24, 0.98) 100%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-top: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 14px;
+      padding: 1.3rem;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--lacquer-shadow);
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Curved Specular Glare Shield */
+    .stat-card::before, .card::before, .quick-actions::before, .routine-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.05) 35%, transparent 60%);
+      border-top: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: inherit;
+      z-index: 1;
+    }
+
+    /* Dynamic Pointer-Tracked Specular Flare */
+    .stat-card::after, .card::after, .quick-actions::after, .routine-box::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle 220px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.22), transparent 70%);
+      border-radius: inherit;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 2;
+    }
+
+    .stat-card:hover::after, .card:hover::after, .quick-actions:hover::after, .routine-box:hover::after {
+      opacity: 1;
+    }
+
+    .stat-card:hover {
+      border-color: var(--border-hover);
+      border-top-color: rgba(255, 255, 255, 0.85);
+      box-shadow: var(--lacquer-hover-shadow);
+      transform: translateY(-3px) scale(1.01);
+    }
+
+    .stat-card .label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      font-weight: 600;
+      position: relative;
+      z-index: 3;
+    }
+
+    .stat-card .value {
+      font-size: 2.1rem;
+      font-weight: 800;
+      margin-top: 0.4rem;
+      position: relative;
+      z-index: 3;
+      letter-spacing: -0.02em;
+    }
+
+    .stat-card.deploy .value { color: var(--accent-deploy); text-shadow: 0 0 14px rgba(16, 185, 129, 0.35); }
+    .stat-card.test .value { color: var(--c-tan-bright); text-shadow: 0 0 14px rgba(223, 186, 115, 0.35); }
+    .stat-card.incomp .value { color: var(--accent-incomp); }
+    .stat-card.total .value { color: var(--c-tan-bright); text-shadow: 0 0 14px rgba(223, 186, 115, 0.35); }
+
+    .quick-actions {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0E1D3A 0%, rgba(14, 29, 58, 0.95) 50%, rgba(5, 11, 24, 0.98) 100%);
+      border: 1px solid var(--border-color);
+      border-top: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 16px;
+      padding: 1.35rem 1.6rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--lacquer-shadow);
+    }
+
+    .action-info {
+      position: relative;
+      z-index: 3;
+    }
+
+    .action-info h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .action-info p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-top: 0.2rem;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.6rem 1.15rem;
+      border-radius: 9px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      border: 1px solid transparent;
+      border-top: 1px solid rgba(255, 255, 255, 0.35);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Hover Glare Sweep Sheen for buttons & pills */
+    .btn::after, .pill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+      transform: skewX(-25deg);
+      pointer-events: none;
+      transition: none;
+      z-index: 4;
+    }
+
+    .btn:hover::after, .pill:hover::after {
+      left: 170%;
+      transition: left 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-primary {
+      background: linear-gradient(180deg, #DFBA73 0%, #C5A059 100%);
+      color: #070e1b;
+      font-weight: 700;
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(180deg, #ebd096 0%, #d4b068 100%);
+      color: #050b18;
+      box-shadow: 0 6px 20px rgba(197, 160, 89, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .btn-success {
+      background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    .btn-success:hover {
+      background: linear-gradient(180deg, #34d399 0%, #10b981 100%);
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: linear-gradient(180deg, rgba(20, 36, 68, 0.75) 0%, rgba(14, 25, 48, 0.95) 100%);
+      border-color: var(--border-color);
+      color: var(--text-main);
+    }
+    .btn-outline:hover {
+      background: linear-gradient(180deg, rgba(26, 46, 86, 0.9) 0%, rgba(18, 32, 60, 0.98) 100%);
+      border-color: var(--c-tan-bright);
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(197, 160, 89, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .btn-luxury {
+      background: linear-gradient(135deg, rgba(197, 160, 89, 0.25) 0%, rgba(14, 29, 58, 0.9) 100%);
+      border: 1px solid #DFBA73;
+      border-top: 1px solid rgba(255, 255, 255, 0.7);
+      color: #DFBA73;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .btn-luxury:hover {
+      background: linear-gradient(135deg, rgba(223, 186, 115, 0.4) 0%, rgba(20, 42, 84, 0.95) 100%);
+      color: #ffffff;
+      box-shadow: 0 6px 22px rgba(223, 186, 115, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .filters-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 0.48rem 1.05rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: linear-gradient(180deg, rgba(18, 34, 64, 0.85) 0%, rgba(10, 19, 36, 0.95) 100%);
+      border: 1px solid var(--border-color);
+      border-top: 1px solid rgba(255, 255, 255, 0.3);
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .pill:hover {
+      border-color: var(--c-tan);
+      border-top-color: rgba(255, 255, 255, 0.65);
+      color: var(--text-main);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(197, 160, 89, 0.25);
+    }
+
+    .pill.active {
+      background: linear-gradient(180deg, #DFBA73 0%, #C5A059 100%);
+      color: #070e1b;
+      border-color: #DFBA73;
+      border-top-color: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 4px 18px rgba(197, 160, 89, 0.45);
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-box input {
+      background: linear-gradient(180deg, rgba(14, 29, 58, 0.9) 0%, rgba(8, 16, 32, 0.95) 100%);
+      border: 1px solid var(--border-color);
+      border-top: 1px solid rgba(255, 255, 255, 0.3);
+      color: var(--text-main);
+      padding: 0.6rem 1rem 0.6rem 2.2rem;
+      border-radius: 9px;
+      font-size: 0.9rem;
+      width: 250px;
+      outline: none;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+      transition: all 0.2s ease;
+    }
+
+    .search-box input:focus {
+      border-color: var(--c-tan-bright);
+      box-shadow: 0 0 16px rgba(197, 160, 89, 0.35), inset 0 2px 4px rgba(0,0,0,0.4);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--c-tan);
+      font-size: 0.9rem;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 1.8rem 0 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-tan);
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 1.4rem;
+      margin-bottom: 2rem;
+    }
+
+    /* High-Gloss Lacquer Project Tile */
+    .card {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(145deg, #0E1D3A 0%, rgba(14, 29, 58, 0.95) 55%, rgba(5, 11, 24, 0.98) 100%);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-color);
+      border-top: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 16px;
+      padding: 1.45rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease;
+      box-shadow: var(--lacquer-shadow);
+    }
+
+    .card:hover {
+      transform: translateY(-4px) scale(1.008);
+      box-shadow: var(--lacquer-hover-shadow);
+      border-color: var(--border-hover);
+      border-top-color: rgba(255, 255, 255, 0.85);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.8rem;
+      margin-bottom: 0.6rem;
+      position: relative;
+      z-index: 3;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.28rem 0.65rem;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      position: relative;
+      z-index: 3;
+      border-top: 1px solid rgba(255, 255, 255, 0.35);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-card.inprogress .value { color: var(--accent-blue); }
+
+    .badge-deploy { background: linear-gradient(180deg, rgba(16, 185, 129, 0.3) 0%, rgba(5, 150, 105, 0.4) 100%); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.5); }
+    .badge-inprogress { background: linear-gradient(180deg, rgba(56, 189, 248, 0.25) 0%, rgba(14, 165, 233, 0.35) 100%); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.5); }
+    .badge-test { background: linear-gradient(180deg, rgba(245, 158, 11, 0.25) 0%, rgba(217, 119, 6, 0.35) 100%); color: #fde68a; border: 1px solid rgba(245, 158, 11, 0.5); }
+    .badge-incomp { background: linear-gradient(180deg, rgba(100, 116, 139, 0.25) 0%, rgba(71, 85, 105, 0.35) 100%); color: #cbd5e1; border: 1px solid rgba(100, 116, 139, 0.5); }
+
+    .card-meta {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 0.85rem;
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 3;
+    }
+
+    .meta-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .card-desc {
+      font-size: 0.88rem;
+      color: #cbd5e1;
+      margin-bottom: 1.1rem;
+      flex-grow: 1;
+      line-height: 1.55;
+      position: relative;
+      z-index: 3;
+    }
+
+    .test-box {
+      background: linear-gradient(180deg, rgba(11, 20, 38, 0.85) 0%, rgba(6, 12, 24, 0.95) 100%);
+      border: 1px solid rgba(197, 160, 89, 0.2);
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 0.55rem 0.85rem;
+      font-size: 0.82rem;
+      margin-bottom: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      z-index: 3;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
+    }
+
+    .test-box.pass { color: #6ee7b7; }
+    .test-box.warn { color: #fde68a; }
+    .test-box.gray { color: #94a3b8; }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      border-top: 1px solid rgba(197, 160, 89, 0.22);
+      padding-top: 0.95rem;
+      position: relative;
+      z-index: 3;
+    }
+
+    .card-footer code {
+      font-size: 0.78rem;
+      color: var(--c-tan-bright);
+      background: linear-gradient(180deg, rgba(8, 15, 30, 0.95) 0%, rgba(4, 8, 18, 0.98) 100%);
+      border: 1px solid rgba(197, 160, 89, 0.25);
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 0.25rem 0.55rem;
+      border-radius: 5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 200px;
+    }
+
+    .card-footer .action-link {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--c-tan-bright);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      transition: all 0.2s ease;
+    }
+
+    .card-footer .action-link:hover {
+      color: #fff;
+      text-shadow: 0 0 12px rgba(223, 186, 115, 0.6);
+      transform: translateX(3px);
+    }
+
+    .routine-box {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(145deg, #0E1D3A 0%, rgba(14, 29, 58, 0.95) 60%, rgba(5, 11, 24, 0.98) 100%);
+      border: 1px solid var(--border-color);
+      border-top: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 14px;
+      padding: 1.45rem;
+      margin-top: 2rem;
+      box-shadow: var(--lacquer-shadow);
+    }
+
+    .routine-box h4 {
+      font-size: 1.05rem;
+      color: var(--c-tan-bright);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 3;
+    }
+
+    .routine-box p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      position: relative;
+      z-index: 3;
+    }
+
+    .routine-box code {
+      background-color: #070d1a;
+      color: var(--c-tan-bright);
+      border: 1px solid rgba(197, 160, 89, 0.25);
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      font-size: 0.84rem;
+    }
+  </style>
+  <link rel="stylesheet" href="antigravity-auth.css">
+  <script src="antigravity-auth.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <script src="mcp-baseline.js"></script>
+</head>
+<body class="app-shell">
+
+  <!-- ==================== LEFT NAVIGATION PANEL ==================== -->
+  <aside class="left-panel" id="mainSidebar" aria-label="Main Navigation">
+    <div>
+      <!-- Brand & Title -->
+      <a href="index.html" class="sidebar-brand">
+        <div class="sidebar-logo-gem">AG</div>
+        <div class="sidebar-brand-text">
+          <h2>Antigravity <span>Hub</span></h2>
+          <span class="sidebar-badge">High-Gloss Lacquer • 96.4 GU</span>
+        </div>
+      </a>
+
+      <!-- Category Filter Navigation -->
+      <div class="sidebar-section-title">PROJECT VIEWS</div>
+      <ul class="sidebar-nav-list" role="tablist">
+        <li>
+          <button class="sidebar-nav-item active" id="pill-all" onclick="filterCategory('all', this)">
+            <span class="nav-icon">🚀</span>
+            <span>All Projects</span>
+            <span class="nav-count" id="count-all">16</span>
+          </button>
+        </li>
+        <li>
+          <button class="sidebar-nav-item" id="pill-deploy" onclick="filterCategory('Deployable', this)">
+            <span class="nav-icon">✅</span>
+            <span>Completed / Ready</span>
+            <span class="nav-count" id="count-deploy">10</span>
+          </button>
+        </li>
+        <li>
+          <button class="sidebar-nav-item" id="pill-inprog" onclick="filterCategory('Development in Progress', this)">
+            <span class="nav-icon">🛠️</span>
+            <span>In Development</span>
+            <span class="nav-count" id="count-inprog">6</span>
+          </button>
+        </li>
+        <li>
+          <button class="sidebar-nav-item" id="favPill" onclick="filterFavorites(this)">
+            <span class="nav-icon">⭐</span>
+            <span>Favorites</span>
+            <span class="nav-count" id="count-fav">0</span>
+          </button>
+        </li>
+        <li>
+          <button class="sidebar-nav-item" id="privatePill" onclick="filterPrivate(this)">
+            <span class="nav-icon">🔒</span>
+            <span>Private Portfolio</span>
+            <span class="nav-count">1</span>
+          </button>
+        </li>
+      </ul>
+
+      <!-- Operations & Diagnostics -->
+      <div class="sidebar-section-title">OPERATIONS & HEALTH</div>
+      <ul class="sidebar-nav-list">
+        <li>
+          <button class="sidebar-nav-item" onclick="openHealthModal()" style="color: #10b981; border-color: rgba(16, 185, 129, 0.25);">
+            <span class="nav-icon">🩺</span>
+            <span>Health Diagnostics</span>
+            <span class="nav-count" id="nav-health-badge" style="color: #10b981; border-color: rgba(16, 185, 129, 0.4);">16/16 OK</span>
+          </button>
+        </li>
+        <li>
+          <button class="sidebar-nav-item" onclick="copyCommand('.\\Deploy-Manager.ps1 -Action Zip -Project All')">
+            <span class="nav-icon">📦</span>
+            <span>Zip Clean Package</span>
+          </button>
+        </li>
+        <li>
+          <button class="sidebar-nav-item" onclick="copyCommand('.\\Deploy-Manager.ps1 -Action Test -Project All')">
+            <span class="nav-icon">🧪</span>
+            <span>Run Test Suite</span>
+          </button>
+        </li>
+        <li>
+          <button class="sidebar-nav-item" onclick="copyCommand('.\\routine_scan.ps1')">
+            <span class="nav-icon">🔄</span>
+            <span>Run Routine Scan</span>
+          </button>
+        </li>
+      </ul>
+
+      <!-- Studios & Documentation -->
+      <div class="sidebar-section-title">STUDIOS & CATALOG</div>
+      <ul class="sidebar-nav-list">
+        <li>
+          <a href="lacquer.html" class="sidebar-link" title="Experience Navy Blue & Tan High-Gloss Lacquer Studio" style="color: var(--c-tan-bright);">
+            <span class="nav-icon">✨</span>
+            <span>Lacquer Studio</span>
+          </a>
+        </li>
+        <li>
+          <a href="../Choogle/hub.html" class="sidebar-link" title="Open Choogle Application Hub">
+            <span class="nav-icon">⚡</span>
+            <span>Choogle App Hub</span>
+          </a>
+        </li>
+        <li>
+          <a href="PROJECT_STATUS.md" class="sidebar-link" target="_blank">
+            <span class="nav-icon">📄</span>
+            <span>Status Document</span>
+          </a>
+        </li>
+        <li>
+          <a href="PROJECT_CATALOG.json" class="sidebar-link" target="_blank">
+            <span class="nav-icon">⚙️</span>
+            <span>Raw Catalog JSON</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Sidebar Footer with User Authentication -->
+    <div class="sidebar-footer">
+      <div id="antigravity-auth-badge-container"></div>
+    </div>
+  </aside>
+
+  <!-- ==================== MAIN VIEWPORT ==================== -->
+  <main class="main-viewport">
+    <!-- Top Action Bar -->
+    <div class="top-action-bar">
+      <div class="hub-title">
+        <h1>🚀 Antigravity <span class="accent">Deployment & Hub</span></h1>
+        <p>Centralized catalog, clean packager, automated testing, and daily 12:00 AM routine change scanner</p>
+      </div>
+
+      <!-- Real-Time Search Bar -->
+      <div class="search-box" style="margin: 0; min-width: 320px;">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search projects, categories, tech..." oninput="filterSearch()">
+      </div>
+    </div>
+
+    <!-- Statistics Overview -->
+    <div class="stat-bar">
+      <div class="stat-card total">
+        <span class="label">Total Projects</span>
+        <span class="value" id="stat-total">16</span>
+      </div>
+      <div class="stat-card deploy">
+        <span class="label">Completed / Deployable</span>
+        <span class="value" id="stat-deploy">10</span>
+      </div>
+      <div class="stat-card inprogress">
+        <span class="label">Development in Progress</span>
+        <span class="value" id="stat-incomp" style="color: var(--accent-blue);">6</span>
+      </div>
+      <div class="stat-card" style="border-color: rgba(16, 185, 129, 0.4); cursor: pointer; background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(30, 41, 59, 0.9));" onclick="openHealthModal()" title="Click to view interactive healthcheck dashboard">
+        <span class="label" style="color: #10b981;">Health Diagnostics</span>
+        <span class="value" style="color: #10b981;" id="stat-health">16/16 OK</span>
+      </div>
+    </div>
+
+    <!-- Project Grid -->
+    <div class="project-grid" id="projectGrid">
+      <!-- Populated dynamically via JS from embedded catalog data -->
+    </div>
+
+    <!-- Routine Scan Information -->
+    <div class="routine-box">
+      <h4>⏰ Daily 12:00 AM (Midnight) Routine Scan</h4>
+      <p>
+        A background routine scan is configured to trigger every night at <strong>12:00 AM (00:00)</strong>. It checks all project directories under <code>g:\My Drive\Antigravity\Projects</code> for newly added, modified, or deleted files. Changes are logged to <code>scan_log.txt</code> and the <code>PROJECT_CATALOG.json</code> and <code>PROJECT_STATUS.md</code> documents are refreshed automatically.
+        <br><br>
+        To register or verify the Windows Scheduled Task anytime, run: <code>.\Setup-MidnightTask.ps1</code> in PowerShell.
+      </p>
+    </div>
+  </main>
+
+<script>
+  // Project data catalog
+  const projects = [
+    {
+      name: "Choogle",
+      status: "Deployable",
+      type: "Static Web Portal",
+      files: 39,
+      size: "0.72 MB",
+      desc: "Multi-tool web portal with search engine, simulated network outage dashboard, IT cheatsheets (RHCSA, CCNA, VMware), tasks, and Chai AI.",
+      testStatus: "Verified Functional (Static Web)",
+      testClass: "pass",
+      entry: "../Choogle/index.html",
+      cmd: "Open index.html"
+    },
+    {
+      name: "comptia exam simulator",
+      status: "Deployable",
+      type: "Exam Suite & Web App",
+      files: 26,
+      size: "2.96 MB",
+      desc: "Comprehensive CompTIA Security+ SY0-701 exam simulator with practice engines, PBQ engine, flashcards, diagnostic tool, and mock exam PDFs.",
+      testStatus: "Verified Functional (Static Web & Assets)",
+      testClass: "pass",
+      entry: "../comptia exam simulator/index.html",
+      cmd: "Open index.html"
+    },
+    {
+      name: "chess",
+      status: "Deployable",
+      type: "Static Web Game",
+      files: 4,
+      size: "0.07 MB",
+      desc: "Interactive browser chess game with responsive board, piece rule validation, and move history.",
+      testStatus: "Verified Functional (Static Web)",
+      testClass: "pass",
+      entry: "../chess/index.html",
+      cmd: "Open index.html"
+    },
+    {
+      name: "1st grade learning",
+      status: "Deployable",
+      type: "Educational Web App",
+      files: 2,
+      size: "0.18 MB",
+      desc: "Interactive educational exercises for young learners including phonics drills and keyboard typing trainer.",
+      testStatus: "Verified Functional (Static Web)",
+      testClass: "pass",
+      entry: "../1st grade learning/index.html",
+      cmd: "Open index.html"
+    },
+    {
+      name: "desktopscreensaver",
+      status: "Deployable",
+      type: "HTML5 Canvas Screensavers",
+      files: 7,
+      size: "1.13 MB",
+      desc: "Atmospheric cosmic cityscape canvas screensavers rendered dynamically across seasons (Spring, Summer, Autumn, Winter, Rain).",
+      testStatus: "Verified Functional (Static Web)",
+      testClass: "pass",
+      entry: "../desktopscreensaver/Cosmic_Cityscape.html",
+      cmd: "Open Cosmic_Cityscape.html"
+    },
+    {
+      name: "synergize and pay",
+      status: "Deployable",
+      type: "Private Monetization Dashboard & Blueprint",
+      files: 3,
+      size: "0.05 MB",
+      desc: "🔒 CONFIDENTIAL INTERNAL WORK: Portfolio manifest and monetization strategy interactive dashboard displaying pricing, tiers, and commercial blueprints.",
+      testStatus: "Verified Functional (Protected)",
+      testClass: "pass",
+      entry: "../synergize and pay/index.html",
+      cmd: "Open index.html (Owner/Admin Only)",
+      isPrivate: true
+    },
+    {
+      name: "onestop",
+      status: "Deployable",
+      type: "Local Media & Capture Server",
+      files: 3,
+      size: "10.68 MB",
+      desc: "PowerShell-backed local HTTP streaming server, screen capture viewer, and video player.",
+      testStatus: "Verified Functional (PowerShell Server)",
+      testClass: "pass",
+      entry: "../onestop/index.html",
+      cmd: "powershell -File server.ps1"
+    },
+    {
+      name: "bot finder",
+      status: "Deployable",
+      type: "Full-Stack Python & Web Dashboard",
+      files: 1543,
+      size: "24.82 MB",
+      desc: "BotFinder & RageShield real-time social media bot & ragebait intelligence platform with live feed monitor, profile deep scan, and Chrome extension.",
+      testStatus: "5/5 pytest unit tests passing",
+      testClass: "pass",
+      entry: "../bot finder/dashboard/index.html",
+      cmd: "Open dashboard / uv run server"
+    },
+    {
+      name: "using ai agents for profit",
+      status: "Deployable",
+      type: "B2B AI Operations Engine",
+      files: 2504,
+      size: "63.18 MB",
+      desc: "Autonomous invoice and BOL reconciliation engine with interactive operations dashboard, KPI analytics summary, and demo data generator.",
+      testStatus: "4/4 pytest unit tests passing",
+      testClass: "pass",
+      entry: "../using ai agents for profit/static/index.html",
+      cmd: "Open dashboard / uv run main:app"
+    },
+    {
+      name: "MY Security",
+      status: "Deployable",
+      type: "Security Audit & Protection Hub",
+      files: 10,
+      size: "0.05 MB",
+      desc: "Sentinel PC Security Guard & Auditor web dashboard with real-time security score, vulnerability remediation drawer, and PowerShell status collectors.",
+      testStatus: "Build Succeeded (0 errors, .NET 10.0)",
+      testClass: "pass",
+      entry: "../MY Security/wwwroot/index.html",
+      cmd: "Open dashboard / dotnet run"
+    },
+    {
+      name: "vulnerability management",
+      status: "Development in Progress",
+      type: "ASP.NET Core Web App",
+      files: 290,
+      size: "53.83 MB",
+      desc: "VulnGuard vulnerability management MVC web app with SQLite database, hardening services, and crypto tools. Backend hosting & database tuning in progress.",
+      testStatus: "Build Succeeded (.NET 10.0) / In Development",
+      testClass: "warn",
+      entry: "../vulnerability management/README.md",
+      cmd: "dotnet run"
+    },
+    {
+      name: "screen reader",
+      status: "Development in Progress",
+      type: "Desktop Python Application",
+      files: 1684,
+      size: "49.64 MB",
+      desc: "Desktop OCR, automatic page-turner, and text-to-speech reading companion with bookmark manager. Desktop scripts complete; hardware camera tuning in progress.",
+      testStatus: "Code Complete / Awaiting Hardware Calibration",
+      testClass: "warn",
+      entry: "../screen reader/README.md",
+      cmd: "powershell -File run.ps1"
+    },
+    {
+      name: "RHCSA Exam200",
+      status: "Development in Progress",
+      type: "Hybrid Study & Practice Simulator",
+      files: 7,
+      size: "0.22 MB",
+      desc: "Red Hat Certified System Administrator study suite with interactive browser terminal practice simulator. Terminal tool functional; study guides expanding.",
+      testStatus: "Terminal Tool Ready / Guides In Progress",
+      testClass: "pass",
+      entry: "../RHCSA Exam200/RHCSA_Terminal_Practice.html",
+      cmd: "Open RHCSA_Terminal_Practice.html"
+    },
+    {
+      name: "note taker",
+      status: "Development in Progress",
+      type: "Study Notes & Knowledge Hub",
+      files: 4,
+      size: "0.02 MB",
+      desc: "CompTIA Security+ SY0-701 study notes, cheatsheets, and session documentation. Note collection & cheatsheet generator expanding.",
+      testStatus: "Documentation & Cheatsheets In Progress",
+      testClass: "gray",
+      entry: "../note taker/README.md",
+      cmd: "View notes in README.md"
+    },
+    {
+      name: "zfold6 features",
+      status: "Development in Progress",
+      type: "Power-User Reference Guide",
+      files: 1,
+      size: "0.01 MB",
+      desc: "Comprehensive master power-user guide and tips for Samsung Galaxy Z Fold 6 multitasking, DeX mode, and Galaxy AI tools. Documentation hub expanding.",
+      testStatus: "Documentation In Progress",
+      testClass: "gray",
+      entry: "../zfold6 features/galaxy_z_fold_6_tips_and_tricks_guide.md",
+      cmd: "View Z Fold 6 Master Guide"
+    },
+    {
+      name: "Images",
+      status: "Development in Progress",
+      type: "Asset Directory",
+      files: 3,
+      size: "6.58 MB",
+      desc: "Contains HEIC and JPG image assets without code or application harness. Media and graphics library collection in progress.",
+      testStatus: "Asset Collection In Progress",
+      testClass: "gray",
+      entry: "../Images/",
+      cmd: "Open asset collection"
+    }
+  ];
+
+  let currentCategory = 'all';
+
+  function updateFavCount() {
+    const user = window.antigravityAuth ? window.antigravityAuth.currentUser : null;
+    const favCount = user && user.favorites ? user.favorites.length : 0;
+    const favCountEl = document.getElementById('count-fav');
+    if (favCountEl) favCountEl.innerText = favCount;
+    const favPill = document.getElementById('favPill');
+    if (favPill && !favCountEl) favPill.innerText = `★ Favorites (${favCount})`;
+
+    const deployCount = projects.filter(p => p.status === 'Deployable' || p.status === 'Completed').length;
+    const inprogCount = projects.filter(p => p.status === 'Development in Progress' || p.status === 'In Progress' || p.status === 'Incomplete' || p.status === 'Testing').length;
+    const elAll = document.getElementById('count-all');
+    const elDeploy = document.getElementById('count-deploy');
+    const elInprog = document.getElementById('count-inprog');
+    if (elAll) elAll.innerText = projects.length;
+    if (elDeploy) elDeploy.innerText = deployCount;
+    if (elInprog) elInprog.innerText = inprogCount;
+  }
+
+  function renderGrid() {
+    const grid = document.getElementById('projectGrid');
+    const query = document.getElementById('searchInput').value.toLowerCase().trim();
+    const auth = window.antigravityAuth;
+    const isOwnerOrAdmin = auth ? auth.isAdmin() : false;
+    
+    grid.innerHTML = '';
+    updateFavCount();
+
+    const filtered = projects.filter(p => {
+      let matchCat = false;
+      if (currentCategory === 'all') {
+        matchCat = true;
+      } else if (currentCategory === 'favorites') {
+        matchCat = auth ? auth.isFavorite(p.name) : false;
+      } else if (currentCategory === 'private') {
+        matchCat = p.isPrivate === true;
+      } else if (currentCategory === 'Deployable' || currentCategory === 'Completed') {
+        matchCat = (p.status === 'Deployable' || p.status === 'Completed');
+      } else if (currentCategory === 'Development in Progress' || currentCategory === 'In Progress' || currentCategory === 'Incomplete') {
+        matchCat = (p.status === 'Development in Progress' || p.status === 'In Progress' || p.status === 'Incomplete' || p.status === 'Testing');
+      } else {
+        matchCat = (p.status === currentCategory);
+      }
+
+      const matchSearch = (p.name.toLowerCase().includes(query) || 
+                           p.desc.toLowerCase().includes(query) || 
+                           p.type.toLowerCase().includes(query));
+      return matchCat && matchSearch;
+    });
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 3rem; color: #94a3b8;">No projects match your current filter.</div>';
+      return;
+    }
+
+    filtered.forEach(p => {
+      const isPrivate = p.isPrivate === true;
+      const canAccess = auth ? auth.canAccess(p) : false;
+      const isFav = auth ? auth.isFavorite(p.name) : false;
+      const isProgress = (p.status === 'Development in Progress' || p.status === 'In Progress' || p.status === 'Incomplete' || p.status === 'Testing');
+      const badgeClass = isProgress ? 'badge-inprogress' : (p.status === 'Deployable' || p.status === 'Completed' ? 'badge-deploy' : 'badge-test');
+
+      const privacyTagHtml = isPrivate
+        ? `<span class="agy-private-tag">🔒 Private / Internal</span>`
+        : `<span class="agy-public-tag">🌐 Public Deployable</span>`;
+
+      // Handle locked private view if user is not authorized
+      if (isPrivate && !canAccess) {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.borderColor = '#f59e0b';
+        card.style.background = 'linear-gradient(135deg, rgba(245, 158, 11, 0.05), rgba(15, 23, 42, 0.95))';
+        card.innerHTML = `
+          <div>
+            <div class="card-header">
+              <h2 class="card-title" style="color: #fde68a;">🔒 ${p.name}</h2>
+              <span class="agy-private-tag">Confidential</span>
+            </div>
+            <div class="card-meta">
+              <span class="meta-tag">🛡️ Restricted Asset</span>
+              <span class="meta-tag">💼 Monetization & Synergy</span>
+            </div>
+            <p class="card-desc" style="color: #cbd5e1;">
+              <strong>Confidential Private Work:</strong> This project contains internal portfolio monetization strategies and business blueprints. It is protected and restricted from public view.
+            </p>
+            <div class="test-box warn" style="margin-top: 1rem;">
+              <span>🔒</span>
+              <span>Authentication Required (Owner / Admin Only)</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <span style="font-size:0.8rem; color:#94a3b8;">Restricted Access</span>
+            <button class="btn btn-outline" style="font-size:0.82rem; padding: 0.4rem 0.8rem; border-color: #f59e0b; color: #f59e0b;" onclick="antigravityAuth.openAuthModal()">
+              🔐 Sign In to Unlock
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+        return;
+      }
+
+      // Normal unlocked view
+      let actionLabel = '🚀 Open Web App &rarr;';
+      let actionColor = 'var(--c-tan)';
+      if (isProgress) {
+        actionLabel = p.entry && p.entry.endsWith('.html') ? '🚀 Open Practice Tool &rarr;' : '📖 View Progress / Docs &rarr;';
+        actionColor = 'var(--c-tan-bright)';
+      }
+      const actionHtml = p.entry 
+        ? `<a href="${p.entry}" target="_blank" class="action-link" style="color: ${actionColor};">${actionLabel}</a>`
+        : `<span style="font-size:0.8rem; color:#94a3b8;">${p.status === 'Deployable' ? 'Run via CLI' : p.status}</span>`;
+
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div>
+          <div class="card-header">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <button class="agy-fav-btn ${isFav ? 'is-fav' : ''}" onclick="toggleFav('${p.name}')" title="${isFav ? 'Remove from favorites' : 'Bookmark to favorites'}">
+                ${isFav ? '★' : '☆'}
+              </button>
+              <h2 class="card-title">${p.name}</h2>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              ${privacyTagHtml}
+              <span class="badge ${badgeClass}">${p.status}</span>
+            </div>
+          </div>
+          <div class="card-meta">
+            <span class="meta-tag">📁 ${p.type}</span>
+            <span class="meta-tag">📄 ${p.files} files</span>
+            <span class="meta-tag">💾 ${p.size}</span>
+          </div>
+          <p class="card-desc">${p.desc}</p>
+          <div class="test-box ${p.testClass}">
+            <span>${p.testClass === 'pass' ? '✓' : (p.testClass === 'warn' ? '⚙️' : '•')}</span>
+            <span>${p.testStatus}</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <code title="${p.cmd}">${p.cmd}</code>
+          ${actionHtml}
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+    attachGlossPointerTracking();
+  }
+
+  function attachGlossPointerTracking() {
+    const tiles = document.querySelectorAll('.card, .stat-card, .quick-actions, .routine-box');
+    tiles.forEach(tile => {
+      if (tile._hasGlossTracking) return;
+      tile._hasGlossTracking = true;
+      tile.addEventListener('mousemove', e => {
+        const rect = tile.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        tile.style.setProperty('--mouse-x', `${x}px`);
+        tile.style.setProperty('--mouse-y', `${y}px`);
+      });
+      tile.addEventListener('touchmove', e => {
+        if (e.touches && e.touches[0]) {
+          const rect = tile.getBoundingClientRect();
+          const x = e.touches[0].clientX - rect.left;
+          const y = e.touches[0].clientY - rect.top;
+          tile.style.setProperty('--mouse-x', `${x}px`);
+          tile.style.setProperty('--mouse-y', `${y}px`);
+        }
+      }, { passive: true });
+    });
+  }
+
+  function toggleFav(projectName) {
+    if (!window.antigravityAuth) return;
+    if (!window.antigravityAuth.currentUser) {
+      window.antigravityAuth.openAuthModal();
+      return;
+    }
+    window.antigravityAuth.toggleFavorite(projectName);
+    renderGrid();
+  }
+
+  function filterCategory(cat, btn) {
+    currentCategory = cat;
+    document.querySelectorAll('.sidebar-nav-item, .pill').forEach(el => el.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    renderGrid();
+  }
+
+  function filterFavorites(btn) {
+    if (window.antigravityAuth && !window.antigravityAuth.currentUser) {
+      window.antigravityAuth.openAuthModal();
+      return;
+    }
+    filterCategory('favorites', btn);
+  }
+
+  function filterPrivate(btn) {
+    filterCategory('private', btn);
+  }
+
+  function filterSearch() {
+    renderGrid();
+  }
+
+  function copyCommand(cmd) {
+    const auth = window.antigravityAuth;
+    if (auth && !auth.isAdmin()) {
+      if (!confirm("Notice: Packaging and batch script execution requires Workspace Owner / Administrator privileges. Do you still want to copy the command?")) {
+        auth.openAuthModal();
+        return;
+      }
+    }
+
+    navigator.clipboard.writeText(cmd).then(() => {
+      alert("Copied to clipboard: " + cmd);
+    }).catch(() => {
+      prompt("Copy command:", cmd);
+    });
+  }
+
+  // React to user auth state changes (login, logout, profile update)
+  if (window.antigravityAuth) {
+    window.antigravityAuth.onAuthStateChanged(user => {
+      renderGrid();
+    });
+  } else {
+    renderGrid();
+  }
+
+  /* ==========================================================================
+     HEALTHCHECKS GUI INTERFACE
+     ========================================================================== */
+  let healthData = null;
+
+  async function fetchHealthStatus() {
+    try {
+      const resp = await fetch('health_status.json?t=' + Date.now());
+      if (resp.ok) {
+        healthData = await resp.json();
+        return healthData;
+      }
+    } catch (e) {
+      console.warn('Could not fetch health_status.json', e);
+    }
+    return null;
+  }
+
+  async function openHealthModal() {
+    let modal = document.getElementById('agy-health-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'agy-health-modal';
+      modal.className = 'agy-modal-backdrop';
+      document.body.appendChild(modal);
+    }
+
+    modal.innerHTML = `
+      <div class="agy-modal-card" style="max-width: 860px; width: 95%;">
+        <div class="agy-modal-header" style="background: #0e1726; border-bottom: 1px solid rgba(200, 169, 110, 0.25);">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 22px;">🩺</span>
+            <div>
+              <h3 style="margin: 0; font-size: 16px; color: #fff;">Antigravity System Health & Diagnostic Suite</h3>
+              <p style="margin: 2px 0 0; font-size: 11.5px; color: #94a3b8;">
+                Real-time verification of project entry points, asset integrity, and private security guards.
+              </p>
+            </div>
+          </div>
+          <button class="agy-close-btn" onclick="closeHealthModal()">✕</button>
+        </div>
+        <div class="agy-modal-body" style="padding: 20px; max-height: 80vh; overflow-y: auto; background: #0c121e;">
+          <div id="healthModalContent">
+            <div style="text-align: center; padding: 30px; color: #94a3b8;">Loading latest diagnostic records...</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    modal.style.display = 'flex';
+
+    const data = await fetchHealthStatus();
+    renderHealthModalBody(data);
+  }
+
+  function closeHealthModal() {
+    const modal = document.getElementById('agy-health-modal');
+    if (modal) modal.style.display = 'none';
+  }
+
+  function renderHealthModalBody(data) {
+    const content = document.getElementById('healthModalContent');
+    if (!content) return;
+
+    if (!data || !data.projects) {
+      content.innerHTML = `
+        <div style="text-align: center; padding: 20px;">
+          <p style="color: var(--c-tan); margin-bottom: 15px;">No recent healthcheck record found.</p>
+          <button class="btn btn-primary" onclick="triggerClientDiagnostic()">▶ Run Diagnostics Now</button>
+        </div>
+      `;
+      return;
+    }
+
+    const phaseTag = data.phase === 'Pre-Cron' 
+      ? '<span style="background: rgba(200, 169, 110, 0.2); color: #C8A96E; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; border: 1px solid rgba(200,169,110,0.4);">⏰ PRE-CRON</span>'
+      : (data.phase === 'Post-Cron' 
+          ? '<span style="background: rgba(16, 185, 129, 0.2); color: #10b981; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; border: 1px solid rgba(16,185,129,0.4);">✓ POST-CRON VERIFIED</span>'
+          : '<span style="background: rgba(200, 169, 110, 0.2); color: #dfc288; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; border: 1px solid rgba(200,169,110,0.4);">⚡ MANUAL RUN</span>');
+
+    let rowsHtml = '';
+    data.projects.forEach(p => {
+      const isPriv = p.Private === true;
+      const statusBadge = p.Status === 'Healthy'
+        ? '<span style="color: #10b981; font-weight: 700;">● HEALTHY</span>'
+        : (p.Status === 'Degraded' 
+            ? '<span style="color: #f59e0b; font-weight: 700;">▲ DEGRADED</span>'
+            : '<span style="color: #f43f5e; font-weight: 700;">✖ CRITICAL</span>');
+
+      rowsHtml += `
+        <tr style="border-bottom: 1px solid rgba(200, 169, 110, 0.12); font-size: 12.5px;">
+          <td style="padding: 10px 8px; font-weight: 600; color: #fff;">
+            ${p.Name}
+            ${isPriv ? '<span class="agy-private-tag" style="margin-left: 6px;">🔒 Private</span>' : ''}
+          </td>
+          <td style="padding: 10px 8px; color: #94a3b8;">${p.Type}</td>
+          <td style="padding: 10px 8px;">${statusBadge}</td>
+          <td style="padding: 10px 8px; font-family: monospace; color: var(--c-tan);">${p.PassedChecks || 'Passed'}</td>
+          <td style="padding: 10px 8px; color: #64748b; font-family: monospace;">${p.LatencyMs}ms</td>
+          <td style="padding: 10px 8px; color: #94a3b8; font-size: 11.5px;">${p.Message}</td>
+        </tr>
+      `;
+    });
+
+    content.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; background: rgba(20, 30, 48, 0.85); padding: 14px; border-radius: 10px; border: 1px solid rgba(200, 169, 110, 0.25);">
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          ${phaseTag}
+          <span style="font-size: 12px; color: #cbd5e1;">Inspected: <strong>${data.timestamp}</strong></span>
+          <span style="font-size: 12px; color: #94a3b8;">Execution: <strong>${data.durationMs} ms</strong></span>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-outline" style="font-size: 12px; padding: 5px 10px;" onclick="copyCommand('powershell -File .\\\\Test-ProjectHealth.ps1 -Phase Manual')">📋 Copy CLI Command</button>
+          <button class="btn btn-primary" style="font-size: 12px; padding: 5px 10px;" onclick="triggerClientDiagnostic()">🔄 Refresh Diagnostics</button>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px;">
+        <div style="background: rgba(20, 30, 48, 0.8); border: 1px solid rgba(200, 169, 110, 0.2); padding: 10px; border-radius: 8px; text-align: center;">
+          <span style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">Total Inspected</span>
+          <div style="font-size: 20px; font-weight: 800; color: var(--c-tan);">${data.total}</div>
+        </div>
+        <div style="background: rgba(20, 30, 48, 0.8); border: 1px solid rgba(200, 169, 110, 0.2); padding: 10px; border-radius: 8px; text-align: center;">
+          <span style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">Passing</span>
+          <div style="font-size: 20px; font-weight: 800; color: #10b981;">${data.healthy}</div>
+        </div>
+        <div style="background: rgba(20, 30, 48, 0.8); border: 1px solid rgba(200, 169, 110, 0.2); padding: 10px; border-radius: 8px; text-align: center;">
+          <span style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">Degraded</span>
+          <div style="font-size: 20px; font-weight: 800; color: #f59e0b;">${data.degraded}</div>
+        </div>
+        <div style="background: rgba(20, 30, 48, 0.8); border: 1px solid rgba(200, 169, 110, 0.2); padding: 10px; border-radius: 8px; text-align: center;">
+          <span style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">Critical</span>
+          <div style="font-size: 20px; font-weight: 800; color: ${data.critical > 0 ? '#f43f5e' : '#64748b'};">${data.critical}</div>
+        </div>
+      </div>
+
+      <div style="background: #0f172a; border: 1px solid #1f293d; border-radius: 8px; overflow: hidden;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+          <thead>
+            <tr style="background: #111827; border-bottom: 1px solid #1f293d; font-size: 11px; text-transform: uppercase; color: #64748b;">
+              <th style="padding: 10px 8px;">Project</th>
+              <th style="padding: 10px 8px;">Architecture</th>
+              <th style="padding: 10px 8px;">Status</th>
+              <th style="padding: 10px 8px;">Checks</th>
+              <th style="padding: 10px 8px;">Latency</th>
+              <th style="padding: 10px 8px;">Diagnostic Message</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: 16px; background: rgba(30, 41, 59, 0.4); border: 1px solid #1f293d; border-radius: 8px; padding: 12px; font-size: 12px; color: #94a3b8;">
+        ⏰ <strong>Pre & Post 00:00 Cronjob Integration:</strong> Diagnostics execute automatically every night at 12:00 AM immediately prior to the routine change scan (Phase 1: Pre-Cron) and immediately following catalog generation (Phase 3: Post-Cron) to guarantee project integrity across the entire workspace.
+      </div>
+    `;
+  }
+
+  async function triggerClientDiagnostic() {
+    const content = document.getElementById('healthModalContent');
+    if (content) {
+      content.innerHTML = '<div style="text-align:center; padding: 30px; color: #38bdf8;">🔄 Refreshing diagnostics from health_status.json...</div>';
+    }
+    const data = await fetchHealthStatus();
+    renderHealthModalBody(data);
+  }
+</script>
+
+</body>
+</html>

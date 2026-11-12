@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Antigravity Pro Trading Workstation</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- TradingView Official Advanced Charts Script -->
+  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+  <!-- Chart.js for Backtest Visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            tvBg: '#131722',
+            tvCard: '#1e222d',
+            tvBorder: '#2a2e39',
+            tvHover: '#2a2e39',
+            tvBlue: '#2962ff',
+            tvGreen: '#089981',
+            tvRed: '#f23645',
+            tvTextMuted: '#787b86',
+            tvTextMain: '#d1d4dc',
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', 'Trebuchet MS', 'Roboto', 'Ubuntu', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Menlo', 'Monaco', 'Courier New', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #131722;
+      color: #d1d4dc;
+      font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif;
+    }
+    .tv-panel {
+      background-color: #1e222d;
+      border: 1px solid #2a2e39;
+      border-radius: 6px;
+    }
+    .tv-btn-active {
+      background-color: #2962ff;
+      color: #ffffff;
+    }
+    .tab-nav.active {
+      color: #2962ff;
+      border-bottom: 2px solid #2962ff;
+    }
+  </style>
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <script src="high-gloss-lacquer.js"></script>
+</head>
+<body class="min-h-screen flex flex-col bg-tvBg">
+
+  <!-- ==================== HEADER NAVBAR ==================== -->
+  <header class="border-b border-tvBorder bg-[#181c27] px-4 py-2.5 flex items-center justify-between sticky top-0 z-50">
+    <!-- Brand & Status -->
+    <div class="flex items-center space-x-3">
+      <div class="flex items-center space-x-2">
+        <span class="w-7 h-7 rounded bg-[#2962ff] flex items-center justify-center font-bold text-white text-xs">
+          AG
+        </span>
+        <span class="font-bold text-sm text-white tracking-wide">ANTIGRAVITY PRO TERMINAL</span>
+      </div>
+      <span id="nav-mode-badge" class="px-2 py-0.5 rounded text-[11px] font-mono font-semibold uppercase bg-emerald-500/15 text-tvGreen border border-emerald-500/30">
+        ALPACA_PAPER
+      </span>
+    </div>
+
+    <!-- Quick Watchlist Buttons -->
+    <div class="hidden md:flex items-center space-x-1.5 font-mono text-xs">
+      <button onclick="setChartSymbol('NASDAQ:AAPL', 'AAPL')" class="sym-btn px-2.5 py-1 rounded bg-[#2a2e39] hover:bg-[#363a45] text-white transition font-medium">AAPL</button>
+      <button onclick="setChartSymbol('NASDAQ:NVDA', 'NVDA')" class="sym-btn px-2.5 py-1 rounded bg-[#2a2e39] hover:bg-[#363a45] text-white transition font-medium">NVDA</button>
+      <button onclick="setChartSymbol('NASDAQ:MSFT', 'MSFT')" class="sym-btn px-2.5 py-1 rounded bg-[#2a2e39] hover:bg-[#363a45] text-white transition font-medium">MSFT</button>
+      <button onclick="setChartSymbol('OTC:NTDOY', 'NTDOY')" class="sym-btn px-2.5 py-1 rounded bg-[#2a2e39] hover:bg-[#363a45] text-white transition font-medium">NTDOY</button>
+      <button onclick="setChartSymbol('BINANCE:BTCUSDT', 'BTC-USD')" class="sym-btn px-2.5 py-1 rounded bg-[#2a2e39] hover:bg-[#363a45] text-white transition font-medium">BTC</button>
+      <button onclick="setChartSymbol('BINANCE:ETHUSDT', 'ETH-USD')" class="sym-btn px-2.5 py-1 rounded bg-[#2a2e39] hover:bg-[#363a45] text-white transition font-medium">ETH</button>
+      <button onclick="setChartSymbol('BINANCE:SOLUSDT', 'SOL-USD')" class="sym-btn px-2.5 py-1 rounded bg-[#2a2e39] hover:bg-[#363a45] text-white transition font-medium">SOL</button>
+      <button onclick="setChartSymbol('AMEX:SPY', 'SPY')" class="sym-btn px-2.5 py-1 rounded bg-[#2a2e39] hover:bg-[#363a45] text-white transition font-medium">SPY</button>
+    </div>
+
+    <!-- Live Account Metrics & Actions -->
+    <div class="flex items-center space-x-4">
+      <div class="text-right font-mono text-xs hidden sm:block">
+        <span class="text-tvTextMuted">EQUITY: </span>
+        <span id="nav-total-equity" class="font-bold text-white text-sm">$100,000.00</span>
+      </div>
+      <div class="text-right font-mono text-xs hidden sm:block">
+        <span class="text-tvTextMuted">CASH: </span>
+        <span id="nav-cash" class="font-bold text-tvGreen text-sm">$98,274.20</span>
+      </div>
+
+      <button onclick="triggerTick()" class="px-3 py-1.5 rounded bg-[#2962ff] hover:bg-[#1e53e5] text-white text-xs font-semibold transition flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+        Run Strategy Tick
+      </button>
+
+      <button onclick="loadPortfolio()" class="p-1.5 rounded bg-[#2a2e39] hover:bg-[#363a45] text-tvTextMuted hover:text-white transition" title="Refresh Live Data">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ==================== WORKSPACE NAVIGATION TABS ==================== -->
+  <div class="border-b border-tvBorder bg-[#1e222d] px-4 flex space-x-6 text-xs font-semibold text-tvTextMuted">
+    <button onclick="switchTab('trading')" id="tab-trading" class="tab-nav active py-2.5 transition">LIVE TRADING & CHARTS</button>
+    <button onclick="switchTab('backtest')" id="tab-backtest" class="tab-nav py-2.5 transition">QUANT BACKTEST LAB</button>
+    <button onclick="switchTab('screener')" id="tab-screener" class="tab-nav py-2.5 transition">MARKET SCREENER (VectorBT)</button>
+    <button onclick="switchTab('security')" id="tab-security" class="tab-nav py-2.5 transition">ANTI-RUG TOKEN AUDITOR</button>
+  </div>
+
+  <!-- ==================== MAIN WORKSPACE ==================== -->
+  <main class="flex-1 p-3 w-full max-w-[1700px] mx-auto space-y-3">
+
+    <!-- ==================== VIEW 1: LIVE TRADING & ADVANCED CHARTS ==================== -->
+    <section id="pane-trading" class="grid grid-cols-1 lg:grid-cols-4 gap-3">
+      
+      <!-- LEFT 3 COLS: TRADINGVIEW ADVANCED REAL-TIME CHART -->
+      <div class="lg:col-span-3 tv-panel flex flex-col h-[740px] overflow-hidden">
+        <!-- Chart Header Bar -->
+        <div class="px-4 py-2 border-b border-tvBorder flex items-center justify-between bg-[#181c27]">
+          <div class="flex items-center space-x-3">
+            <span id="current-chart-label" class="font-bold text-white text-sm font-mono">NASDAQ:AAPL</span>
+            <span class="text-xs text-tvTextMuted">Real-Time Candlestick Chart (TradingView Interactive Engine)</span>
+          </div>
+          <!-- Symbol Search Box -->
+          <form onsubmit="searchSymbol(event)" class="flex items-center space-x-2">
+            <input type="text" id="custom-sym-input" placeholder="Enter symbol (e.g. NVDA, BTC)"
+              class="bg-[#131722] border border-tvBorder rounded px-2.5 py-1 text-xs text-white uppercase outline-none focus:border-[#2962ff]">
+            <button type="submit" class="px-2.5 py-1 rounded bg-[#2a2e39] hover:bg-[#363a45] text-xs text-white">Load</button>
+          </form>
+        </div>
+
+        <!-- TradingView Embedded Container -->
+        <div class="flex-1 w-full relative" id="tv_chart_container">
+          <!-- TradingView Widget injected via JavaScript -->
+        </div>
+      </div>
+
+      <!-- RIGHT 1 COL: ORDER TICKET & LIVE HOLDINGS -->
+      <div class="space-y-3 flex flex-col h-[740px]">
+        
+        <!-- Live Order Ticket Widget -->
+        <div class="tv-panel p-4 space-y-3 bg-[#1e222d]">
+          <div class="flex items-center justify-between border-b border-tvBorder pb-2">
+            <span class="text-xs font-bold text-white tracking-wider uppercase font-mono">ORDER TICKET</span>
+            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-tvGreen border border-emerald-500/30">ZERO FEE</span>
+          </div>
+
+          <form id="order-form" onsubmit="submitOrder(event)" class="space-y-3">
+            <!-- Buy / Sell Toggle -->
+            <div class="grid grid-cols-2 gap-2">
+              <button type="button" onclick="setOrderSide('BUY')" id="btn-side-buy" class="py-2 rounded font-bold text-xs text-white bg-tvGreen transition shadow">
+                BUY
+              </button>
+              <button type="button" onclick="setOrderSide('SELL')" id="btn-side-sell" class="py-2 rounded font-bold text-xs text-tvTextMuted bg-[#2a2e39] hover:text-white transition">
+                SELL
+              </button>
+            </div>
+
+            <!-- Symbol Input -->
+            <div>
+              <label class="block text-[11px] font-mono text-tvTextMuted mb-1">ASSET SYMBOL</label>
+              <input type="text" id="order-symbol" value="AAPL" required
+                class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs font-mono text-white uppercase outline-none focus:border-[#2962ff]">
+            </div>
+
+            <!-- Quantity Input -->
+            <div>
+              <label class="block text-[11px] font-mono text-tvTextMuted mb-1">QUANTITY (SHARES / COINS)</label>
+              <input type="number" step="any" id="order-qty" placeholder="e.g. 5" required
+                class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs font-mono text-white outline-none focus:border-[#2962ff]">
+            </div>
+
+            <!-- Quick Size Buttons -->
+            <div class="grid grid-cols-4 gap-1.5 text-[10px] font-mono">
+              <button type="button" onclick="quickQty(1)" class="py-1 rounded bg-[#2a2e39] hover:bg-[#363a45] text-white">1 Qty</button>
+              <button type="button" onclick="quickQty(5)" class="py-1 rounded bg-[#2a2e39] hover:bg-[#363a45] text-white">5 Qty</button>
+              <button type="button" onclick="quickQty(10)" class="py-1 rounded bg-[#2a2e39] hover:bg-[#363a45] text-white">10 Qty</button>
+              <button type="button" onclick="quickQty(25)" class="py-1 rounded bg-[#2a2e39] hover:bg-[#363a45] text-white">25 Qty</button>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" id="btn-order-submit" class="w-full py-2.5 rounded bg-tvGreen hover:opacity-90 font-bold text-xs text-white transition uppercase font-mono shadow-md">
+              EXECUTE BUY ORDER
+            </button>
+          </form>
+
+          <div id="order-feedback" class="text-xs font-mono hidden p-2 rounded border"></div>
+        </div>
+
+        <!-- Live Holdings Table -->
+        <div class="tv-panel p-3.5 flex-1 overflow-hidden flex flex-col">
+          <div class="flex items-center justify-between border-b border-tvBorder pb-2 mb-2">
+            <span class="text-xs font-bold text-white tracking-wider font-mono">ACTIVE POSITIONS</span>
+            <span id="pos-badge" class="text-[10px] font-mono text-tvTextMuted">1 open</span>
+          </div>
+
+          <div class="overflow-y-auto flex-1">
+            <table class="w-full text-left text-xs font-mono">
+              <thead class="text-tvTextMuted border-b border-tvBorder text-[10px]">
+                <tr>
+                  <th class="py-1.5">Asset</th>
+                  <th class="py-1.5">Qty</th>
+                  <th class="py-1.5">Current</th>
+                  <th class="py-1.5">P&L</th>
+                </tr>
+              </thead>
+              <tbody id="positions-tbody" class="divide-y divide-tvBorder">
+                <!-- Rows injected by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 2: QUANT BACKTEST LAB ==================== -->
+    <section id="pane-backtest" class="tv-panel p-5 space-y-4 hidden">
+      <div class="flex items-center justify-between border-b border-tvBorder pb-3">
+        <div>
+          <h2 class="text-sm font-bold text-white">QUANTITATIVE HISTORICAL BACKTEST LAB</h2>
+          <p class="text-xs text-tvTextMuted">Event-driven simulation with point-in-time equity curves, fees, and slippage.</p>
+        </div>
+        <span class="text-xs font-mono px-2 py-1 rounded bg-[#2962ff]/20 text-[#2962ff] border border-[#2962ff]/30">
+          Qlib Alpha158 & LEAN Models
+        </span>
+      </div>
+
+      <form id="bt-form" onsubmit="runBacktest(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-end">
+        <div>
+          <label class="block text-xs font-mono text-tvTextMuted mb-1">ASSETS (COMMA-SEPARATED)</label>
+          <input type="text" id="bt-symbols" value="AAPL,NVDA,BTC-USD" required
+            class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs font-mono text-white uppercase outline-none focus:border-[#2962ff]">
+        </div>
+        <div>
+          <label class="block text-xs font-mono text-tvTextMuted mb-1">STRATEGY</label>
+          <select id="bt-strategy" class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs font-mono text-white outline-none focus:border-[#2962ff]">
+            <option value="qlib_alpha" selected>Microsoft Qlib Alpha Factors</option>
+            <option value="momentum">Momentum Crossover (MACD/EMA)</option>
+            <option value="mean_reversion">Mean Reversion (RSI/Bollinger)</option>
+            <option value="rebalance">Target Allocation DCA</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-mono text-tvTextMuted mb-1">HORIZON</label>
+          <select id="bt-period" class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs font-mono text-white outline-none focus:border-[#2962ff]">
+            <option value="6mo">6 Months</option>
+            <option value="1y" selected>1 Year</option>
+            <option value="2y">2 Years</option>
+          </select>
+        </div>
+        <div>
+          <button type="submit" id="btn-bt-run" class="w-full py-2 px-4 rounded bg-[#2962ff] hover:bg-[#1e53e5] text-white font-bold text-xs transition uppercase font-mono">
+            Execute Simulation
+          </button>
+        </div>
+      </form>
+
+      <!-- KPI Results Grid -->
+      <div id="bt-metrics-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 pt-2 hidden">
+        <div class="bg-[#131722] p-3 rounded border border-tvBorder text-center">
+          <div class="text-[10px] text-tvTextMuted font-mono">TOTAL RETURN</div>
+          <div id="bt-total-ret" class="text-base font-bold text-tvGreen font-mono mt-1">+0.00%</div>
+        </div>
+        <div class="bg-[#131722] p-3 rounded border border-tvBorder text-center">
+          <div class="text-[10px] text-tvTextMuted font-mono">CAGR (ANNUALIZED)</div>
+          <div id="bt-cagr" class="text-base font-bold text-white font-mono mt-1">0.0%</div>
+        </div>
+        <div class="bg-[#131722] p-3 rounded border border-tvBorder text-center">
+          <div class="text-[10px] text-tvTextMuted font-mono">SHARPE RATIO</div>
+          <div id="bt-sharpe" class="text-base font-bold text-[#2962ff] font-mono mt-1">0.00</div>
+        </div>
+        <div class="bg-[#131722] p-3 rounded border border-tvBorder text-center">
+          <div class="text-[10px] text-tvTextMuted font-mono">MAX DRAWDOWN</div>
+          <div id="bt-maxdd" class="text-base font-bold text-tvRed font-mono mt-1">0.00%</div>
+        </div>
+        <div class="bg-[#131722] p-3 rounded border border-tvBorder text-center">
+          <div class="text-[10px] text-tvTextMuted font-mono">WIN RATE</div>
+          <div id="bt-winrate" class="text-base font-bold text-white font-mono mt-1">0.0%</div>
+        </div>
+        <div class="bg-[#131722] p-3 rounded border border-tvBorder text-center">
+          <div class="text-[10px] text-tvTextMuted font-mono">PROFIT FACTOR</div>
+          <div id="bt-profitfactor" class="text-base font-bold text-amber-400 font-mono mt-1">0.00</div>
+        </div>
+      </div>
+
+      <!-- Equity Curve Chart -->
+      <div id="bt-chart-box" class="h-64 w-full pt-2 hidden">
+        <canvas id="equityCurveChart"></canvas>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 3: SCREENER ==================== -->
+    <section id="pane-screener" class="tv-panel p-5 space-y-3 hidden">
+      <div class="flex items-center justify-between border-b border-tvBorder pb-2">
+        <h2 class="text-sm font-bold text-white">VECTORBT MULTI-ASSET MOMENTUM & SHARPE SCREENER</h2>
+        <button onclick="runScreener()" class="px-3 py-1 rounded bg-[#2962ff] text-white text-xs font-semibold">
+          Scan Universe Now
+        </button>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs font-mono">
+          <thead class="text-tvTextMuted border-b border-tvBorder text-[11px] bg-[#131722]">
+            <tr>
+              <th class="py-2 px-3">Rank</th>
+              <th class="py-2 px-3">Asset</th>
+              <th class="py-2 px-3">Price</th>
+              <th class="py-2 px-3">6-Month Return</th>
+              <th class="py-2 px-3">Volatility</th>
+              <th class="py-2 px-3">Sharpe</th>
+              <th class="py-2 px-3">Trend Signal</th>
+            </tr>
+          </thead>
+          <tbody id="screener-tbody" class="divide-y divide-tvBorder">
+            <tr>
+              <td colspan="7" class="text-center py-6 text-tvTextMuted font-mono">Click "Scan Universe Now" to evaluate market basket.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ==================== VIEW 4: SECURITY AUDITOR ==================== -->
+    <section id="pane-security" class="tv-panel p-5 space-y-3 hidden">
+      <div class="flex items-center justify-between border-b border-tvBorder pb-2">
+        <h2 class="text-sm font-bold text-white">ANTI-RUG & TOKEN CONTRACT SECURITY AUDITOR</h2>
+        <span class="text-xs font-mono text-tvGreen">ON-CHAIN DEFENSE ACTIVE</span>
+      </div>
+
+      <form id="audit-form" onsubmit="runAudit(event)" class="grid grid-cols-1 sm:grid-cols-4 gap-3 items-end">
+        <div>
+          <label class="block text-xs font-mono text-tvTextMuted mb-1">TOKEN SYMBOL</label>
+          <input type="text" id="audit-symbol" value="BTC-USD" required
+            class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs font-mono text-white uppercase outline-none focus:border-[#2962ff]">
+        </div>
+        <div>
+          <label class="block text-xs font-mono text-tvTextMuted mb-1">BUY / SELL TAX %</label>
+          <div class="grid grid-cols-2 gap-2">
+            <input type="number" id="audit-buy-tax" value="0.0" class="bg-[#131722] border border-tvBorder rounded px-2 py-2 text-xs text-white outline-none">
+            <input type="number" id="audit-sell-tax" value="0.0" class="bg-[#131722] border border-tvBorder rounded px-2 py-2 text-xs text-white outline-none">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-mono text-tvTextMuted mb-1">LOCKED LIQUIDITY %</label>
+          <input type="number" id="audit-locked-lp" value="100.0" class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs text-white outline-none">
+        </div>
+        <div>
+          <button type="submit" class="w-full py-2 px-4 rounded bg-tvRed hover:opacity-90 text-white font-bold text-xs transition uppercase font-mono">
+            Audit Token
+          </button>
+        </div>
+      </form>
+
+      <div id="audit-results" class="mt-3 p-4 rounded bg-[#131722] border border-tvBorder hidden space-y-2 text-xs font-mono">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-white" id="audit-title">Security Results</span>
+          <span id="audit-badge" class="px-2 py-0.5 rounded text-[11px] font-bold">SAFE</span>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-tvTextMuted pt-1">
+          <div>Risk Score: <span id="audit-score" class="text-white font-bold">0.0 / 100</span></div>
+          <div>Honeypot: <span id="audit-honeypot" class="text-white font-bold">No</span></div>
+          <div>Locked LP: <span id="audit-lp" class="text-white font-bold">100%</span></div>
+          <div>Mint Authority: <span id="audit-mint" class="text-white font-bold">Disabled</span></div>
+        </div>
+        <div id="audit-warnings" class="text-tvRed pt-1"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-tvBorder py-2.5 px-4 text-center text-[11px] font-mono text-tvTextMuted">
+    Antigravity Pro Workstation • TradingView Real-Time Charting Engine • Connected to Alpaca Markets
+  </footer>
+
+  <!-- ==================== JAVASCRIPT CONTROLLER ==================== -->
+  <script>
+    let tvWidget = null;
+    let currentTvSymbol = 'NASDAQ:AAPL';
+    let currentOrderSide = 'BUY';
+    let equityChart = null;
+
+    // --- 1. Load TradingView Real-Time Candlestick Chart ---
+    function initTradingViewChart(symbol = 'NASDAQ:AAPL') {
+      currentTvSymbol = symbol;
+      document.getElementById('current-chart-label').innerText = symbol;
+
+      // Clean container
+      const container = document.getElementById('tv_chart_container');
+      container.innerHTML = '';
+
+      const widgetDiv = document.createElement('div');
+      widgetDiv.id = 'tv_widget_inner';
+      widgetDiv.style.width = '100%';
+      widgetDiv.style.height = '100%';
+      container.appendChild(widgetDiv);
+
+      new TradingView.widget({
+        "autosize": true,
+        "symbol": symbol,
+        "interval": "D",
+        "timezone": "Etc/UTC",
+        "theme": "dark",
+        "style": "1", // Candlesticks
+        "locale": "en",
+        "toolbar_bg": "#1e222d",
+        "enable_publishing": false,
+        "hide_side_toolbar": false,
+        "allow_symbol_change": true,
+        "container_id": "tv_widget_inner",
+        "backgroundColor": "#131722",
+        "gridColor": "#2a2e39",
+        "studies": [
+          "MASimple@tv-basicstudies",
+          "RSI@tv-basicstudies",
+          "Volume@tv-basicstudies"
+        ]
+      });
+    }
+
+    function setChartSymbol(tvSymbol, cleanSymbol) {
+      initTradingViewChart(tvSymbol);
+      document.getElementById('order-symbol').value = cleanSymbol;
+    }
+
+    function searchSymbol(e) {
+      e.preventDefault();
+      const val = document.getElementById('custom-sym-input').value.trim().toUpperCase();
+      if (!val) return;
+
+      let formatted = val;
+      if (val === 'BTC' || val === 'BTC-USD' || val === 'BTCUSDT') formatted = 'BINANCE:BTCUSDT';
+      else if (val === 'ETH' || val === 'ETH-USD' || val === 'ETHUSDT') formatted = 'BINANCE:ETHUSDT';
+      else if (val === 'SOL' || val === 'SOL-USD' || val === 'SOLUSDT') formatted = 'BINANCE:SOLUSDT';
+      else if (!val.includes(':')) formatted = 'NASDAQ:' + val;
+
+      setChartSymbol(formatted, val.replace('NASDAQ:', '').replace('BINANCE:', '').replace('USDT', '-USD'));
+    }
+
+    // --- 2. Order Ticket Controller ---
+    function setOrderSide(side) {
+      currentOrderSide = side;
+      const buyBtn = document.getElementById('btn-side-buy');
+      const sellBtn = document.getElementById('btn-side-sell');
+      const submitBtn = document.getElementById('btn-order-submit');
+
+      if (side === 'BUY') {
+        buyBtn.className = "py-2 rounded font-bold text-xs text-white bg-tvGreen transition shadow";
+        sellBtn.className = "py-2 rounded font-bold text-xs text-tvTextMuted bg-[#2a2e39] hover:text-white transition";
+        submitBtn.className = "w-full py-2.5 rounded bg-tvGreen hover:opacity-90 font-bold text-xs text-white transition uppercase font-mono shadow-md";
+        submitBtn.innerText = "EXECUTE BUY ORDER";
+      } else {
+        buyBtn.className = "py-2 rounded font-bold text-xs text-tvTextMuted bg-[#2a2e39] hover:text-white transition";
+        sellBtn.className = "py-2 rounded font-bold text-xs text-white bg-tvRed transition shadow";
+        submitBtn.className = "w-full py-2.5 rounded bg-tvRed hover:opacity-90 font-bold text-xs text-white transition uppercase font-mono shadow-md";
+        submitBtn.innerText = "EXECUTE SELL ORDER";
+      }
+    }
+
+    function quickQty(q) {
+      document.getElementById('order-qty').value = q;
+    }
+
+    async function submitOrder(e) {
+      e.preventDefault();
+      const symbol = document.getElementById('order-symbol').value.trim().toUpperCase();
+      const qty = parseFloat(document.getElementById('order-qty').value);
+      const feedback = document.getElementById('order-feedback');
+
+      try {
+        const res = await fetch('/api/trade', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ symbol, side: currentOrderSide, quantity: qty })
+        });
+        const data = await res.json();
+
+        feedback.classList.remove('hidden', 'bg-emerald-500/10', 'text-tvGreen', 'border-emerald-500/30', 'bg-rose-500/10', 'text-tvRed', 'border-rose-500/30');
+        if (data.success) {
+          feedback.classList.add('bg-emerald-500/10', 'text-tvGreen', 'border-emerald-500/30');
+          feedback.innerText = `ORDER FILLED: ${data.side} ${data.quantity} ${data.symbol} @ $${data.fill_price}`;
+          loadPortfolio();
+        } else {
+          feedback.classList.add('bg-rose-500/10', 'text-tvRed', 'border-rose-500/30');
+          feedback.innerText = `ORDER ERROR: ${data.error || 'Failed'}`;
+        }
+      } catch (err) {
+        feedback.classList.remove('hidden');
+        feedback.classList.add('bg-rose-500/10', 'text-tvRed', 'border-rose-500/30');
+        feedback.innerText = 'Network error: ' + err.message;
+      }
+    }
+
+    // --- 3. Live Portfolio Synchronization ---
+    async function loadPortfolio() {
+      try {
+        const res = await fetch('/api/portfolio');
+        const data = await res.json();
+
+        document.getElementById('nav-mode-badge').innerText = data.mode.toUpperCase();
+        document.getElementById('nav-total-equity').innerText = '$' + data.total_equity.toLocaleString(undefined, {minimumFractionDigits: 2});
+        document.getElementById('nav-cash').innerText = '$' + data.cash.toLocaleString(undefined, {minimumFractionDigits: 2});
+
+        const tbody = document.getElementById('positions-tbody');
+        tbody.innerHTML = '';
+
+        if (!data.positions || data.positions.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" class="text-center py-6 text-tvTextMuted">No open positions.</td></tr>';
+          document.getElementById('pos-badge').innerText = '0 open';
+        } else {
+          document.getElementById('pos-badge').innerText = `${data.positions.length} open`;
+          data.positions.forEach(p => {
+            const pnlClass = p.unrealized_pnl >= 0 ? 'text-tvGreen' : 'text-tvRed';
+            const sign = p.unrealized_pnl >= 0 ? '+' : '';
+            const row = `
+              <tr class="hover:bg-[#2a2e39]/50 transition cursor-pointer" onclick="setChartSymbol('NASDAQ:${p.symbol}', '${p.symbol}')">
+                <td class="py-2 font-bold text-white">${p.symbol}</td>
+                <td class="py-2 text-tvTextMain">${p.quantity}</td>
+                <td class="py-2 text-white">$${p.current_price.toFixed(2)}</td>
+                <td class="py-2 ${pnlClass} font-bold">${sign}$${p.unrealized_pnl.toFixed(2)}</td>
+              </tr>
+            `;
+            tbody.innerHTML += row;
+          });
+        }
+      } catch (err) {
+        console.error('Portfolio fetch error:', err);
+      }
+    }
+
+    async function triggerTick() {
+      try {
+        const res = await fetch('/api/tick', { method: 'POST' });
+        const data = await res.json();
+        if (data.success) {
+          alert('Strategy tick evaluated and executed!');
+          loadPortfolio();
+        }
+      } catch (e) {
+        alert('Tick error: ' + e.message);
+      }
+    }
+
+    // --- 4. Backtest Lab ---
+    async function runBacktest(e) {
+      e.preventDefault();
+      const symbols = document.getElementById('bt-symbols').value;
+      const strategy = document.getElementById('bt-strategy').value;
+      const period = document.getElementById('bt-period').value;
+      const btn = document.getElementById('btn-bt-run');
+
+      btn.disabled = true;
+      btn.innerText = 'SIMULATING...';
+
+      try {
+        const res = await fetch('/api/backtest', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ symbols, strategy, period, capital: 100000.0 })
+        });
+        const data = await res.json();
+
+        btn.disabled = false;
+        btn.innerText = 'EXECUTE SIMULATION';
+
+        if (!data.success) {
+          alert('Backtest error: ' + data.error);
+          return;
+        }
+
+        document.getElementById('bt-metrics-grid').classList.remove('hidden');
+        document.getElementById('bt-chart-box').classList.remove('hidden');
+
+        document.getElementById('bt-total-ret').innerText = (data.total_return_pct >= 0 ? '+' : '') + data.total_return_pct.toFixed(2) + '%';
+        document.getElementById('bt-cagr').innerText = data.cagr_pct.toFixed(1) + '%';
+        document.getElementById('bt-sharpe').innerText = data.sharpe_ratio.toFixed(2);
+        document.getElementById('bt-maxdd').innerText = data.max_drawdown_pct.toFixed(2) + '%';
+        document.getElementById('bt-winrate').innerText = data.win_rate_pct.toFixed(1) + '%';
+        document.getElementById('bt-profitfactor').innerText = data.profit_factor.toFixed(2);
+
+        renderEquityCurve(data.equity_curve);
+      } catch (err) {
+        btn.disabled = false;
+        btn.innerText = 'EXECUTE SIMULATION';
+        alert('Backtest failed: ' + err.message);
+      }
+    }
+
+    function renderEquityCurve(curveData) {
+      const ctx = document.getElementById('equityCurveChart').getContext('2d');
+      if (equityChart) equityChart.destroy();
+
+      const labels = curveData.map((_, i) => 'T+' + (i + 1));
+      equityChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Portfolio Equity ($)',
+            data: curveData,
+            borderColor: '#2962ff',
+            backgroundColor: 'rgba(41, 98, 255, 0.1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.2,
+            pointRadius: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { display: false },
+            y: {
+              grid: { color: '#2a2e39' },
+              ticks: { color: '#787b86', font: { family: 'JetBrains Mono' }, callback: v => '$' + v.toLocaleString() }
+            }
+          },
+          plugins: {
+            legend: { labels: { color: '#787b86', font: { family: 'JetBrains Mono' } } }
+          }
+        }
+      });
+    }
+
+    // --- 5. Screener & Token Security ---
+    async function runScreener() {
+      const tbody = document.getElementById('screener-tbody');
+      tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-tvTextMuted">Screening market universe...</td></tr>';
+
+      try {
+        const res = await fetch('/api/screen', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ symbols: 'AAPL,MSFT,NVDA,AMZN,GOOGL,BTC-USD,ETH-USD,SOL-USD' })
+        });
+        const data = await res.json();
+        tbody.innerHTML = '';
+
+        data.data.forEach(item => {
+          const trendBadge = item.trend === 'BULLISH'
+            ? '<span class="text-tvGreen bg-emerald-500/10 px-2 py-0.5 rounded font-bold">BULLISH</span>'
+            : '<span class="text-tvRed bg-rose-500/10 px-2 py-0.5 rounded font-bold">BEARISH</span>';
+          const retSign = item.total_return_pct >= 0 ? '+' : '';
+          const retClass = item.total_return_pct >= 0 ? 'text-tvGreen' : 'text-tvRed';
+
+          const row = `
+            <tr class="hover:bg-[#2a2e39]/50 transition">
+              <td class="py-2.5 px-3 font-bold text-tvTextMuted">#${item.momentum_rank}</td>
+              <td class="py-2.5 px-3 font-bold text-white cursor-pointer hover:text-[#2962ff]" onclick="setChartSymbol('NASDAQ:${item.symbol}', '${item.symbol}')">${item.symbol}</td>
+              <td class="py-2.5 px-3 text-white">$${item.price.toFixed(2)}</td>
+              <td class="py-2.5 px-3 font-bold ${retClass}">${retSign}${item.total_return_pct.toFixed(2)}%</td>
+              <td class="py-2.5 px-3 text-tvTextMuted">${item.volatility_pct.toFixed(1)}%</td>
+              <td class="py-2.5 px-3 font-bold text-[#2962ff]">${item.sharpe_ratio.toFixed(2)}</td>
+              <td class="py-2.5 px-3">${trendBadge}</td>
+            </tr>
+          `;
+          tbody.innerHTML += row;
+        });
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-6 text-tvRed">Screener error: ' + err.message + '</td></tr>';
+      }
+    }
+
+    async function runAudit(e) {
+      e.preventDefault();
+      const symbol = document.getElementById('audit-symbol').value;
+      const buy_tax = document.getElementById('audit-buy-tax').value;
+      const sell_tax = document.getElementById('audit-sell-tax').value;
+      const locked_lp = document.getElementById('audit-locked-lp').value;
+
+      try {
+        const res = await fetch('/api/scan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ symbol, buy_tax, sell_tax, locked_lp })
+        });
+        const data = await res.json();
+
+        const card = document.getElementById('audit-results');
+        card.classList.remove('hidden');
+
+        document.getElementById('audit-title').innerText = 'Security Audit: ' + data.symbol;
+        const badge = document.getElementById('audit-badge');
+        badge.innerText = data.is_safe ? 'SAFE / LOW RISK' : 'DANGER / RUG RISK';
+        badge.className = 'px-2 py-0.5 rounded text-[11px] font-bold ' + (data.is_safe ? 'bg-emerald-500/20 text-tvGreen' : 'bg-rose-500/20 text-tvRed');
+
+        document.getElementById('audit-score').innerText = data.risk_score.toFixed(1) + ' / 100';
+        document.getElementById('audit-honeypot').innerText = data.is_honeypot ? 'YES (TRAP)' : 'No';
+        document.getElementById('audit-lp').innerText = data.liquidity_locked_pct.toFixed(1) + '%';
+        document.getElementById('audit-mint').innerText = data.has_mint_authority ? 'Active' : 'Disabled';
+
+        const warnDiv = document.getElementById('audit-warnings');
+        warnDiv.innerHTML = '';
+        if (data.warning_signals && data.warning_signals.length > 0) {
+          data.warning_signals.forEach(w => warnDiv.innerHTML += `<div>• ${w}</div>`);
+        } else {
+          warnDiv.innerHTML = '<div class="text-tvGreen">✓ No malicious code or liquidity risks detected.</div>';
+        }
+      } catch (err) {
+        alert('Audit error: ' + err.message);
+      }
+    }
+
+    // --- Tab Switcher ---
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-nav').forEach(t => t.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.add('active');
+
+      document.querySelectorAll('main > section').forEach(s => s.classList.add('hidden'));
+      document.getElementById('pane-' + tabId).classList.remove('hidden');
+
+      if (tabId === 'screener') runScreener();
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      initTradingViewChart('NASDAQ:AAPL');
+      loadPortfolio();
+      setInterval(loadPortfolio, 6000); // 6s live sync with Alpaca
+    });
+  </script>
+</body>
+</html>
+

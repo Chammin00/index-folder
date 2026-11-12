@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura AI Assistant</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Marked.js for clean markdown rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <script src="high-gloss-lacquer.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Draggable Header -->
+    <header class="titlebar pywebview-drag-region">
+      <div class="brand">
+        <div class="orb-container">
+          <div id="statusOrb" class="status-orb ready"></div>
+        </div>
+        <div class="brand-info">
+          <span class="brand-name">Aura</span>
+          <span id="statusText" class="brand-status">Ready</span>
+        </div>
+      </div>
+      <div class="header-controls">
+        <button id="btnStudyMode" class="icon-btn" title="Toggle Study & Deep Dive Mode">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+        </button>
+        <button id="btnPin" class="icon-btn active" title="Toggle Always On Top">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 17v5M9 2h6l-1 7 4 3v2H6v-2l4-3-1-7z"/></svg>
+        </button>
+        <button id="btnSettings" class="icon-btn" title="Settings">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </button>
+        <button id="btnMinimize" class="icon-btn" title="Minimize">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </button>
+        <button id="btnClose" class="icon-btn close-btn" title="Close">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Area / Messages -->
+    <main id="chatContainer" class="chat-container">
+      <div id="welcomeCard" class="welcome-card">
+        <div class="welcome-glow"></div>
+        <h2>Hello, I'm Aura</h2>
+        <p>Your personal assistant & deep-dive study companion. Ready to break down complex concepts, inspect what you're reading, and quiz your understanding.</p>
+        
+        <div class="quick-chips">
+          <button class="chip chip-study" id="chipDeepDiveScreen">📚 Deep Dive This Screen</button>
+          <button class="chip chip-study" id="chipDeepDiveClipboard">📋 Deep Dive Copied Text</button>
+          <button class="chip" data-prompt="Explain this concept with a simple, vivid analogy (Feynman Technique)">💡 Explain Like I'm 5</button>
+          <button class="chip" data-prompt="Test my understanding with 3 active recall questions about what I'm reading">🎯 Quiz / Test Me</button>
+          <button class="chip" data-prompt="What is my current system status, CPU/RAM, and active window?">💻 System Overview</button>
+          <button class="chip" data-prompt="Set volume to 40%">🔊 Set Volume 40%</button>
+        </div>
+      </div>
+
+      <div id="messagesList" class="messages-list"></div>
+    </main>
+
+    <!-- Study Mode Active Sub-bar -->
+    <div id="studyBanner" class="study-banner hidden">
+      <div class="study-info">
+        <span>📚 <strong>Study Mode Active</strong> — Deep dive & active recall enabled</span>
+      </div>
+      <div class="study-shortcuts">
+        <button id="btnStudyScreen" class="chip-mini">📸 Explain Screen</button>
+        <button id="btnStudyClipboard" class="chip-mini">📋 Explain Copied</button>
+        <button id="btnStudyQuiz" class="chip-mini">🎯 Quiz Me</button>
+      </div>
+    </div>
+
+    <!-- Vision Attachment Banner (When screen capture is primed) -->
+    <div id="visionBanner" class="vision-banner hidden">
+      <div class="vision-info">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        <span>Screen screenshot will be sent with your next question</span>
+      </div>
+      <button id="btnRemoveVision" class="icon-btn-small" title="Cancel screenshot">&times;</button>
+    </div>
+
+    <!-- Active Voice Waveform Overlay -->
+    <div id="voiceWaveform" class="voice-waveform-container hidden">
+      <div class="waveform-bar"></div>
+      <div class="waveform-bar"></div>
+      <div class="waveform-bar"></div>
+      <div class="waveform-bar"></div>
+      <div class="waveform-bar"></div>
+      <span class="voice-label">Listening... Speak now</span>
+    </div>
+
+    <!-- Input Footer -->
+    <footer class="input-footer">
+      <div class="input-bar">
+        <button id="btnVision" class="action-btn" title="Attach Screen Screenshot">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+        </button>
+
+        <textarea id="userInput" placeholder="Ask Aura anything, or talk to me..." rows="1"></textarea>
+
+        <button id="btnMic" class="action-btn mic-btn" title="Voice Dictation">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+        </button>
+
+        <button id="btnSend" class="action-btn send-btn" title="Send (Enter)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        </button>
+      </div>
+      <div class="footer-hint">
+        <span>Hotkey: <code>Ctrl+Shift+Space</code> or <code>Alt+Space</code></span>
+        <button id="btnClearChat" class="text-btn">Clear Chat</button>
+      </div>
+    </footer>
+
+    <!-- Settings Modal Drawer -->
+    <div id="settingsModal" class="modal-backdrop hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Settings & Preferences</h3>
+          <button id="btnCloseSettings" class="icon-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="cfgApiKey">Google Gemini API Key</label>
+            <div class="input-password-group">
+              <input type="password" id="cfgApiKey" placeholder="Paste your AI Studio API key here">
+              <button id="btnToggleKeyVis" class="icon-btn-small" type="button">👁️</button>
+            </div>
+            <small class="helper-text">
+              Don't have one? Get a free key at <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a>.
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label for="cfgModel">Gemini Model</label>
+            <select id="cfgModel">
+              <option value="gemini-3.5-flash" selected>Gemini 3.5 Flash (Fast, Stable, Recommended)</option>
+              <option value="gemini-3.8-flash">Gemini 3.8 Flash (Latest Preview)</option>
+              <option value="gemini-3.7-flash">Gemini 3.7 Flash</option>
+              <option value="gemini-flash-latest">Gemini Flash Latest</option>
+              <option value="gemini-3.1-flash-lite">Gemini 3.1 Flash Lite (Ultra-fast)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="cfgAlwaysOnTop">
+              <span>Always on Top (Keep Aura floating above other windows)</span>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="cfgTtsEnabled">
+              <span>Speak replies aloud (Voice Synthesis)</span>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label for="cfgVoiceSelect">Spoken Voice</label>
+            <select id="cfgVoiceSelect"></select>
+          </div>
+
+          <div class="form-group">
+            <label for="cfgVoiceRate">Speech Speed: <span id="rateValue">1.0x</span></label>
+            <input type="range" id="cfgVoiceRate" min="0.7" max="1.5" step="0.1" value="1.0">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="btnSaveSettings" class="primary-btn">Save Preferences</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+

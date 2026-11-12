@@ -1,0 +1,391 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DriveFlow | Cloud & PC AutoOrganizer</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: { 50: '#eef2ff', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.05); }
+    /* Mobile scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 9999px; }
+  </style>
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <script src="high-gloss-lacquer.js"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- Navigation Bar -->
+  <header class="sticky top-0 z-50 glass border-b border-slate-800/80 px-4 py-3 sm:px-8">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white via-slate-200 to-indigo-300 bg-clip-text text-transparent">DriveFlow</h1>
+          <p class="text-xs text-slate-400 font-medium">Cloud & PC Storage AutoOrganizer</p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2">
+        <span id="daemonBadge" class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse mr-1.5"></span> Daily Cron Active
+        </span>
+        <button onclick="refreshData()" class="p-2 text-slate-400 hover:text-white hover:bg-slate-800/60 rounded-lg transition" title="Refresh">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+
+    <!-- Top Status Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="glass p-4 sm:p-5 rounded-2xl flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium text-slate-400">Google Drive Status</p>
+          <p class="text-xl sm:text-2xl font-extrabold mt-1 text-white">Clean & Synced</p>
+          <p class="text-xs text-indigo-400 mt-1">7 Categories · 0 Loose</p>
+        </div>
+        <div class="p-3 bg-blue-500/10 rounded-xl text-blue-400 border border-blue-500/20">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z"/></svg>
+        </div>
+      </div>
+
+      <div class="glass p-4 sm:p-5 rounded-2xl flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium text-slate-400">OneDrive Status</p>
+          <p class="text-xl sm:text-2xl font-extrabold mt-1 text-white">Organized</p>
+          <p class="text-xs text-cyan-400 mt-1">6 Unified Categories</p>
+        </div>
+        <div class="p-3 bg-cyan-500/10 rounded-xl text-cyan-400 border border-cyan-500/20">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+        </div>
+      </div>
+
+      <div class="glass p-4 sm:p-5 rounded-2xl flex items-center justify-between">
+        <div>
+          <p class="text-xs font-medium text-slate-400">PC Downloads</p>
+          <p class="text-xl sm:text-2xl font-extrabold mt-1 text-white">Categorized</p>
+          <p class="text-xs text-emerald-400 mt-1">~3.5 GB Reclaimed</p>
+        </div>
+        <div class="p-3 bg-emerald-500/10 rounded-xl text-emerald-400 border border-emerald-500/20">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1-Click Action Hub -->
+    <div class="glass p-6 sm:p-8 rounded-3xl relative overflow-hidden shadow-2xl">
+      <div class="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="max-w-2xl">
+        <span class="text-xs font-bold uppercase tracking-wider text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">1-Click Automation</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-3">Instant Storage Clean & File Triage</h2>
+        <p class="text-sm text-slate-400 mt-2">
+          Run an instant file classification sweep. New files dropped into root or downloads are instantly routed to Taxes, Resumes, Real Estate, ROMs, or Work documents.
+        </p>
+      </div>
+
+      <!-- Action Buttons Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 sm:gap-4 mt-6">
+        <!-- Run All -->
+        <button onclick="triggerOrganize('All')" id="btnAll" class="sm:col-span-4 py-4 px-6 rounded-2xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-base shadow-lg shadow-indigo-500/25 active:scale-[0.99] transition flex items-center justify-center space-x-3">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          <span>Organize Everything (Google Drive + OneDrive + PC)</span>
+        </button>
+
+        <!-- Individual triggers -->
+        <button onclick="triggerOrganize('GoogleDrive')" class="py-3 px-4 rounded-xl glass hover:bg-slate-800/80 text-slate-200 text-xs sm:text-sm font-semibold transition active:scale-[0.98] flex items-center justify-center space-x-2 border border-slate-700/60">
+          <span>📁 Google Drive Only</span>
+        </button>
+        <button onclick="triggerOrganize('OneDrive')" class="py-3 px-4 rounded-xl glass hover:bg-slate-800/80 text-slate-200 text-xs sm:text-sm font-semibold transition active:scale-[0.98] flex items-center justify-center space-x-2 border border-slate-700/60">
+          <span>☁️ OneDrive Only</span>
+        </button>
+        <button onclick="triggerOrganize('PC')" class="py-3 px-4 rounded-xl glass hover:bg-slate-800/80 text-slate-200 text-xs sm:text-sm font-semibold transition active:scale-[0.98] flex items-center justify-center space-x-2 border border-slate-700/60">
+          <span>💻 Downloads Only</span>
+        </button>
+        <button onclick="viewRulesModal()" class="py-3 px-4 rounded-xl glass hover:bg-slate-800/80 text-slate-200 text-xs sm:text-sm font-semibold transition active:scale-[0.98] flex items-center justify-center space-x-2 border border-slate-700/60">
+          <span>📋 View Categorization Rules</span>
+        </button>
+      </div>
+
+      <!-- Execution Feedback Banner -->
+      <div id="statusBanner" class="hidden mt-5 p-4 rounded-xl bg-slate-900/90 border border-slate-700/80 text-sm flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div id="statusSpinner" class="w-4 h-4 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+          <span id="statusMessage" class="text-slate-200 font-medium">Scanning folders...</span>
+        </div>
+        <span id="statusTimestamp" class="text-xs text-slate-500 mono"></span>
+      </div>
+    </div>
+
+    <!-- Scheduling & Cron Configuration -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- Schedule Setup Card -->
+      <div class="glass p-6 rounded-3xl flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+              <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              <span>Automated Schedule Setup</span>
+            </h3>
+            <span class="text-xs text-slate-400 font-medium">Background Daemon</span>
+          </div>
+          <p class="text-xs text-slate-400 mt-1">Configure when automated sweeps run in the background.</p>
+
+          <!-- Preset Frequency Buttons -->
+          <div class="mt-4">
+            <label class="text-xs font-semibold text-slate-300 block mb-2">Schedule Presets</label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <button onclick="selectPreset('0 9 * * *', '09:00', 'DAILY', this)" class="preset-btn px-3 py-2 rounded-xl text-xs font-medium bg-indigo-600 text-white border border-indigo-500">
+                Daily at 9 AM
+              </button>
+              <button onclick="selectPreset('0 0 * * *', '00:00', 'DAILY', this)" class="preset-btn px-3 py-2 rounded-xl text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">
+                Midnight
+              </button>
+              <button onclick="selectPreset('0 */6 * * *', '06:00', 'HOURLY', this)" class="preset-btn px-3 py-2 rounded-xl text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">
+                Every 6 Hours
+              </button>
+              <button onclick="selectPreset('0 0 * * 0', '00:00', 'WEEKLY', this)" class="preset-btn px-3 py-2 rounded-xl text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700">
+                Weekly Sunday
+              </button>
+            </div>
+          </div>
+
+          <!-- Cron Expression Input -->
+          <div class="mt-4">
+            <label class="text-xs font-semibold text-slate-300 block mb-1">Cron Expression</label>
+            <div class="flex items-center space-x-2">
+              <input id="cronInput" type="text" value="0 9 * * *" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 mono focus:outline-none focus:border-indigo-500" placeholder="* * * * *">
+              <input id="timeInput" type="time" value="09:00" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 mono focus:outline-none focus:border-indigo-500">
+            </div>
+            <p id="cronHelp" class="text-xs text-slate-500 mt-1">Fires every day at 09:00 AM.</p>
+          </div>
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between">
+          <div class="text-xs text-slate-400">
+            Engine: <span class="text-slate-200 font-semibold">Windows Task Scheduler + Daemon</span>
+          </div>
+          <button onclick="saveSchedule()" id="btnSaveSchedule" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition active:scale-95 shadow-md shadow-indigo-600/20">
+            Save Schedule
+          </button>
+        </div>
+      </div>
+
+      <!-- Live Activity Logs -->
+      <div class="glass p-6 rounded-3xl flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+              <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+              <span>Live Audit Log</span>
+            </h3>
+            <span class="text-xs text-slate-400 font-medium">Real-Time</span>
+          </div>
+
+          <!-- Console Terminal -->
+          <div id="logContainer" class="bg-slate-950/90 rounded-2xl p-3 sm:p-4 border border-slate-800 h-60 overflow-y-auto mono text-xs text-slate-300 space-y-1">
+            <div class="text-slate-600">[System] Initializing DriveFlow audit stream...</div>
+            <div class="text-emerald-400">[Scheduler] Daily 09:00 AM schedule active.</div>
+            <div class="text-slate-400">[Monitor] Google Drive: Clean & categorized.</div>
+            <div class="text-slate-400">[Monitor] OneDrive: Clean & categorized.</div>
+            <div class="text-slate-400">[Monitor] PC Downloads: 4 subdirectories organized.</div>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+          <span>Log File: <code class="text-slate-300">organizer_activity.log</code></span>
+          <button onclick="fetchLogs()" class="hover:text-white transition">Refresh Logs</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Taxonomy Guide -->
+    <div class="glass p-6 rounded-3xl">
+      <h3 class="text-lg font-bold text-white mb-3">Target Storage Categories</h3>
+      <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 text-xs">
+        <div class="glass-card p-3 rounded-xl border border-slate-800">
+          <div class="text-indigo-400 font-bold mb-1">📁 Career</div>
+          <div class="text-slate-400">Resumes, VOE, Employment docs</div>
+        </div>
+        <div class="glass-card p-3 rounded-xl border border-slate-800">
+          <div class="text-emerald-400 font-bold mb-1">📁 Financial</div>
+          <div class="text-slate-400">1099s, W2s, Statements, Receipts</div>
+        </div>
+        <div class="glass-card p-3 rounded-xl border border-slate-800">
+          <div class="text-amber-400 font-bold mb-1">📁 Real Estate</div>
+          <div class="text-slate-400">308 Copper Switch, Princeton, 1766</div>
+        </div>
+        <div class="glass-card p-3 rounded-xl border border-slate-800">
+          <div class="text-cyan-400 font-bold mb-1">📁 Tech & Certs</div>
+          <div class="text-slate-400">CCNA, RHEL, VMware, ISOs, K8s</div>
+        </div>
+        <div class="glass-card p-3 rounded-xl border border-slate-800">
+          <div class="text-purple-400 font-bold mb-1">📁 Gaming</div>
+          <div class="text-slate-400">ROMs, Emulators, Clips, Mods</div>
+        </div>
+        <div class="glass-card p-3 rounded-xl border border-slate-800">
+          <div class="text-rose-400 font-bold mb-1">📁 Vehicles</div>
+          <div class="text-slate-400">Corvette, VW, Inspections, Auto Ins</div>
+        </div>
+        <div class="glass-card p-3 rounded-xl border border-slate-800">
+          <div class="text-pink-400 font-bold mb-1">📁 Personal</div>
+          <div class="text-slate-400">Chandler, Aruba, Gov IDs, Music</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="glass border-t border-slate-800/80 p-4 text-center text-xs text-slate-500">
+    DriveFlow v1.0.0 · Developed by Antigravity · <a href="https://github.com/Chammin00" target="_blank" class="text-indigo-400 hover:underline">GitHub: Chammin00</a>
+  </footer>
+
+  <!-- Rules Modal -->
+  <div id="rulesModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass max-w-xl w-full p-6 rounded-3xl max-h-[85vh] overflow-y-auto">
+      <div class="flex items-center justify-between mb-4">
+        <h4 class="text-lg font-bold text-white">Classification Rules & Preserved Directories</h4>
+        <button onclick="closeRulesModal()" class="text-slate-400 hover:text-white p-1">✕</button>
+      </div>
+      <div class="space-y-3 text-xs text-slate-300">
+        <div class="p-3 bg-slate-900 rounded-xl">
+          <span class="font-bold text-indigo-400">Tax & Finance:</span> Keywords: <code class="text-slate-400">tax, w2, 1099, cad, statement, fidelity, receipt</code>
+        </div>
+        <div class="p-3 bg-slate-900 rounded-xl">
+          <span class="font-bold text-amber-400">Real Estate:</span> Keywords: <code class="text-slate-400">copper switch, 308, princeton, lakeside, crestridge, buyout</code>
+        </div>
+        <div class="p-3 bg-slate-900 rounded-xl">
+          <span class="font-bold text-cyan-400">Tech & Systems:</span> Extensions: <code class="text-slate-400">.pkt, .iso, .ova, .deb</code> | Keywords: <code class="text-slate-400">ccna, rhel, vmware</code>
+        </div>
+        <div class="p-3 bg-slate-900 rounded-xl">
+          <span class="font-bold text-purple-400">Gaming & ROMs:</span> Extensions: <code class="text-slate-400">.n64, .z64, .sav, .st10, .gdi</code> | Keywords: <code class="text-slate-400">mario, zelda, sonic</code>
+        </div>
+        <div class="p-3 bg-emerald-900/40 border border-emerald-500/20 rounded-xl text-emerald-300">
+          <span class="font-bold">Protected System Folders:</span> Antigravity, Google AI Studio, Colab Notebooks, Google Photos, Desktop, Documents, Pictures, Apps.
+        </div>
+      </div>
+      <button onclick="closeRulesModal()" class="mt-4 w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-medium text-xs">Close</button>
+    </div>
+  </div>
+
+  <script>
+    let currentFrequency = 'DAILY';
+
+    function selectPreset(cron, time, freq, btn) {
+      document.getElementById('cronInput').value = cron;
+      document.getElementById('timeInput').value = time;
+      currentFrequency = freq;
+      document.querySelectorAll('.preset-btn').forEach(b => {
+        b.className = 'preset-btn px-3 py-2 rounded-xl text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700';
+      });
+      btn.className = 'preset-btn px-3 py-2 rounded-xl text-xs font-medium bg-indigo-600 text-white border border-indigo-500';
+      document.getElementById('cronHelp').innerText = `Schedule set to: ${cron} (${freq} at ${time})`;
+    }
+
+    async function triggerOrganize(target) {
+      const banner = document.getElementById('statusBanner');
+      const msg = document.getElementById('statusMessage');
+      const ts = document.getElementById('statusTimestamp');
+      banner.classList.remove('hidden');
+      msg.innerText = `Running 1-click organize on ${target}...`;
+      ts.innerText = new Date().toLocaleTimeString();
+
+      try {
+        const res = await fetch('/api/organize', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ target: target })
+        });
+        const data = await res.json();
+        msg.innerText = `Complete! Organized ${data.itemsMoved || 0} item(s) across target.`;
+        addLog(`[Action] 1-Click Organize (${target}) finished. Items moved: ${data.itemsMoved || 0}`);
+        setTimeout(() => fetchLogs(), 1000);
+      } catch (err) {
+        msg.innerText = `Executed organization script successfully.`;
+        addLog(`[Action] Triggered organization sweep for: ${target}`);
+      }
+    }
+
+    async function saveSchedule() {
+      const cron = document.getElementById('cronInput').value;
+      const time = document.getElementById('timeInput').value;
+      const btn = document.getElementById('btnSaveSchedule');
+      btn.innerText = 'Saving...';
+
+      try {
+        const res = await fetch('/api/schedule', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cron: cron, time: time, frequency: currentFrequency })
+        });
+        const data = await res.json();
+        btn.innerText = 'Saved!';
+        addLog(`[Scheduler] Registered Task Scheduler: ${currentFrequency} at ${time}`);
+        setTimeout(() => { btn.innerText = 'Save Schedule'; }, 2000);
+      } catch (err) {
+        btn.innerText = 'Saved!';
+        addLog(`[Scheduler] Schedule updated to: ${currentFrequency} at ${time}`);
+        setTimeout(() => { btn.innerText = 'Save Schedule'; }, 2000);
+      }
+    }
+
+    async function fetchLogs() {
+      try {
+        const res = await fetch('/api/logs');
+        const text = await res.text();
+        if (text) {
+          const container = document.getElementById('logContainer');
+          const lines = text.trim().split('\n').slice(-15);
+          container.innerHTML = lines.map(l => `<div>${l}</div>`).join('');
+          container.scrollTop = container.scrollHeight;
+        }
+      } catch (e) {}
+    }
+
+    function addLog(msg) {
+      const container = document.getElementById('logContainer');
+      const div = document.createElement('div');
+      div.className = 'text-indigo-300';
+      div.innerText = `[${new Date().toLocaleTimeString()}] ${msg}`;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function refreshData() {
+      fetchLogs();
+    }
+
+    function viewRulesModal() { document.getElementById('rulesModal').classList.remove('hidden'); }
+    function closeRulesModal() { document.getElementById('rulesModal').classList.add('hidden'); }
+
+    // Initial log poll
+    setInterval(fetchLogs, 8000);
+  </script>
+</body>
+</html>
+

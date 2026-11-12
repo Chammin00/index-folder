@@ -1,0 +1,1566 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NEON RUSH XR — Rhythm Blaster & Level Creator</title>
+  <style>
+    :root {
+      --bg-glass: rgba(10, 14, 26, 0.84);
+      --border-glass: rgba(0, 242, 254, 0.25);
+      --cyan: #00f2fe;
+      --pink: #ff0844;
+      --lime: #a8ff78;
+      --gold: #ffdd00;
+      --text: #f8fafc;
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #05070f;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: var(--text);
+    }
+
+    canvas {
+      display: block;
+      cursor: crosshair;
+    }
+
+    /* Top Arcade Scoreboard HUD (Moonrider + Meta First Steps style) */
+    #hud-top {
+      position: fixed;
+      top: 14px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      pointer-events: none;
+      z-index: 10;
+      gap: 12px;
+    }
+
+    .panel {
+      background: var(--bg-glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      border-radius: 14px;
+      padding: 12px 18px;
+      pointer-events: auto;
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.55);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, var(--cyan), #f857a6, var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand p {
+      margin: 3px 0 0 0;
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    /* Live Arcade Stats Bar */
+    #scoreboard {
+      display: flex;
+      gap: 22px;
+      align-items: center;
+      padding: 10px 24px;
+      border-color: rgba(248, 87, 166, 0.4);
+    }
+
+    .stat-box {
+      text-align: center;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #94a3b8;
+    }
+
+    .stat-val {
+      font-size: 24px;
+      font-weight: 900;
+      font-family: monospace;
+      color: #fff;
+      text-shadow: 0 0 12px rgba(0, 242, 254, 0.6);
+    }
+
+    .stat-val.combo {
+      color: var(--gold);
+      text-shadow: 0 0 14px rgba(255, 221, 0, 0.7);
+    }
+
+    .stat-val.rank {
+      color: var(--lime);
+      text-shadow: 0 0 14px rgba(168, 255, 120, 0.7);
+    }
+
+    /* Mode Switcher & Tool Dock */
+    #dock {
+      position: fixed;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 10;
+      width: 220px;
+    }
+
+    .section-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #64748b;
+      margin-top: 6px;
+      font-weight: 700;
+    }
+
+    .mode-btn, .tool-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 12.5px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.16s ease;
+      text-align: left;
+    }
+
+    .mode-btn:hover, .tool-btn:hover {
+      background: rgba(255, 255, 255, 0.14);
+      transform: translateX(3px);
+    }
+
+    .mode-btn.active {
+      background: linear-gradient(135deg, rgba(255, 8, 68, 0.35), rgba(248, 87, 166, 0.35));
+      border-color: var(--pink);
+      box-shadow: 0 0 18px rgba(255, 8, 68, 0.4);
+    }
+
+    .tool-btn.active {
+      background: linear-gradient(135deg, rgba(0, 242, 254, 0.25), rgba(79, 172, 254, 0.25));
+      border-color: var(--cyan);
+      box-shadow: 0 0 14px rgba(0, 242, 254, 0.3);
+    }
+
+    .color-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .swatch {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform 0.15s ease;
+    }
+
+    .swatch.active {
+      border-color: #fff;
+      transform: scale(1.2);
+      box-shadow: 0 0 10px currentColor;
+    }
+
+    /* Bottom XR Bar */
+    #xr-bar {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
+      z-index: 10;
+    }
+
+    .xr-btn {
+      padding: 12px 22px;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      border: none;
+      color: #06101e;
+      background: linear-gradient(90deg, #00f2fe, #4facfe);
+      box-shadow: 0 6px 24px rgba(0, 242, 254, 0.35);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .xr-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(0, 242, 254, 0.55);
+    }
+
+    .xr-btn.mr {
+      background: linear-gradient(90deg, #ff0844, #f857a6);
+      color: #fff;
+      box-shadow: 0 6px 24px rgba(255, 8, 68, 0.4);
+    }
+
+    /* Floating Hit Callout */
+    #callout {
+      position: fixed;
+      top: 110px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      text-shadow: 0 0 20px rgba(0, 242, 254, 0.9);
+      z-index: 9;
+    }
+
+    .help-box {
+      font-size: 11.5px;
+      color: #cbd5e1;
+      line-height: 1.55;
+    }
+
+    .kbd {
+      background: rgba(255, 255, 255, 0.14);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 11px;
+    }
+  </style>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <script src="high-gloss-lacquer.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <script src="cosmic-background.js"></script>
+  <script src="mcp-baseline.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="aws-enterprise-baseline.css">
+  <script src="aws-enterprise-baseline.js"></script>
+</head>
+<body>
+
+  <!-- Top Arcade Header + Scoreboard -->
+  <div id="hud-top">
+    <div class="panel brand">
+      <h1>⚡ NEON RUSH XR</h1>
+      <p>Inspired by GitHub's Moonrider & Meta WebXR Blaster</p>
+      <a href="word-defender-xr.html" style="display:inline-block; margin-top:6px; padding:5px 10px; border-radius:8px; background:rgba(0,242,254,0.2); border:1px solid #00f2fe; color:#fff; text-decoration:none; font-size:11.5px; font-weight:700;">🔄 Switch to Game 2: CYBER TYPE XR (Word Defender)</a>
+    </div>
+
+    <div class="panel" id="scoreboard">
+      <div class="stat-box">
+        <div class="stat-label">Score</div>
+        <div class="stat-val" id="ui-score">0000</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Combo</div>
+        <div class="stat-val combo" id="ui-combo">1x</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Accuracy</div>
+        <div class="stat-val" id="ui-acc">100%</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Rank</div>
+        <div class="stat-val rank" id="ui-rank">S</div>
+      </div>
+    </div>
+
+    <div class="panel help-box">
+      <div><strong>🎮 Arcade Mode:</strong> <span class="kbd">Left Click</span> Shoot Laser / Slash Targets</div>
+      <div><strong>🛠️ Creator Mode:</strong> <span class="kbd">Left Click + Drag</span> Build Arena</div>
+      <div><strong>Camera:</strong> <span class="kbd">Right Click + Drag</span> Orbit | <span class="kbd">Scroll</span> Zoom</div>
+    </div>
+  </div>
+
+  <div id="callout">PERFECT +100</div>
+
+  <!-- Left Mode & Tool Dock -->
+  <div id="dock" class="panel">
+    <div class="section-title">Game Mode</div>
+    <button class="mode-btn active" id="mode-arcade">🔥 PLAY: Rhythm Blaster</button>
+    <button class="mode-btn" id="mode-create">🛠️ BUILD: Arena Creator</button>
+
+    <div class="section-title">Local Audio Soundtrack</div>
+    <select id="local-track-select" style="width:100%; background:#0f172a; color:#fff; border:1px solid rgba(255,255,255,0.2); padding:7px; border-radius:8px; font-size:11.5px;">
+      <option value="audio/local-track-6-Sonic_World_DX_-_The_City.ogg">🎵 Local: Sonic DX - The City</option>
+      <option value="audio/local-track-7-Sonic_World_DX_-_Special_Stage.ogg">🎵 Local: Sonic DX - Special Stage</option>
+      <option value="audio/moonrider-theme.ogg">🎵 Local: Moonrider Synth Theme</option>
+      <option value="audio/local-track-8-amy.ogg">🎵 Local: Upbeat Action (Amy)</option>
+      <option value="audio/local-track-9-esp.ogg">🎵 Local: Cyber Espionage (ESP)</option>
+      <option value="audio/local-track-1-chao1.ogg">🎵 Local: Chao Chill Garden</option>
+    </select>
+    <button class="tool-btn active" id="btn-music">▶️ Local Music: ON</button>
+    <label class="tool-btn" style="justify-content:center; border-style:dashed; border-color:#00f2fe;">
+      📂 Load Any Local Audio
+      <input type="file" id="custom-audio-file" accept="audio/*" style="display:none;" />
+    </label>
+    <button class="tool-btn" id="btn-speed">⚡ Wave Speed: Normal</button>
+
+    <div class="section-title">Creator Tools (Build Mode)</div>
+    <button class="tool-btn active" data-tool="ribbon">🖌️ Neon Track Ribbon</button>
+    <button class="tool-btn" data-tool="spawner">🎯 Place Target Spawner</button>
+    <button class="tool-btn" data-tool="crystal">💎 Ricochet Sound Bumper</button>
+    <button class="tool-btn" data-tool="orb">🔮 Physics Synth Orb</button>
+
+    <div class="section-title">Neon Color</div>
+    <div class="color-row">
+      <div class="swatch active" style="background:#00f2fe; color:#00f2fe" data-color="#00f2fe"></div>
+      <div class="swatch" style="background:#ff0844; color:#ff0844" data-color="#ff0844"></div>
+      <div class="swatch" style="background:#a8ff78; color:#a8ff78" data-color="#a8ff78"></div>
+      <div class="swatch" style="background:#f857a6; color:#f857a6" data-color="#f857a6"></div>
+      <div class="swatch" style="background:#ffdd00; color:#ffdd00" data-color="#ffdd00"></div>
+    </div>
+
+    <div class="section-title">AAA 360° World Background</div>
+    <select id="env-select" style="width:100%; background:#0f172a; color:#fff; border:1px solid rgba(255,255,255,0.2); padding:7px; border-radius:8px; font-size:11.5px;">
+      <option value="deep_space">🌌 Deep Space (Real 360° + Asteroids)</option>
+      <option value="dark_woods">🌲 Dark Woods (Real 360° + Fireflies)</option>
+      <option value="alpine_mountains">🏔️ Alpine Mountains (Real 360° + Snow)</option>
+      <option value="crystal_caves">🕳️ Crystal Caves (Real 360° + Spores)</option>
+      <option value="mirror_lake">🏞️ Mirror Lake (Real 360° + Water)</option>
+      <option value="open_ocean">🌊 Open Ocean (Real 360° + 3D Waves)</option>
+      <option value="cyber_grid">⚡ Neon Cyber Grid (Classic)</option>
+    </select>
+    <label class="tool-btn" style="justify-content:center; border-style:dashed; border-color:#a8ff78;">
+      🖼️ Use Any Real Photo / 360°
+      <input type="file" id="custom-env-input" accept="image/*" style="display:none;" />
+    </label>
+
+    <div class="section-title">Share / Reset</div>
+    <button class="tool-btn" id="btn-export">💾 Save / Copy Level JSON</button>
+    <button class="tool-btn" id="btn-clear">🗑️ Reset Arena</button>
+  </div>
+
+  <!-- Bottom XR Launchers -->
+  <div id="xr-bar">
+    <button class="xr-btn mr" id="btn-enter-mr">🕶️ Play in Quest 3 Mixed Reality (Room Passthrough)</button>
+    <button class="xr-btn" id="btn-enter-vr">🌌 Play in Full VR</button>
+  </div>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { XRControllerModelFactory } from 'three/addons/webxr/XRControllerModelFactory.js';
+
+    // =========================================================================
+    // INLINE AAA 360° ENVIRONMENT MANAGER (Zero external file dependencies)
+    // =========================================================================
+    class AAAEnvironmentManager {
+      constructor(scene, renderer) {
+        this.scene = scene;
+        this.renderer = renderer;
+        this.root = new THREE.Group();
+        this.scene.add(this.root);
+        this.propsGroup = new THREE.Group();
+        this.root.add(this.propsGroup);
+
+        const sphereGeo = new THREE.SphereGeometry(65, 48, 36);
+        sphereGeo.scale(-1, 1, 1);
+        this.skyMat = new THREE.MeshBasicMaterial({ depthWrite: false });
+        this.skyDome = new THREE.Mesh(sphereGeo, this.skyMat);
+        this.skyDome.renderOrder = -1;
+        this.root.add(this.skyDome);
+
+        this.waterMesh = null;
+        this.waterBase = null;
+        this.particleSystem = null;
+        this.loader = new THREE.TextureLoader();
+        this.canvasCache = {};
+      }
+
+      setVisible(visible) {
+        this.root.visible = visible;
+      }
+
+      loadCustomImageFile(file) {
+        const url = URL.createObjectURL(file);
+        this.loader.load(url, (tex) => {
+          tex.colorSpace = THREE.SRGBColorSpace;
+          this.skyMat.map = tex;
+          this.skyMat.needsUpdate = true;
+          this.skyDome.visible = true;
+        });
+      }
+
+      createProceduralSky(type) {
+        if (this.canvasCache[type]) return this.canvasCache[type];
+        const canvas = document.createElement('canvas');
+        canvas.width = 1024;
+        canvas.height = 512;
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width;
+        const h = canvas.height;
+
+        if (type === 'dark_woods') {
+          const grad = ctx.createLinearGradient(0, 0, 0, h);
+          grad.addColorStop(0, '#02050c');
+          grad.addColorStop(0.5, '#071626');
+          grad.addColorStop(0.75, '#0f293b');
+          grad.addColorStop(1, '#050c12');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, w, h);
+          ctx.fillStyle = '#e2f1ff';
+          ctx.beginPath();
+          ctx.arc(w * 0.45, h * 0.28, 26, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#03080e';
+          ctx.beginPath();
+          ctx.moveTo(0, h);
+          for (let x = 0; x <= w; x += 18) {
+            const treeH = h * 0.6 + Math.sin(x * 0.05) * 35 + Math.cos(x * 0.12) * 20;
+            ctx.lineTo(x, treeH);
+          }
+          ctx.lineTo(w, h);
+          ctx.closePath();
+          ctx.fill();
+        } else if (type === 'alpine_mountains') {
+          const grad = ctx.createLinearGradient(0, 0, 0, h);
+          grad.addColorStop(0, '#0e172a');
+          grad.addColorStop(0.35, '#312e81');
+          grad.addColorStop(0.65, '#db2777');
+          grad.addColorStop(0.78, '#f59e0b');
+          grad.addColorStop(1, '#1e293b');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, w, h);
+          ctx.fillStyle = '#0f172a';
+          ctx.beginPath();
+          ctx.moveTo(0, h);
+          for (let x = 0; x <= w; x += 30) {
+            const peak = h * 0.52 + Math.sin(x * 0.02) * 80 + Math.cos(x * 0.06) * 45;
+            ctx.lineTo(x, peak);
+          }
+          ctx.lineTo(w, h);
+          ctx.closePath();
+          ctx.fill();
+        } else if (type === 'deep_space') {
+          ctx.fillStyle = '#03030c';
+          ctx.fillRect(0, 0, w, h);
+          const rad1 = ctx.createRadialGradient(w * 0.35, h * 0.45, 10, w * 0.35, h * 0.45, 200);
+          rad1.addColorStop(0, 'rgba(0, 242, 254, 0.55)');
+          rad1.addColorStop(0.6, 'rgba(192, 132, 252, 0.25)');
+          rad1.addColorStop(1, 'transparent');
+          ctx.fillStyle = rad1;
+          ctx.fillRect(0, 0, w, h);
+
+          const rad2 = ctx.createRadialGradient(w * 0.72, h * 0.38, 10, w * 0.72, h * 0.38, 220);
+          rad2.addColorStop(0, 'rgba(255, 8, 68, 0.45)');
+          rad2.addColorStop(0.7, 'rgba(248, 87, 166, 0.2)');
+          rad2.addColorStop(1, 'transparent');
+          ctx.fillStyle = rad2;
+          ctx.fillRect(0, 0, w, h);
+
+          ctx.fillStyle = '#ffffff';
+          for (let i = 0; i < 400; i++) {
+            ctx.beginPath();
+            ctx.arc(Math.random() * w, Math.random() * h, Math.random() * 1.6 + 0.3, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        } else if (type === 'crystal_caves') {
+          const grad = ctx.createLinearGradient(0, 0, 0, h);
+          grad.addColorStop(0, '#040711');
+          grad.addColorStop(0.5, '#0b192c');
+          grad.addColorStop(1, '#050914');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, w, h);
+          const rad1 = ctx.createRadialGradient(w * 0.25, h * 0.7, 5, w * 0.25, h * 0.7, 140);
+          rad1.addColorStop(0, 'rgba(0, 242, 254, 0.7)');
+          rad1.addColorStop(1, 'transparent');
+          ctx.fillStyle = rad1;
+          ctx.fillRect(0, 0, w, h);
+          const rad2 = ctx.createRadialGradient(w * 0.75, h * 0.65, 5, w * 0.75, h * 0.65, 160);
+          rad2.addColorStop(0, 'rgba(168, 85, 247, 0.65)');
+          rad2.addColorStop(1, 'transparent');
+          ctx.fillStyle = rad2;
+          ctx.fillRect(0, 0, w, h);
+        } else if (type === 'mirror_lake') {
+          const grad = ctx.createLinearGradient(0, 0, 0, h);
+          grad.addColorStop(0, '#090d16');
+          grad.addColorStop(0.45, '#1e293b');
+          grad.addColorStop(0.68, '#f59e0b');
+          grad.addColorStop(0.74, '#0f172a');
+          grad.addColorStop(1, '#070b14');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, w, h);
+        } else if (type === 'open_ocean') {
+          const grad = ctx.createLinearGradient(0, 0, 0, h);
+          grad.addColorStop(0, '#030712');
+          grad.addColorStop(0.52, '#1e1b4b');
+          grad.addColorStop(0.72, '#f43f5e');
+          grad.addColorStop(0.78, '#031b33');
+          grad.addColorStop(1, '#020d1a');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, w, h);
+        } else {
+          ctx.fillStyle = '#05070f';
+          ctx.fillRect(0, 0, w, h);
+        }
+
+        const tex = new THREE.CanvasTexture(canvas);
+        tex.colorSpace = THREE.SRGBColorSpace;
+        this.canvasCache[type] = tex;
+        return tex;
+      }
+
+      setEnvironment(type) {
+        while (this.propsGroup.children.length > 0) {
+          const c = this.propsGroup.children[0];
+          this.propsGroup.remove(c);
+        }
+        if (this.waterMesh) {
+          this.root.remove(this.waterMesh);
+          this.waterMesh.geometry.dispose();
+          this.waterMesh = null;
+        }
+        if (this.particleSystem) {
+          this.root.remove(this.particleSystem);
+          this.particleSystem.geometry.dispose();
+          this.particleSystem = null;
+        }
+
+        if (type === 'cyber_grid') {
+          this.skyDome.visible = false;
+          this.scene.background = new THREE.Color(0x04060e);
+          this.scene.fog = new THREE.FogExp2(0x04060e, 0.028);
+          const grid = new THREE.GridHelper(36, 72, 0x00f2fe, 0x162044);
+          grid.position.z = -8;
+          this.propsGroup.add(grid);
+          return;
+        }
+
+        this.skyDome.visible = true;
+        this.scene.background = null;
+        this.skyMat.map = this.createProceduralSky(type);
+        this.skyMat.needsUpdate = true;
+
+        const imageMap = {
+          dark_woods: 'envs/dark_woods.jpg',
+          alpine_mountains: 'envs/alpine_mountains.jpg',
+          deep_space: 'envs/deep_space.jpg',
+          crystal_caves: 'envs/crystal_caves.jpg',
+          mirror_lake: 'envs/mirror_lake.jpg',
+          open_ocean: 'envs/open_ocean.jpg'
+        };
+        if (imageMap[type] && window.location.protocol.startsWith('http')) {
+          this.loader.load(imageMap[type], (photoTex) => {
+            photoTex.colorSpace = THREE.SRGBColorSpace;
+            photoTex.mapping = THREE.EquirectangularReflectionMapping;
+            this.skyMat.map = photoTex;
+            this.skyMat.needsUpdate = true;
+          }, undefined, () => {});
+        }
+
+        if (type === 'dark_woods') {
+          this.scene.fog = new THREE.FogExp2(0x07111a, 0.015);
+          const ground = new THREE.Mesh(
+            new THREE.CircleGeometry(26, 32).rotateX(-Math.PI / 2),
+            new THREE.MeshStandardMaterial({ color: 0x07110c, roughness: 0.95 })
+          );
+          this.propsGroup.add(ground);
+          for (let i = 0; i < 20; i++) {
+            const a = (i / 20) * Math.PI * 2;
+            if (Math.abs(Math.sin(a)) < 0.25 && Math.cos(a) < 0) continue;
+            const r = 9 + Math.random() * 10;
+            const tree = new THREE.Group();
+            const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.25, 4.5, 6), new THREE.MeshStandardMaterial({ color: 0x18120e }));
+            trunk.position.y = 2.25;
+            tree.add(trunk);
+            const cone = new THREE.Mesh(new THREE.ConeGeometry(1.5, 4.5, 6), new THREE.MeshStandardMaterial({ color: 0x071810, flatShading: true }));
+            cone.position.y = 4.8;
+            tree.add(cone);
+            tree.position.set(Math.cos(a) * r, 0, Math.sin(a) * r);
+            this.propsGroup.add(tree);
+          }
+          this._buildParticles(0xbef264, 180, 'fireflies');
+        } else if (type === 'alpine_mountains') {
+          this.scene.fog = new THREE.FogExp2(0x1a2639, 0.009);
+          const snow = new THREE.Mesh(
+            new THREE.CircleGeometry(20, 32).rotateX(-Math.PI / 2),
+            new THREE.MeshStandardMaterial({ color: 0xcfdce8, roughness: 0.6 })
+          );
+          this.propsGroup.add(snow);
+          this._buildParticles(0xffffff, 250, 'snow');
+        } else if (type === 'deep_space') {
+          this.scene.fog = new THREE.FogExp2(0x04030c, 0.005);
+          const pad = new THREE.Mesh(
+            new THREE.CylinderGeometry(3, 3.4, 0.15, 24),
+            new THREE.MeshStandardMaterial({ color: 0x0f172a, emissive: 0x00f2fe, emissiveIntensity: 0.2, metalness: 0.8, roughness: 0.2 })
+          );
+          pad.position.y = -0.08;
+          this.propsGroup.add(pad);
+          const rockMat = new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.8, flatShading: true });
+          for (let i = 0; i < 18; i++) {
+            const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.4 + Math.random() * 0.7, 0), rockMat);
+            const a = Math.random() * Math.PI * 2;
+            const r = 7 + Math.random() * 15;
+            rock.position.set(Math.cos(a) * r, (Math.random() - 0.3) * 8, Math.sin(a) * r);
+            rock.userData.rotSpeed = (Math.random() - 0.5) * 1.5;
+            this.propsGroup.add(rock);
+          }
+          this._buildParticles(0x38bdf8, 200, 'float');
+        } else if (type === 'crystal_caves') {
+          this.scene.fog = new THREE.FogExp2(0x06151f, 0.016);
+          this._buildWater(0x082836, 0.08, 0.9);
+          const colors = [0x00f2fe, 0xa855f7, 0x2dd4bf];
+          for (let i = 0; i < 16; i++) {
+            const a = (i / 16) * Math.PI * 2;
+            if (Math.abs(Math.sin(a)) < 0.28 && Math.cos(a) < 0) continue;
+            const r = 6.5 + Math.random() * 8;
+            const col = colors[i % colors.length];
+            const crystal = new THREE.Mesh(
+              new THREE.ConeGeometry(0.35, 2.2, 5),
+              new THREE.MeshStandardMaterial({ color: col, emissive: col, emissiveIntensity: 0.65, flatShading: true })
+            );
+            crystal.position.set(Math.cos(a) * r, 0.6, Math.sin(a) * r);
+            this.propsGroup.add(crystal);
+          }
+          this._buildParticles(0x2dd4bf, 160, 'fireflies');
+        } else if (type === 'mirror_lake') {
+          this.scene.fog = new THREE.FogExp2(0x121d2b, 0.010);
+          this._buildWater(0x131f2f, 0.04, 0.95);
+          this._buildParticles(0xfef08a, 140, 'fireflies');
+        } else if (type === 'open_ocean') {
+          this.scene.fog = new THREE.FogExp2(0x050e1d, 0.012);
+          this._buildWater(0x041d33, 0.28, 0.85);
+          this._buildParticles(0x38bdf8, 180, 'float');
+        }
+      }
+
+      _buildWater(colorHex, waveHeight, metalness) {
+        const geo = new THREE.PlaneGeometry(60, 60, 48, 48);
+        geo.rotateX(-Math.PI / 2);
+        const mat = new THREE.MeshStandardMaterial({ color: colorHex, metalness, roughness: 0.15, flatShading: waveHeight > 0.12 });
+        this.waterMesh = new THREE.Mesh(geo, mat);
+        this.waterMesh.position.y = -0.15;
+        this.waterMesh.userData.waveHeight = waveHeight;
+        this.waterBase = geo.attributes.position.array.slice();
+        this.root.add(this.waterMesh);
+      }
+
+      _buildParticles(colorHex, count, mode) {
+        const geo = new THREE.BufferGeometry();
+        const positions = new Float32Array(count * 3);
+        for (let i = 0; i < count; i++) {
+          positions[i * 3]     = (Math.random() - 0.5) * 26;
+          positions[i * 3 + 1] = Math.random() * 9 + 0.2;
+          positions[i * 3 + 2] = (Math.random() - 0.5) * 26;
+        }
+        geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const mat = new THREE.PointsMaterial({ color: colorHex, size: mode === 'snow' ? 0.08 : 0.09, transparent: true, opacity: 0.85 });
+        this.particleSystem = new THREE.Points(geo, mat);
+        this.particleSystem.userData.mode = mode;
+        this.root.add(this.particleSystem);
+      }
+
+      update(dt, elapsed) {
+        if (!this.root.visible) return;
+        if (this.skyDome && this.skyDome.visible) {
+          this.skyDome.rotation.y = elapsed * 0.005;
+        }
+        if (this.waterMesh && this.waterBase) {
+          const arr = this.waterMesh.geometry.attributes.position.array;
+          const base = this.waterBase;
+          const amp = this.waterMesh.userData.waveHeight;
+          for (let i = 0; i < arr.length; i += 3) {
+            arr[i + 1] = Math.sin(base[i] * 0.35 + elapsed * 1.8) * amp + Math.cos(base[i + 2] * 0.3 + elapsed * 1.4) * amp;
+          }
+          this.waterMesh.geometry.attributes.position.needsUpdate = true;
+        }
+        this.propsGroup.children.forEach(obj => {
+          if (obj.userData.rotSpeed) {
+            obj.rotation.x += obj.userData.rotSpeed * dt;
+            obj.rotation.y += obj.userData.rotSpeed * dt;
+          }
+        });
+        if (this.particleSystem) {
+          const arr = this.particleSystem.geometry.attributes.position.array;
+          const mode = this.particleSystem.userData.mode;
+          for (let i = 0; i < arr.length; i += 3) {
+            if (mode === 'snow') {
+              arr[i + 1] -= dt * 1.3;
+              arr[i] += Math.sin(elapsed + i) * dt * 0.3;
+              if (arr[i + 1] < 0) arr[i + 1] = 9;
+            } else if (mode === 'fireflies') {
+              arr[i] += Math.sin(elapsed * 1.5 + i) * dt * 0.3;
+              arr[i + 1] += Math.cos(elapsed * 1.2 + i) * dt * 0.2;
+            } else {
+              arr[i + 1] += Math.sin(elapsed + i) * dt * 0.12;
+            }
+          }
+          this.particleSystem.geometry.attributes.position.needsUpdate = true;
+        }
+      }
+    }
+
+    // =========================================================================
+    // 1. LOCAL AUDIO TRACKS & SFX ENGINE (Uses your local PC .ogg files!)
+    // =========================================================================
+    class ArcadeAudio {
+      constructor() {
+        this.bgm = new Audio('audio/local-track-6-Sonic_World_DX_-_The_City.ogg');
+        this.bgm.loop = true;
+        this.bgm.volume = 0.45;
+        this.musicPlaying = true;
+        this.sfx = {
+          laser: new Audio('audio/laser.ogg'),
+          hit: new Audio('audio/beatHit.ogg'),
+          score: new Audio('audio/score.ogg'),
+          miss: new Audio('audio/miss.ogg'),
+          victory: new Audio('audio/victory.ogg')
+        };
+      }
+
+      init() {
+        if (this.musicPlaying && this.bgm.paused) {
+          this.bgm.play().catch(() => {});
+        }
+      }
+
+      playSFX(name, rate = 1.0) {
+        const base = this.sfx[name];
+        if (!base) return;
+        try {
+          const clone = base.cloneNode();
+          clone.volume = 0.6;
+          clone.playbackRate = rate;
+          clone.play().catch(() => {});
+        } catch {}
+      }
+
+      playLaser() {
+        this.init();
+        this.playSFX('laser', 1.0);
+      }
+
+      playHitExplosion(combo = 1) {
+        this.init();
+        this.playSFX('hit', Math.min(1.5, 0.9 + (combo % 6) * 0.08));
+        this.playSFX('score', 1.0);
+      }
+
+      playMiss() {
+        this.init();
+        this.playSFX('miss', 1.0);
+      }
+
+      tickBeat() {
+        if (this.musicPlaying && this.bgm.paused) {
+          this.bgm.play().catch(() => {});
+        }
+      }
+    }
+
+    const audio = new ArcadeAudio();
+
+    // =========================================================================
+    // 2. MOONRIDER-STYLE SCORING & COMBO STATE ENGINE
+    // =========================================================================
+    const gameState = {
+      mode: 'arcade', // 'arcade' or 'create'
+      score: 0,
+      combo: 0,
+      maxCombo: 0,
+      hits: 0,
+      misses: 0,
+      speedMultiplier: 1.0,
+      currentTool: 'ribbon',
+      currentColor: '#00f2fe'
+    };
+
+    const uiScore = document.getElementById('ui-score');
+    const uiCombo = document.getElementById('ui-combo');
+    const uiAcc = document.getElementById('ui-acc');
+    const uiRank = document.getElementById('ui-rank');
+    const calloutEl = document.getElementById('callout');
+
+    function showCallout(text, color = '#00f2fe') {
+      calloutEl.textContent = text;
+      calloutEl.style.color = color;
+      calloutEl.style.opacity = '1';
+      calloutEl.style.transform = 'translateX(-50%) scale(1.15)';
+      clearTimeout(calloutEl._timer);
+      calloutEl._timer = setTimeout(() => {
+        calloutEl.style.opacity = '0';
+        calloutEl.style.transform = 'translateX(-50%) scale(0.95)';
+      }, 450);
+    }
+
+    function updateScoreUI() {
+      uiScore.textContent = Math.min(999999, gameState.score).toString().padStart(4, '0');
+      const mult = Math.min(8, 1 + Math.floor(gameState.combo / 4));
+      uiCombo.textContent = `${gameState.combo} (${mult}x)`;
+
+      const total = gameState.hits + gameState.misses;
+      const acc = total === 0 ? 100 : Math.round((gameState.hits / total) * 100);
+      uiAcc.textContent = `${acc}%`;
+
+      // Moonrider rank formula
+      let rank = 'F';
+      if (acc >= 95) rank = 'S';
+      else if (acc >= 88) rank = 'A';
+      else if (acc >= 75) rank = 'B';
+      else if (acc >= 60) rank = 'C';
+      else rank = 'D';
+      uiRank.textContent = rank;
+    }
+
+    function registerHit(pointsBase = 100) {
+      gameState.hits++;
+      gameState.combo++;
+      if (gameState.combo > gameState.maxCombo) gameState.maxCombo = gameState.combo;
+      const mult = Math.min(8, 1 + Math.floor(gameState.combo / 4));
+      const gained = pointsBase * mult;
+      gameState.score += gained;
+      updateScoreUI();
+      showCallout(`+${gained} (${mult}x COMBO!)`, mult >= 4 ? '#ffdd00' : '#00f2fe');
+      audio.playHitExplosion(gameState.combo);
+    }
+
+    function registerMiss() {
+      gameState.misses++;
+      gameState.combo = 0;
+      updateScoreUI();
+      showCallout('MISSED!', '#ff0844');
+      audio.playMiss();
+    }
+
+    // =========================================================================
+    // 3. THREE.JS SCENE, HIGHWAY & 3D SCOREBOARD
+    // =========================================================================
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x05070f);
+    scene.fog = new THREE.FogExp2(0x05070f, 0.035);
+
+    const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.05, 100);
+    camera.position.set(0, 1.65, 3.2);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.xr.enabled = true;
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.target.set(0, 1.3, -2.5);
+    controls.mouseButtons = {
+      LEFT: null,
+      MIDDLE: THREE.MOUSE.DOLLY,
+      RIGHT: THREE.MOUSE.ROTATE
+    };
+    controls.enableDamping = true;
+
+    scene.add(new THREE.AmbientLight(0xdbeafe, 0.8));
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    dirLight.position.set(3, 8, 5);
+    scene.add(dirLight);
+
+    // AAA 360° Photorealistic Environment Manager + Neon Side Rails
+    const envManager = new AAAEnvironmentManager(scene, renderer);
+    envManager.setEnvironment('deep_space');
+
+    const envSelect = document.getElementById('env-select');
+    envSelect.addEventListener('change', () => {
+      envManager.setEnvironment(envSelect.value);
+    });
+
+    document.getElementById('custom-env-input').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      envManager.loadCustomImageFile(file);
+    });
+
+    const envGroup = new THREE.Group();
+    // Glowing side rails (Moonrider highway vibe)
+    const railGeo = new THREE.BoxGeometry(0.06, 0.06, 26);
+    const railMatL = new THREE.MeshBasicMaterial({ color: 0x00f2fe });
+    const railMatR = new THREE.MeshBasicMaterial({ color: 0xff0844 });
+    const railL = new THREE.Mesh(railGeo, railMatL);
+    const railR = new THREE.Mesh(railGeo, railMatR);
+    railL.position.set(-2.2, 0.05, -8);
+    railR.position.set(2.2, 0.05, -8);
+    envGroup.add(railL, railR);
+    scene.add(envGroup);
+
+    // 3D Floating Scoreboard Canvas inside VR space (so Quest 3 users see score in-world!)
+    const scoreCanvas = document.createElement('canvas');
+    scoreCanvas.width = 512;
+    scoreCanvas.height = 128;
+    const scoreCtx = scoreCanvas.getContext('2d');
+    const scoreTex = new THREE.CanvasTexture(scoreCanvas);
+    const scoreBoardMesh = new THREE.Mesh(
+      new THREE.PlaneGeometry(2.4, 0.6),
+      new THREE.MeshBasicMaterial({ map: scoreTex, transparent: true })
+    );
+    scoreBoardMesh.position.set(0, 3.1, -6.5);
+    scene.add(scoreBoardMesh);
+
+    function redraw3DScoreboard() {
+      scoreCtx.clearRect(0, 0, 512, 128);
+      scoreCtx.fillStyle = 'rgba(10, 14, 28, 0.82)';
+      scoreCtx.strokeStyle = '#00f2fe';
+      scoreCtx.lineWidth = 4;
+      scoreCtx.strokeRect(6, 6, 500, 116);
+      scoreCtx.fillRect(6, 6, 500, 116);
+
+      scoreCtx.fillStyle = '#00f2fe';
+      scoreCtx.font = 'bold 34px monospace';
+      scoreCtx.fillText(`SCORE: ${uiScore.textContent}`, 28, 55);
+
+      scoreCtx.fillStyle = '#ffdd00';
+      scoreCtx.font = 'bold 28px monospace';
+      scoreCtx.fillText(`COMBO: ${uiCombo.textContent}`, 28, 100);
+
+      scoreCtx.fillStyle = '#a8ff78';
+      scoreCtx.font = 'bold 48px monospace';
+      scoreCtx.fillText(`RANK ${uiRank.textContent}`, 330, 78);
+
+      scoreTex.needsUpdate = true;
+    }
+    redraw3DScoreboard();
+
+    // =========================================================================
+    // 4. RHYTHM TARGETS, LASER BULLETS & SHATTER PARTICLES
+    // =========================================================================
+    const targets = [];
+    const bullets = [];
+    const particles = [];
+    const customSpawners = [];
+    const creationGroup = new THREE.Group();
+    scene.add(creationGroup);
+
+    const targetColors = [0x00f2fe, 0xff0844, 0xa8ff78, 0xffdd00];
+
+    function spawnRhythmTarget(originPos = null) {
+      const color = targetColors[Math.floor(Math.random() * targetColors.length)];
+      const group = new THREE.Group();
+
+      // Outer glowing ring + inner core crystal
+      const ringGeo = new THREE.TorusGeometry(0.32, 0.045, 16, 32);
+      const ringMat = new THREE.MeshStandardMaterial({
+        color,
+        emissive: color,
+        emissiveIntensity: 0.9,
+        roughness: 0.2
+      });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      group.add(ring);
+
+      const coreGeo = new THREE.OctahedronGeometry(0.18, 0);
+      const coreMat = new THREE.MeshStandardMaterial({
+        color: 0xffffff,
+        emissive: color,
+        emissiveIntensity: 0.6,
+        flatShading: true
+      });
+      const core = new THREE.Mesh(coreGeo, coreMat);
+      group.add(core);
+
+      if (originPos) {
+        group.position.copy(originPos);
+      } else {
+        group.position.set(
+          (Math.random() - 0.5) * 3.6,
+          0.8 + Math.random() * 1.6,
+          -11.0
+        );
+      }
+
+      scene.add(group);
+      targets.push({
+        group,
+        core,
+        color,
+        vel: new THREE.Vector3(0, 0, 3.2 * gameState.speedMultiplier),
+        baseY: group.position.y,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+
+    function spawnExplosion(pos, colorHex) {
+      for (let i = 0; i < 16; i++) {
+        const geo = new THREE.TetrahedronGeometry(0.055, 0);
+        const mat = new THREE.MeshBasicMaterial({ color: colorHex });
+        const mesh = new THREE.Mesh(geo, mat);
+        mesh.position.copy(pos);
+        scene.add(mesh);
+
+        const vel = new THREE.Vector3(
+          (Math.random() - 0.5) * 5.5,
+          (Math.random() - 0.3) * 5.5,
+          (Math.random() - 0.5) * 5.5
+        );
+        particles.push({ mesh, vel, life: 0.55 });
+      }
+    }
+
+    // Fire a laser bolt from origin along direction (Meta webxr-first-steps pattern)
+    function fireLaser(origin, direction) {
+      audio.playLaser();
+      const boltGeo = new THREE.CylinderGeometry(0.022, 0.022, 0.65, 8);
+      boltGeo.rotateX(Math.PI / 2);
+      const boltMat = new THREE.MeshBasicMaterial({ color: 0x00f2fe });
+      const bolt = new THREE.Mesh(boltGeo, boltMat);
+      bolt.position.copy(origin);
+      bolt.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, -1), direction.clone().normalize());
+      scene.add(bolt);
+
+      bullets.push({
+        mesh: bolt,
+        vel: direction.clone().normalize().multiplyScalar(24),
+        life: 1.2
+      });
+    }
+
+    // =========================================================================
+    // 5. CREATOR TOOLS (Ribbons, Spawners, Bumpers, Orbs)
+    // =========================================================================
+    const orbs = [];
+    const crystals = [];
+    let isDrawing = false;
+    let activeRibbonPoints = [];
+    let activeRibbonMesh = null;
+
+    function createRibbonMesh(points, hexColor) {
+      if (points.length < 2) return null;
+      const curve = new THREE.CatmullRomCurve3(points);
+      const geo = new THREE.TubeGeometry(curve, Math.max(8, points.length * 3), 0.025, 10, false);
+      const mat = new THREE.MeshStandardMaterial({
+        color: hexColor,
+        emissive: hexColor,
+        emissiveIntensity: 0.75,
+        roughness: 0.2
+      });
+      return new THREE.Mesh(geo, mat);
+    }
+
+    function placeSpawnerPortal(pos) {
+      const geo = new THREE.TorusKnotGeometry(0.18, 0.035, 64, 12);
+      const mat = new THREE.MeshStandardMaterial({
+        color: gameState.currentColor,
+        emissive: gameState.currentColor,
+        emissiveIntensity: 0.85,
+        wireframe: true
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.copy(pos);
+      creationGroup.add(mesh);
+      customSpawners.push(mesh);
+      showCallout('TARGET SPAWNER PLACED!', gameState.currentColor);
+    }
+
+    function spawnCrystal(pos) {
+      const geo = new THREE.OctahedronGeometry(0.18, 0);
+      const mat = new THREE.MeshStandardMaterial({
+        color: gameState.currentColor,
+        emissive: gameState.currentColor,
+        emissiveIntensity: 0.5,
+        flatShading: true
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.copy(pos);
+      creationGroup.add(mesh);
+      crystals.push({ mesh, radius: 0.2, pulse: 0 });
+    }
+
+    function spawnOrb(pos) {
+      const radius = 0.07;
+      const geo = new THREE.SphereGeometry(radius, 20, 20);
+      const mat = new THREE.MeshStandardMaterial({
+        color: gameState.currentColor,
+        emissive: gameState.currentColor,
+        emissiveIntensity: 0.7
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.copy(pos);
+      creationGroup.add(mesh);
+      orbs.push({
+        mesh,
+        radius,
+        vel: new THREE.Vector3((Math.random() - 0.5) * 2, 2.0, (Math.random() - 0.5) * 2)
+      });
+    }
+
+    function handleCreateStart(pos) {
+      if (gameState.currentTool === 'ribbon') {
+        isDrawing = true;
+        activeRibbonPoints = [pos.clone()];
+      } else if (gameState.currentTool === 'spawner') {
+        placeSpawnerPortal(pos);
+      } else if (gameState.currentTool === 'crystal') {
+        spawnCrystal(pos);
+      } else if (gameState.currentTool === 'orb') {
+        spawnOrb(pos);
+      }
+    }
+
+    function handleCreateMove(pos) {
+      if (gameState.currentTool === 'ribbon' && isDrawing) {
+        const last = activeRibbonPoints[activeRibbonPoints.length - 1];
+        if (last.distanceTo(pos) > 0.05) {
+          activeRibbonPoints.push(pos.clone());
+          if (activeRibbonMesh) {
+            creationGroup.remove(activeRibbonMesh);
+            activeRibbonMesh.geometry.dispose();
+          }
+          activeRibbonMesh = createRibbonMesh(activeRibbonPoints, gameState.currentColor);
+          if (activeRibbonMesh) creationGroup.add(activeRibbonMesh);
+        }
+      }
+    }
+
+    // =========================================================================
+    // 6. DESKTOP MOUSE & QUEST 3 CONTROLLER INPUT
+    // =========================================================================
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    const drawPlane = new THREE.Plane();
+
+    function getMouse3DPoint(clientX, clientY) {
+      mouse.x = (clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(clientY / window.innerHeight) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+      const camDir = new THREE.Vector3();
+      camera.getWorldDirection(camDir);
+      drawPlane.setFromNormalAndCoplanarPoint(camDir.negate(), new THREE.Vector3(0, 1.4, -2.5));
+      const pt = new THREE.Vector3();
+      raycaster.ray.intersectPlane(drawPlane, pt);
+      return pt;
+    }
+
+    window.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('.panel') || e.target.closest('#xr-bar')) return;
+      if (e.button !== 0) return;
+
+      audio.init();
+      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+
+      if (gameState.mode === 'arcade') {
+        // Shoot laser along raycaster & also check immediate hit for snappy feel!
+        const origin = camera.position.clone().add(new THREE.Vector3(0, -0.15, 0));
+        fireLaser(origin, raycaster.ray.direction);
+
+        // Instant ray-sphere check so clicking directly on a target always feels ultra-responsive
+        for (let i = targets.length - 1; i >= 0; i--) {
+          const t = targets[i];
+          const distToRay = raycaster.ray.distanceToPoint(t.group.position);
+          if (distToRay < 0.48) {
+            spawnExplosion(t.group.position, t.color);
+            scene.remove(t.group);
+            targets.splice(i, 1);
+            registerHit(100);
+            redraw3DScoreboard();
+            break;
+          }
+        }
+      } else {
+        const pt = getMouse3DPoint(e.clientX, e.clientY);
+        handleCreateStart(pt);
+      }
+    });
+
+    window.addEventListener('pointermove', (e) => {
+      if (gameState.mode === 'create' && isDrawing) {
+        const pt = getMouse3DPoint(e.clientX, e.clientY);
+        handleCreateMove(pt);
+      }
+    });
+
+    window.addEventListener('pointerup', () => {
+      isDrawing = false;
+      activeRibbonPoints = [];
+      activeRibbonMesh = null;
+    });
+
+    // Meta Quest 3 Controllers (with Laser Blaster + Energy Saber + Haptic Pulse!)
+    const controllerModelFactory = new XRControllerModelFactory();
+
+    function setupQuestController(index) {
+      const controller = renderer.xr.getController(index);
+      scene.add(controller);
+
+      // Glowing Energy Saber / Laser Sight attached to Quest 3 controller
+      const saberGeo = new THREE.CylinderGeometry(0.012, 0.018, 1.1, 12);
+      saberGeo.rotateX(Math.PI / 2);
+      saberGeo.translate(0, 0, -0.55);
+      const saberMat = new THREE.MeshBasicMaterial({
+        color: index === 0 ? 0xff0844 : 0x00f2fe
+      });
+      const saber = new THREE.Mesh(saberGeo, saberMat);
+      controller.add(saber);
+
+      const tip = new THREE.Object3D();
+      tip.position.set(0, 0, -0.1);
+      controller.add(tip);
+
+      controller.addEventListener('connected', (e) => {
+        controller.userData.gamepad = e.data.gamepad;
+      });
+
+      controller.addEventListener('selectstart', () => {
+        audio.init();
+        const wp = new THREE.Vector3();
+        tip.getWorldPosition(wp);
+
+        if (gameState.mode === 'arcade') {
+          const quat = new THREE.Quaternion();
+          controller.getWorldQuaternion(quat);
+          const dir = new THREE.Vector3(0, 0, -1).applyQuaternion(quat);
+          fireLaser(wp, dir);
+
+          // Trigger Quest 3 controller haptic pulse (from meta-quest/webxr-first-steps!)
+          const gp = controller.userData.gamepad;
+          if (gp && gp.hapticActuators && gp.hapticActuators[0]) {
+            try { gp.hapticActuators[0].pulse(0.65, 80); } catch {}
+          }
+        } else {
+          controller.userData.isSelecting = true;
+          handleCreateStart(wp);
+        }
+      });
+
+      controller.addEventListener('selectend', () => {
+        controller.userData.isSelecting = false;
+        isDrawing = false;
+      });
+
+      // Grip button switches between PLAY and CREATE mode right inside VR!
+      controller.addEventListener('squeezestart', () => {
+        setGameMode(gameState.mode === 'arcade' ? 'create' : 'arcade');
+      });
+
+      const grip = renderer.xr.getControllerGrip(index);
+      grip.add(controllerModelFactory.createControllerModel(grip));
+      scene.add(grip);
+
+      return { controller, tip, saber };
+    }
+
+    const xrControllers = [setupQuestController(0), setupQuestController(1)];
+
+    // =========================================================================
+    // 7. UI CONTROLS & LEVEL EXPORT
+    // =========================================================================
+    function setGameMode(mode) {
+      gameState.mode = mode;
+      document.getElementById('mode-arcade').classList.toggle('active', mode === 'arcade');
+      document.getElementById('mode-create').classList.toggle('active', mode === 'create');
+      showCallout(mode === 'arcade' ? '🔥 ARCADE RUSH ACTIVE!' : '🛠️ ARENA CREATOR MODE', '#00f2fe');
+    }
+
+    document.getElementById('mode-arcade').addEventListener('click', () => setGameMode('arcade'));
+    document.getElementById('mode-create').addEventListener('click', () => setGameMode('create'));
+
+    document.querySelectorAll('.tool-btn[data-tool]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        setGameMode('create');
+        gameState.currentTool = btn.dataset.tool;
+        document.querySelectorAll('.tool-btn[data-tool]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    document.querySelectorAll('.swatch').forEach(sw => {
+      sw.addEventListener('click', () => {
+        gameState.currentColor = sw.dataset.color;
+        document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+        sw.classList.add('active');
+      });
+    });
+
+    const trackSelect = document.getElementById('local-track-select');
+    trackSelect.addEventListener('change', () => {
+      audio.bgm.src = trackSelect.value;
+      if (audio.musicPlaying) audio.bgm.play().catch(() => {});
+    });
+
+    document.getElementById('custom-audio-file').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const url = URL.createObjectURL(file);
+      const opt = document.createElement('option');
+      opt.value = url;
+      opt.textContent = `📂 Custom: ${file.name}`;
+      trackSelect.appendChild(opt);
+      trackSelect.value = url;
+      audio.bgm.src = url;
+      audio.musicPlaying = true;
+      audio.bgm.play().catch(() => {});
+    });
+
+    const musicBtn = document.getElementById('btn-music');
+    musicBtn.addEventListener('click', () => {
+      audio.musicPlaying = !audio.musicPlaying;
+      if (audio.musicPlaying) {
+        audio.bgm.play().catch(() => {});
+      } else {
+        audio.bgm.pause();
+      }
+      musicBtn.textContent = audio.musicPlaying ? '▶️ Local Music: ON' : '🔇 Local Music: OFF';
+      musicBtn.classList.toggle('active', audio.musicPlaying);
+    });
+
+    const speedBtn = document.getElementById('btn-speed');
+    speedBtn.addEventListener('click', () => {
+      gameState.speedMultiplier = gameState.speedMultiplier === 1.0 ? 1.65 : 1.0;
+      speedBtn.textContent = gameState.speedMultiplier > 1.0 ? '⚡ Wave Speed: HYPER' : '⚡ Wave Speed: Normal';
+    });
+
+    document.getElementById('btn-export').addEventListener('click', () => {
+      const levelData = {
+        title: 'Custom Neon Rush Arena',
+        spawners: customSpawners.map(s => s.position.toArray()),
+        crystals: crystals.map(c => c.mesh.position.toArray()),
+        highScore: gameState.score
+      };
+      navigator.clipboard?.writeText(JSON.stringify(levelData, null, 2));
+      showCallout('📋 LEVEL JSON COPIED!', '#a8ff78');
+    });
+
+    document.getElementById('btn-clear').addEventListener('click', () => {
+      while (creationGroup.children.length > 0) creationGroup.remove(creationGroup.children[0]);
+      customSpawners.length = 0;
+      crystals.length = 0;
+      orbs.length = 0;
+      gameState.score = 0;
+      gameState.combo = 0;
+      gameState.hits = 0;
+      gameState.misses = 0;
+      updateScoreUI();
+      redraw3DScoreboard();
+    });
+
+    // WebXR Launchers (Mixed Reality Passthrough + Full VR)
+    async function startXR(mode) {
+      if (!navigator.xr) {
+        alert('To play in your headset, open this page in the Meta Quest Browser!');
+        return;
+      }
+      try {
+        const supported = await navigator.xr.isSessionSupported(mode);
+        if (!supported) {
+          alert(`${mode} requires the Meta Quest Browser.`);
+          return;
+        }
+        const session = await navigator.xr.requestSession(mode, {
+          optionalFeatures: ['local-floor', 'bounded-floor', 'hand-tracking', 'layers']
+        });
+        renderer.xr.setSession(session);
+        if (mode === 'immersive-ar') {
+          scene.background = null;
+          scene.fog = null;
+          envGroup.visible = false;
+          envManager.setVisible(false);
+        }
+        session.addEventListener('end', () => {
+          envGroup.visible = true;
+          envManager.setVisible(true);
+          envManager.setEnvironment(envSelect.value);
+        });
+      } catch (err) {
+        alert('XR Error: ' + err.message);
+      }
+    }
+
+    document.getElementById('btn-enter-mr').addEventListener('click', () => startXR('immersive-ar'));
+    document.getElementById('btn-enter-vr').addEventListener('click', () => startXR('immersive-vr'));
+
+    // =========================================================================
+    // 8. MAIN GAME & BEAT LOOP (120 BPM Rhythm Spawner + Physics)
+    // =========================================================================
+    const clock = new THREE.Clock();
+    let beatTimer = 0;
+    const BEAT_INTERVAL = 0.5; // 120 BPM (2 beats per second)
+
+    // Pre-spawn a decorative neon arch + initial targets so it's action-packed immediately!
+    (function initArena() {
+      const archPts = [];
+      for (let i = 0; i <= 30; i++) {
+        const a = (i / 30) * Math.PI;
+        archPts.push(new THREE.Vector3(Math.cos(a) * 2.8, Math.sin(a) * 2.8, -6.5));
+      }
+      const arch = createRibbonMesh(archPts, '#ff0844');
+      if (arch) creationGroup.add(arch);
+
+      spawnRhythmTarget(new THREE.Vector3(-1.1, 1.5, -5.5));
+      spawnRhythmTarget(new THREE.Vector3(0.0, 1.9, -7.0));
+      spawnRhythmTarget(new THREE.Vector3(1.1, 1.4, -8.5));
+    })();
+
+    function animate() {
+      const dt = Math.min(clock.getDelta(), 0.05);
+      const elapsed = clock.elapsedTime;
+      controls.update();
+      envManager.update(dt, elapsed);
+
+      // 120 BPM Beat Clock
+      beatTimer += dt;
+      if (beatTimer >= BEAT_INTERVAL / gameState.speedMultiplier) {
+        beatTimer = 0;
+        audio.tickBeat();
+
+        if (gameState.mode === 'arcade' && targets.length < 9) {
+          if (customSpawners.length > 0 && Math.random() < 0.5) {
+            const sp = customSpawners[Math.floor(Math.random() * customSpawners.length)];
+            spawnRhythmTarget(sp.position);
+          } else {
+            spawnRhythmTarget();
+          }
+        }
+      }
+
+      // Update Custom Spawners
+      customSpawners.forEach(s => {
+        s.rotation.x += dt * 1.8;
+        s.rotation.y += dt * 2.4;
+      });
+
+      // Update XR Controller Saber Slicing & Drawing
+      xrControllers.forEach(({ controller, tip }) => {
+        const wp = new THREE.Vector3();
+        tip.getWorldPosition(wp);
+        if (controller.userData.isSelecting && gameState.mode === 'create') {
+          handleCreateMove(wp);
+        }
+        // Physical Saber Slicing in VR!
+        for (let i = targets.length - 1; i >= 0; i--) {
+          const t = targets[i];
+          if (t.group.position.distanceTo(wp) < 0.55) {
+            spawnExplosion(t.group.position, t.color);
+            scene.remove(t.group);
+            targets.splice(i, 1);
+            registerHit(150);
+            redraw3DScoreboard();
+            const gp = controller.userData.gamepad;
+            if (gp && gp.hapticActuators && gp.hapticActuators[0]) {
+              try { gp.hapticActuators[0].pulse(0.9, 100); } catch {}
+            }
+          }
+        }
+      });
+
+      // Update Incoming Rhythm Targets
+      for (let i = targets.length - 1; i >= 0; i--) {
+        const t = targets[i];
+        t.core.rotation.x += dt * 2.5;
+        t.core.rotation.y += dt * 3.2;
+
+        if (gameState.mode === 'arcade') {
+          t.group.position.addScaledVector(t.vel, dt);
+          t.group.position.y = t.baseY + Math.sin(elapsed * 3.0 + t.phase) * 0.25;
+
+          // Passed behind player -> Miss!
+          if (t.group.position.z > 2.4) {
+            scene.remove(t.group);
+            targets.splice(i, 1);
+            registerMiss();
+            redraw3DScoreboard();
+          }
+        }
+      }
+
+      // Update Laser Bullets & Target Collisions
+      for (let i = bullets.length - 1; i >= 0; i--) {
+        const b = bullets[i];
+        b.mesh.position.addScaledVector(b.vel, dt);
+        b.life -= dt;
+
+        let hit = false;
+        for (let j = targets.length - 1; j >= 0; j--) {
+          const t = targets[j];
+          if (b.mesh.position.distanceTo(t.group.position) < 0.45) {
+            spawnExplosion(t.group.position, t.color);
+            scene.remove(t.group);
+            targets.splice(j, 1);
+            registerHit(100);
+            redraw3DScoreboard();
+            hit = true;
+            break;
+          }
+        }
+
+        if (hit || b.life <= 0) {
+          scene.remove(b.mesh);
+          bullets.splice(i, 1);
+        }
+      }
+
+      // Update Explosion Particles
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.mesh.position.addScaledVector(p.vel, dt);
+        p.vel.y -= 6.0 * dt;
+        p.mesh.rotation.x += dt * 6;
+        p.mesh.scale.multiplyScalar(0.94);
+        p.life -= dt;
+        if (p.life <= 0) {
+          scene.remove(p.mesh);
+          particles.splice(i, 1);
+        }
+      }
+
+      // Update Creator Physics Orbs
+      orbs.forEach(o => {
+        o.vel.y -= 4.8 * dt;
+        o.mesh.position.addScaledVector(o.vel, dt);
+        if (o.mesh.position.y < o.radius) {
+          o.mesh.position.y = o.radius;
+          o.vel.y = Math.abs(o.vel.y) * 0.85;
+          audio.playHitExplosion(2);
+        }
+      });
+
+      renderer.render(scene, camera);
+    }
+
+    renderer.setAnimationLoop(animate);
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
+

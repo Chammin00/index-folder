@@ -1,0 +1,18 @@
+﻿========================================================================
+PROJECT: monopoly
+CATEGORY: 02_Games_and_Simulation
+DESCRIPTION: Classic Monopoly Board Game Web Application
+========================================================================
+
+Original Project Directory:
+G:\My Drive\Antigravity\Projects\monopoly
+
+Original Index File:
+G:\My Drive\Antigravity\Projects\monopoly\index.html
+
+How to Open in Antigravity:
+1. In Antigravity / VS Code: Click File -> Open Folder...
+2. Paste this path: G:\My Drive\Antigravity\Projects\monopoly
+3. Press Enter
+
+Or launch directly in browser using: Launch_Original_Index.url

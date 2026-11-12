@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentinel - PC Security Audit & Protection Dashboard</title>
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="cosmic-background.js"></script>
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <script src="high-gloss-lacquer.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <script src="mcp-baseline.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="aws-enterprise-baseline.css">
+  <script src="aws-enterprise-baseline.js"></script>
+</head>
+<body>
+    <div class="glow-container">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+    </div>
+
+    <header class="app-header">
+        <div class="brand">
+            <span class="shield-icon">🛡️</span>
+            <div>
+                <h1>Sentinel</h1>
+                <p>PC Security Guard & Auditor</p>
+            </div>
+        </div>
+        
+        <div class="score-card">
+            <div class="score-ring-container">
+                <svg class="score-ring" width="80" height="80">
+                    <circle class="score-ring-bg" cx="40" cy="40" r="34"></circle>
+                    <circle class="score-ring-progress" cx="40" cy="40" r="34" id="health-ring"></circle>
+                </svg>
+                <div class="score-text" id="health-score">--%</div>
+            </div>
+            <div class="score-info">
+                <h3>Security Score</h3>
+                <span class="status-badge" id="overall-status">Scanning...</span>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" id="btn-scan-system" style="width: 100%; justify-content: center; min-height: 48px;">
+            <span class="icon">🔄</span> Scan System
+        </button>
+
+        <div class="sidebar-section-title" style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #DFBA73; margin-top: 1.5rem; margin-bottom: 0.5rem;">ECOSYSTEM</div>
+        <nav style="display: flex; flex-direction: column; gap: 0.4rem; width: 100%;">
+            <a href="../../deploy/index.html" class="sidebar-link" style="color: #94A3B8; text-decoration: none; padding: 0.6rem 0.8rem; border-radius: 8px; font-weight: 600; display: flex; align-items: center; gap: 0.6rem;">
+                <span>🚀</span> Deploy Hub
+            </a>
+            <a href="../../Choogle/hub.html" class="sidebar-link" style="color: #94A3B8; text-decoration: none; padding: 0.6rem 0.8rem; border-radius: 8px; font-weight: 600; display: flex; align-items: center; gap: 0.6rem;">
+                <span>⚡</span> Choogle Hub
+            </a>
+            <a href="../../deploy/lacquer.html" class="sidebar-link" style="color: #DFBA73; text-decoration: none; padding: 0.6rem 0.8rem; border-radius: 8px; font-weight: 600; display: flex; align-items: center; gap: 0.6rem;">
+                <span>✨</span> Lacquer Studio
+            </a>
+        </nav>
+    </header>
+
+    <main class="dashboard-grid">
+        <!-- Critical Remediations Drawer (only shown if issues exist) -->
+        <section class="card col-span-2 remediation-card hidden" id="remediation-section">
+            <div class="remediation-header">
+                <h2>⚠️ Action Required: Security Vulnerabilities Detected</h2>
+                <p>Your system has active security configurations that leave it exposed. Apply these fixes to protect your PC.</p>
+            </div>
+            
+            <div class="remediation-actions" id="remediation-actions-container">
+                <!-- Dynamically filled with issues and fixes -->
+            </div>
+
+            <div class="admin-script-box">
+                <div class="script-header">
+                    <h4>Administrator Remediation Script</h4>
+                    <button class="btn btn-sm btn-outline" id="btn-copy-script">📋 Copy Script</button>
+                </div>
+                <pre><code id="remediation-script"># Script will load once status is fetched</code></pre>
+                <p class="script-instruction">💡 <strong>How to run:</strong> Search for "PowerShell" in your Start Menu, right-click, select <strong>"Run as Administrator"</strong>, paste the script, and press Enter. Then refresh this page.</p>
+            </div>
+        </section>
+
+        <!-- Windows Defender Status -->
+        <section class="card">
+            <div class="card-header">
+                <h3>Windows Defender</h3>
+                <span class="indicator" id="ind-defender"></span>
+            </div>
+            <div class="card-body">
+                <ul class="status-list">
+                    <li>
+                        <span>Real-Time Protection</span>
+                        <span class="status-val font-semibold" id="val-defender-rt">--</span>
+                    </li>
+                    <li>
+                        <span>Antivirus Enabled</span>
+                        <span class="status-val" id="val-defender-av">--</span>
+                    </li>
+                    <li>
+                        <span>AM Service Active</span>
+                        <span class="status-val" id="val-defender-service">--</span>
+                    </li>
+                    <li>
+                        <span>Tamper Protection</span>
+                        <span class="status-val" id="val-defender-tamper">--</span>
+                    </li>
+                    <li>
+                        <span>Signatures Updated</span>
+                        <span class="status-val text-sm" id="val-defender-signature">--</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Firewall Status -->
+        <section class="card">
+            <div class="card-header">
+                <h3>Windows Firewall</h3>
+                <span class="indicator" id="ind-firewall"></span>
+            </div>
+            <div class="card-body">
+                <ul class="status-list">
+                    <li>
+                        <span>Domain Profile</span>
+                        <span class="status-val" id="val-firewall-domain">--</span>
+                    </li>
+                    <li>
+                        <span>Private Profile</span>
+                        <span class="status-val" id="val-firewall-private">--</span>
+                    </li>
+                    <li>
+                        <span>Public Profile</span>
+                        <span class="status-val" id="val-firewall-public">--</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Windows Update & Services -->
+        <section class="card">
+            <div class="card-header">
+                <h3>Updates & Policies</h3>
+                <span class="indicator" id="ind-updates"></span>
+            </div>
+            <div class="card-body">
+                <ul class="status-list">
+                    <li>
+                        <span>Update Service</span>
+                        <span class="status-val" id="val-update-status">--</span>
+                    </li>
+                    <li>
+                        <span>Startup Mode</span>
+                        <span class="status-val" id="val-update-startup">--</span>
+                    </li>
+                    <li>
+                        <span>UAC (LUA Enabled)</span>
+                        <span class="status-val" id="val-uac-lua">--</span>
+                    </li>
+                    <li>
+                        <span>Secure Desktop Prompt</span>
+                        <span class="status-val" id="val-uac-desktop">--</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- File scanner tool -->
+        <section class="card col-span-2 tool-card">
+            <div class="card-header">
+                <h3>Defender File Scanner</h3>
+                <span class="badge">Tool</span>
+            </div>
+            <div class="card-body scanner-body">
+                <p class="tool-desc">Provide a local file or folder path to trigger an on-demand scan using the Windows Defender Command Line utility.</p>
+                <div class="form-group">
+                    <input type="text" id="scan-file-path" placeholder="e.g. C:\Users\chase\Downloads\setup.exe" class="form-input">
+                    <button class="btn btn-primary" id="btn-scan-file">Scan Path</button>
+                </div>
+                <div class="scan-result-box hidden" id="scan-result-container">
+                    <div class="scan-meta">
+                        <span class="scan-badge" id="scan-badge">Clean</span>
+                        <span class="scan-path-text" id="scan-path-label"></span>
+                    </div>
+                    <pre><code id="scan-output">Scanning...</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Active Listening Network Ports -->
+        <section class="card col-span-2 scroll-card">
+            <div class="card-header">
+                <h3>Active Listening Ports</h3>
+                <span class="badge" id="badge-ports">-- Connections</span>
+            </div>
+            <div class="card-body">
+                <p class="tool-desc">List of programs listening for incoming network connections. Open ports can be scanned by malicious actors.</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Local Address</th>
+                                <th>Port</th>
+                                <th>PID</th>
+                                <th>Process Name</th>
+                                <th>Risk Assessment</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ports-table-body">
+                            <tr>
+                                <td colspan="5" class="text-center">Loading network details...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Password Strength Analyzer -->
+        <section class="card tool-card">
+            <div class="card-header">
+                <h3>Password Auditor</h3>
+                <span class="badge">Tool</span>
+            </div>
+            <div class="card-body">
+                <p class="tool-desc">Audit your password strength locally before using it online. Your password is never sent to any server.</p>
+                <div class="form-group vertical">
+                    <input type="password" id="pass-input" placeholder="Type a password..." class="form-input">
+                    <div class="password-feedback">
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="pass-strength-bar"></div>
+                        </div>
+                        <span class="status-val text-sm font-semibold" id="pass-strength-label">Strength: Empty</span>
+                        <ul class="bullet-list text-xs" id="pass-tips">
+                            <!-- Dynamically added recommendations -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Startup Programs -->
+        <section class="card col-span-2 scroll-card">
+            <div class="card-header">
+                <h3>Startup items</h3>
+                <span class="badge" id="badge-startup">-- Programs</span>
+            </div>
+            <div class="card-body">
+                <p class="tool-desc">Programs configured to start automatically with Windows. Malware frequently uses startup items to persist on your computer.</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Startup Command</th>
+                                <th>Registry Location</th>
+                                <th>User Context</th>
+                            </tr>
+                        </thead>
+                        <tbody id="startup-table-body">
+                            <tr>
+                                <td colspan="4" class="text-center">Loading startup details...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <p>Sentinel Security Guard &bull; Pair-programmed with Antigravity AI &bull; C# & .NET 10 Web Application</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
+

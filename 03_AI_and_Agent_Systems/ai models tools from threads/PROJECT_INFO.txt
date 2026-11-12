@@ -1,0 +1,18 @@
+﻿========================================================================
+PROJECT: ai models tools from threads
+CATEGORY: 03_AI_and_Agent_Systems
+DESCRIPTION: Synthetix AI Model & Tool Showcase
+========================================================================
+
+Original Project Directory:
+G:\My Drive\Antigravity\Projects\ai models tools from threads
+
+Original Index File:
+G:\My Drive\Antigravity\Projects\ai models tools from threads\index.html
+
+How to Open in Antigravity:
+1. In Antigravity / VS Code: Click File -> Open Folder...
+2. Paste this path: G:\My Drive\Antigravity\Projects\ai models tools from threads
+3. Press Enter
+
+Or launch directly in browser using: Launch_Original_Index.url

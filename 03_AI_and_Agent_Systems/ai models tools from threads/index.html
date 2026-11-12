@@ -1,0 +1,569 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Tools & Models Hub | Quick Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0b0f19;
+      --bg-card: #131b2e;
+      --bg-card-hover: #1a253e;
+      --border: #233152;
+      --border-focus: #3b82f6;
+      --primary: #3b82f6;
+      --primary-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --badge-bg: rgba(59, 130, 246, 0.15);
+      --badge-text: #60a5fa;
+      --tag-green: rgba(16, 185, 129, 0.15);
+      --tag-green-text: #34d399;
+      --tag-purple: rgba(168, 85, 247, 0.15);
+      --tag-purple-text: #c084fc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 80px;
+    }
+
+    header {
+      background: linear-gradient(180deg, #131b2e 0%, #0b0f19 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 24px 32px;
+      text-align: center;
+    }
+
+    .header-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      background: var(--primary-gradient);
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-bottom: 12px;
+      background: linear-gradient(to right, #ffffff, #93c5fd, #c4b5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 680px;
+      margin: 0 auto 28px;
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Controls Bar */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: space-between;
+      align-items: center;
+      margin: 32px 0 24px;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 280px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 12px 18px 12px 44px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      font-size: 1.1rem;
+    }
+
+    .category-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pill-btn:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-main);
+    }
+
+    .pill-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+    }
+
+    /* Categories & Cards Grid */
+    .category-section {
+      margin-top: 40px;
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .category-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .category-desc {
+      font-size: 0.875rem;
+      color: var(--text-dim);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 20px;
+    }
+
+    .tool-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-4px);
+      border-color: #3b82f688;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .card-title-group h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-title-group .author {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    .launch-btn {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .launch-btn:hover {
+      color: #fff;
+      background: var(--primary);
+    }
+
+    .card-best-for {
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .feature-list {
+      list-style: none;
+      margin-bottom: 18px;
+    }
+
+    .feature-list li {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      position: relative;
+      padding-left: 18px;
+      margin-bottom: 6px;
+    }
+
+    .feature-list li::before {
+      content: "•";
+      position: absolute;
+      left: 4px;
+      color: var(--primary);
+      font-size: 1rem;
+    }
+
+    .card-meta {
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: 14px;
+      margin-top: auto;
+    }
+
+    .meta-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .tag-api { background: var(--badge-bg); color: var(--badge-text); }
+    .tag-free { background: var(--tag-green); color: var(--tag-green-text); }
+    .tag-oss { background: var(--tag-purple); color: var(--tag-purple-text); }
+
+    .oss-equiv {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 6px 10px;
+      border-radius: 6px;
+      border-left: 3px solid #8b5cf6;
+    }
+
+    /* Workflow Banner */
+    .workflow-banner {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin: 48px 0 24px;
+    }
+
+    .workflow-banner h2 {
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+      color: #93c5fd;
+    }
+
+    .pipeline-steps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .step-box {
+      background: #1e293b;
+      border: 1px solid #334155;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+    }
+
+    .step-box strong {
+      color: #fff;
+      display: block;
+      font-size: 0.9rem;
+    }
+
+    .step-arrow {
+      color: var(--text-dim);
+      font-size: 1.2rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 { font-size: 1.85rem; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .controls { flex-direction: column; align-items: stretch; }
+      .pipeline-steps { flex-direction: column; align-items: stretch; }
+      .step-arrow { text-align: center; transform: rotate(90deg); margin: 4px 0; }
+    }
+  </style>
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <script src="high-gloss-lacquer.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <script src="cosmic-background.js"></script>
+  <script src="mcp-baseline.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="aws-enterprise-baseline.css">
+  <script src="aws-enterprise-baseline.js"></script>
+</head>
+<body>
+
+  <header>
+    <div class="header-badge">Instant Project Reference</div>
+    <h1>AI Models & Creative Tools Hub</h1>
+    <p class="subtitle">Curated directory of best-in-class AI instruments for research, synthetic video, voice cloning, generative design, and audience growth.</p>
+    <div style="margin-top: 14px;">
+      <a href="synthetix-studio/index.html" target="_blank" style="display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%); color: #fff; padding: 10px 22px; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 0.95rem; box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);">
+        ⚡ Launch Demo Project: Synthetix Studio ↗
+      </a>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Search and Filter Bar -->
+    <section class="controls">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search tools, capabilities, or self-hosted alternatives...">
+      </div>
+
+      <div class="category-pills" id="categoryFilter">
+        <button class="pill-btn active" data-cat="all">All Tools</button>
+        <button class="pill-btn" data-cat="research-problem-solving">🧠 Research</button>
+        <button class="pill-btn" data-cat="video-audio-voice">🎬 Video & Voice</button>
+        <button class="pill-btn" data-cat="design-visuals">🎨 Design & Visuals</button>
+        <button class="pill-btn" data-cat="ui-ux-design-showcase">💎 UI/UX & Web</button>
+        <button class="pill-btn" data-cat="content-social-growth">📈 Growth</button>
+      </div>
+    </section>
+
+    <!-- Interactive Pipeline Highlights -->
+    <section class="workflow-banner">
+      <h2>🚀 Pipeline 1: Master Content & Launch Automation</h2>
+      <div class="pipeline-steps">
+        <div class="step-box">
+          <strong>1. Trend & Hooks</strong>
+          Postsnag
+        </div>
+        <div class="step-arrow">➔</div>
+        <div class="step-box">
+          <strong>2. Script & Logic</strong>
+          Claude.ai + Perplexity
+        </div>
+        <div class="step-arrow">➔</div>
+        <div class="step-box">
+          <strong>3. Synthetic Media</strong>
+          ElevenLabs + Runway / HeyGen
+        </div>
+        <div class="step-arrow">➔</div>
+        <div class="step-box">
+          <strong>4. Sound & Edit</strong>
+          Suno.ai + Descript
+        </div>
+        <div class="step-arrow">➔</div>
+        <div class="step-box">
+          <strong>5. Packaging & Distribution</strong>
+          Skysnail + Viralsky
+        </div>
+      </div>
+
+      <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08);">
+        <h2 style="font-size: 1.15rem; margin-bottom: 14px; color: #a78bfa;">💎 Pipeline 2: Modern Design-to-Code & Launch Showcase</h2>
+        <div class="pipeline-steps">
+          <div class="step-box">
+            <strong>1. Flow Breakdown</strong>
+            Mobbin.com
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="step-box">
+            <strong>2. Art Direction</strong>
+            Land-book.com
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="step-box">
+            <strong>3. 3D & Web Prompts</strong>
+            GetLayers.ai
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="step-box">
+            <strong>4. Code Assembly</strong>
+            Claude Artifacts / Cursor
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="step-box">
+            <strong>5. Texture & Depth</strong>
+            Grainient.supply
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="step-box">
+            <strong>6. 3D Showreel</strong>
+            Reelfolio.io
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cards Container -->
+    <div id="catalogContainer"></div>
+
+  </main>
+
+  <script>
+    let catalogData = null;
+
+    async function loadCatalog() {
+      try {
+        const res = await fetch('tools_catalog.json');
+        catalogData = await res.json();
+        renderCatalog();
+      } catch (err) {
+        console.error("Error loading tools catalog:", err);
+      }
+    }
+
+    function renderCatalog() {
+      const container = document.getElementById('catalogContainer');
+      const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+      const activeFilter = document.querySelector('.pill-btn.active').dataset.cat;
+
+      container.innerHTML = '';
+
+      catalogData.categories.forEach(cat => {
+        if (activeFilter !== 'all' && cat.id !== activeFilter) return;
+
+        // Filter tools in this category
+        const matchingTools = cat.tools.filter(tool => {
+          const matchSearch =
+            tool.name.toLowerCase().includes(searchQuery) ||
+            tool.best_for.toLowerCase().includes(searchQuery) ||
+            tool.open_source_alternative.toLowerCase().includes(searchQuery) ||
+            tool.key_features.some(f => f.toLowerCase().includes(searchQuery)) ||
+            tool.project_applications.some(a => a.toLowerCase().includes(searchQuery));
+          return matchSearch;
+        });
+
+        if (matchingTools.length === 0) return;
+
+        const catSection = document.createElement('section');
+        catSection.className = 'category-section';
+
+        catSection.innerHTML = `
+          <div class="category-header">
+            <h2 class="category-title">${cat.icon} ${cat.name}</h2>
+            <span class="category-desc">${cat.description}</span>
+          </div>
+          <div class="cards-grid">
+            ${matchingTools.map(tool => `
+              <article class="tool-card">
+                <div>
+                  <div class="card-top">
+                    <div class="card-title-group">
+                      <h3>${tool.name}</h3>
+                      <span class="author">${tool.developer}</span>
+                    </div>
+                    <a href="${tool.website}" target="_blank" rel="noopener noreferrer" class="launch-btn">
+                      Visit ↗
+                    </a>
+                  </div>
+
+                  <p class="card-best-for">${tool.best_for}</p>
+
+                  <ul class="feature-list">
+                    ${tool.key_features.slice(0, 3).map(f => `<li>${f}</li>`).join('')}
+                  </ul>
+                </div>
+
+                <div class="card-meta">
+                  <div class="meta-tags">
+                    ${tool.free_tier ? '<span class="tag tag-free">Free Tier</span>' : '<span class="tag" style="background:rgba(239,68,68,0.15);color:#f87171;">Paid / Trial</span>'}
+                    ${tool.api_available ? '<span class="tag tag-api">API Ready</span>' : ''}
+                    <span class="tag tag-oss">Build-Your-Own</span>
+                  </div>
+                  <div class="oss-equiv" title="Self-hosted / programmable equivalent">
+                    DIY: ${tool.open_source_alternative}
+                  </div>
+                </div>
+              </article>
+            `).join('')}
+          </div>
+        `;
+
+        container.appendChild(catSection);
+      });
+    }
+
+    // Event listeners
+    document.getElementById('searchInput').addEventListener('input', renderCatalog);
+
+    document.querySelectorAll('.pill-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        renderCatalog();
+      });
+    });
+
+    loadCatalog();
+  </script>
+</body>
+</html>
+

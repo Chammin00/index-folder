@@ -1,0 +1,18 @@
+﻿========================================================================
+PROJECT: google drive organizer
+CATEGORY: 05_Productivity_and_Finance
+DESCRIPTION: Google Drive Cloud Storage Organization Tool
+========================================================================
+
+Original Project Directory:
+G:\My Drive\Antigravity\Projects\google drive organizer\public
+
+Original Index File:
+G:\My Drive\Antigravity\Projects\google drive organizer\public\index.html
+
+How to Open in Antigravity:
+1. In Antigravity / VS Code: Click File -> Open Folder...
+2. Paste this path: G:\My Drive\Antigravity\Projects\google drive organizer\public
+3. Press Enter
+
+Or launch directly in browser using: Launch_Original_Index.url

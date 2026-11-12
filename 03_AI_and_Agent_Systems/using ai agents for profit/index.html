@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Antigravity Operations Engine | B2B Document Reconciliation & 3D NPR Topology</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Three.js r128 CDN for 3D Non-Photorealistic Rendering (NPR) Topology -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Antigravity Enterprise & Matte Lacquer Baselines -->
+  <script src="/static/cosmic-background.js"></script>
+  <link rel="stylesheet" href="/static/high-gloss-lacquer.css">
+  <script src="/static/high-gloss-lacquer.js"></script>
+  <link rel="stylesheet" href="/static/aws-enterprise-baseline.css">
+  <script src="/static/aws-enterprise-baseline.js"></script>
+  <script src="/static/mcp-baseline.js"></script>
+
+  <style>
+    :root {
+      --gh-canvas-default: #090d16;
+      --gh-canvas-subtle: #0d1117;
+      --gh-canvas-inset: #010409;
+      --gh-border-default: #30363d;
+      --gh-text-primary: #f0f6fc;
+      --gh-text-secondary: #8b949e;
+      --gh-accent-blue: #58a6ff;
+      --gh-accent-green: #3fb950;
+      --gh-accent-aws: #f0883e;
+      --gh-accent-red: #f85149;
+      --gh-accent-purple: #bc8cff;
+    }
+
+    /* Enforce 48x48dp accessible hit targets & crisp 1px borders */
+    .hit-target {
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .perspective-pane {
+      display: none;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .perspective-pane.active-pane {
+      display: flex;
+    }
+
+    .stage-node-pill {
+      background: rgba(22, 27, 34, 0.9);
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .stage-node-pill:hover,
+    .stage-node-pill.active-stage-node {
+      border-color: #f0883e !important;
+      background: rgba(240, 136, 62, 0.12) !important;
+      transform: translateY(-2px);
+    }
+
+    .scenario-select-btn {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      color: #c9d1d9;
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.76rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .scenario-select-btn:hover {
+      border-color: #58a6ff;
+      color: #ffffff;
+    }
+
+    .scenario-select-btn.active-scenario-btn {
+      background: rgba(88, 166, 255, 0.14);
+      border-color: #58a6ff;
+      color: #58a6ff;
+    }
+
+    /* Custom Scrollbar */
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #090d16; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+  </style>
+</head>
+<body>
+  <div class="app-root">
+    <!-- ==================== TOP GLOBAL HEADER (52px fixed) ==================== -->
+    <header class="top-header">
+      <div class="header-left">
+        <button onclick="window.AntigravityEnterprise.toggleSidebar()" class="gh-btn" title="Toggle Left Navigation Sidebar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+        <div class="flex items-center gap-2 text-xs font-mono">
+          <span class="text-[#8b949e]">antigravity-ops</span>
+          <span class="text-[#30363d]">/</span>
+          <span class="text-white font-bold">invoice-bol-reconciliation</span>
+          <span class="text-[#30363d]">/</span>
+          <span id="active-breadcrumb-view" class="text-[#58a6ff] font-semibold">operations-hub</span>
+        </div>
+        <span class="ml-2 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-[#3fb950]/10 text-[#3fb950] border border-[#3fb950]/30">
+          <span class="w-2 h-2 rounded-full bg-[#3fb950] animate-pulse"></span>
+          Deterministic Rules v2.4 Online
+        </span>
+      </div>
+
+      <!-- Global Command Search Bar (Ctrl+K) -->
+      <div class="header-center">
+        <div class="command-search-box">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8b949e" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="global-search-input" placeholder="Filter vendor, invoice #, BOL #, flag code, or drill..." oninput="handleGlobalSearch(this.value)">
+          <span class="command-kbd">Ctrl+K</span>
+        </div>
+      </div>
+
+      <!-- Right Global Actions -->
+      <div class="header-right">
+        <button onclick="generateDemoData()" class="gh-btn-primary" title="Generate 5 realistic B2B sample documents & run reconciliation">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          <span>Load Live Sales Demo</span>
+        </button>
+        <button onclick="window.AntigravityEnterprise.toggleInspector()" class="gh-btn" title="Toggle Architecture Inspector">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+          <span>Inspector</span>
+        </button>
+        <button onclick="window.AntigravityMCP && window.AntigravityMCP.toggleHUD()" class="gh-btn" title="Open MCP Server Telemetry">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#dfba73" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          <span>MCP</span>
+        </button>
+        <button onclick="window.AntigravityEnterprise.toggleFullscreen()" class="gh-btn" title="Toggle Fullscreen (100vw x 100vh)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ==================== WORKSPACE BODY (LEFT SIDEBAR + FLUID MAIN + INSPECTOR) ==================== -->
+    <div class="workspace-body">
+      
+      <!-- 1. COLLAPSIBLE LEFT NAVIGATION SIDEBAR (280px -> 64px) -->
+      <aside class="app-sidebar custom-scrollbar">
+        <div class="p-3 border-b border-[#30363d] sidebar-header">
+          <div class="text-[11px] font-mono uppercase tracking-wider text-[#dfba73] font-bold">Core Perspectives</div>
+        </div>
+        <ul class="sidebar-nav-list">
+          <li class="sidebar-item active" id="nav-operations" onclick="switchPerspective('operations')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <span class="sidebar-label">01. Operations Queue</span>
+          </li>
+          <li class="sidebar-item" id="nav-topology" onclick="switchPerspective('topology')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f0883e" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            <span class="sidebar-label">02. 3D NPR Topology & Sim</span>
+          </li>
+          <li class="sidebar-item" id="nav-roi" onclick="switchPerspective('roi')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3fb950" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            <span class="sidebar-label">03. Client ROI & SOW Studio</span>
+          </li>
+          <li class="sidebar-item" id="nav-drill" onclick="switchPerspective('drill')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#bc8cff" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            <span class="sidebar-label">04. Forensic Audit Drills</span>
+          </li>
+        </ul>
+
+        <!-- Quick Actions Section -->
+        <div class="p-3 border-t border-b border-[#30363d] mt-2 sidebar-header">
+          <div class="text-[11px] font-mono uppercase tracking-wider text-[#dfba73] font-bold">Batch Ledger Controls</div>
+        </div>
+        <div class="p-3 space-y-2 sidebar-header">
+          <button onclick="batchApproveClean()" class="gh-btn w-full justify-start text-xs">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3fb950" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span>1-Click Batch Approve Clean</span>
+          </button>
+          <button onclick="exportReconciledCsv()" class="gh-btn w-full justify-start text-xs">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Export QuickBooks CSV</span>
+          </button>
+        </div>
+
+        <!-- Readiness & Telemetry Widget -->
+        <div class="p-3 m-3 rounded-lg border border-[#30363d] bg-[#090d16] space-y-2 sidebar-readiness-box mt-auto">
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-[#8b949e] font-semibold">Audit Drill Mastery</span>
+            <span id="sidebar-readiness-pct" class="font-mono font-bold text-[#3fb950]">0%</span>
+          </div>
+          <div class="w-full h-1.5 bg-[#21262d] rounded-full overflow-hidden">
+            <div id="sidebar-readiness-bar" class="h-full bg-[#3fb950] transition-all duration-300" style="width: 0%"></div>
+          </div>
+          <div class="text-[11px] text-[#8b949e] font-mono flex justify-between pt-1">
+            <span>Confidence Avg:</span>
+            <span id="sidebar-conf-avg" class="text-white font-bold">95.0%</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- 2. FLUID MAIN VIEWPORT (flex: 1, zero dead margins) -->
+      <main class="app-main-viewport custom-scrollbar">
+
+        <!-- ==================== TOP KPI TELEMETRY BAR (ALWAYS VISIBLE) ==================== -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          <div class="detail-card">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-mono uppercase tracking-wider text-[#8b949e]">Pending Review</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d29922" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </div>
+            <div class="text-2xl font-bold font-mono text-[#d29922]" id="kpi-pending">0</div>
+            <div class="text-[11px] text-[#8b949e]">HITL checkpoint queue</div>
+          </div>
+
+          <div class="detail-card">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-mono uppercase tracking-wider text-[#8b949e]">Flagged Anomalies</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f85149" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            </div>
+            <div class="text-2xl font-bold font-mono text-[#f85149]" id="kpi-flagged">0</div>
+            <div class="text-[11px] text-[#8b949e]">Math / duplicate errors blocked</div>
+          </div>
+
+          <div class="detail-card">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-mono uppercase tracking-wider text-[#8b949e]">Overbilling Caught</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f0883e" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            </div>
+            <div class="text-2xl font-bold font-mono text-[#f0883e]" id="kpi-overbilling">$0.00</div>
+            <div class="text-[11px] text-[#8b949e]">Direct vendor leakage prevented</div>
+          </div>
+
+          <div class="detail-card">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-mono uppercase tracking-wider text-[#8b949e]">Reconciled Volume</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3fb950" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            </div>
+            <div class="text-2xl font-bold font-mono text-[#3fb950]" id="kpi-volume">$0.00</div>
+            <div class="text-[11px] text-[#8b949e]" id="kpi-total-docs">0 total documents</div>
+          </div>
+
+          <div class="detail-card">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-mono uppercase tracking-wider text-[#8b949e]">Labor Hours Saved</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            </div>
+            <div class="text-2xl font-bold font-mono text-[#58a6ff]" id="kpi-saved">0.0 hrs</div>
+            <div class="text-[11px] text-[#8b949e]">15.0 min manual entry / doc</div>
+          </div>
+        </section>
+
+        <!-- ==================== PERSPECTIVE 1: OPERATIONS QUEUE & INGESTION ==================== -->
+        <div id="pane-operations" class="perspective-pane active-pane">
+          
+          <!-- Drag & Drop Multi-Format Ingestion Zone -->
+          <div id="drop-zone"
+            class="detail-card border-dashed border-2 border-[#30363d] hover:border-[#58a6ff] cursor-pointer text-center py-6 transition"
+            onclick="document.getElementById('file-input').click()"
+            ondragover="event.preventDefault(); this.style.borderColor='#58a6ff'"
+            ondragleave="this.style.borderColor='#30363d'"
+            ondrop="handleDrop(event)">
+            <input type="file" id="file-input" class="hidden" multiple accept=".pdf,.csv,.txt" onchange="handleFileSelect(event)">
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-11 h-11 rounded-lg bg-[#58a6ff]/10 border border-[#58a6ff]/30 flex items-center justify-center">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              </div>
+              <div class="text-sm font-bold text-white">Drop inbound operational PDFs, Bills of Lading, or CSV feeds here, or <span class="text-[#58a6ff] underline">browse files</span></div>
+              <div class="flex flex-wrap items-center justify-center gap-4 text-xs text-[#8b949e] font-mono">
+                <span>[Rule #1: Line-Item Sum == Subtotal]</span>
+                <span>[Rule #2: Qty * Unit == Row Total]</span>
+                <span>[Rule #3: SQLite Duplicate Guard]</span>
+                <span>[Rule #4: &gt;= $5,000 Sign-Off Gate]</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Document Queue Table Card -->
+          <div class="detail-card p-0 overflow-hidden">
+            <div class="p-4 border-b border-[#30363d] flex flex-wrap items-center justify-between gap-3 bg-[#0d1117]">
+              <div class="flex flex-wrap items-center gap-1.5">
+                <button onclick="setFilter('ALL')" id="filter-ALL" class="filter-btn gh-btn text-xs bg-[#58a6ff]/20 border-[#58a6ff] text-white">All Docs</button>
+                <button onclick="setFilter('FLAGGED')" id="filter-FLAGGED" class="filter-btn gh-btn text-xs">Flagged Errors</button>
+                <button onclick="setFilter('PENDING_REVIEW')" id="filter-PENDING_REVIEW" class="filter-btn gh-btn text-xs">Pending Review</button>
+                <button onclick="setFilter('APPROVED')" id="filter-APPROVED" class="filter-btn gh-btn text-xs">Approved</button>
+                <button onclick="setFilter('EXPORTED')" id="filter-EXPORTED" class="filter-btn gh-btn text-xs">Exported</button>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <button onclick="openWebhookModal()" class="gh-btn text-xs">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#bc8cff" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                  <span>Sync ERP Webhook</span>
+                </button>
+                <button onclick="exportReconciledCsv()" class="gh-btn-primary text-xs">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                  <span>Export CSV</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr class="border-b border-[#30363d] bg-[#010409] text-[#8b949e] font-mono uppercase">
+                    <th class="py-3 px-4">Vendor & Source File</th>
+                    <th class="py-3 px-4">Doc # / Issued Date</th>
+                    <th class="py-3 px-4">Extracted Items</th>
+                    <th class="py-3 px-4">Subtotal / Tax</th>
+                    <th class="py-3 px-4">Stated Grand Total</th>
+                    <th class="py-3 px-4">Deterministic Status</th>
+                    <th class="py-3 px-4 text-right">Operator Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="document-table-body" class="divide-y divide-[#21262d]"></tbody>
+              </table>
+            </div>
+
+            <div id="empty-state" class="py-12 text-center space-y-2 hidden">
+              <div class="text-sm font-bold text-[#e2e8f0]">No operational documents in current filter</div>
+              <p class="text-xs text-[#8b949e]">Click "Load Live Sales Demo" in the top bar to generate & ingest 5 realistic B2B invoices and freight bills.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== PERSPECTIVE 2: 3D NPR TOPOLOGY & PACKET SIMULATOR ==================== -->
+        <div id="pane-topology" class="perspective-pane">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            
+            <!-- Left 2 Columns: Interactive Three.js NPR Cel-Shaded / Cross-Hatched 3D Canvas -->
+            <div class="lg:col-span-2 detail-card p-0 overflow-hidden flex flex-col">
+              <div class="p-3 border-b border-[#30363d] bg-[#0d1117] flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <span class="detail-heading">3D Non-Photorealistic (NPR) Pipeline Topology</span>
+                  <p class="text-[11px] text-[#8b949e]">Hand-drawn ink contour shaders, cross-hatch canvas textures & live packet courier. Click any 3D sculpture to inspect specs.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button onclick="window.NPR3DEngine.toggleWireframe()" class="gh-btn text-xs">Sketch Wireframe</button>
+                  <button onclick="window.NPR3DEngine.resetCamera()" class="gh-btn text-xs">Reset Camera</button>
+                </div>
+              </div>
+
+              <!-- 3D WebGL Viewport -->
+              <div id="npr-3d-viewport" style="width: 100%; height: 410px; background: radial-gradient(circle at center, #111827 0%, #090d16 100%); position: relative; cursor: grab;"></div>
+
+              <!-- 5 Interactive Stage Node Selector Pills -->
+              <div class="p-3 bg-[#010409] border-t border-[#30363d] grid grid-cols-2 sm:grid-cols-5 gap-2">
+                <div class="stage-node-pill active-stage-node" onclick="window.NPR3DEngine.focusNode(0, true)">
+                  <div class="text-[10px] font-mono text-[#58a6ff] font-bold">STAGE 01</div>
+                  <div class="text-xs font-bold text-white mt-0.5">TLS Ingestion</div>
+                </div>
+                <div class="stage-node-pill" onclick="window.NPR3DEngine.focusNode(1, true)">
+                  <div class="text-[10px] font-mono text-[#bc8cff] font-bold">STAGE 02</div>
+                  <div class="text-xs font-bold text-white mt-0.5">AST Regex Parser</div>
+                </div>
+                <div class="stage-node-pill" onclick="window.NPR3DEngine.focusNode(2, true)">
+                  <div class="text-[10px] font-mono text-[#f0883e] font-bold">STAGE 03</div>
+                  <div class="text-xs font-bold text-white mt-0.5">Math & Dup Rules</div>
+                </div>
+                <div class="stage-node-pill" onclick="window.NPR3DEngine.focusNode(3, true)">
+                  <div class="text-[10px] font-mono text-[#d29922] font-bold">STAGE 04</div>
+                  <div class="text-xs font-bold text-white mt-0.5">HITL Checkpoint</div>
+                </div>
+                <div class="stage-node-pill" onclick="window.NPR3DEngine.focusNode(4, true)">
+                  <div class="text-[10px] font-mono text-[#3fb950] font-bold">STAGE 05</div>
+                  <div class="text-xs font-bold text-white mt-0.5">ERP Ledger Sink</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Step-by-Step Packet & Discrepancy Journey Simulator -->
+            <div class="detail-card flex flex-col justify-between">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between border-b border-[#30363d] pb-2">
+                  <span class="detail-heading">Packet & Math Simulator</span>
+                  <span id="sim-step-counter" class="text-xs font-mono font-bold text-[#58a6ff]">Step 0 / 5</span>
+                </div>
+
+                <!-- Scenario Deck -->
+                <div class="space-y-1.5">
+                  <label class="text-[11px] font-mono uppercase text-[#8b949e]">Select Operational Scenario:</label>
+                  <div class="flex flex-col gap-1.5">
+                    <button data-scenario="freight_overcharge" onclick="window.SimAndDrillEngine.selectScenario('freight_overcharge')" class="scenario-select-btn active-scenario-btn">
+                      A. Freight BOL $500 Overcharge (NorthStar)
+                    </button>
+                    <button data-scenario="hvac_clean" onclick="window.SimAndDrillEngine.selectScenario('hvac_clean')" class="scenario-select-btn">
+                      B. Clean HVAC Invoice Auto-Pass (Apex)
+                    </button>
+                    <button data-scenario="dental_high_value" onclick="window.SimAndDrillEngine.selectScenario('dental_high_value')" class="scenario-select-btn">
+                      C. Medical Equipment &gt;= $5,000 Gate (Metro)
+                    </button>
+                    <button data-scenario="row_extension_error" onclick="window.SimAndDrillEngine.selectScenario('row_extension_error')" class="scenario-select-btn">
+                      D. Contractor Row Math Error (Summit)
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Active Scenario Header -->
+                <div class="p-2.5 rounded bg-[#010409] border border-[#30363d] flex items-center justify-between gap-2">
+                  <span id="sim-scenario-title" class="text-xs font-bold text-white truncate">Scenario A</span>
+                  <span id="sim-scenario-badge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded border shrink-0">FLAGGED</span>
+                </div>
+
+                <!-- Live Terminal Log Stream -->
+                <div id="sim-terminal-stream" class="bg-[#010409] border border-[#30363d] rounded-lg p-3 h-64 overflow-y-auto custom-scrollbar"></div>
+              </div>
+
+              <!-- Simulator Step Controls -->
+              <div class="flex items-center gap-2 pt-3 border-t border-[#30363d]">
+                <button onclick="window.SimAndDrillEngine.stepNextHop()" class="gh-btn-primary flex-1 justify-center py-2">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  <span>Run Next Hop Step</span>
+                </button>
+                <button onclick="window.SimAndDrillEngine.resetScenario()" class="gh-btn py-2">Reset</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ==================== PERSPECTIVE 3: B2B CLIENT ROI & SOW PROPOSAL STUDIO ==================== -->
+        <div id="pane-roi" class="perspective-pane">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            
+            <!-- Left 5 Columns: Interactive Prospect Parameters & Pricing Controls -->
+            <div class="lg:col-span-5 detail-card space-y-4">
+              <div class="border-b border-[#30363d] pb-2 flex items-center justify-between">
+                <div>
+                  <span class="detail-heading">Client Acquisition ROI & Pricing Calculator</span>
+                  <p class="text-xs text-[#8b949e]">Live prospect calculator for $1,500-$3,000 setup + $250-$500/mo retainers.</p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="text-[11px] font-mono uppercase text-[#8b949e]">Prospect Company Name</label>
+                  <input type="text" id="roi-company" value="Midwest HVAC & Mechanical LLC" oninput="updateRoiStudio()" class="mt-1 w-full bg-[#010409] border border-[#30363d] rounded px-2.5 py-1.5 text-xs text-white">
+                </div>
+                <div>
+                  <label class="text-[11px] font-mono uppercase text-[#8b949e]">Industry Vertical</label>
+                  <select id="roi-industry" onchange="updateRoiStudio()" class="mt-1 w-full bg-[#010409] border border-[#30363d] rounded px-2.5 py-1.5 text-xs text-white">
+                    <option value="HVAC / Plumbing / Electrical Trades">HVAC / Plumbing / Electrical Trades</option>
+                    <option value="Regional Freight & 3PL Logistics">Regional Freight & 3PL Logistics</option>
+                    <option value="Dental & Medical Laboratories">Dental & Medical Laboratories</option>
+                    <option value="Commercial Property Management">Commercial Property Management</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-[11px] font-mono uppercase text-[#8b949e]">Target Accounting / ERP</label>
+                  <input type="text" id="roi-erp" value="QuickBooks Enterprise" oninput="updateRoiStudio()" class="mt-1 w-full bg-[#010409] border border-[#30363d] rounded px-2.5 py-1.5 text-xs text-white">
+                </div>
+                <div>
+                  <label class="text-[11px] font-mono uppercase text-[#8b949e]">Buyer Title</label>
+                  <input type="text" id="roi-contact" value="Operations Director" oninput="updateRoiStudio()" class="mt-1 w-full bg-[#010409] border border-[#30363d] rounded px-2.5 py-1.5 text-xs text-white">
+                </div>
+              </div>
+
+              <!-- Sliders -->
+              <div class="space-y-3 pt-2 border-t border-[#30363d]">
+                <div>
+                  <div class="flex justify-between text-xs font-mono">
+                    <span class="text-[#8b949e]">Monthly Inbound Documents:</span>
+                    <span id="lbl-roi-vol" class="text-white font-bold">600 docs/mo</span>
+                  </div>
+                  <input type="range" id="roi-vol" min="50" max="5000" step="50" value="600" oninput="updateRoiStudio()" class="w-full accent-[#58a6ff] mt-1">
+                </div>
+
+                <div>
+                  <div class="flex justify-between text-xs font-mono">
+                    <span class="text-[#8b949e]">Average Invoice Value ($):</span>
+                    <span id="lbl-roi-avg" class="text-white font-bold">$1,250</span>
+                  </div>
+                  <input type="range" id="roi-avg" min="100" max="10000" step="50" value="1250" oninput="updateRoiStudio()" class="w-full accent-[#58a6ff] mt-1">
+                </div>
+
+                <div>
+                  <div class="flex justify-between text-xs font-mono">
+                    <span class="text-[#8b949e]">Back-Office Staff Hourly Rate ($/hr):</span>
+                    <span id="lbl-roi-wage" class="text-white font-bold">$24.00/hr</span>
+                  </div>
+                  <input type="range" id="roi-wage" min="15" max="65" step="1" value="24" oninput="updateRoiStudio()" class="w-full accent-[#58a6ff] mt-1">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 pt-2">
+                  <div>
+                    <label class="text-[11px] font-mono uppercase text-[#dfba73]">Your Setup Fee ($)</label>
+                    <input type="number" id="roi-setup" value="2500" step="100" oninput="updateRoiStudio()" class="mt-1 w-full bg-[#010409] border border-[#30363d] rounded px-2.5 py-1.5 text-xs font-mono font-bold text-[#dfba73]">
+                  </div>
+                  <div>
+                    <label class="text-[11px] font-mono uppercase text-[#dfba73]">Monthly Retainer ($/mo)</label>
+                    <input type="number" id="roi-retainer" value="350" step="25" oninput="updateRoiStudio()" class="mt-1 w-full bg-[#010409] border border-[#30363d] rounded px-2.5 py-1.5 text-xs font-mono font-bold text-[#dfba73]">
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-2 flex items-center gap-2">
+                <button onclick="generateServerProposal()" class="gh-btn-primary w-full justify-center py-2">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                  <span>Generate Custom SOW Contract & Copy Markdown</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Right 7 Columns: Executive ROI Breakdown & Statement of Work Preview -->
+            <div class="lg:col-span-7 detail-card space-y-4">
+              <div class="border-b border-[#30363d] pb-2 flex items-center justify-between">
+                <span class="detail-heading">Live Prospect Financial Impact & Statement of Work</span>
+                <span id="roi-payback-badge" class="text-xs font-mono font-bold px-2.5 py-0.5 rounded bg-[#3fb950]/15 text-[#3fb950] border border-[#3fb950]/40">Payback: 5 Days</span>
+              </div>
+
+              <!-- 4 Financial Outputs -->
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                <div class="p-3 rounded bg-[#010409] border border-[#30363d]">
+                  <div class="text-[10px] font-mono uppercase text-[#8b949e]">Monthly Payroll Saved</div>
+                  <div id="out-roi-labor" class="text-lg font-mono font-bold text-[#58a6ff] mt-0.5">$3,600.00</div>
+                  <div id="out-roi-hours" class="text-[11px] text-[#8b949e]">150.0 hrs/mo eliminated</div>
+                </div>
+                <div class="p-3 rounded bg-[#010409] border border-[#30363d]">
+                  <div class="text-[10px] font-mono uppercase text-[#8b949e]">Overbilling Prevented</div>
+                  <div id="out-roi-errors" class="text-lg font-mono font-bold text-[#f0883e] mt-0.5">$10,237.50</div>
+                  <div class="text-[11px] text-[#8b949e]">~2.1% vendor error rate</div>
+                </div>
+                <div class="p-3 rounded bg-[#010409] border border-[#30363d]">
+                  <div class="text-[10px] font-mono uppercase text-[#8b949e]">Net Monthly Client Gain</div>
+                  <div id="out-roi-net-mo" class="text-lg font-mono font-bold text-[#3fb950] mt-0.5">$13,487.50</div>
+                  <div class="text-[11px] text-[#8b949e]">After $350/mo retainer</div>
+                </div>
+                <div class="p-3 rounded bg-[#010409] border border-[#30363d]">
+                  <div class="text-[10px] font-mono uppercase text-[#8b949e]">Year-1 Net ROI</div>
+                  <div id="out-roi-annual" class="text-lg font-mono font-bold text-[#dfba73] mt-0.5">$159,350</div>
+                  <div id="out-roi-mult" class="text-[11px] text-[#3fb950] font-mono">24.8x ROI Multiple</div>
+                </div>
+              </div>
+
+              <!-- Generated SOW Contract Box -->
+              <div>
+                <div class="flex items-center justify-between mb-1.5">
+                  <span class="text-xs font-mono text-[#8b949e] uppercase">Ready-to-Send Client Statement of Work (Markdown)</span>
+                  <span id="sow-copy-status" class="text-xs font-mono text-[#3fb950] hidden">Copied to clipboard!</span>
+                </div>
+                <textarea id="sow-markdown-preview" readonly class="w-full h-72 bg-[#010409] border border-[#30363d] rounded-lg p-3 font-mono text-xs text-[#e2e8f0] focus:outline-none custom-scrollbar"></textarea>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ==================== PERSPECTIVE 4: GAMIFIED FORENSIC AUDIT DRILLS ==================== -->
+        <div id="pane-drill" class="perspective-pane">
+          <div class="detail-card flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+              <!-- Radial SVG Progress Ring -->
+              <div class="relative w-16 h-16 flex items-center justify-center">
+                <svg class="w-16 h-16 -rotate-90" viewBox="0 0 64 64">
+                  <circle cx="32" cy="32" r="26" fill="none" stroke="#21262d" stroke-width="5"></circle>
+                  <circle id="drill-progress-ring" cx="32" cy="32" r="26" fill="none" stroke="#3fb950" stroke-width="5" stroke-linecap="round" stroke-dasharray="163.36" stroke-dashoffset="163.36"></circle>
+                </svg>
+                <span id="drill-pct-label" class="absolute text-xs font-mono font-bold text-white">0%</span>
+              </div>
+              <div>
+                <span class="detail-heading">Forensic Reconciliation & Architecture Drill Engine</span>
+                <p class="text-xs text-[#8b949e]">Verify mastery of deterministic validation codes, overcharge math, SQLite composite keys, and async webhook pipelines.</p>
+                <div class="flex items-center gap-4 mt-1.5 text-xs font-mono">
+                  <span>Solved: <strong id="drill-solved-count" class="text-[#3fb950]">0 / 6</strong></span>
+                  <span>Active Streak: <strong id="drill-streak-count" class="text-[#f0883e]">0</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button onclick="window.SimAndDrillEngine.autoFillAll()" class="gh-btn text-xs">Auto-Fill Solutions (Study Mode)</button>
+              <button onclick="window.SimAndDrillEngine.resetAllDrills()" class="gh-btn text-xs">Reset All</button>
+            </div>
+          </div>
+
+          <div id="drill-cards-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </div>
+
+      </main>
+
+      <!-- 3. DOCKABLE ARCHITECTURE INSPECTOR (Center Modal / Left Dock / Right Dock) -->
+      <div class="inspector-backdrop" onclick="window.AntigravityEnterprise.closeInspector()"></div>
+      <aside class="app-inspector mode-right hidden custom-scrollbar">
+        <div class="inspector-head">
+          <div class="inspector-head-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f0883e" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <span id="insp-title">01. Inbound Ingestion Gateway</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="dock-mode-bar">
+              <button class="dock-mode-btn" data-dock="left" onclick="window.AntigravityEnterprise.setInspectorDock('left')">L</button>
+              <button class="dock-mode-btn" data-dock="center" onclick="window.AntigravityEnterprise.setInspectorDock('center')">C</button>
+              <button class="dock-mode-btn active" data-dock="right" onclick="window.AntigravityEnterprise.setInspectorDock('right')">R</button>
+            </div>
+            <button class="btn-close-icon" onclick="window.AntigravityEnterprise.closeInspector()">X</button>
+          </div>
+        </div>
+
+        <div class="inspector-body">
+          <div class="detail-card">
+            <div class="detail-heading" id="insp-category">Multi-Format Stream Listener</div>
+            <p class="detail-text text-xs" id="insp-role">
+              Receives raw supplier PDFs, carrier Bills of Lading (BOL), EDI streams, and CSV dispatch sheets via TLS 1.3 REST multipart endpoints.
+            </p>
+          </div>
+
+          <div class="detail-card">
+            <div class="detail-heading">Key Configuration & SLA Parameters</div>
+            <table class="w-full text-xs font-mono border-collapse">
+              <tbody id="insp-params" class="divide-y divide-[#21262d]"></tbody>
+            </table>
+          </div>
+
+          <div class="detail-card">
+            <div class="detail-heading">Deterministic Failure Recovery</div>
+            <p class="detail-text text-xs" id="insp-recovery">
+              Malformed binary streams or encrypted PDFs are quarantined to dead-letter storage and flagged for operator review.
+            </p>
+          </div>
+
+          <button onclick="narrateInspectorNode()" class="gh-btn w-full justify-center py-2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+            <span>Narrate Node Specs (Web Speech API)</span>
+          </button>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <!-- ==================== SIDE-BY-SIDE DOCUMENT INSPECTION & RECONCILIATION MODAL ==================== -->
+  <div id="review-modal" class="fixed inset-0 z-[1200] bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-[#0d1117] border border-[#30363d] rounded-xl max-w-5xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <div class="px-5 py-3.5 border-b border-[#30363d] flex items-center justify-between bg-[#010409]">
+        <div>
+          <h3 class="text-sm font-bold text-white" id="modal-doc-title">Document Inspection</h3>
+          <p class="text-xs font-mono text-[#8b949e]" id="modal-filename">filename.pdf</p>
+        </div>
+        <button onclick="closeModal()" class="gh-btn text-xs">Close [Esc]</button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-5 grid grid-cols-1 md:grid-cols-2 gap-5 custom-scrollbar">
+        <!-- Left: Raw Extracted Stream -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="detail-heading">Raw Extracted Document Stream</span>
+            <span class="text-xs font-mono text-[#58a6ff]" id="modal-confidence">Confidence: 95%</span>
+          </div>
+          <div id="modal-raw-text" class="bg-[#010409] border border-[#30363d] rounded-lg p-3.5 h-96 overflow-y-auto font-mono text-xs text-[#e2e8f0] whitespace-pre-wrap custom-scrollbar"></div>
+        </div>
+
+        <!-- Right: Deterministic Flags & Editable Line Items -->
+        <div class="space-y-3">
+          <span class="detail-heading">Deterministic Validation & Line-Item Editor</span>
+          <div id="modal-flags-container" class="space-y-2"></div>
+
+          <div class="grid grid-cols-2 gap-2.5 bg-[#010409] p-3 border border-[#30363d] rounded-lg">
+            <div>
+              <label class="block text-[10px] font-mono uppercase text-[#8b949e]">Vendor Name</label>
+              <input type="text" id="edit-vendor" class="mt-1 w-full bg-[#0d1117] border border-[#30363d] rounded px-2 py-1 text-xs text-white">
+            </div>
+            <div>
+              <label class="block text-[10px] font-mono uppercase text-[#8b949e]">Document #</label>
+              <input type="text" id="edit-docnum" class="mt-1 w-full bg-[#0d1117] border border-[#30363d] rounded px-2 py-1 text-xs font-mono text-white">
+            </div>
+            <div>
+              <label class="block text-[10px] font-mono uppercase text-[#8b949e]">Document Date</label>
+              <input type="text" id="edit-date" class="mt-1 w-full bg-[#0d1117] border border-[#30363d] rounded px-2 py-1 text-xs font-mono text-white">
+            </div>
+            <div>
+              <label class="block text-[10px] font-mono uppercase text-[#8b949e]">Stated Grand Total ($)</label>
+              <input type="number" step="0.01" id="edit-total" class="mt-1 w-full bg-[#0d1117] border border-[#30363d] rounded px-2 py-1 text-xs font-mono font-bold text-[#3fb950]">
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-mono text-[#8b949e] uppercase">Structured Line Items</span>
+              <button onclick="addLineItemRow()" class="gh-btn text-xs">+ Add Row</button>
+            </div>
+            <div class="border border-[#30363d] rounded-lg overflow-hidden bg-[#010409]">
+              <table class="w-full text-left text-xs">
+                <thead>
+                  <tr class="bg-[#0d1117] text-[#8b949e] font-mono border-b border-[#30363d]">
+                    <th class="py-2 px-2">Description</th>
+                    <th class="py-2 px-2 w-16 text-right">Qty</th>
+                    <th class="py-2 px-2 w-20 text-right">Unit ($)</th>
+                    <th class="py-2 px-2 w-24 text-right">Total ($)</th>
+                    <th class="py-2 px-2 w-8"></th>
+                  </tr>
+                </thead>
+                <tbody id="modal-line-items-body" class="divide-y divide-[#21262d]"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-5 py-3.5 border-t border-[#30363d] bg-[#010409] flex items-center justify-between">
+        <button onclick="closeModal()" class="gh-btn">Cancel</button>
+        <div class="flex items-center gap-2">
+          <button onclick="saveAndRecheck()" class="gh-btn">Save & Re-Verify Rules</button>
+          <button onclick="approveCurrentDoc()" class="gh-btn-primary">Approve & Validate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== WEBHOOK SYNC MODAL ==================== -->
+  <div id="webhook-modal" class="fixed inset-0 z-[1200] bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-[#0d1117] border border-[#30363d] rounded-xl max-w-lg w-full p-5 space-y-4">
+      <div class="flex items-center justify-between border-b border-[#30363d] pb-2.5">
+        <span class="detail-heading">Outbound ERP / Zapier / Make Webhook Dispatch</span>
+        <button onclick="closeWebhookModal()" class="btn-close-icon">X</button>
+      </div>
+      <p class="text-xs text-[#8b949e]">Dispatches all APPROVED documents as a structured JSON payload via <code class="text-[#58a6ff]">POST /api/export/webhook</code>.</p>
+      <div>
+        <label class="text-[11px] font-mono uppercase text-[#8b949e]">Target Webhook Endpoint URL</label>
+        <input type="url" id="webhook-url-input" value="https://hooks.zapier.com/hooks/catch/antigravity-erp-sync" class="mt-1 w-full bg-[#010409] border border-[#30363d] rounded px-3 py-2 text-xs font-mono text-white">
+      </div>
+      <div id="webhook-result-box" class="hidden text-xs font-mono p-2.5 rounded border border-[#30363d] bg-[#010409]"></div>
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="closeWebhookModal()" class="gh-btn">Close</button>
+        <button onclick="dispatchWebhookBatch()" class="gh-btn-primary">Dispatch JSON Payload</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load 3D NPR & Simulation Engines -->
+  <script src="/static/npr-3d-engine.js"></script>
+  <script src="/static/simulation-practice-engine.js"></script>
+
+  <script>
+    let allDocuments = [];
+    let currentFilter = 'ALL';
+    let currentDoc = null;
+    let currentSearchQuery = '';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchMetrics();
+      fetchDocuments();
+      if (window.SimAndDrillEngine) {
+        window.SimAndDrillEngine.init();
+      }
+      updateRoiStudio();
+    });
+
+    function switchPerspective(paneId) {
+      document.querySelectorAll('.perspective-pane').forEach(p => p.classList.remove('active-pane'));
+      const target = document.getElementById(`pane-${paneId}`);
+      if (target) target.classList.add('active-pane');
+
+      document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+      const navItem = document.getElementById(`nav-${paneId}`);
+      if (navItem) navItem.classList.add('active');
+
+      const bread = document.getElementById('active-breadcrumb-view');
+      if (bread) bread.textContent = `${paneId}-studio`;
+
+      if (paneId === 'topology' && window.NPR3DEngine) {
+        setTimeout(() => {
+          window.NPR3DEngine.init('npr-3d-viewport');
+        }, 60);
+      }
+    }
+
+    function handleGlobalSearch(val) {
+      currentSearchQuery = (val || '').toLowerCase().trim();
+      renderDocuments();
+    }
+
+    async function fetchMetrics() {
+      try {
+        const res = await fetch('/api/metrics');
+        const data = await res.json();
+        document.getElementById('kpi-pending').textContent = data.pending_review;
+        document.getElementById('kpi-flagged').textContent = data.flagged_discrepancies;
+        document.getElementById('kpi-overbilling').textContent = '$' + (data.total_overbilling_caught || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        document.getElementById('kpi-volume').textContent = '$' + data.total_reconciled_volume.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        document.getElementById('kpi-total-docs').textContent = `${data.total_documents} total documents`;
+        document.getElementById('kpi-saved').textContent = `${data.est_hours_saved} hrs`;
+        const confEl = document.getElementById('sidebar-conf-avg');
+        if (confEl && data.avg_confidence_score) {
+          confEl.textContent = `${(data.avg_confidence_score * 100).toFixed(1)}%`;
+        }
+      } catch (err) {
+        console.error('Error fetching metrics:', err);
+      }
+    }
+
+    async function fetchDocuments() {
+      try {
+        const res = await fetch('/api/documents');
+        allDocuments = await res.json();
+        renderDocuments();
+      } catch (err) {
+        console.error('Error fetching documents:', err);
+      }
+    }
+
+    function setFilter(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('bg-[#58a6ff]/20', 'border-[#58a6ff]', 'text-white');
+      });
+      const activeBtn = document.getElementById(`filter-${filter}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-[#58a6ff]/20', 'border-[#58a6ff]', 'text-white');
+      }
+      renderDocuments();
+    }
+
+    function renderDocuments() {
+      const tbody = document.getElementById('document-table-body');
+      const emptyState = document.getElementById('empty-state');
+
+      const filtered = allDocuments.filter(doc => {
+        const matchesFilter = (currentFilter === 'ALL' || doc.status === currentFilter);
+        const flagStr = (doc.validation_flags || []).map(f => `${f.code} ${f.message}`).join(' ').toLowerCase();
+        const matchesSearch = !currentSearchQuery ||
+          (doc.vendor_name && doc.vendor_name.toLowerCase().includes(currentSearchQuery)) ||
+          (doc.document_number && doc.document_number.toLowerCase().includes(currentSearchQuery)) ||
+          (doc.filename && doc.filename.toLowerCase().includes(currentSearchQuery)) ||
+          flagStr.includes(currentSearchQuery);
+        return matchesFilter && matchesSearch;
+      });
+
+      tbody.innerHTML = '';
+      if (filtered.length === 0) {
+        emptyState.classList.remove('hidden');
+        return;
+      }
+      emptyState.classList.add('hidden');
+
+      filtered.forEach(doc => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-[#161b22] transition';
+
+        let statusBadge = '';
+        if (doc.status === 'APPROVED') {
+          statusBadge = `<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-[#3fb950]/15 text-[#3fb950] border border-[#3fb950]/30">APPROVED</span>`;
+        } else if (doc.status === 'FLAGGED') {
+          statusBadge = `<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-[#f85149]/15 text-[#f85149] border border-[#f85149]/30">FLAGGED (${(doc.validation_flags || []).length})</span>`;
+        } else if (doc.status === 'EXPORTED') {
+          statusBadge = `<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-[#58a6ff]/15 text-[#58a6ff] border border-[#58a6ff]/30">EXPORTED</span>`;
+        } else {
+          statusBadge = `<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono font-bold bg-[#d29922]/15 text-[#d29922] border border-[#d29922]/30">PENDING_REVIEW</span>`;
+        }
+
+        const itemsCount = doc.line_items ? doc.line_items.length : 0;
+
+        tr.innerHTML = `
+          <td class="py-3 px-4">
+            <div class="font-bold text-white text-xs">${doc.vendor_name || 'Unknown Vendor'}</div>
+            <div class="text-[#8b949e] text-[11px] font-mono mt-0.5">${doc.filename} [${doc.file_type}]</div>
+          </td>
+          <td class="py-3 px-4 font-mono">
+            <div class="text-white font-semibold">${doc.document_number || 'N/A'}</div>
+            <div class="text-[#8b949e] text-[11px]">${doc.document_date || 'N/A'}</div>
+          </td>
+          <td class="py-3 px-4 font-mono text-[#e2e8f0]">${itemsCount} rows</td>
+          <td class="py-3 px-4 font-mono text-xs text-[#8b949e]">
+            Sub: $${(doc.subtotal || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}<br/>
+            Tax: $${(doc.tax_amount || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}
+          </td>
+          <td class="py-3 px-4 font-mono font-bold text-white text-sm">
+            $${(doc.total_amount || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </td>
+          <td class="py-3 px-4">${statusBadge}</td>
+          <td class="py-3 px-4 text-right space-x-1.5">
+            <button onclick="openModal(${doc.id})" class="gh-btn text-xs">Inspect</button>
+            ${doc.status !== 'APPROVED' && doc.status !== 'EXPORTED' ? `
+              <button onclick="quickApprove(${doc.id})" class="gh-btn-primary text-xs">Approve</button>
+            ` : ''}
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function handleFileSelect(e) {
+      if (e.target.files.length > 0) await uploadFiles(e.target.files);
+    }
+
+    async function handleDrop(e) {
+      e.preventDefault();
+      document.getElementById('drop-zone').style.borderColor = '#30363d';
+      if (e.dataTransfer.files.length > 0) await uploadFiles(e.dataTransfer.files);
+    }
+
+    async function uploadFiles(files) {
+      const formData = new FormData();
+      for (let i = 0; i < files.length; i++) formData.append('files', files[i]);
+      try {
+        const res = await fetch('/api/documents/upload', { method: 'POST', body: formData });
+        if (res.ok) {
+          await fetchMetrics();
+          await fetchDocuments();
+        }
+      } catch (err) {
+        console.error('Upload failed:', err);
+      }
+    }
+
+    async function generateDemoData() {
+      try {
+        const res = await fetch('/api/demo/generate-and-ingest', { method: 'POST' });
+        if (res.ok) {
+          await fetchMetrics();
+          await fetchDocuments();
+        }
+      } catch (err) {
+        console.error('Demo generation failed:', err);
+      }
+    }
+
+    async function batchApproveClean() {
+      try {
+        const res = await fetch('/api/documents/batch-approve', { method: 'POST' });
+        if (res.ok) {
+          await fetchMetrics();
+          await fetchDocuments();
+        }
+      } catch (err) {
+        console.error('Batch approve error:', err);
+      }
+    }
+
+    async function quickApprove(docId) {
+      try {
+        const res = await fetch(`/api/documents/${docId}/approve`, { method: 'POST' });
+        if (res.ok) {
+          await fetchMetrics();
+          await fetchDocuments();
+        }
+      } catch (err) {
+        console.error('Approve failed:', err);
+      }
+    }
+
+    function openModal(docId) {
+      currentDoc = allDocuments.find(d => d.id === docId);
+      if (!currentDoc) return;
+
+      document.getElementById('modal-doc-title').textContent = `${currentDoc.vendor_name || 'Document'} (#${currentDoc.document_number || 'N/A'})`;
+      document.getElementById('modal-filename').textContent = currentDoc.filename;
+      document.getElementById('modal-raw-text').textContent = currentDoc.raw_text || 'No raw text extracted.';
+      document.getElementById('modal-confidence').textContent = `Confidence: ${((currentDoc.confidence_score || 1) * 100).toFixed(0)}%`;
+
+      document.getElementById('edit-vendor').value = currentDoc.vendor_name || '';
+      document.getElementById('edit-docnum').value = currentDoc.document_number || '';
+      document.getElementById('edit-date').value = currentDoc.document_date || '';
+      document.getElementById('edit-total').value = currentDoc.total_amount || 0.0;
+
+      const flagsContainer = document.getElementById('modal-flags-container');
+      flagsContainer.innerHTML = '';
+      if (currentDoc.validation_flags && currentDoc.validation_flags.length > 0) {
+        currentDoc.validation_flags.forEach(flag => {
+          const div = document.createElement('div');
+          const isErr = flag.severity === 'ERROR';
+          const color = isErr ? '#f85149' : (flag.severity === 'WARNING' ? '#d29922' : '#58a6ff');
+          div.className = 'p-2.5 rounded border text-xs font-mono';
+          div.style.borderColor = color;
+          div.style.background = 'rgba(1, 4, 9, 0.8)';
+          div.innerHTML = `<strong style="color:${color}">[${flag.code}]</strong> <span class="text-[#e2e8f0]">${flag.message}</span>`;
+          flagsContainer.appendChild(div);
+        });
+      } else {
+        flagsContainer.innerHTML = `<div class="p-2.5 rounded border border-[#3fb950]/40 bg-[#3fb950]/10 text-[#3fb950] text-xs font-mono">ALL DETERMINISTIC INVARIANTS VERIFIED (0 FLAGS)</div>`;
+      }
+
+      renderModalLineItems();
+      document.getElementById('review-modal').classList.remove('hidden');
+    }
+
+    function renderModalLineItems() {
+      const tbody = document.getElementById('modal-line-items-body');
+      tbody.innerHTML = '';
+      (currentDoc.line_items || []).forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="p-1.5"><input type="text" value="${item.description}" class="item-desc w-full bg-[#0d1117] border border-[#30363d] rounded px-2 py-1 text-xs text-white"></td>
+          <td class="p-1.5"><input type="number" step="0.5" value="${item.quantity}" oninput="recalcItemRow(this)" class="item-qty w-full text-right bg-[#0d1117] border border-[#30363d] rounded px-1.5 py-1 text-xs font-mono text-white"></td>
+          <td class="p-1.5"><input type="number" step="0.01" value="${item.unit_price}" oninput="recalcItemRow(this)" class="item-unit w-full text-right bg-[#0d1117] border border-[#30363d] rounded px-1.5 py-1 text-xs font-mono text-white"></td>
+          <td class="p-1.5"><input type="number" step="0.01" value="${item.total_price}" class="item-tot w-full text-right bg-[#0d1117] border border-[#30363d] rounded px-1.5 py-1 text-xs font-mono font-bold text-[#3fb950]"></td>
+          <td class="p-1.5 text-center"><button onclick="this.closest('tr').remove()" class="text-[#8b949e] hover:text-[#f85149] font-mono">X</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function recalcItemRow(elem) {
+      const tr = elem.closest('tr');
+      const qty = parseFloat(tr.querySelector('.item-qty').value) || 0;
+      const unit = parseFloat(tr.querySelector('.item-unit').value) || 0;
+      tr.querySelector('.item-tot').value = (qty * unit).toFixed(2);
+    }
+
+    function addLineItemRow() {
+      const tbody = document.getElementById('modal-line-items-body');
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="p-1.5"><input type="text" value="Additional Line Item" class="item-desc w-full bg-[#0d1117] border border-[#30363d] rounded px-2 py-1 text-xs text-white"></td>
+        <td class="p-1.5"><input type="number" step="1" value="1" oninput="recalcItemRow(this)" class="item-qty w-full text-right bg-[#0d1117] border border-[#30363d] rounded px-1.5 py-1 text-xs font-mono text-white"></td>
+        <td class="p-1.5"><input type="number" step="0.01" value="0.00" oninput="recalcItemRow(this)" class="item-unit w-full text-right bg-[#0d1117] border border-[#30363d] rounded px-1.5 py-1 text-xs font-mono text-white"></td>
+        <td class="p-1.5"><input type="number" step="0.01" value="0.00" class="item-tot w-full text-right bg-[#0d1117] border border-[#30363d] rounded px-1.5 py-1 text-xs font-mono font-bold text-[#3fb950]"></td>
+        <td class="p-1.5 text-center"><button onclick="this.closest('tr').remove()" class="text-[#8b949e] hover:text-[#f85149] font-mono">X</button></td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    function closeModal() {
+      document.getElementById('review-modal').classList.add('hidden');
+    }
+
+    async function saveAndRecheck() {
+      if (!currentDoc) return;
+      const rows = document.querySelectorAll('#modal-line-items-body tr');
+      const lineItems = [];
+      let calculatedSubtotal = 0;
+
+      rows.forEach(r => {
+        const desc = r.querySelector('.item-desc').value;
+        const qty = parseFloat(r.querySelector('.item-qty').value) || 1;
+        const unit = parseFloat(r.querySelector('.item-unit').value) || 0;
+        const tot = parseFloat(r.querySelector('.item-tot').value) || (qty * unit);
+        calculatedSubtotal += tot;
+        lineItems.push({ description: desc, quantity: qty, unit_price: unit, total_price: tot });
+      });
+
+      const updatedPayload = {
+        vendor_name: document.getElementById('edit-vendor').value,
+        document_number: document.getElementById('edit-docnum').value,
+        document_date: document.getElementById('edit-date').value,
+        subtotal: parseFloat(calculatedSubtotal.toFixed(2)),
+        total_amount: parseFloat(document.getElementById('edit-total').value) || calculatedSubtotal,
+        line_items: lineItems
+      };
+
+      try {
+        const res = await fetch(`/api/documents/${currentDoc.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updatedPayload)
+        });
+        if (res.ok) {
+          const updatedDoc = await res.json();
+          await fetchMetrics();
+          await fetchDocuments();
+          openModal(updatedDoc.id);
+        }
+      } catch (err) {
+        console.error('Save error:', err);
+      }
+    }
+
+    async function approveCurrentDoc() {
+      if (!currentDoc) return;
+      await quickApprove(currentDoc.id);
+      closeModal();
+    }
+
+    function exportReconciledCsv() {
+      window.location.href = '/api/export/csv';
+    }
+
+    function openWebhookModal() {
+      document.getElementById('webhook-modal').classList.remove('hidden');
+    }
+
+    function closeWebhookModal() {
+      document.getElementById('webhook-modal').classList.add('hidden');
+    }
+
+    async function dispatchWebhookBatch() {
+      const url = document.getElementById('webhook-url-input').value;
+      const box = document.getElementById('webhook-result-box');
+      const approvedIds = allDocuments.filter(d => d.status === 'APPROVED' || d.status === 'EXPORTED').map(d => d.id);
+      const idsToUse = approvedIds.length > 0 ? approvedIds : allDocuments.map(d => d.id);
+
+      box.classList.remove('hidden');
+      box.textContent = 'Dispatching signed JSON batch via httpx.AsyncClient...';
+
+      try {
+        const res = await fetch('/api/export/webhook', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ document_ids: idsToUse, format: 'webhook', webhook_url: url })
+        });
+        const data = await res.json();
+        box.textContent = JSON.stringify(data, null, 2);
+        await fetchMetrics();
+        await fetchDocuments();
+      } catch (err) {
+        box.textContent = 'Webhook error: ' + err.message;
+      }
+    }
+
+    async function updateRoiStudio() {
+      const vol = parseInt(document.getElementById('roi-vol').value, 10) || 600;
+      const avg = parseFloat(document.getElementById('roi-avg').value) || 1250;
+      const wage = parseFloat(document.getElementById('roi-wage').value) || 24;
+      const setup = parseFloat(document.getElementById('roi-setup').value) || 2500;
+      const retainer = parseFloat(document.getElementById('roi-retainer').value) || 350;
+
+      document.getElementById('lbl-roi-vol').textContent = `${vol.toLocaleString()} docs/mo`;
+      document.getElementById('lbl-roi-avg').textContent = `$${avg.toLocaleString()}`;
+      document.getElementById('lbl-roi-wage').textContent = `$${wage.toFixed(2)}/hr`;
+
+      await generateServerProposal(false);
+    }
+
+    async function generateServerProposal(copyToClipboard = true) {
+      const payload = {
+        client_company: document.getElementById('roi-company').value || 'Prospect LLC',
+        industry_niche: document.getElementById('roi-industry').value,
+        contact_name: document.getElementById('roi-contact').value || 'Operations Director',
+        monthly_volume: parseInt(document.getElementById('roi-vol').value, 10) || 600,
+        avg_invoice_value: parseFloat(document.getElementById('roi-avg').value) || 1250,
+        hourly_wage: parseFloat(document.getElementById('roi-wage').value) || 24,
+        setup_fee: parseFloat(document.getElementById('roi-setup').value) || 2500,
+        monthly_retainer: parseFloat(document.getElementById('roi-retainer').value) || 350,
+        target_erp: document.getElementById('roi-erp').value || 'QuickBooks Enterprise'
+      };
+
+      try {
+        const res = await fetch('/api/proposal/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        const r = data.roi_breakdown;
+
+        document.getElementById('out-roi-labor').textContent = '$' + r.monthly_labor_savings.toLocaleString(undefined, { minimumFractionDigits: 2 });
+        document.getElementById('out-roi-hours').textContent = `${r.monthly_hours_saved} hrs/mo eliminated`;
+        document.getElementById('out-roi-errors').textContent = '$' + r.monthly_overbilling_prevented.toLocaleString(undefined, { minimumFractionDigits: 2 });
+        document.getElementById('out-roi-net-mo').textContent = '$' + r.net_monthly_profit.toLocaleString(undefined, { minimumFractionDigits: 2 });
+        document.getElementById('out-roi-annual').textContent = '$' + r.annual_net_roi.toLocaleString(undefined, { maximumFractionDigits: 0 });
+        document.getElementById('out-roi-mult').textContent = `${r.roi_multiple}x ROI Multiple`;
+        document.getElementById('roi-payback-badge').textContent = `Payback: ${r.payback_period_days} Days`;
+
+        const preview = document.getElementById('sow-markdown-preview');
+        preview.value = data.statement_of_work_markdown;
+
+        if (copyToClipboard && navigator.clipboard) {
+          navigator.clipboard.writeText(data.statement_of_work_markdown);
+          const st = document.getElementById('sow-copy-status');
+          st.classList.remove('hidden');
+          setTimeout(() => st.classList.add('hidden'), 2500);
+        }
+      } catch (err) {
+        console.error('ROI calculation failed:', err);
+      }
+    }
+
+    function narrateInspectorNode() {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const title = document.getElementById('insp-title').textContent;
+      const role = document.getElementById('insp-role').textContent;
+      const rec = document.getElementById('insp-recovery').textContent;
+      const utter = new SpeechSynthesisUtterance(`${title}. ${role} Failure recovery: ${rec}`);
+      utter.rate = 1.02;
+      window.speechSynthesis.speak(utter);
+    }
+  </script>
+</body>
+</html>

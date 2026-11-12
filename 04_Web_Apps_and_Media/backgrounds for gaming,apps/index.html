@@ -1,0 +1,374 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App & Game Background Master Studio</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <script src="high-gloss-lacquer.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <script src="cosmic-background.js"></script>
+  <script src="mcp-baseline.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="aws-enterprise-baseline.css">
+  <script src="aws-enterprise-baseline.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Top Navigation Header -->
+    <header class="studio-header">
+      <div class="logo-group">
+        <div class="logo-badge">🌌</div>
+        <div>
+          <h1>Background Studio</h1>
+          <p class="subtitle">Design, Parallax, Shaders & AI Prompt Engineering</p>
+        </div>
+      </div>
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-tab="game-parallax">🎮 Game Parallax Engine</button>
+        <button class="nav-tab" data-tab="app-backgrounds">✨ App & Web Backgrounds</button>
+        <button class="nav-tab" data-tab="ai-prompts">🤖 AI Prompt Studio</button>
+        <button class="nav-tab" data-tab="engine-code">💻 Engine Code Vault</button>
+        <button class="nav-tab" data-tab="resources">📚 Resource Hub</button>
+      </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="content-container">
+
+      <!-- TAB 1: GAME PARALLAX ENGINE -->
+      <section id="game-parallax" class="tab-pane active">
+        <div class="pane-grid">
+          <!-- Canvas Viewport -->
+          <div class="viewport-card">
+            <div class="viewport-header">
+              <div class="view-title">
+                <span class="status-dot"></span>
+                <span>Interactive 2D Parallax Simulator</span>
+              </div>
+              <div class="viewport-actions">
+                <button id="toggle-squint" class="btn-tool" title="Check whether player/UI elements stand out clearly">
+                  👁️ Silhouette Test (Squint)
+                </button>
+                <button id="reset-cam" class="btn-tool">↺ Reset</button>
+              </div>
+            </div>
+
+            <div class="canvas-wrapper">
+              <canvas id="parallaxCanvas" width="960" height="540"></canvas>
+              <div class="controls-overlay">
+                <span>Move: <strong>A / D</strong> or <strong>← / →</strong> or <strong>Click & Drag</strong></span>
+                <span id="speedIndicator">Camera X: 0 px</span>
+              </div>
+            </div>
+
+            <!-- Layer breakdown badges -->
+            <div class="layer-pills">
+              <label class="layer-pill active" data-layer="sky">
+                <input type="checkbox" checked id="chk-sky"> Layer 1: Sky & Celestial (0.0x)
+              </label>
+              <label class="layer-pill active" data-layer="far">
+                <input type="checkbox" checked id="chk-far"> Layer 2: Distant Mountains (0.15x)
+              </label>
+              <label class="layer-pill active" data-layer="mid">
+                <input type="checkbox" checked id="chk-mid"> Layer 3: Midground Forest (0.45x)
+              </label>
+              <label class="layer-pill active" data-layer="near">
+                <input type="checkbox" checked id="chk-near"> Layer 4: Gameplay Ground (1.0x)
+              </label>
+              <label class="layer-pill active" data-layer="fore">
+                <input type="checkbox" checked id="chk-fore"> Layer 5: Foreground Silhouette (1.35x)
+              </label>
+            </div>
+          </div>
+
+          <!-- Parallax Control & Inspector -->
+          <div class="control-panel">
+            <div class="panel-section">
+              <h3>🎮 Simulation Controls</h3>
+              <div class="control-group">
+                <label>Auto-Scroll Speed: <span id="val-scroll">1.0</span>x</label>
+                <input type="range" id="slider-speed" min="-4" max="4" step="0.5" value="1">
+              </div>
+
+              <div class="control-group">
+                <label>Atmospheric Haze / Fog: <span id="val-haze">35</span>%</label>
+                <input type="range" id="slider-haze" min="0" max="80" step="5" value="35">
+                <small class="hint">Aerial perspective pushes distant mountains back into the atmosphere.</small>
+              </div>
+
+              <div class="control-group">
+                <label>Theme Biome:</label>
+                <select id="select-biome" class="select-input">
+                  <option value="dusk">Dusk Mountain Twilight</option>
+                  <option value="cyberpunk">Cyberpunk Neon Sprawl</option>
+                  <option value="fantasy">Mystic Emerald Forest</option>
+                </select>
+              </div>
+
+              <div class="control-group">
+                <label>Show Player Sprite:</label>
+                <div class="toggle-row">
+                  <input type="checkbox" checked id="chk-player">
+                  <span>Hero Character (High-contrast yellow/cyan)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-section insight-box">
+              <h4>💡 Golden Rules of Game Backgrounds</h4>
+              <ul class="rules-list">
+                <li><strong>The 3-Tier Contrast Rule:</strong> Foreground UI & player must have high contrast and sharp edges; background must have lower contrast and soft shapes.</li>
+                <li><strong>Aerial Perspective:</strong> Far layers lose saturation and shift toward sky color (desaturated blue/purple).</li>
+                <li><strong>Motion Speed:</strong> `speed = distance_factor * camera_speed`. Distant objects barely move; foreground zooms by.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: APP & WEB BACKGROUNDS -->
+      <section id="app-backgrounds" class="tab-pane">
+        <div class="app-bg-grid">
+          <!-- Live Preview Canvas / Demo -->
+          <div class="app-preview-card" id="appPreviewArea">
+            <div class="interactive-bg-target" id="appInteractiveBg">
+              <canvas id="particleCanvas"></canvas>
+            </div>
+
+            <!-- Floating Glassmorphism UI Components on Top -->
+            <div class="glass-ui-overlay">
+              <div class="glass-card main-demo-card">
+                <div class="glass-header">
+                  <span class="badge-pill">Frosted Glassmorphism</span>
+                  <span class="text-subtle">backdrop-filter: blur(16px)</span>
+                </div>
+                <h2>Clean Contrast UI</h2>
+                <p>Modern applications pair vibrant mesh or particle backgrounds with frosted glass panels to keep typography razor-sharp and accessible.</p>
+                
+                <div class="demo-metrics">
+                  <div class="metric-item">
+                    <span class="metric-num">99.8%</span>
+                    <span class="metric-lbl">Contrast Score</span>
+                  </div>
+                  <div class="metric-item">
+                    <span class="metric-num">60 FPS</span>
+                    <span class="metric-lbl">GPU Accelerated</span>
+                  </div>
+                  <div class="metric-item">
+                    <span class="metric-num">&lt; 12 KB</span>
+                    <span class="metric-lbl">CSS Size</span>
+                  </div>
+                </div>
+
+                <div class="action-buttons">
+                  <button class="btn-primary">Explore Features</button>
+                  <button class="btn-secondary">Documentation</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- App Background Controls & CSS Export -->
+          <div class="control-panel">
+            <div class="panel-section">
+              <h3>✨ Background Style</h3>
+              <div class="style-selector-grid">
+                <button class="style-btn active" data-style="mesh">Cosmic Mesh Gradient</button>
+                <button class="style-btn" data-style="particles">Interactive Constellations</button>
+                <button class="style-btn" data-style="aurora">Cyber Aurora Borealis</button>
+                <button class="style-btn" data-style="minimal">Deep Dark Slate + Noise</button>
+              </div>
+
+              <div class="control-group">
+                <label>Glass Frost Intensity: <span id="val-blur">16</span>px</label>
+                <input type="range" id="slider-blur" min="4" max="32" step="2" value="16">
+              </div>
+
+              <div class="control-group">
+                <label>Glass Surface Opacity: <span id="val-opacity">8</span>%</label>
+                <input type="range" id="slider-opacity" min="2" max="30" step="1" value="8">
+              </div>
+            </div>
+
+            <div class="panel-section">
+              <div class="code-header">
+                <h4>Generated CSS Code</h4>
+                <button id="copy-css-btn" class="btn-copy">📋 Copy CSS</button>
+              </div>
+              <pre class="code-box"><code id="cssCodeOutput">/* CSS will appear here */</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: AI PROMPT STUDIO -->
+      <section id="ai-prompts" class="tab-pane">
+        <div class="prompt-studio-grid">
+          <div class="generator-card">
+            <h3>🎨 2D Game Parallax AI Prompt Builder</h3>
+            <p class="subtitle">AI fails when you ask for "game background" as one image. Build prompt recipes that generate clean, stackable, tileable individual layers.</p>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label>Visual Art Style</label>
+                <select id="p-style" class="select-input">
+                  <option value="pixel">16-bit SNES Pixel Art, crisp clean edges, dithering</option>
+                  <option value="vector">Stylized 2D Vector Flat Art, clean silhouettes, vibrant gradient fills</option>
+                  <option value="painted" selected>Painterly Concept Art, atmospheric aerial perspective, Studio Ghibli inspired</option>
+                  <option value="cyberpunk">Cyberpunk Synthwave, dark moody blues, neon purple and teal glow</option>
+                  <option value="gothic">Dark Fantasy Hollow Knight style, desaturated deep indigos, moody mist</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label>Environment / Setting</label>
+                <input type="text" id="p-env" class="text-input" value="ancient overgrown misty mountain ruins and pine forest">
+              </div>
+            </div>
+
+            <!-- Layer Prompt Outputs -->
+            <div class="layer-prompt-stack">
+              <!-- Layer 1 -->
+              <div class="prompt-box">
+                <div class="p-header">
+                  <span class="p-tag tag-sky">Layer 1: Sky & Atmosphere (Farthest)</span>
+                  <button class="btn-copy-p" data-target="p-code-sky">Copy</button>
+                </div>
+                <div class="p-content" id="p-code-sky"></div>
+              </div>
+
+              <!-- Layer 2 -->
+              <div class="prompt-box">
+                <div class="p-header">
+                  <span class="p-tag tag-far">Layer 2: Distant Silhouettes (Far Mountains/Skyline)</span>
+                  <button class="btn-copy-p" data-target="p-code-far">Copy</button>
+                </div>
+                <div class="p-content" id="p-code-far"></div>
+              </div>
+
+              <!-- Layer 3 -->
+              <div class="prompt-box">
+                <div class="p-header">
+                  <span class="p-tag tag-mid">Layer 3: Midground (Foliage/Structures - Isolated)</span>
+                  <button class="btn-copy-p" data-target="p-code-mid">Copy</button>
+                </div>
+                <div class="p-content" id="p-code-mid"></div>
+              </div>
+
+              <!-- Layer 4 -->
+              <div class="prompt-box">
+                <div class="p-header">
+                  <span class="p-tag tag-near">Layer 4: Foreground Framing / Silhouette</span>
+                  <button class="btn-copy-p" data-target="p-code-near">Copy</button>
+                </div>
+                <div class="p-content" id="p-code-near"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tips-sidebar">
+            <div class="panel-section">
+              <h4>🔑 Crucial Prompt Keywords</h4>
+              <div class="keyword-tags">
+                <span class="kw">--tile</span>
+                <span class="kw">--ar 16:9</span>
+                <span class="kw">side-scrolling parallax layer</span>
+                <span class="kw">isolated on solid green background</span>
+                <span class="kw">aerial perspective</span>
+                <span class="kw">low frequency textures</span>
+                <span class="kw">no characters, no UI</span>
+                <span class="kw">horizontal seamless repeating loop</span>
+              </div>
+            </div>
+
+            <div class="panel-section">
+              <h4>🛠️ Post-Processing Pipeline</h4>
+              <ol class="pipeline-steps">
+                <li><strong>Seamless Tiling:</strong> Run Python tool `background_processor.py seamless &lt;input&gt; &lt;output&gt;` or Photoshop <em>Filter &gt; Other &gt; Offset (50%)</em>.</li>
+                <li><strong>Alpha Extraction:</strong> For mid/near layers generated on green/white backgrounds, run `background_processor.py chroma &lt;in&gt; &lt;out&gt;`.</li>
+                <li><strong>Value Check:</strong> Run `background_processor.py analyze &lt;image&gt;` to check noise standard deviation.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: ENGINE CODE VAULT -->
+      <section id="engine-code" class="tab-pane">
+        <div class="engine-code-grid">
+          <div class="engine-tabs">
+            <button class="engine-btn active" data-engine="godot">Godot 4 (GDScript)</button>
+            <button class="engine-btn" data-engine="unity">Unity (C#)</button>
+            <button class="engine-btn" data-engine="phaser">Phaser 3 / Web</button>
+            <button class="engine-btn" data-engine="webgl">Pure CSS / HTML</button>
+          </div>
+
+          <div class="engine-content">
+            <div class="code-header">
+              <h3 id="engineCodeTitle">Godot 4 Parallax Implementation</h3>
+              <button id="copy-engine-btn" class="btn-copy">📋 Copy Engine Script</button>
+            </div>
+            <pre class="code-box"><code id="engineCodeOutput"></code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: RESOURCES & CURATED SOURCES -->
+      <section id="resources" class="tab-pane">
+        <div class="resources-grid">
+          <div class="resource-col">
+            <h3>🎮 Free & Open Game Background Sources</h3>
+            <div class="resource-card">
+              <h4><a href="https://kenney.nl/assets" target="_blank">Kenney.nl</a></h4>
+              <p>The gold standard of public domain (CC0) 2D/3D game assets. Thousands of seamless background tiles, UI kits, and parallax textures completely free for commercial use.</p>
+            </div>
+            <div class="resource-card">
+              <h4><a href="https://opengameart.org" target="_blank">OpenGameArt.org</a></h4>
+              <p>Huge community repository. Search specifically for "Parallax Background" and "Seamless 2D Tilemap".</p>
+            </div>
+            <div class="resource-card">
+              <h4><a href="https://itch.io/game-assets/free/tag-backgrounds" target="_blank">Itch.io Game Assets</a></h4>
+              <p>Top indie artists release layered parallax packs in PNG format, sliced with individual layers for Unity and Godot.</p>
+            </div>
+            <div class="resource-card">
+              <h4><a href="https://craftpix.net/freebies/" target="_blank">CraftPix Freebies</a></h4>
+              <p>High-quality 2D platformer background kits with PSD source files and separate transparent parallax layers.</p>
+            </div>
+          </div>
+
+          <div class="resource-col">
+            <h3>✨ Modern App & Web Background Generators</h3>
+            <div class="resource-card">
+              <h4><a href="https://haikei.app" target="_blank">Haikei.app</a></h4>
+              <p>Generates SVG blobs, polygon meshes, layered waves, and subtle low-poly patterns that can be embedded directly in CSS.</p>
+            </div>
+            <div class="resource-card">
+              <h4><a href="https://meshgradient.in" target="_blank">MeshGradient.in</a></h4>
+              <p>Interactive playground to design multi-point organic mesh gradients with instant CSS code generation.</p>
+            </div>
+            <div class="resource-card">
+              <h4><a href="https://particles.matteobruni.it" target="_blank">tsParticles</a></h4>
+              <p>The industry standard lightweight particle and constellation engine for TypeScript, JavaScript, React, and Vue.</p>
+            </div>
+            <div class="resource-card">
+              <h4><a href="https://skybox.blockadelabs.com" target="_blank">Blockade Labs (Skybox AI)</a></h4>
+              <p>World-class generative AI tool specifically created for generating 360-degree equirectangular panoramic skyboxes and 3D environment cubemaps.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+

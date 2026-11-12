@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choogle</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>">
+  <script src="cosmic-background.js"></script>
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <script src="high-gloss-lacquer.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <script src="mcp-baseline.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="aws-enterprise-baseline.css">
+  <script src="aws-enterprise-baseline.js"></script>
+</head>
+<body>
+  <!-- ==================== HEADER ==================== -->
+  <header id="main-header" class="header-home">
+    <div class="header-left">
+      <a href="hub.html" class="nav-link" style="color: var(--g-tan); font-weight: 700;">⚡ App Hub</a>
+      <a href="../deploy/index.html" class="nav-link">Deploy Hub</a>
+      <a href="webstore.html" class="nav-link">Web Store</a>
+    </div>
+    <div class="header-right">
+      <a href="chai.html" class="nav-link">chAI</a>
+      <a href="tasks.html" class="nav-link">Tasks</a>
+      <!-- Apps Grid Icon -->
+      <button id="apps-btn" class="icon-btn tooltip" data-tooltip="Choogle apps" aria-label="Choogle apps">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM6 4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 12c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" fill="currentColor"></path>
+        </svg>
+      </button>
+      <!-- Apps Grid Menu -->
+      <div id="apps-menu" class="apps-dropdown hidden">
+        <div class="apps-grid">
+          <a href="hub.html" class="app-item" title="Choogle Application Hub — All Projects" style="border: 1px solid rgba(200, 169, 110, 0.4); background: rgba(200, 169, 110, 0.08);">
+            <span class="app-icon" style="filter: drop-shadow(0 0 6px rgba(200,169,110,0.5));">⚡</span>
+            <span class="app-name" style="font-weight: 700; color: var(--g-tan);">App Hub</span>
+          </a>
+          <a href="../deploy/index.html" class="app-item" title="Antigravity Deployment Hub & Projects">
+            <span class="app-icon deploy-icon">🚀</span>
+            <span class="app-name">Deploy Hub</span>
+          </a>
+          <a href="chai.html" class="app-item" title="chAI Assistant">
+            <span class="app-icon chai-icon">🤖</span>
+            <span class="app-name">chAI</span>
+          </a>
+          <a href="notepad.html" class="app-item" title="Personal Notebook">
+            <span class="app-icon notepad-icon">📝</span>
+            <span class="app-name">Notepad</span>
+          </a>
+          <a href="tasks.html" class="app-item" title="Kanban Tasks">
+            <span class="app-icon tasks-icon">📋</span>
+            <span class="app-name">Tasks</span>
+          </a>
+          <a href="webstore.html" class="app-item" title="Extensions & Plugins">
+            <span class="app-icon store-icon">🛍️</span>
+            <span class="app-name">Web Store</span>
+          </a>
+          <a href="outages.html" class="app-item">
+            <span class="app-icon outages-icon">⚡</span>
+            <span class="app-name">Outages</span>
+          </a>
+          <a href="hacked.html" class="app-item">
+            <span class="app-icon hacked-icon">🚨</span>
+            <span class="app-name">HackedOut</span>
+          </a>
+          <a href="https://rhel-9-rhcsa-exam-quest-511593565817.us-east1.run.app" target="_blank" class="app-item">
+            <span class="app-icon rhcsa-icon">🐧</span>
+            <span class="app-name">RHCSA Prep</span>
+          </a>
+          <a href="https://cham-vmware-infrastructure-prep-engine.ai.studio" target="_blank" class="app-item">
+            <span class="app-icon vmware-icon">🖥️</span>
+            <span class="app-name">VMware Prep</span>
+          </a>
+          <a href="ccna.html" class="app-item">
+            <span class="app-icon ccna-icon">🌐</span>
+            <span class="app-name">CCNA Lab</span>
+          </a>
+          <a href="dlm.html" class="app-item">
+            <span class="app-icon dlm-icon">💾</span>
+            <span class="app-name">DLM Storage</span>
+          </a>
+          <a href="powershell.html" class="app-item">
+            <span class="app-icon ps-icon">💻</span>
+            <span class="app-name">PowerShell</span>
+          </a>
+          <a href="https://chance-s-aac-talker-295027341949.us-east1.run.app" target="_blank" class="app-item">
+            <span class="app-icon aac-icon">🗣️</span>
+            <span class="app-name">AAC Talker</span>
+          </a>
+        
+          <a href="../MY Security/wwwroot/index.html" target="_blank" class="app-item" title="Sentinel PC Security Guard & Auditor">
+            <span class="app-icon">🛡️</span>
+            <span class="app-name">Sentinel</span>
+          </a>
+          <a href="../desktopscreensaver/Cosmic_Cityscape.html" target="_blank" class="app-item" title="Cosmic Cityscape Interactive Screensaver">
+            <span class="app-icon">🌌</span>
+            <span class="app-name">Screensaver</span>
+          </a>
+          <a href="../chess/index.html" target="_blank" class="app-item" title="Interactive Browser Chess Game">
+            <span class="app-icon">♟️</span>
+            <span class="app-name">Chess</span>
+          </a>
+          <a href="../1st grade learning/index.html" target="_blank" class="app-item" title="1st Grade Learning & Typing Trainer">
+            <span class="app-icon">🎒</span>
+            <span class="app-name">1st Grade</span>
+          </a>
+          <a href="../RHCSA Exam200/RHCSA_Terminal_Practice.html" target="_blank" class="app-item" title="RHCSA Linux Terminal Practice Simulator">
+            <span class="app-icon">🐧</span>
+            <span class="app-name">RHCSA Sim</span>
+          </a>
+          <a href="../vulnerability management/README.md" target="_blank" class="app-item" title="VulnGuard Vulnerability Management MVC Web App">
+            <span class="app-icon">🔒</span>
+            <span class="app-name">VulnGuard</span>
+          </a>
+          <a href="../bot finder/dashboard/index.html" target="_blank" class="app-item" title="BotFinder & RageShield Social Media Intelligence">
+            <span class="app-icon">🤖</span>
+            <span class="app-name">BotFinder</span>
+          </a>
+          <a href="../comptia exam simulator/index.html" target="_blank" class="app-item" title="CompTIA Security+ SY0-701 Exam Simulator">
+            <span class="app-icon">🛡️</span>
+            <span class="app-name">Security+</span>
+          </a>
+          <a href="../using ai agents for profit/static/index.html" target="_blank" class="app-item" title="B2B AI Operations Engine & Document Reconciliation">
+            <span class="app-icon">💼</span>
+            <span class="app-name">AI Ops</span>
+          </a>
+          <a href="../onestop/index.html" target="_blank" class="app-item" title="OneStop Media Player & Capture Server">
+            <span class="app-icon">🎬</span>
+            <span class="app-name">OneStop</span>
+          </a>
+          <a href="../screen reader/README.md" target="_blank" class="app-item" title="Screen Reader Desktop OCR & TTS Companion">
+            <span class="app-icon">👓</span>
+            <span class="app-name">ScreenReader</span>
+          </a>
+          <a href="../synergize and pay/index.html" target="_blank" class="app-item" title="Synergize & Pay Private Monetization Blueprint">
+            <span class="app-icon">💎</span>
+            <span class="app-name">Synergize</span>
+          </a>
+          <a href="../zfold6 features/galaxy_z_fold_6_tips_and_tricks_guide.md" target="_blank" class="app-item" title="Samsung Galaxy Z Fold 6 Master Guide">
+            <span class="app-icon">📱</span>
+            <span class="app-name">Z Fold 6</span>
+          </a>
+          <a href="../note taker/README.md" target="_blank" class="app-item" title="Study Notes Hub & Cheatsheet Library">
+            <span class="app-icon">📒</span>
+            <span class="app-name">Notes Hub</span>
+          </a>
+          <a href="../monopoly/index.html" target="_blank" class="app-item" title="Interactive Monopoly Board Game">
+            <span class="app-icon">🎲</span>
+            <span class="app-name">Monopoly</span>
+          </a>
+          <a href="../sandbox/index.html" target="_blank" class="app-item" title="Antigravity Projects Sandbox Studio">
+            <span class="app-icon">🧪</span>
+            <span class="app-name">Sandbox</span>
+          </a>
+        
+          <a href="../personal training/README.md" target="_blank" class="app-item" title="personal training">
+            <span class="app-icon">🤖</span>
+            <span class="app-name">personal tra...</span>
+          </a>
+        
+          <a href="../is this AI/is this ai mobile/index.html" target="_blank" class="app-item" title="is this AI">
+            <span class="app-icon">🤖</span>
+            <span class="app-name">is this</span>
+          </a>
+        
+          <a href="../game mods/n64 mods/tools/snowboardkids-decomp-main/tools/decompilation_summary/template.html" target="_blank" class="app-item" title="game mods">
+            <span class="app-icon">🎮</span>
+            <span class="app-name">game mods</span>
+          </a>
+        
+          <a href="../google drive organizer/public/index.html" target="_blank" class="app-item" title="google drive organizer">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">google drive</span>
+          </a>
+        
+          <a href="../email organizer/README.md" target="_blank" class="app-item" title="email organizer">
+            <span class="app-icon">🤖</span>
+            <span class="app-name">email organi...</span>
+          </a>
+          <a href="../game studio/paper_ronin_expedition/index.html" target="_blank" class="app-item" title="game studio">
+            <span class="app-icon">🎮</span>
+            <span class="app-name">game studio</span>
+          </a>
+        
+          <a href="../automate my day/README.md" target="_blank" class="app-item" title="automate my day">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">automate my</span>
+          </a>
+          <a href="../portfolio/index.html" target="_blank" class="app-item" title="portfolio">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">portfolio</span>
+          </a>
+        
+          <a href="../VR creation apps/index.html" target="_blank" class="app-item" title="VR creation apps">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">VR creation</span>
+          </a>
+          <a href="../How to train your AI/README.md" target="_blank" class="app-item" title="How to train your AI">
+            <span class="app-icon">🤖</span>
+            <span class="app-name">How to</span>
+          </a>
+          <a href="../3d images/index.html" target="_blank" class="app-item" title="3d images">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">3d images</span>
+          </a>
+        
+          <a href="../personal assistant/ui/index.html" target="_blank" class="app-item" title="personal assistant">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">personal ass...</span>
+          </a>
+          <a href="../aws/README.md" target="_blank" class="app-item" title="aws">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">aws</span>
+          </a>
+        
+          <a href="../project refinement/README.md" target="_blank" class="app-item" title="project refinement">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">project refi...</span>
+          </a>
+          <a href="../backgrounds for gaming,apps/index.html" target="_blank" class="app-item" title="backgrounds for gaming,apps">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">backgrounds ...</span>
+          </a>
+        
+          <a href="../architect/index.html" target="_blank" class="app-item" title="architect">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">architect</span>
+          </a>
+          <a href="../Track Home Value/dashboard.html" target="_blank" class="app-item" title="Track Home Value">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">Track Home</span>
+          </a>
+        
+          <a href="../aws/web-app/index.html" target="_blank" class="app-item" title="aws">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">aws</span>
+          </a>
+          <a href="../track most wanted/dashboard.html" target="_blank" class="app-item" title="track most wanted">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">track most</span>
+          </a>
+        
+          <a href="../aws/index.html" target="_blank" class="app-item" title="aws">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">aws</span>
+          </a>
+          <a href="../REA/README.md" target="_blank" class="app-item" title="REA">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">REA</span>
+          </a>
+          <a href="../ollama/index.html" target="_blank" class="app-item" title="ollama">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">ollama</span>
+          </a>
+        
+          <a href="../stock watch/README.md" target="_blank" class="app-item" title="stock watch">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">stock watch</span>
+          </a>
+        
+          <a href="../game mods/xbox_pc_gui.html" target="_blank" class="app-item" title="game mods">
+            <span class="app-icon">🎮</span>
+            <span class="app-name">game mods</span>
+          </a>
+          <a href="../spam block/README.md" target="_blank" class="app-item" title="spam block">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">spam block</span>
+          </a>
+          <a href="../Github Portfolio/index.html" target="_blank" class="app-item" title="Github Portfolio">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">Github Portf...</span>
+          </a>
+        
+          <a href="../ai models tools from threads/index.html" target="_blank" class="app-item" title="ai models tools from threads">
+            <span class="app-icon">🤖</span>
+            <span class="app-name">ai models</span>
+          </a>
+          <a href="../My Custom Gui/index.html" target="_blank" class="app-item" title="My Custom Gui">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">My Custom</span>
+          </a>
+        
+          <a href="../Plugins/chrome-pulse-task-manager/popup/popup.html" target="_blank" class="app-item" title="Plugins">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">Plugins</span>
+          </a>
+        
+          <a href="../stock Bot traders/gui/templates/index.html" target="_blank" class="app-item" title="stock Bot traders">
+            <span class="app-icon">🤖</span>
+            <span class="app-name">stock Bot</span>
+          </a>
+          <a href="../Scripting/webpage/index.html" target="_blank" class="app-item" title="Scripting">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">Scripting</span>
+          </a>
+        
+          <a href="../openshift/README.md" target="_blank" class="app-item" title="openshift">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">openshift</span>
+          </a>
+        
+          <a href="../Record my Gameplay/README.md" target="_blank" class="app-item" title="Record my Gameplay">
+            <span class="app-icon">🎮</span>
+            <span class="app-name">Record my</span>
+          </a>
+        
+          <a href="../baselines/index.html" target="_blank" class="app-item" title="baselines">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">baselines</span>
+          </a>
+          <a href="../agent 365/agent365/web/index.html" target="_blank" class="app-item" title="agent 365">
+            <span class="app-icon">🤖</span>
+            <span class="app-name">agent 365</span>
+          </a>
+          <a href="../ai defense/index.html" target="_blank" class="app-item" title="ai defense">
+            <span class="app-icon">🤖</span>
+            <span class="app-name">ai defense</span>
+          </a>
+          <a href="../MCP/README.md" target="_blank" class="app-item" title="MCP">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">MCP</span>
+          </a>
+          <a href="../My Planetarium/index.html" target="_blank" class="app-item" title="My Planetarium">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">My Planetari...</span>
+          </a>
+          <a href="../Scary Water Slides/simulator/index.html" target="_blank" class="app-item" title="Scary Water Slides">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">Scary Water</span>
+          </a>
+        
+          <a href="../anime/index.html" target="_blank" class="app-item" title="anime">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">anime</span>
+          </a>
+          <a href="../chancenvaders/index.html" target="_blank" class="app-item" title="chancenvaders">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">chancenvaders</span>
+          </a>
+          <a href="../docker/README.md" target="_blank" class="app-item" title="docker">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">docker</span>
+          </a>
+        
+          <a href="../AAC/index.html" target="_blank" class="app-item" title="AAC">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">AAC</span>
+          </a>
+        
+          <a href="../Game Library/index.html" target="_blank" class="app-item" title="Game Library">
+            <span class="app-icon">🎮</span>
+            <span class="app-name">Game Library</span>
+          </a>
+        
+          <a href="../youtube channels/index.html" target="_blank" class="app-item" title="youtube channels">
+            <span class="app-icon">🚀</span>
+            <span class="app-name">youtube chan...</span>
+          </a>
+        </div>
+      </div>
+      <!-- User Profile Button -->
+      <button id="profile-btn" class="profile-btn tooltip" data-tooltip="Choogle Account" aria-label="Choogle Account">
+        <span class="profile-letter">C</span>
+      </button>
+      <!-- User Profile Menu -->
+      <div id="profile-menu" class="profile-dropdown hidden">
+        <div class="profile-header">
+          <div class="profile-avatar-large">C</div>
+          <h3>Chase</h3>
+          <p>chase@choogle.dev</p>
+        </div>
+        <div class="profile-body">
+          <a href="#" onclick="event.preventDefault();" class="menu-btn manage-account-btn">Manage your Choogle Account</a>
+        </div>
+        <div class="profile-footer">
+          <a href="#" onclick="event.preventDefault();" class="menu-btn sign-out-btn">Sign out</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== HOME VIEW ==================== -->
+  <main id="home-view" class="view-active">
+    <div class="logo-container">
+      <h1 class="logo-text">
+        <span class="c-navy">C</span><span class="c-tan">h</span><span class="c-navy">o</span><span class="c-tan">o</span><span class="c-navy">g</span><span class="c-tan">l</span><span class="c-navy">e</span>
+      </h1>
+    </div>
+    
+    <div class="search-container">
+      <form id="search-form-home" class="search-form">
+        <div class="search-box-wrapper">
+          <div class="search-box-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="currentColor"></path>
+            </svg>
+          </div>
+          <input type="text" id="search-input-home" class="search-input" aria-label="Search" autocomplete="off" autofocus>
+          <div class="search-box-actions">
+            <!-- Clear btn -->
+            <button type="button" id="clear-btn-home" class="clear-btn hidden" aria-label="Clear">
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"></path>
+              </svg>
+            </button>
+            <!-- Voice Search btn -->
+            <button type="button" class="voice-btn tooltip" data-tooltip="Search by voice" aria-label="Search by voice">
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z" fill="currentColor"></path>
+              </svg>
+            </button>
+            <!-- Lens Search btn -->
+            <button type="button" class="lens-btn tooltip" data-tooltip="Search by image" aria-label="Search by image">
+              <svg viewBox="0 0 24 24" width="20" height="20">
+                <path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4.84 6l-2.4 3.19-1.76-2.13L7.5 15h9l-2.34-3z" fill="currentColor"></path>
+              </svg>
+            </button>
+          </div>
+          <!-- Autocomplete Dropdown -->
+          <ul id="suggestions-home" class="suggestions-list hidden"></ul>
+        </div>
+        
+        <div class="search-buttons">
+          <button type="submit" class="btn-search">Choogle Search</button>
+          <button type="button" id="lucky-btn" class="btn-search">I'm Feeling Lucky</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- ==================== SEARCH RESULTS VIEW ==================== -->
+  <main id="results-view" class="view-hidden">
+    <!-- Sticky Sub-header for Search Bar in results -->
+    <div class="results-header-container">
+      <div class="results-logo-wrapper">
+        <a href="#" id="results-logo" class="logo-text-small">
+          <span class="c-navy">C</span><span class="c-tan">h</span><span class="c-navy">o</span><span class="c-tan">o</span><span class="c-navy">g</span><span class="c-tan">l</span><span class="c-navy">e</span>
+        </a>
+      </div>
+      
+      <div class="results-search-wrapper">
+        <form id="search-form-results" class="search-form-res">
+          <div class="search-box-wrapper search-box-res">
+            <input type="text" id="search-input-results" class="search-input" aria-label="Search" autocomplete="off">
+            <div class="search-box-actions">
+              <!-- Clear btn -->
+              <button type="button" id="clear-btn-results" class="clear-btn hidden" aria-label="Clear">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                  <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"></path>
+                </svg>
+              </button>
+              <!-- Voice Search btn -->
+              <button type="button" class="voice-btn tooltip" data-tooltip="Search by voice" aria-label="Search by voice">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                  <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z" fill="currentColor"></path>
+                </svg>
+              </button>
+              <!-- Lens Search btn -->
+              <button type="button" class="lens-btn tooltip" data-tooltip="Search by image" aria-label="Search by image">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                  <path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4.84 6l-2.4 3.19-1.76-2.13L7.5 15h9l-2.34-3z" fill="currentColor"></path>
+                </svg>
+              </button>
+              <!-- Search Search Icon Btn -->
+              <button type="submit" class="submit-search-btn-res" aria-label="Submit Search">
+                <svg viewBox="0 0 24 24" width="20" height="20">
+                  <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="currentColor"></path>
+                </svg>
+              </button>
+            </div>
+            <!-- Autocomplete Dropdown -->
+            <ul id="suggestions-results" class="suggestions-list hidden"></ul>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs-nav-container">
+      <div class="tabs-nav">
+        <a href="#" class="tab-item active" data-tab="all">
+          <svg viewBox="0 0 24 24" width="16" height="16" class="tab-icon">
+            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="currentColor"></path>
+          </svg>
+          All Results
+        </a>
+        <a href="hub.html" class="tab-item" title="Choogle Application Hub — All Projects">
+          <span class="tab-icon" style="font-size: 14px;">⚡</span>
+          App Hub
+        </a>
+        <a href="../deploy/index.html" class="tab-item" title="Antigravity Projects & Deployment Hub">
+          <span class="tab-icon" style="font-size: 14px;">🚀</span>
+          Projects Hub
+        </a>
+        <a href="chai.html" class="tab-item" title="chAI Assistant">
+          <span class="tab-icon" style="font-size: 14px;">🤖</span>
+          chAI
+        </a>
+        <a href="tasks.html" class="tab-item" title="Kanban Tasks">
+          <span class="tab-icon" style="font-size: 14px;">📋</span>
+          Tasks
+        </a>
+        <a href="notepad.html" class="tab-item" title="Notepad">
+          <span class="tab-icon" style="font-size: 14px;">📝</span>
+          Notepad
+        </a>
+        <a href="webstore.html" class="tab-item" title="Web Store">
+          <span class="tab-icon" style="font-size: 14px;">🛍️</span>
+          Web Store
+        </a>
+      </div>
+    </div>
+
+    <!-- Results Body -->
+    <div class="results-body">
+      <!-- Search stats -->
+      <div id="search-stats" class="search-stats">About 0 results (0.00 seconds)</div>
+      
+      <div class="results-content-wrapper">
+        <!-- Main Column (Left side on desktop) -->
+        <div class="results-main-col">
+          <!-- Widget Container (Dynamically populated with calculator, weather, tic-tac-toe) -->
+          <div id="widget-container" class="widget-container hidden"></div>
+          
+          <!-- Search Results List -->
+          <div id="results-list" class="results-list"></div>
+          
+          <!-- Pagination -->
+          <div id="pagination" class="pagination-container hidden">
+            <div class="pagination-logo">
+              <span class="pg-c-blue">C</span>
+              <span id="pagination-h-letters"></span>
+              <span class="pg-c-red">g</span>
+              <span class="pg-c-yellow">l</span>
+              <span class="pg-c-blue">e</span>
+            </div>
+            <div id="pagination-pages" class="pagination-pages"></div>
+          </div>
+        </div>
+        
+        <!-- Sidebar Column (Right side on desktop) -->
+        <div class="results-sidebar-col">
+          <!-- Knowledge Panel (Dynamically populated) -->
+          <div id="knowledge-panel" class="knowledge-card hidden"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer id="main-footer" class="footer-home">
+    <div class="footer-row country-row">
+      <span class="country-text">United States</span>
+    </div>
+    <div class="footer-row links-row">
+      <div class="footer-links-left">
+        <a href="hub.html" class="nav-link" style="color: var(--g-tan); font-weight: 600;">⚡ App Hub</a>
+        <a href="../deploy/index.html" class="nav-link">Deploy Hub</a>
+        <a href="webstore.html" class="nav-link">Web Store</a>
+        <a href="chai.html" class="nav-link">chAI</a>
+      </div>
+      <div class="footer-links-right">
+        <a href="notepad.html" class="nav-link">Notepad</a>
+        <a href="tasks.html" class="nav-link">Tasks</a>
+        <!-- Settings Toggle button -->
+        <button id="settings-btn" class="footer-settings-btn" aria-haspopup="true" aria-expanded="false">Settings</button>
+        <!-- Settings Dropdown Menu -->
+        <div id="settings-menu" class="settings-dropdown hidden">
+          <a href="#" onclick="event.preventDefault();" class="settings-item">Search settings</a>
+          <a href="#" onclick="event.preventDefault();" class="settings-item">Advanced search</a>
+          <a href="#" onclick="event.preventDefault();" class="settings-item">Your data in Search</a>
+          <a href="#" onclick="event.preventDefault();" class="settings-item">Search history</a>
+          <a href="#" onclick="event.preventDefault();" class="settings-item">Search help</a>
+          <a href="#" onclick="event.preventDefault();" class="settings-item">Send feedback</a>
+          <hr class="menu-divider">
+          <!-- Theme Toggle -->
+          <div id="theme-toggle-option" class="settings-item theme-toggle-row">
+            <span>Dark theme</span>
+            <div class="theme-toggle-switch">
+              <span id="theme-status-text" class="theme-status-label">Off</span>
+              <div class="toggle-track">
+                <div class="toggle-thumb"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== MICROPHONE/VOICE OVERLAY ==================== -->
+  <div id="voice-overlay" class="overlay hidden">
+    <div class="overlay-card">
+      <button class="overlay-close-btn voice-close" aria-label="Close voice search">&times;</button>
+      <div class="voice-status" id="voice-status-text">Listening...</div>
+      <div class="voice-speech-output" id="voice-speech-output"></div>
+      <div class="voice-mic-container">
+        <div class="voice-ring ring-1"></div>
+        <div class="voice-ring ring-2"></div>
+        <button class="voice-mic-button active" aria-label="Microphone">
+          <svg viewBox="0 0 24 24" width="36" height="36" fill="currentColor">
+            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="voice-prompt">Say something like "weather today" or "calculator"</div>
+    </div>
+  </div>
+
+  <!-- ==================== LENS/IMAGE OVERLAY ==================== -->
+  <div id="lens-overlay" class="overlay hidden">
+    <div class="overlay-card lens-card">
+      <button class="overlay-close-btn lens-close" aria-label="Close lens search">&times;</button>
+      <h3>Search any image with Choogle Lens</h3>
+      <p class="lens-subtitle">Drag an image here or upload a file to search for visually similar items</p>
+      
+      <div id="lens-drop-zone" class="lens-drop-zone">
+        <div class="lens-drop-zone-content">
+          <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2" class="lens-icon-big">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <polyline points="21 15 16 10 5 21"></polyline>
+          </svg>
+          <p>Drag your image here or <span class="upload-link">upload a file</span></p>
+          <input type="file" id="lens-file-input" class="hidden" accept="image/*">
+        </div>
+        <div id="lens-preview-zone" class="lens-preview-zone hidden">
+          <div class="lens-preview-wrapper">
+            <img id="lens-img-preview" src="" alt="Lens search preview">
+            <div class="lens-scanning-line"></div>
+          </div>
+          <p class="lens-scan-status">Analyzing image and matching visual patterns...</p>
+        </div>
+      </div>
+      
+      <div class="lens-demo-images">
+        <span class="demo-label">Or try these examples:</span>
+        <div class="demo-thumbs">
+          <button class="demo-thumb-btn" data-query="cute cat pictures">🐱 Cat</button>
+          <button class="demo-thumb-btn" data-query="funny dog videos">🐶 Dog</button>
+          <button class="demo-thumb-btn" data-query="how does gravity work">🍎 Gravity</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== JS DEPENDENCIES ==================== -->
+  <script src="search-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+
+
+

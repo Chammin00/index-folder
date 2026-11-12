@@ -1,0 +1,40 @@
+{
+  "folders": [
+    {
+      "name": "📂 All Projects (Root Directory)",
+      "path": ".."
+    },
+    {
+      "name": "📑 Index Hub & Categories",
+      "path": "."
+    },
+    {
+      "name": "🛡️ 01 - Cybersecurity & IT",
+      "path": "01_Cybersecurity_and_IT"
+    },
+    {
+      "name": "🎮 02 - Games & Simulation",
+      "path": "02_Games_and_Simulation"
+    },
+    {
+      "name": "🤖 03 - AI & Agent Systems",
+      "path": "03_AI_and_Agent_Systems"
+    },
+    {
+      "name": "🌐 04 - Web Apps & Media",
+      "path": "04_Web_Apps_and_Media"
+    },
+    {
+      "name": "⚡ 05 - Productivity & Finance",
+      "path": "05_Productivity_and_Finance"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.git": true,
+      "**/.venv": true,
+      "**/node_modules": true,
+      "**/__pycache__": true
+    }
+  }
+}

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Celestial Anime Planetarium — Crunchyroll Observatory (Chase)</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Styles -->
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Three.js & OrbitControls -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <script src="high-gloss-lacquer.js"></script>
+  <script src="cosmic-background.js"></script>
+  <script src="mcp-baseline.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="aws-enterprise-baseline.css">
+  <script src="aws-enterprise-baseline.js"></script>
+</head>
+<body>
+
+  <!-- WebGL 3D Canvas Viewport -->
+  <div id="planetarium-canvas-container"></div>
+  <div class="cosmic-vignette"></div>
+  <div class="celestial-reticle"></div>
+
+  <!-- Interactive Observatory UI -->
+  <div class="observatory-ui">
+
+    <!-- Top Navigation & Telemetry Deck -->
+    <header class="top-deck">
+      <div class="branding-group interactive">
+        <div class="observatory-crest">🔭</div>
+        <div class="title-meta">
+          <h1>
+            Anime Planetarium
+            <span class="badge-mcp">MCP: CRUNCHYROLL • CHASE</span>
+          </h1>
+          <p>Celestial Starmap of Episodes Watched &amp; Remaining</p>
+        </div>
+      </div>
+
+      <!-- Telemetry Capsule -->
+      <div class="telemetry-capsule glass-panel interactive">
+        <div class="telemetry-metric">
+          <span class="telemetry-label">Watched</span>
+          <span class="telemetry-value highlight-watched" id="deck-total-watched">3,727</span>
+        </div>
+        <div class="telemetry-divider"></div>
+        <div class="telemetry-metric">
+          <span class="telemetry-label">Remaining</span>
+          <span class="telemetry-value highlight-remaining" id="deck-total-remaining">430</span>
+        </div>
+        <div class="telemetry-divider"></div>
+        <div class="telemetry-metric">
+          <span class="telemetry-label">Completion</span>
+          <span class="telemetry-value highlight-rate" id="deck-completion-rate">89.7%</span>
+        </div>
+        <div class="telemetry-divider"></div>
+        <div class="telemetry-metric">
+          <span class="telemetry-label">Hours</span>
+          <span class="telemetry-value" id="deck-hours-streamed">1,459h</span>
+        </div>
+        <div class="telemetry-divider"></div>
+        <div class="user-profile-badge">
+          <img class="user-avatar" src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=100&auto=format&fit=crop" alt="Chase Avatar">
+          <div class="user-info">
+            <div class="user-name" id="deck-user-name">Chase Ham</div>
+            <div class="user-tier" id="deck-user-tier">Mega Fan</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Control Bar: Search & Projection Modes -->
+      <div class="control-bar interactive">
+        <!-- Search -->
+        <div class="search-container">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="planetarium-search" class="search-input" placeholder="Search anime star or genre..." autocomplete="off">
+          <div id="search-dropdown" class="quick-search-dropdown glass-panel"></div>
+        </div>
+
+        <!-- Mode Buttons -->
+        <div class="pill-button-group">
+          <button class="pill-btn active" data-view-mode="sphere">🌌 Sphere Dome</button>
+          <button class="pill-btn" data-view-mode="orrery">🪐 Orrery View</button>
+          <button class="pill-btn" data-view-mode="astrolabe">🧭 Flat Chart</button>
+        </div>
+
+        <!-- Audio Synthesizer Toggle -->
+        <button id="btn-audio-toggle" class="icon-button" title="Toggle Cosmic Synthesizer Ambience">🎧</button>
+      </div>
+    </header>
+
+    <!-- Center Constellation Switcher Bar -->
+    <div class="viewport-middle-row">
+      <div class="constellation-deck glass-panel interactive" id="constellation-deck">
+        <!-- Populated dynamically by planetarium.js -->
+      </div>
+
+      <!-- Status Filter Group -->
+      <div class="pill-button-group glass-panel interactive">
+        <button class="pill-btn active" data-status-filter="all">All Stars (<span id="deck-total-anime">32</span>)</button>
+        <button class="pill-btn" data-status-filter="watching">Watching (In Progress)</button>
+        <button class="pill-btn" data-status-filter="completed">Completed</button>
+        <button class="pill-btn" data-status-filter="plan_to_watch">Plan to Watch</button>
+      </div>
+    </div>
+
+    <!-- Bottom Deck: Legend & Tour Controls -->
+    <footer class="bottom-deck">
+      <div class="celestial-tour-capsule glass-panel interactive">
+        <div class="tour-pulse-light"></div>
+        <div class="tour-meta">
+          <div class="tour-title">Observatory Telescope</div>
+          <div class="tour-desc">Left Click + Drag to Rotate • Scroll to Zoom • Click any Star to Inspect</div>
+        </div>
+        <button id="btn-start-tour" class="tour-btn">Start Guided Tour</button>
+      </div>
+
+      <!-- Legend -->
+      <div class="legend-bar glass-panel interactive">
+        <div class="legend-item">
+          <div class="legend-indicator gold"></div>
+          <span>Completed Star (100% Watched)</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-indicator cyan"></div>
+          <span>Active Variable Star (In Progress)</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-indicator purple"></div>
+          <span>Protostar Cloud (Unwatched)</span>
+        </div>
+        <div class="legend-item">
+          <span style="font-family:var(--font-mono);color:var(--accent-cyan);font-weight:bold;">—</span>
+          <span>Watched Ring Arc</span>
+        </div>
+        <div class="legend-item">
+          <span style="font-family:var(--font-mono);color:var(--text-dim);font-weight:bold;">···</span>
+          <span>Remaining Episodes Orbit</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Telescope Inspector (Right Drawer) -->
+    <aside class="telescope-inspector glass-panel interactive" id="telescope-inspector">
+      <div class="inspector-banner">
+        <img id="insp-banner-img" class="inspector-banner-img" src="" alt="Anime Banner">
+        <div class="banner-gradient-overlay"></div>
+        <button class="inspector-close-btn" id="btn-close-inspector" title="Close Telescope">✕</button>
+      </div>
+
+      <div class="inspector-body">
+        <div class="inspector-header">
+          <div class="inspector-poster-frame">
+            <img id="insp-poster-img" class="inspector-poster" src="" alt="Anime Poster">
+          </div>
+          <div class="inspector-title-block">
+            <h2 class="inspector-title" id="insp-title">Detective Conan</h2>
+            <div class="inspector-japanese-title" id="insp-title-ja">名探偵コナン</div>
+            <div style="font-size:11px;color:#94a3b8;margin-top:2px;" id="insp-studio-year">TMS Entertainment • 1996</div>
+            <div class="inspector-badges-row" id="insp-badges">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Celestial Eclipse Progress Gauge (Watched vs Remaining) -->
+        <div class="eclipse-gauge-container">
+          <div class="gauge-svg-wrapper">
+            <svg class="gauge-svg" width="90" height="90" viewBox="0 0 90 90">
+              <circle class="gauge-bg-circle" cx="45" cy="45" r="38"></circle>
+              <circle class="gauge-progress-circle" id="gauge-circle" cx="45" cy="45" r="38" stroke-dasharray="238.76" stroke-dashoffset="60"></circle>
+            </svg>
+            <div class="gauge-center-text">
+              <div class="gauge-percent" id="gauge-percent-text">74%</div>
+              <div class="gauge-label">Watched</div>
+            </div>
+          </div>
+
+          <div class="gauge-breakdown">
+            <div class="breakdown-row">
+              <span class="label"><span class="dot-watched"></span> Episodes Watched</span>
+              <span class="val watched-val" id="insp-watched-count">842</span>
+            </div>
+            <div class="breakdown-row">
+              <span class="label"><span class="dot-remaining"></span> Episodes Remaining</span>
+              <span class="val remaining-val" id="insp-remaining-count">288</span>
+            </div>
+            <div class="breakdown-row" style="border-top:1px solid rgba(255,255,255,0.08);padding-top:4px;">
+              <span class="label" style="color:#ffffff;">Total Episodes</span>
+              <span class="val total-val" id="insp-total-count">1,130</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Interactive Progress Buttons -->
+        <div class="progress-action-bar">
+          <button class="action-btn" id="btn-plus-one" title="Increment watched episode by 1">
+            <span>+1 Watched</span>
+          </button>
+          <button class="action-btn btn-complete" id="btn-complete-series" title="Mark all episodes as watched">
+            <span>★ Complete</span>
+          </button>
+          <button class="action-btn" id="btn-reset-series" title="Reset progress">
+            <span>↺ Reset</span>
+          </button>
+        </div>
+
+        <!-- Detective Conan Workspace Catalog Highlight -->
+        <div class="special-catalog-box" id="insp-conan-box" style="display:none;">
+          <div class="conan-header">
+            <span>🎬</span> 27 Case Closed Movies Cataloged in Workspace
+          </div>
+          <div>All movies 01 through 27 (from <em>The Time Bombed Skyscraper</em> to <em>The Million-dollar Pentagram</em>) are tracked in your local anime repository.</div>
+        </div>
+
+        <!-- Last Watched Episode Preview -->
+        <div class="episode-preview-block">
+          <div class="preview-heading">
+            <span>Recent Viewing Playhead</span>
+            <span id="insp-score">★ 9.2</span>
+          </div>
+          <div class="preview-episode-title" id="insp-last-ep">Episode 842: The Detective Boys in a Grove</div>
+        </div>
+
+        <!-- Synopsis -->
+        <div>
+          <div style="font-size:11px;font-family:var(--font-mono);color:var(--text-dim);text-transform:uppercase;margin-bottom:6px;">Celestial Log / Synopsis</div>
+          <p class="inspector-synopsis" id="insp-synopsis">Synopsis description...</p>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- Load Data and 3D WebGL Script -->
+  <script src="planetarium_data.js"></script>
+  <script src="planetarium.js"></script>
+</body>
+</html>

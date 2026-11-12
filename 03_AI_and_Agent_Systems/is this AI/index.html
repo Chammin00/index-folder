@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Is This AI? — Mobile Detector</title>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="icon" type="image/svg+xml" href="./icon.svg">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+  <meta name="theme-color" content="#1E293B">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <script src="high-gloss-lacquer.js"></script>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header class="app-header">
+    <div class="brand">
+      <img src="./icon.svg" alt="Is This AI Logo" class="brand-icon">
+      <h1 class="brand-title">IS THIS AI?</h1>
+    </div>
+    <div class="header-actions">
+      <button id="btnInstallPwa" class="icon-btn" style="display: none;" title="Install to Home Screen">📲</button>
+      <button id="btnSettings" class="icon-btn" title="Settings & Accessibility">⚙️</button>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="main-content">
+    
+    <!-- Left / Top Column: Inputs -->
+    <div class="input-column">
+      
+      <!-- Segmented Mode Control -->
+      <nav class="mode-segmented" aria-label="Input Mode">
+        <button id="btnModeText" class="mode-btn active">📝 Check Text</button>
+        <button id="btnModeImage" class="mode-btn">🖼️ Check Image / Photo</button>
+      </nav>
+
+      <!-- Tab: Text Mode -->
+      <section id="tabText" class="tab-content active card">
+        <textarea id="textInput" class="mobile-textarea" placeholder="Paste an email, Facebook post, news article, or message here to check if an AI wrote it..."></textarea>
+        
+        <div class="quick-actions">
+          <button id="btnPasteText" class="btn-secondary">📋 1-Tap Paste</button>
+          <button id="btnClearText" class="btn-secondary">🧹 Clear</button>
+        </div>
+      </section>
+
+      <!-- Tab: Image / Camera Mode -->
+      <section id="tabImage" class="tab-content card">
+        <!-- Hidden file inputs -->
+        <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display: none;">
+        <input type="file" id="galleryInput" accept="image/*" style="display: none;">
+
+        <div id="dropzone" class="image-dropzone">
+          <span style="font-size: 40px;">📷</span>
+          <p style="font-weight: 700; color: #E2E8F0;">Take a photo or pick a screenshot</p>
+          <p style="font-size: 13px; color: #94A3B8;">Check social media posts, artwork, and photos</p>
+        </div>
+
+        <div id="imgPreviewContainer" class="image-preview-container">
+          <img id="imgPreview" class="image-preview" alt="Selected Preview">
+          <button id="btnRemoveImg" class="btn-remove-img">✕</button>
+          <div id="imgInfo" style="font-size: 12px; color: var(--accent-cyan); margin-top: 6px; text-align: center;"></div>
+        </div>
+
+        <div class="quick-actions">
+          <button id="btnSnapCamera" class="btn-secondary">📷 Take Photo</button>
+          <button id="btnChooseGallery" class="btn-secondary">🖼️ Photo Gallery</button>
+        </div>
+      </section>
+
+      <!-- Big Primary Scan Action -->
+      <button id="btnScanPrimary" class="btn-primary-scan">
+        🚀 CHECK IF THIS TEXT IS AI
+      </button>
+
+    </div>
+
+    <!-- Right / Bottom Column: Verdict & Plain-English Explanation -->
+    <div class="verdict-column">
+      <section class="card verdict-box">
+        
+        <!-- Big High-Contrast Headline Badge -->
+        <div id="verdictBadge" class="verdict-badge badge-uncertain">
+          READY TO SCAN
+        </div>
+
+        <div class="confidence-row">
+          <span id="confidenceScore">Confidence: --</span>
+          <span style="color: #64748B;">Gen X Smart Detector</span>
+        </div>
+
+        <!-- Audio Verdict Bar -->
+        <div class="audio-bar">
+          <button id="btnSpeakVerdict" class="btn-audio">🔊 Hear Verdict Aloud</button>
+          <button id="btnStopSpeech" class="btn-audio" style="flex: 0 0 70px; color: #94A3B8;">⏹️ Stop</button>
+        </div>
+
+        <!-- Plain-English Breakdown ("Why?") -->
+        <div class="why-section">
+          <h2 class="why-header">🔍 WHY? (PLAIN-ENGLISH EXPLANATION)</h2>
+          <div id="whySummary" class="why-summary">
+            Paste text, choose a photo, or snap a picture to test if it was made by AI.
+          </div>
+          <ul id="cluesList" class="clues-list"></ul>
+        </div>
+
+      </section>
+    </div>
+
+  </main>
+
+  <!-- Settings & Accessibility Modal -->
+  <div id="settingsModal" class="modal-overlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 style="font-size: 20px; color: var(--accent-cyan); font-weight: 800;">⚙️ Detector Settings</h2>
+        <button id="btnCloseSettings" class="icon-btn" style="width: 36px; height: 36px;">✕</button>
+      </div>
+
+      <div class="form-group">
+        <label for="selectProvider" class="form-label">Detection Method:</label>
+        <select id="selectProvider" class="form-select">
+          <option value="heuristic">⚡ Offline Heuristics (Zero Setup, Free)</option>
+          <option value="gemini">✨ Google Gemini Cloud AI (Free API Key)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="inputGeminiKey" class="form-label">Google Gemini API Key (Optional):</label>
+        <input type="password" id="inputGeminiKey" class="form-input" placeholder="Paste your free AI Studio key...">
+        <span style="font-size: 12px; color: #94A3B8;">Enables multimodal deep neural detection.</span>
+      </div>
+
+      <div class="form-group">
+        <label for="selectFontSize" class="form-label">Text & Button Size (Accessibility):</label>
+        <select id="selectFontSize" class="form-select">
+          <option value="standard">Standard Size</option>
+          <option value="large" selected>Large (Recommended for Gen X)</option>
+          <option value="extra-large">Extra Large (No Squinting)</option>
+        </select>
+      </div>
+
+      <button id="btnSaveSettings" class="btn-primary-scan" style="padding: 14px; font-size: 16px; margin-top: 10px;">
+        💾 Save Settings
+      </button>
+    </div>
+  </div>
+
+  <script src="./detector.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
+

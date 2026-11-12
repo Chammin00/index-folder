@@ -1,0 +1,1334 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus Hub — Custom App & Web Command Center</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    /* Custom scrollbar and smooth transitions */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(140, 140, 140, 0.3);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(140, 140, 140, 0.5);
+    }
+    .glass-card {
+      background: var(--card, #18181b);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .app-card:hover .launch-icon {
+      transform: translateX(3px) translateY(-3px);
+    }
+    .badge-glow {
+      box-shadow: 0 0 12px rgba(99, 102, 241, 0.25);
+    }
+  </style>
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <script src="high-gloss-lacquer.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <script src="cosmic-background.js"></script>
+  <script src="mcp-baseline.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="aws-enterprise-baseline.css">
+  <script src="aws-enterprise-baseline.js"></script>
+</head>
+<body class="bg-[var(--background,#09090b)] text-[var(--foreground,#f4f4f5)] min-h-screen antialiased selection:bg-indigo-500 selection:text-white flex flex-col">
+
+  <!-- Top Navigation & Live Bar -->
+  <header class="sticky top-0 z-40 border-b border-[var(--border,#27272a)] bg-[var(--background,#09090b)]/90 backdrop-blur-md px-4 sm:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+    <!-- Brand / Logo -->
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-violet-500 to-cyan-400 p-[1.5px] shadow-lg shadow-indigo-500/20">
+        <div class="w-full h-full bg-[var(--background,#09090b)] rounded-[10px] flex items-center justify-center text-xl">
+          ⚡
+        </div>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="text-base sm:text-lg font-bold tracking-tight bg-gradient-to-r from-[var(--foreground,#f4f4f5)] via-indigo-300 to-cyan-300 bg-clip-text text-transparent">
+            Nexus Hub
+          </h1>
+          <span class="text-xs px-2 py-0.5 rounded-full font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+            PRO GUI
+          </span>
+        </div>
+        <p class="text-xs text-[var(--muted-foreground,#a1a1aa)] hidden sm:block">
+          Personal Web & Local Workspace Command Center
+        </p>
+      </div>
+    </div>
+
+    <!-- Center Search & Filter -->
+    <div class="flex-1 max-w-xl mx-auto w-full order-3 md:order-2">
+      <div class="relative group">
+        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[var(--muted-foreground,#a1a1aa)] group-focus-within:text-indigo-400 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <input 
+          id="searchInput" 
+          type="text" 
+          placeholder="Search apps, models, tools or local projects... (Press / or Ctrl+K)"
+          class="w-full pl-10 pr-24 py-2 text-xs sm:text-sm bg-[var(--card,#18181b)] border border-[var(--border,#27272a)] rounded-xl text-[var(--foreground,#f4f4f5)] placeholder-[var(--muted-foreground,#71717a)] focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 transition-all shadow-inner"
+        />
+        <div class="absolute inset-y-0 right-0 pr-3 flex items-center gap-1.5 pointer-events-none text-xs text-[var(--muted-foreground,#71717a)]">
+          <kbd class="px-1.5 py-0.5 rounded bg-[var(--background,#09090b)] border border-[var(--border,#27272a)] font-mono text-xs">Ctrl</kbd>
+          <kbd class="px-1.5 py-0.5 rounded bg-[var(--background,#09090b)] border border-[var(--border,#27272a)] font-mono text-xs">K</kbd>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Controls & Clock -->
+    <div class="flex items-center gap-3 order-2 md:order-3">
+      <!-- Live Clock & Date -->
+      <div class="text-right hidden lg:block">
+        <div id="liveClock" class="text-xs font-mono font-semibold tracking-wider text-[var(--foreground,#f4f4f5)]">00:00:00 PM</div>
+        <div id="liveDate" class="text-xs text-[var(--muted-foreground,#a1a1aa)] font-medium">Monday, Oct 27</div>
+      </div>
+
+      <!-- Quick Add Button -->
+      <button 
+        onclick="openAddModal()"
+        class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white rounded-lg text-xs font-semibold shadow-md shadow-indigo-600/20 transition-all active:scale-95"
+      >
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+        </svg>
+        <span>Add App</span>
+      </button>
+
+      <!-- Scratchpad Drawer Toggle -->
+      <button 
+        onclick="toggleScratchpad()"
+        title="Quick Notes & Scratchpad"
+        class="p-2 rounded-lg border border-[var(--border,#27272a)] bg-[var(--card,#18181b)] hover:border-indigo-500/40 text-[var(--foreground,#f4f4f5)] hover:text-indigo-400 transition-colors"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+        </svg>
+      </button>
+
+      <!-- View Switcher (Grid / List) -->
+      <div class="flex items-center rounded-lg border border-[var(--border,#27272a)] p-0.5 bg-[var(--card,#18181b)]">
+        <button 
+          id="viewGridBtn"
+          onclick="setViewMode('grid')" 
+          title="Grid View"
+          class="p-1.5 rounded-md text-xs bg-indigo-600 text-white transition-all"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
+        </button>
+        <button 
+          id="viewListBtn"
+          onclick="setViewMode('list')" 
+          title="Compact List View"
+          class="p-1.5 rounded-md text-xs text-[var(--muted-foreground,#a1a1aa)] hover:text-[var(--foreground,#f4f4f5)] transition-all"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Pinned Fast-Launch Dock Bar -->
+  <section class="border-b border-[var(--border,#27272a)] bg-[var(--card,#18181b)]/50 px-4 sm:px-8 py-2.5 overflow-x-auto">
+    <div class="flex items-center gap-2 max-w-7xl mx-auto min-w-max">
+      <div class="flex items-center gap-1.5 text-xs font-semibold text-indigo-400 mr-2 uppercase tracking-wider">
+        <span>⚡ Quick Dock:</span>
+      </div>
+      <div id="dockContainer" class="flex items-center gap-2">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Category Filter Pills Bar -->
+  <section class="px-4 sm:px-8 pt-5 pb-2 max-w-7xl mx-auto w-full">
+    <div class="flex items-center justify-between flex-wrap gap-3">
+      <div id="categoryPills" class="flex items-center gap-1.5 flex-wrap">
+        <!-- Category Buttons rendered dynamically -->
+      </div>
+      
+      <div class="flex items-center gap-3 text-xs text-[var(--muted-foreground,#a1a1aa)]">
+        <span id="appCountText">Showing 0 apps</span>
+        <span class="inline-block w-1 h-1 rounded-full bg-[var(--border,#3f3f46)]"></span>
+        <button onclick="resetDefaults()" class="hover:text-red-400 underline transition-colors">Reset Defaults</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 px-4 sm:px-8 py-4 max-w-7xl mx-auto w-full">
+    <!-- Active Grid / List Container -->
+    <div id="appContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 transition-all">
+      <!-- App Cards injected dynamically -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="hidden text-center py-20 px-4">
+      <div class="text-4xl mb-3">🔍</div>
+      <h3 class="text-base font-semibold text-[var(--foreground,#f4f4f5)]">No matching applications or websites found</h3>
+      <p class="text-xs text-[var(--muted-foreground,#a1a1aa)] mt-1 max-w-md mx-auto">
+        Try adjusting your search terms or category filter, or click "+ Add App" to create a custom bookmark.
+      </p>
+      <button 
+        onclick="clearSearch()"
+        class="mt-4 px-4 py-2 rounded-lg bg-[var(--card,#18181b)] border border-[var(--border,#27272a)] text-xs text-indigo-400 hover:border-indigo-500/40"
+      >
+        Clear Filter
+      </button>
+    </div>
+  </main>
+
+  <!-- Footer Info & Stats -->
+  <footer class="border-t border-[var(--border,#27272a)] bg-[var(--card,#18181b)]/40 px-4 sm:px-8 py-4 text-xs text-[var(--muted-foreground,#a1a1aa)] mt-auto">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span class="font-medium text-[var(--foreground,#f4f4f5)]">Active Workspace:</span>
+        <span class="font-mono text-indigo-400">g:/My Drive/Antigravity/Projects/</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span>Click cards to launch directly</span>
+        <span>•</span>
+        <button onclick="exportData()" class="hover:text-[var(--foreground,#f4f4f5)] underline">Export JSON</button>
+        <span>•</span>
+        <label class="hover:text-[var(--foreground,#f4f4f5)] underline cursor-pointer">
+          Import JSON
+          <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="importData(event)">
+        </label>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scratchpad / Quick Notes Drawer (Sliding Panel) -->
+  <div id="scratchpadDrawer" class="fixed inset-y-0 right-0 w-80 sm:w-96 bg-[var(--card,#18181b)] border-l border-[var(--border,#27272a)] shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="p-4 border-b border-[var(--border,#27272a)] flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-base">📝</span>
+        <h3 class="text-sm font-semibold text-[var(--foreground,#f4f4f5)]">Quick Scratchpad</h3>
+      </div>
+      <button onclick="toggleScratchpad()" class="text-[var(--muted-foreground,#a1a1aa)] hover:text-[var(--foreground,#f4f4f5)] p-1">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="p-4 flex-1 flex flex-col gap-2">
+      <div class="text-xs text-[var(--muted-foreground,#a1a1aa)]">
+        Notes automatically sync to your browser local storage.
+      </div>
+      <textarea 
+        id="scratchpadText" 
+        placeholder="Type tasks, quick URLs, notes, prompt snippets, or ideas here..."
+        class="w-full flex-1 p-3 text-xs sm:text-sm bg-[var(--background,#09090b)] border border-[var(--border,#27272a)] rounded-xl text-[var(--foreground,#f4f4f5)] placeholder-[var(--muted-foreground,#71717a)] focus:outline-none focus:ring-1 focus:ring-indigo-500 resize-none font-mono"
+        oninput="saveScratchpad()"
+      ></textarea>
+    </div>
+    <div class="p-3 border-t border-[var(--border,#27272a)] bg-[var(--background,#09090b)] flex justify-between items-center text-xs">
+      <span id="scratchpadStatus" class="text-emerald-400">Saved</span>
+      <button onclick="clearScratchpad()" class="text-[var(--muted-foreground,#a1a1aa)] hover:text-red-400">Clear</button>
+    </div>
+  </div>
+
+  <!-- Add Custom App Modal -->
+  <div id="addModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-[var(--card,#18181b)] border border-[var(--border,#27272a)] rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+      <div class="p-5 border-b border-[var(--border,#27272a)] flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold">
+            +
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold text-[var(--foreground,#f4f4f5)]">Add App or Bookmark</h3>
+            <p class="text-xs text-[var(--muted-foreground,#a1a1aa)]">Add your custom web application or local tool</p>
+          </div>
+        </div>
+        <button onclick="closeAddModal()" class="text-[var(--muted-foreground,#a1a1aa)] hover:text-[var(--foreground,#f4f4f5)] p-1">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <form id="addAppForm" onsubmit="handleSaveApp(event)" class="p-5 space-y-4">
+        <input type="hidden" id="editAppId" value="">
+        
+        <div>
+          <label class="block text-xs font-medium text-[var(--foreground,#f4f4f5)] mb-1">Application Name *</label>
+          <input 
+            type="text" 
+            id="formTitle" 
+            required 
+            placeholder="e.g. My Custom Tool"
+            class="w-full px-3 py-2 text-xs sm:text-sm bg-[var(--background,#09090b)] border border-[var(--border,#27272a)] rounded-lg text-[var(--foreground,#f4f4f5)] focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+          />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-[var(--foreground,#f4f4f5)] mb-1">Target URL or Path *</label>
+            <input 
+              type="text" 
+              id="formUrl" 
+              required 
+              placeholder="https://... or ../project/index.html"
+              class="w-full px-3 py-2 text-xs sm:text-sm bg-[var(--background,#09090b)] border border-[var(--border,#27272a)] rounded-lg text-[var(--foreground,#f4f4f5)] focus:ring-2 focus:ring-indigo-500 focus:outline-none font-mono"
+            />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-[var(--foreground,#f4f4f5)] mb-1">Category *</label>
+            <select 
+              id="formCategory" 
+              required 
+              class="w-full px-3 py-2 text-xs sm:text-sm bg-[var(--background,#09090b)] border border-[var(--border,#27272a)] rounded-lg text-[var(--foreground,#f4f4f5)] focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            >
+              <option value="ai">AI & LLMs</option>
+              <option value="antigravity">Antigravity Projects</option>
+              <option value="science">Science & Research</option>
+              <option value="developer">Developer & Cloud</option>
+              <option value="productivity">Productivity</option>
+              <option value="entertainment">Gaming & Media</option>
+              <option value="custom">Other / Custom</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-[var(--foreground,#f4f4f5)] mb-1">Icon / Emoji</label>
+            <input 
+              type="text" 
+              id="formIcon" 
+              placeholder="🚀, ⚡, 🛡️"
+              class="w-full px-3 py-2 text-xs sm:text-sm bg-[var(--background,#09090b)] border border-[var(--border,#27272a)] rounded-lg text-[var(--foreground,#f4f4f5)] focus:ring-2 focus:ring-indigo-500 focus:outline-none text-center"
+            />
+          </div>
+          <div class="sm:col-span-2">
+            <label class="block text-xs font-medium text-[var(--foreground,#f4f4f5)] mb-1">Tags (comma-separated)</label>
+            <input 
+              type="text" 
+              id="formTags" 
+              placeholder="coding, api, local, search"
+              class="w-full px-3 py-2 text-xs sm:text-sm bg-[var(--background,#09090b)] border border-[var(--border,#27272a)] rounded-lg text-[var(--foreground,#f4f4f5)] focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-[var(--foreground,#f4f4f5)] mb-1">Description / Notes</label>
+          <textarea 
+            id="formDesc" 
+            rows="2"
+            placeholder="What this app does or why you use it..."
+            class="w-full px-3 py-2 text-xs sm:text-sm bg-[var(--background,#09090b)] border border-[var(--border,#27272a)] rounded-lg text-[var(--foreground,#f4f4f5)] focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+          ></textarea>
+        </div>
+
+        <div class="pt-3 border-t border-[var(--border,#27272a)] flex items-center justify-end gap-3">
+          <button 
+            type="button" 
+            onclick="closeAddModal()" 
+            class="px-4 py-2 rounded-lg text-xs font-medium text-[var(--muted-foreground,#a1a1aa)] hover:text-[var(--foreground,#f4f4f5)]"
+          >
+            Cancel
+          </button>
+          <button 
+            type="submit" 
+            class="px-5 py-2 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/30"
+          >
+            Save Application
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Initial Pre-loaded Data based on User's Projects and Favorite Ecosystem
+    const DEFAULT_APPS = [
+      // 1. AI & LLMs
+      {
+        id: "app-claude",
+        title: "Claude.ai",
+        url: "https://claude.ai",
+        category: "ai",
+        icon: "🧠",
+        desc: "Anthropic reasoning, Artifacts live preview sandbox, long-context code synthesis & MCP tools.",
+        tags: ["reasoning", "coding", "artifacts", "anthropic"],
+        favorite: true,
+        isCustom: false,
+        clicks: 142
+      },
+      {
+        id: "app-perplexity",
+        title: "Perplexity.ai",
+        url: "https://perplexity.ai",
+        category: "ai",
+        icon: "🔍",
+        desc: "Real-time web research, literature reviews & factual citation-backed exploration.",
+        tags: ["search", "citations", "web", "research"],
+        favorite: true,
+        isCustom: false,
+        clicks: 110
+      },
+      {
+        id: "app-chatgpt",
+        title: "ChatGPT",
+        url: "https://chatgpt.com",
+        category: "ai",
+        icon: "🤖",
+        desc: "OpenAI frontier models, advanced voice, canvas code editor & deep reasoning.",
+        tags: ["openai", "reasoning", "multimodal", "gpt4"],
+        favorite: true,
+        isCustom: false,
+        clicks: 98
+      },
+      {
+        id: "app-gemini",
+        title: "Google Gemini",
+        url: "https://gemini.google.com",
+        category: "ai",
+        icon: "✨",
+        desc: "DeepMind multimodal intelligence, 2M+ token context window, Google ecosystem integration.",
+        tags: ["google", "multimodal", "long-context", "gemini"],
+        favorite: true,
+        isCustom: false,
+        clicks: 95
+      },
+      {
+        id: "app-ollama",
+        title: "Ollama Local WebUI",
+        url: "http://localhost:11434",
+        category: "ai",
+        icon: "🦙",
+        desc: "Run open-weights LLMs locally (Llama 3, DeepSeek, Qwen 2.5) with zero cloud telemetry.",
+        tags: ["local", "open-source", "offline", "privacy"],
+        favorite: false,
+        isCustom: false,
+        clicks: 44
+      },
+      {
+        id: "app-huggingface",
+        title: "Hugging Face",
+        url: "https://huggingface.co",
+        category: "ai",
+        icon: "🤗",
+        desc: "Hub for machine learning models, datasets, open-source weights, and Gradio spaces.",
+        tags: ["models", "ml", "datasets", "spaces"],
+        favorite: false,
+        isCustom: false,
+        clicks: 52
+      },
+      {
+        id: "app-deepseek",
+        title: "DeepSeek",
+        url: "https://chat.deepseek.com",
+        category: "ai",
+        icon: "🐋",
+        desc: "High-reasoning frontier open weights models (R1, V3) for deep mathematical & coding synthesis.",
+        tags: ["reasoning", "code", "r1", "math"],
+        favorite: false,
+        isCustom: false,
+        clicks: 39
+      },
+      {
+        id: "app-cursor",
+        title: "Cursor AI",
+        url: "https://cursor.com",
+        category: "ai",
+        icon: "⚡",
+        desc: "Next-generation AI-first code editor with codebase indexing and multi-file agent edits.",
+        tags: ["ide", "editor", "agent", "coding"],
+        favorite: true,
+        isCustom: false,
+        clicks: 88
+      },
+
+      // 2. Antigravity Projects (Local suites)
+      {
+        id: "app-choogle",
+        title: "Choogle Hub",
+        url: "../Choogle/index.html",
+        category: "antigravity",
+        icon: "🌐",
+        desc: "Unified Antigravity search portal, app hub, and multi-project launcher with dynamic indexing.",
+        tags: ["local", "hub", "search", "portal"],
+        favorite: true,
+        isCustom: false,
+        clicks: 135
+      },
+      {
+        id: "app-sentinel",
+        title: "Sentinel PC Guard",
+        url: "../MY Security/wwwroot/index.html",
+        category: "antigravity",
+        icon: "🛡️",
+        desc: "Sentinel PC security auditor dashboard with live scoring, vulnerability drawer & audit tests.",
+        tags: ["security", "local", "sentinel", "audit"],
+        favorite: true,
+        isCustom: false,
+        clicks: 74
+      },
+      {
+        id: "app-comptia",
+        title: "CompTIA Security+ Sim",
+        url: "../comptia exam simulator/index.html",
+        category: "antigravity",
+        icon: "🎓",
+        desc: "SY0-701 exam engine featuring practice tests, interactive PBQ scenarios, and flashcards.",
+        tags: ["security+", "comptia", "exam", "education"],
+        favorite: true,
+        isCustom: false,
+        clicks: 82
+      },
+      {
+        id: "app-botfinder",
+        title: "BotFinder & RageShield",
+        url: "../bot finder/dashboard/index.html",
+        category: "antigravity",
+        icon: "🤖",
+        desc: "Social media bot & ragebait intelligence platform with profile scanner and feed analytics.",
+        tags: ["intelligence", "detection", "security", "social"],
+        favorite: false,
+        isCustom: false,
+        clicks: 61
+      },
+      {
+        id: "app-rhcsa",
+        title: "RHCSA Linux Simulator",
+        url: "../RHCSA Exam200/RHCSA_Terminal_Practice.html",
+        category: "antigravity",
+        icon: "🐧",
+        desc: "Interactive browser Linux terminal practice environment for Red Hat Certified SysAdmin.",
+        tags: ["linux", "rhcsa", "terminal", "sysadmin"],
+        favorite: false,
+        isCustom: false,
+        clicks: 47
+      },
+      {
+        id: "app-aimodels",
+        title: "AI Tools & Studio Catalog",
+        url: "../ai models tools from threads/index.html",
+        category: "antigravity",
+        icon: "📚",
+        desc: "Curated AI models directory & Synthetix Studio dashboard curated from developer threads.",
+        tags: ["tools", "catalog", "directory", "studio"],
+        favorite: false,
+        isCustom: false,
+        clicks: 56
+      },
+      {
+        id: "app-chess",
+        title: "Chess Game Arena",
+        url: "../chess/index.html",
+        category: "antigravity",
+        icon: "♟️",
+        desc: "Clean interactive browser chess board with legal move validation and history tracker.",
+        tags: ["game", "chess", "interactive"],
+        favorite: false,
+        isCustom: false,
+        clicks: 34
+      },
+      {
+        id: "app-monopoly",
+        title: "Monopoly Deluxe",
+        url: "../monopoly/index.html",
+        category: "antigravity",
+        icon: "🎲",
+        desc: "Interactive Monopoly board with dice rolls, title deeds, bank ledger, and real estate trades.",
+        tags: ["game", "monopoly", "interactive"],
+        favorite: false,
+        isCustom: false,
+        clicks: 40
+      },
+      {
+        id: "app-screensaver",
+        title: "Cosmic Cityscape",
+        url: "../desktopscreensaver/Cosmic_Cityscape.html",
+        category: "antigravity",
+        icon: "🌌",
+        desc: "Procedural ambient canvas cityscape screensaver with dynamic seasonal weather.",
+        tags: ["ambient", "canvas", "visuals"],
+        favorite: false,
+        isCustom: false,
+        clicks: 29
+      },
+      {
+        id: "app-onestop",
+        title: "OneStop Media Server",
+        url: "../onestop/index.html",
+        category: "antigravity",
+        icon: "🎬",
+        desc: "PowerShell-backed local HTTP streaming server, screen capture viewer, and video player.",
+        tags: ["media", "streaming", "video"],
+        favorite: false,
+        isCustom: false,
+        clicks: 25
+      },
+
+      // 3. Science & Research Databases (Integrated from user's active skills)
+      {
+        id: "app-alphafold",
+        title: "AlphaFold Database",
+        url: "https://alphafold.ebi.ac.uk",
+        category: "science",
+        icon: "🧬",
+        desc: "AlphaFold predicted 3D structures, domain boundaries, and pLDDT confidence metrics.",
+        tags: ["proteins", "alphafold", "biology", "structure"],
+        favorite: true,
+        isCustom: false,
+        clicks: 65
+      },
+      {
+        id: "app-pubmed",
+        title: "PubMed / NCBI",
+        url: "https://pubmed.ncbi.nlm.nih.gov",
+        category: "science",
+        icon: "📖",
+        desc: "National Center for Biotechnology Information literature, clinical trials, and gene databases.",
+        tags: ["papers", "clinical", "ncbi", "biology"],
+        favorite: false,
+        isCustom: false,
+        clicks: 48
+      },
+      {
+        id: "app-rcsb-pdb",
+        title: "RCSB Protein Data Bank",
+        url: "https://www.rcsb.org",
+        category: "science",
+        icon: "🔬",
+        desc: "Experimentally determined 3D structures for biomolecules, nucleic acids, and ligands.",
+        tags: ["pdb", "structures", "molecules", "crystallography"],
+        favorite: false,
+        isCustom: false,
+        clicks: 37
+      },
+      {
+        id: "app-uniprot",
+        title: "UniProt Knowledgebase",
+        url: "https://www.uniprot.org",
+        category: "science",
+        icon: "🧪",
+        desc: "Comprehensive protein sequence and functional information repository across organisms.",
+        tags: ["uniprot", "sequences", "proteins", "genomics"],
+        favorite: false,
+        isCustom: false,
+        clicks: 42
+      },
+      {
+        id: "app-chembl",
+        title: "ChEMBL Drug DB",
+        url: "https://www.ebi.ac.uk/chembl",
+        category: "science",
+        icon: "💊",
+        desc: "Bioactive molecules with drug-like properties, binding affinities, targets & assays.",
+        tags: ["chembl", "chemistry", "drugs", "bioactivity"],
+        favorite: false,
+        isCustom: false,
+        clicks: 28
+      },
+      {
+        id: "app-alphagenome",
+        title: "AlphaGenome Atlas",
+        url: "https://alphagenome.org",
+        category: "science",
+        icon: "🧬",
+        desc: "Genomic variant effect predictions on expression, chromatin accessibility, and splicing.",
+        tags: ["genomics", "variants", "alphagenome", "dna"],
+        favorite: false,
+        isCustom: false,
+        clicks: 31
+      },
+      {
+        id: "app-arxiv",
+        title: "arXiv Preprints",
+        url: "https://arxiv.org",
+        category: "science",
+        icon: "📑",
+        desc: "Open-access archive for scholarly papers in computer science, AI, math, and physics.",
+        tags: ["preprints", "arxiv", "ai", "research"],
+        favorite: false,
+        isCustom: false,
+        clicks: 53
+      },
+
+      // 4. Developer & Cloud Hub
+      {
+        id: "app-github",
+        title: "GitHub",
+        url: "https://github.com",
+        category: "developer",
+        icon: "🐙",
+        desc: "Code repositories, Git version control, GitHub Actions CI/CD, and open source collaboration.",
+        tags: ["git", "code", "dev", "repos"],
+        favorite: true,
+        isCustom: false,
+        clicks: 125
+      },
+      {
+        id: "app-aws",
+        title: "AWS Console",
+        url: "https://aws.amazon.com/console",
+        category: "developer",
+        icon: "☁️",
+        desc: "Amazon Web Services cloud computing, EC2 instances, S3 buckets, and IAM security.",
+        tags: ["cloud", "aws", "infrastructure", "devops"],
+        favorite: false,
+        isCustom: false,
+        clicks: 45
+      },
+      {
+        id: "app-cloudflare",
+        title: "Cloudflare",
+        url: "https://dash.cloudflare.com",
+        category: "developer",
+        icon: "🛡️",
+        desc: "DNS management, edge workers, DDoS mitigation, and SSL/TLS web security.",
+        tags: ["dns", "security", "edge", "cdn"],
+        favorite: false,
+        isCustom: false,
+        clicks: 38
+      },
+      {
+        id: "app-devdocs",
+        title: "DevDocs API Guide",
+        url: "https://devdocs.io",
+        category: "developer",
+        icon: "📋",
+        desc: "Fast, organized, searchable offline-ready documentation for 100+ developer APIs.",
+        tags: ["docs", "api", "reference", "developer"],
+        favorite: false,
+        isCustom: false,
+        clicks: 36
+      },
+
+      // 5. Productivity
+      {
+        id: "app-gdrive",
+        title: "Google Drive",
+        url: "https://drive.google.com",
+        category: "productivity",
+        icon: "📁",
+        desc: "Cloud file storage, project folders, shared workspaces, and document sync.",
+        tags: ["cloud", "storage", "google", "files"],
+        favorite: true,
+        isCustom: false,
+        clicks: 115
+      },
+      {
+        id: "app-gmail",
+        title: "Gmail",
+        url: "https://mail.google.com",
+        category: "productivity",
+        icon: "✉️",
+        desc: "Inbox communication, alerts, scheduling, and automated filters.",
+        tags: ["mail", "communication", "google"],
+        favorite: false,
+        isCustom: false,
+        clicks: 85
+      },
+      {
+        id: "app-notion",
+        title: "Notion",
+        url: "https://notion.so",
+        category: "productivity",
+        icon: "📓",
+        desc: "Connected workspace for notes, wiki documentation, sprint boards, and project management.",
+        tags: ["notes", "wiki", "workspace", "planning"],
+        favorite: false,
+        isCustom: false,
+        clicks: 58
+      },
+
+      // 6. Entertainment & Media
+      {
+        id: "app-youtube",
+        title: "YouTube",
+        url: "https://youtube.com",
+        category: "entertainment",
+        icon: "▶️",
+        desc: "Video streaming platform for tech tutorials, gaming walkthroughs, and news.",
+        tags: ["video", "media", "gaming", "stream"],
+        favorite: true,
+        isCustom: false,
+        clicks: 130
+      },
+      {
+        id: "app-twitch",
+        title: "Twitch",
+        url: "https://twitch.tv",
+        category: "entertainment",
+        icon: "🟣",
+        desc: "Live interactive streaming community for gaming broadcasts and tech talk.",
+        tags: ["stream", "gaming", "live"],
+        favorite: false,
+        isCustom: false,
+        clicks: 42
+      },
+      {
+        id: "app-discord",
+        title: "Discord",
+        url: "https://discord.com/app",
+        category: "entertainment",
+        icon: "💬",
+        desc: "Voice channels, developer communities, gaming groups, and real-time chat.",
+        tags: ["chat", "community", "gaming", "voice"],
+        favorite: false,
+        isCustom: false,
+        clicks: 72
+      },
+      {
+        id: "app-reddit",
+        title: "Reddit",
+        url: "https://reddit.com",
+        category: "entertainment",
+        icon: "🤖",
+        desc: "Subreddits for r/LocalLLaMA, r/sysadmin, gaming mods, and technical discussions.",
+        tags: ["community", "news", "threads", "tech"],
+        favorite: false,
+        isCustom: false,
+        clicks: 66
+      },
+      {
+        id: "app-spotify",
+        title: "Spotify Web",
+        url: "https://open.spotify.com",
+        category: "entertainment",
+        icon: "🎧",
+        desc: "Music streaming for coding flow, lofi beats, podcasts, and focus audio.",
+        tags: ["music", "audio", "focus", "stream"],
+        favorite: false,
+        isCustom: false,
+        clicks: 69
+      }
+    ];
+
+    // Categories definition
+    const CATEGORIES = [
+      { id: "all", label: "All Apps", icon: "🌐" },
+      { id: "favorites", label: "Favorites", icon: "⭐" },
+      { id: "ai", label: "AI & LLMs", icon: "🧠" },
+      { id: "antigravity", label: "Antigravity Projects", icon: "⚡" },
+      { id: "science", label: "Science & Bio", icon: "🔬" },
+      { id: "developer", label: "Dev & Cloud", icon: "💻" },
+      { id: "productivity", label: "Productivity", icon: "💼" },
+      { id: "entertainment", label: "Gaming & Media", icon: "🎮" }
+    ];
+
+    // State Management
+    let apps = [];
+    let currentCategory = "all";
+    let searchQuery = "";
+    let viewMode = "grid";
+
+    // Initialize
+    function init() {
+      loadApps();
+      renderCategoryPills();
+      renderDock();
+      renderApps();
+      initClock();
+      initScratchpad();
+      initShortcuts();
+    }
+
+    // Load apps from localStorage or fall back to DEFAULT_APPS
+    function loadApps() {
+      try {
+        const stored = localStorage.getItem("nexus_apps_data");
+        if (stored) {
+          apps = JSON.parse(stored);
+        } else {
+          apps = JSON.parse(JSON.stringify(DEFAULT_APPS));
+          saveAppsToStorage();
+        }
+      } catch (e) {
+        apps = JSON.parse(JSON.stringify(DEFAULT_APPS));
+      }
+    }
+
+    function saveAppsToStorage() {
+      localStorage.setItem("nexus_apps_data", JSON.stringify(apps));
+    }
+
+    function resetDefaults() {
+      if (confirm("Reset all apps to default workspace catalog? Any custom bookmarks will be preserved if you export JSON first.")) {
+        apps = JSON.parse(JSON.stringify(DEFAULT_APPS));
+        saveAppsToStorage();
+        renderDock();
+        renderApps();
+      }
+    }
+
+    // Clock
+    function initClock() {
+      function updateClock() {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const dateStr = now.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+        const clockEl = document.getElementById("liveClock");
+        const dateEl = document.getElementById("liveDate");
+        if (clockEl) clockEl.textContent = timeStr;
+        if (dateEl) dateEl.textContent = dateStr;
+      }
+      updateClock();
+      setInterval(updateClock, 1000);
+    }
+
+    // Scratchpad
+    function initScratchpad() {
+      const saved = localStorage.getItem("nexus_scratchpad_data");
+      const textarea = document.getElementById("scratchpadText");
+      if (textarea && saved) {
+        textarea.value = saved;
+      }
+    }
+
+    function toggleScratchpad() {
+      const drawer = document.getElementById("scratchpadDrawer");
+      drawer.classList.toggle("translate-x-full");
+    }
+
+    let scratchTimeout = null;
+    function saveScratchpad() {
+      const text = document.getElementById("scratchpadText").value;
+      localStorage.setItem("nexus_scratchpad_data", text);
+      const statusEl = document.getElementById("scratchpadStatus");
+      if (statusEl) {
+        statusEl.textContent = "Saving...";
+        statusEl.className = "text-yellow-400";
+        clearTimeout(scratchTimeout);
+        scratchTimeout = setTimeout(() => {
+          statusEl.textContent = "Saved";
+          statusEl.className = "text-emerald-400";
+        }, 600);
+      }
+    }
+
+    function clearScratchpad() {
+      if (confirm("Clear your scratchpad notes?")) {
+        document.getElementById("scratchpadText").value = "";
+        localStorage.removeItem("nexus_scratchpad_data");
+        const statusEl = document.getElementById("scratchpadStatus");
+        if (statusEl) {
+          statusEl.textContent = "Cleared";
+          statusEl.className = "text-[var(--muted-foreground,#a1a1aa)]";
+        }
+      }
+    }
+
+    // Keyboard Shortcuts
+    function initShortcuts() {
+      window.addEventListener("keydown", (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+          e.preventDefault();
+          const search = document.getElementById("searchInput");
+          if (search) search.focus();
+        } else if (e.key === "/" && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA") {
+          e.preventDefault();
+          const search = document.getElementById("searchInput");
+          if (search) search.focus();
+        } else if (e.key === "Escape") {
+          closeAddModal();
+          const drawer = document.getElementById("scratchpadDrawer");
+          if (!drawer.classList.contains("translate-x-full")) {
+            drawer.classList.add("translate-x-full");
+          }
+        }
+      });
+
+      document.getElementById("searchInput").addEventListener("input", (e) => {
+        searchQuery = e.target.value.toLowerCase().trim();
+        renderApps();
+      });
+    }
+
+    function clearSearch() {
+      searchQuery = "";
+      currentCategory = "all";
+      document.getElementById("searchInput").value = "";
+      renderCategoryPills();
+      renderApps();
+    }
+
+    // View Mode Toggle
+    function setViewMode(mode) {
+      viewMode = mode;
+      const gridBtn = document.getElementById("viewGridBtn");
+      const listBtn = document.getElementById("viewListBtn");
+      const container = document.getElementById("appContainer");
+
+      if (mode === "grid") {
+        gridBtn.className = "p-1.5 rounded-md text-xs bg-indigo-600 text-white transition-all";
+        listBtn.className = "p-1.5 rounded-md text-xs text-[var(--muted-foreground,#a1a1aa)] hover:text-[var(--foreground,#f4f4f5)] transition-all";
+        container.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 transition-all";
+      } else {
+        listBtn.className = "p-1.5 rounded-md text-xs bg-indigo-600 text-white transition-all";
+        gridBtn.className = "p-1.5 rounded-md text-xs text-[var(--muted-foreground,#a1a1aa)] hover:text-[var(--foreground,#f4f4f5)] transition-all";
+        container.className = "flex flex-col gap-2.5 transition-all";
+      }
+      renderApps();
+    }
+
+    // Category Filter Pills
+    function renderCategoryPills() {
+      const container = document.getElementById("categoryPills");
+      container.innerHTML = CATEGORIES.map(cat => {
+        const isActive = currentCategory === cat.id;
+        const activeClass = isActive 
+          ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30 border-indigo-500" 
+          : "bg-[var(--card,#18181b)] text-[var(--muted-foreground,#a1a1aa)] hover:text-[var(--foreground,#f4f4f5)] border-[var(--border,#27272a)] hover:border-indigo-500/30";
+
+        return `
+          <button 
+            onclick="setCategory('${cat.id}')"
+            class="px-3 py-1.5 rounded-lg text-xs font-medium border transition-all flex items-center gap-1.5 ${activeClass}"
+          >
+            <span>${cat.icon}</span>
+            <span>${cat.label}</span>
+          </button>
+        `;
+      }).join("");
+    }
+
+    function setCategory(id) {
+      currentCategory = id;
+      renderCategoryPills();
+      renderApps();
+    }
+
+    // Dock Bar (Favorites)
+    function renderDock() {
+      const dockContainer = document.getElementById("dockContainer");
+      const favorites = apps.filter(a => a.favorite);
+
+      if (favorites.length === 0) {
+        dockContainer.innerHTML = `<span class="text-xs text-[var(--muted-foreground,#71717a)] italic">Star any app to pin it here!</span>`;
+        return;
+      }
+
+      dockContainer.innerHTML = favorites.map(app => {
+        return `
+          <a 
+            href="${app.url}" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            onclick="trackLaunch('${app.id}')"
+            title="${app.title} — ${app.desc}"
+            class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--background,#09090b)] border border-[var(--border,#27272a)] hover:border-indigo-500/50 hover:bg-indigo-500/10 text-xs text-[var(--foreground,#f4f4f5)] hover:text-indigo-300 transition-all group shrink-0"
+          >
+            <span class="text-sm group-hover:scale-110 transition-transform">${app.icon || "🔗"}</span>
+            <span class="font-medium truncate max-w-[100px] sm:max-w-none">${app.title}</span>
+          </a>
+        `;
+      }).join("");
+    }
+
+    // Filter & Render Apps
+    function renderApps() {
+      const container = document.getElementById("appContainer");
+      const emptyState = document.getElementById("emptyState");
+      const countText = document.getElementById("appCountText");
+
+      let filtered = apps.filter(app => {
+        // Category check
+        if (currentCategory === "favorites" && !app.favorite) return false;
+        if (currentCategory !== "all" && currentCategory !== "favorites" && app.category !== currentCategory) return false;
+
+        // Search check
+        if (searchQuery) {
+          const matchTitle = app.title.toLowerCase().includes(searchQuery);
+          const matchDesc = app.desc.toLowerCase().includes(searchQuery);
+          const matchUrl = app.url.toLowerCase().includes(searchQuery);
+          const matchTags = app.tags && app.tags.some(t => t.toLowerCase().includes(searchQuery));
+          return matchTitle || matchDesc || matchUrl || matchTags;
+        }
+        return true;
+      });
+
+      countText.textContent = `Showing ${filtered.length} of ${apps.length} apps`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = "";
+        emptyState.classList.remove("hidden");
+        return;
+      }
+      emptyState.classList.add("hidden");
+
+      if (viewMode === "grid") {
+        container.innerHTML = filtered.map(app => renderGridCard(app)).join("");
+      } else {
+        container.innerHTML = filtered.map(app => renderListCard(app)).join("");
+      }
+    }
+
+    function renderGridCard(app) {
+      const isLocal = app.url.startsWith(".") || app.url.startsWith("/") || app.url.includes("localhost");
+      const badgeLocal = isLocal 
+        ? `<span class="text-xs px-2 py-0.5 rounded-full font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Local App</span>`
+        : `<span class="text-xs px-2 py-0.5 rounded-full font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Web Portal</span>`;
+
+      return `
+        <div class="app-card group relative bg-[var(--card,#18181b)] border border-[var(--border,#27272a)] hover:border-indigo-500/50 rounded-xl p-4 transition-all duration-200 hover:shadow-xl hover:shadow-indigo-500/5 flex flex-col justify-between">
+          <div>
+            <!-- Card Header -->
+            <div class="flex items-start justify-between gap-2 mb-2.5">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="w-9 h-9 rounded-lg bg-[var(--background,#09090b)] border border-[var(--border,#27272a)] flex items-center justify-center text-lg shrink-0 group-hover:scale-110 transition-transform">
+                  ${app.icon || "⚡"}
+                </div>
+                <div class="min-w-0">
+                  <h3 class="text-sm font-bold text-[var(--foreground,#f4f4f5)] group-hover:text-indigo-400 transition-colors truncate">
+                    ${app.title}
+                  </h3>
+                  <div class="flex items-center gap-1.5 mt-0.5">
+                    ${badgeLocal}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action buttons -->
+              <div class="flex items-center gap-1">
+                <button 
+                  onclick="toggleFavorite(event, '${app.id}')"
+                  title="${app.favorite ? 'Remove from favorites' : 'Add to favorites'}"
+                  class="p-1.5 rounded-lg text-xs transition-colors ${app.favorite ? 'text-amber-400 hover:text-amber-300' : 'text-[var(--muted-foreground,#71717a)] hover:text-amber-400'}"
+                >
+                  <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                  </svg>
+                </button>
+                
+                ${app.isCustom ? `
+                  <button 
+                    onclick="deleteApp(event, '${app.id}')" 
+                    title="Delete custom app"
+                    class="p-1.5 rounded-lg text-xs text-[var(--muted-foreground,#71717a)] hover:text-red-400 transition-colors"
+                  >
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+
+            <!-- Description -->
+            <p class="text-xs text-[var(--muted-foreground,#a1a1aa)] leading-relaxed line-clamp-2 mb-3">
+              ${app.desc || "Quick launcher bookmark"}
+            </p>
+
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-1 mb-4">
+              ${(app.tags || []).slice(0, 3).map(t => `
+                <span class="text-xs px-2 py-0.5 rounded bg-[var(--background,#09090b)] text-[var(--muted-foreground,#a1a1aa)] border border-[var(--border,#27272a)] font-mono">
+                  #${t}
+                </span>
+              `).join("")}
+            </div>
+          </div>
+
+          <!-- Bottom Launch Bar -->
+          <div class="pt-3 border-t border-[var(--border,#27272a)] flex items-center justify-between">
+            <span class="text-xs text-[var(--muted-foreground,#71717a)] font-mono truncate max-w-[140px]" title="${app.url}">
+              ${app.url.replace(/^https?:\/\//, '')}
+            </span>
+            <a 
+              href="${app.url}" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              onclick="trackLaunch('${app.id}')"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600/10 hover:bg-indigo-600 text-indigo-400 hover:text-white text-xs font-semibold transition-all"
+            >
+              <span>Launch</span>
+              <svg class="w-3.5 h-3.5 launch-icon transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderListCard(app) {
+      return `
+        <div class="app-card group bg-[var(--card,#18181b)] border border-[var(--border,#27272a)] hover:border-indigo-500/50 rounded-xl px-4 py-2.5 transition-all flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-8 h-8 rounded-lg bg-[var(--background,#09090b)] border border-[var(--border,#27272a)] flex items-center justify-center text-base shrink-0">
+              ${app.icon || "⚡"}
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-center gap-2">
+                <h3 class="text-xs sm:text-sm font-bold text-[var(--foreground,#f4f4f5)] group-hover:text-indigo-400 transition-colors truncate">
+                  ${app.title}
+                </h3>
+                <span class="text-xs text-[var(--muted-foreground,#71717a)] font-mono hidden md:inline truncate max-w-[200px]">
+                  (${app.url})
+                </span>
+              </div>
+              <p class="text-xs text-[var(--muted-foreground,#a1a1aa)] truncate max-w-md hidden sm:block">
+                ${app.desc || ""}
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 shrink-0">
+            <button 
+              onclick="toggleFavorite(event, '${app.id}')"
+              class="p-1.5 rounded-lg text-xs transition-colors ${app.favorite ? 'text-amber-400' : 'text-[var(--muted-foreground,#71717a)] hover:text-amber-400'}"
+            >
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+              </svg>
+            </button>
+            <a 
+              href="${app.url}" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              onclick="trackLaunch('${app.id}')"
+              class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow transition-all"
+            >
+              <span>Open</span>
+              <svg class="w-3 h-3 launch-icon transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      `;
+    }
+
+    // Toggle Favorite
+    function toggleFavorite(e, id) {
+      e.stopPropagation();
+      e.preventDefault();
+      const app = apps.find(a => a.id === id);
+      if (app) {
+        app.favorite = !app.favorite;
+        saveAppsToStorage();
+        renderDock();
+        renderApps();
+      }
+    }
+
+    // Track launch click
+    function trackLaunch(id) {
+      const app = apps.find(a => a.id === id);
+      if (app) {
+        app.clicks = (app.clicks || 0) + 1;
+        saveAppsToStorage();
+      }
+    }
+
+    // Add Modal Handlers
+    function openAddModal() {
+      document.getElementById("addAppForm").reset();
+      document.getElementById("editAppId").value = "";
+      document.getElementById("addModal").classList.remove("hidden");
+      document.getElementById("formTitle").focus();
+    }
+
+    function closeAddModal() {
+      document.getElementById("addModal").classList.add("hidden");
+    }
+
+    function handleSaveApp(e) {
+      e.preventDefault();
+      const title = document.getElementById("formTitle").value.trim();
+      const url = document.getElementById("formUrl").value.trim();
+      const category = document.getElementById("formCategory").value;
+      const icon = document.getElementById("formIcon").value.trim() || "🚀";
+      const tagsStr = document.getElementById("formTags").value.trim();
+      const desc = document.getElementById("formDesc").value.trim();
+
+      const tags = tagsStr ? tagsStr.split(",").map(t => t.trim()).filter(Boolean) : ["custom"];
+
+      const newApp = {
+        id: "custom-" + Date.now(),
+        title,
+        url,
+        category,
+        icon,
+        desc: desc || "Custom user application shortcut",
+        tags,
+        favorite: true,
+        isCustom: true,
+        clicks: 1
+      };
+
+      apps.unshift(newApp);
+      saveAppsToStorage();
+      closeAddModal();
+      renderDock();
+      renderApps();
+    }
+
+    function deleteApp(e, id) {
+      e.stopPropagation();
+      e.preventDefault();
+      if (confirm("Delete this custom application bookmark?")) {
+        apps = apps.filter(a => a.id !== id);
+        saveAppsToStorage();
+        renderDock();
+        renderApps();
+      }
+    }
+
+    // Export & Import
+    function exportData() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(apps, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "nexus_hub_backup.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function importData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (Array.isArray(imported)) {
+            apps = imported;
+            saveAppsToStorage();
+            renderDock();
+            renderApps();
+            alert("Apps imported successfully!");
+          } else {
+            alert("Invalid JSON format. Expected an array of apps.");
+          }
+        } catch (err) {
+          alert("Error parsing JSON file.");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // Start
+    init();
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,18 @@
+﻿========================================================================
+PROJECT: agent 365
+CATEGORY: 03_AI_and_Agent_Systems
+DESCRIPTION: Autonomous Enterprise 365 AI Workflow Engine
+========================================================================
+
+Original Project Directory:
+G:\My Drive\Antigravity\Projects\agent 365\agent365\web
+
+Original Index File:
+G:\My Drive\Antigravity\Projects\agent 365\agent365\web\index.html
+
+How to Open in Antigravity:
+1. In Antigravity / VS Code: Click File -> Open Folder...
+2. Paste this path: G:\My Drive\Antigravity\Projects\agent 365\agent365\web
+3. Press Enter
+
+Or launch directly in browser using: Launch_Original_Index.url

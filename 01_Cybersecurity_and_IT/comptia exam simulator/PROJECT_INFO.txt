@@ -1,0 +1,18 @@
+﻿========================================================================
+PROJECT: comptia exam simulator
+CATEGORY: 01_Cybersecurity_and_IT
+DESCRIPTION: CompTIA Certification Practice Engine & Exam Simulator
+========================================================================
+
+Original Project Directory:
+G:\My Drive\Antigravity\Projects\comptia exam simulator
+
+Original Index File:
+G:\My Drive\Antigravity\Projects\comptia exam simulator\index.html
+
+How to Open in Antigravity:
+1. In Antigravity / VS Code: Click File -> Open Folder...
+2. Paste this path: G:\My Drive\Antigravity\Projects\comptia exam simulator
+3. Press Enter
+
+Or launch directly in browser using: Launch_Original_Index.url

@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antigravity Command & Monetization Engine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="cosmic-background.js"></script>
+    <link rel="stylesheet" href="high-gloss-lacquer.css">
+    <script src="high-gloss-lacquer.js"></script>
+    <style>
+        :root {
+            /* High-Gloss Lacquer Brand Colors — Navy Blue (#050B18 to #0E1D3A) & Tan (#C5A059 to #DFBA73) */
+            --c-navy: #0E1D3A;
+            --c-navy-deep: #050B18;
+            --c-navy-light: #16284D;
+            --c-tan: #C5A059;
+            --c-tan-bright: #DFBA73;
+            --c-tan-glow: rgba(197, 160, 89, 0.3);
+
+            --bg-primary: #050B18;
+            --bg-card: #0E1D3A;
+            --bg-card-hover: #16284D;
+            --border: rgba(197, 160, 89, 0.28);
+            --border-highlight: #DFBA73;
+            --text-main: #f0f4f8;
+            --text-muted: #94a3b8;
+            --text-tan: #DFBA73;
+            --accent-blue: #C8A96E;
+            --accent-cyan: #06b6d4;
+            --accent-emerald: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-purple: #8b5cf6;
+            --accent-rose: #f43f5e;
+            --gradient-blue: linear-gradient(135deg, #1B2A4A 0%, #C8A96E 100%);
+            --gradient-gold: linear-gradient(135deg, #C8A96E 0%, #dfc288 100%);
+            --gradient-purple: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            --gradient-emerald: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            background-color: transparent;
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 0;
+            margin: 0;
+            overflow-x: hidden;
+            display: flex;
+        }
+
+        /* Left-Side Navigation Panel */
+        .header {
+            width: 290px;
+            min-width: 290px;
+            max-width: 290px;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: linear-gradient(180deg, #0E1D3A 0%, rgba(11, 22, 44, 0.98) 45%, rgba(5, 11, 24, 0.99) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(197, 160, 89, 0.28);
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 8px 0 32px -4px rgba(2, 6, 18, 0.85);
+            padding: 1.5rem 1.25rem;
+            margin: 0;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .container {
+            flex: 1;
+            min-width: 0;
+            padding: 2rem 2.5rem;
+            max-width: 1500px;
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand-logo {
+            width: 52px;
+            height: 52px;
+            background: var(--gradient-blue);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            box-shadow: 0 0 24px rgba(59, 130, 246, 0.4);
+        }
+
+        .brand-title h1 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-title p {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stats-strip {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .stat-badge {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            padding: 10px 18px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-badge span:first-child {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-badge span:last-child {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 28px;
+        }
+
+        @media (max-width: 1100px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Pillars & Project Grid */
+        .pillar-group {
+            margin-bottom: 36px;
+        }
+
+        .pillar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .pillar-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .badge-b2b { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .badge-edtech { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+        .badge-saas { background: rgba(139, 92, 246, 0.15); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.3); }
+        .badge-creative { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: transparent;
+            transition: background 0.2s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(200, 169, 110, 0.75);
+            background: var(--bg-card-hover);
+            box-shadow: 0 14px 44px rgba(27, 42, 74, 0.5), 0 0 20px rgba(200, 169, 110, 0.2);
+        }
+
+        .card-b2b:hover::before { background: var(--accent-emerald); }
+        .card-edtech:hover::before { background: var(--accent-blue); }
+        .card-saas:hover::before { background: var(--accent-purple); }
+        .card-creative:hover::before { background: var(--accent-amber); }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .project-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .readiness-tag {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .tag-ready { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .tag-near { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        .tag-dev { background: rgba(148, 163, 184, 0.2); color: #cbd5e1; }
+
+        .project-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 16px;
+            flex-grow: 1;
+        }
+
+        .project-meta {
+            font-size: 11px;
+            color: #64748b;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 16px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .revenue-potential {
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn {
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--border);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #3b82f6;
+        }
+
+        /* Sidebar Control Center */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .sidebar-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .sidebar-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #fff;
+        }
+
+        /* Revenue Calculator */
+        .calc-group {
+            margin-bottom: 16px;
+        }
+
+        .calc-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .calc-value {
+            font-weight: 700;
+            color: var(--accent-cyan);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: #1f293d;
+            border-radius: 4px;
+            outline: none;
+            accent-color: #3b82f6;
+        }
+
+        .calc-total-box {
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            margin-top: 18px;
+        }
+
+        .calc-total-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+        }
+
+        .calc-total-amount {
+            font-size: 28px;
+            font-weight: 800;
+            color: #34d399;
+            font-family: 'JetBrains Mono', monospace;
+            margin: 4px 0;
+        }
+
+        .calc-annual {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        /* Quick Action Links */
+        .quick-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quick-links a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .quick-links a:hover {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .quick-links a span:last-child {
+            color: var(--text-muted);
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Footer */
+        .footer {
+            max-width: 1440px;
+            margin: 40px auto 0;
+            text-align: center;
+            font-size: 12px;
+            color: #64748b;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+    </style>
+    <link rel="stylesheet" href="../deploy/antigravity-auth.css">
+    <script src="../deploy/antigravity-auth.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <script src="mcp-baseline.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="aws-enterprise-baseline.css">
+  <script src="aws-enterprise-baseline.js"></script>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="header">
+        <div class="brand-section">
+            <div class="brand-logo">⚡</div>
+            <div class="brand-title">
+                <h1>Antigravity Central Command & Monetization Engine</h1>
+                <p>Thread ID: synergize and pay • Path: /mydrive/antigravity/projects • <span style="color: #f59e0b; font-weight: bold;">🔒 CONFIDENTIAL</span></p>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 14px; width: 100%;">
+            <div class="stats-strip" style="display: flex; flex-direction: column; width: 100%; gap: 8px;">
+                <div class="stat-badge">
+                    <span>Active Projects</span>
+                    <span>14</span>
+                </div>
+                <div class="stat-badge">
+                    <span>Sales-Ready Now</span>
+                    <span style="color: #34d399;">5 Projects</span>
+                </div>
+                <div class="stat-badge">
+                    <span>Target MRR</span>
+                    <span style="color: #fbbf24;">$10,000+</span>
+                </div>
+            </div>
+
+            <div class="sidebar-section-title" style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #DFBA73; margin-top: 0.5rem;">ECOSYSTEM</div>
+            <nav style="display: flex; flex-direction: column; gap: 0.4rem; width: 100%;">
+                <a href="../deploy/index.html" class="sidebar-link" style="color: #94A3B8; text-decoration: none; padding: 0.6rem 0.8rem; border-radius: 8px; font-weight: 600; display: flex; align-items: center; gap: 0.6rem;">
+                    <span>🚀</span> Deploy Hub
+                </a>
+                <a href="../Choogle/hub.html" class="sidebar-link" style="color: #94A3B8; text-decoration: none; padding: 0.6rem 0.8rem; border-radius: 8px; font-weight: 600; display: flex; align-items: center; gap: 0.6rem;">
+                    <span>⚡</span> Choogle Hub
+                </a>
+                <a href="../deploy/lacquer.html" class="sidebar-link" style="color: #DFBA73; text-decoration: none; padding: 0.6rem 0.8rem; border-radius: 8px; font-weight: 600; display: flex; align-items: center; gap: 0.6rem;">
+                    <span>✨</span> Lacquer Studio
+                </a>
+            </nav>
+
+            <div id="antigravity-auth-badge-container"></div>
+        </div>
+    </header>
+
+    <!-- Confidential Security Gate -->
+    <div id="synergy-security-shield"></div>
+
+    <!-- Main Protected Workspace Layout -->
+    <div id="synergy-protected-app" style="display: none;">
+    <main class="container">
+
+        <!-- Left Column: The 3 Monetization Pillars -->
+        <div class="projects-section">
+
+            <!-- PILLAR 1: B2B High-Ticket Agency -->
+            <div class="pillar-group">
+                <div class="pillar-header">
+                    <div class="pillar-badge badge-b2b">💼 Pillar 1: B2B High-Ticket Cashflow ($1,500 - $3,500 Setup + $500/mo)</div>
+                </div>
+                <div class="projects-grid">
+                    <!-- Project 1 -->
+                    <div class="project-card card-b2b">
+                        <div>
+                            <div class="card-top">
+                                <div class="project-name">⚡ Ingestion & Reconcile</div>
+                                <span class="readiness-tag tag-ready">95% READY</span>
+                            </div>
+                            <p class="project-desc">
+                                Automated document ingestion & reconciliation engine for HVAC, logistics, and medical clinics. Flags math errors, vendor overcharges, and pushes clean records to QuickBooks.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="project-meta">
+                                <span>FastAPI • SQLite • PDF/CSV</span>
+                                <span class="revenue-potential">$1.5k–$3k setup + $500/mo</span>
+                            </div>
+                            <div class="card-actions">
+                                <a href="../using ai agents for profit/CLIENT_PITCH_PLAYBOOK.md" class="btn btn-primary">📖 Pitch Playbook</a>
+                                <a href="../using ai agents for profit/README.md" class="btn btn-outline">🚀 Run Demo</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2 -->
+                    <div class="project-card card-b2b">
+                        <div>
+                            <div class="card-top">
+                                <div class="project-name">🛡️ VulnGuard Enterprise</div>
+                                <span class="readiness-tag tag-ready">90% READY</span>
+                            </div>
+                            <p class="project-desc">
+                                Enterprise attack surface & vulnerability manager. Live network socket probers, CVE threat intel (CISA KEV), SLA enforcement, and SOC 2 / PCI-DSS compliance reporting.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="project-meta">
+                                <span>ASP.NET Core • .NET 10 • SQLite</span>
+                                <span class="revenue-potential">$499–$999/mo MSP Retainer</span>
+                            </div>
+                            <div class="card-actions">
+                                <a href="../vulnerability management/README.md" class="btn btn-primary">📖 Docs & Run</a>
+                                <a href="../vulnerability management/Program.cs" class="btn btn-outline">💻 Inspect Code</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3 -->
+                    <div class="project-card card-b2b">
+                        <div>
+                            <div class="card-top">
+                                <div class="project-name">🔒 MY Security</div>
+                                <span class="readiness-tag tag-dev">70% IN DEV</span>
+                            </div>
+                            <p class="project-desc">
+                                Local endpoint security and PowerShell status auditing daemon. Pairs directly with VulnGuard to provide full internal host posture telemetry for SMB clients.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="project-meta">
+                                <span>C# • PowerShell</span>
+                                <span class="revenue-potential">Agent Add-on for VulnGuard</span>
+                            </div>
+                            <div class="card-actions">
+                                <a href="../MY Security/Program.cs" class="btn btn-outline">💻 View Agent</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PILLAR 2: EdTech & Digital Exam Simulators -->
+            <div class="pillar-group">
+                <div class="pillar-header">
+                    <div class="pillar-badge badge-edtech">🎓 Pillar 2: High-Margin EdTech & Cert Mastery ($29 - $49 / Sale)</div>
+                </div>
+                <div class="projects-grid">
+                    <!-- Project 4 -->
+                    <div class="project-card card-edtech">
+                        <div>
+                            <div class="card-top">
+                                <div class="project-name">🛡️ CompTIA Security+ Sim</div>
+                                <span class="readiness-tag tag-ready">95% READY</span>
+                            </div>
+                            <p class="project-desc">
+                                Pearson VUE-grade simulator with 450 exam questions, 8 interactive PBQ labs (Linux, Nmap, ACL, SIEM), voice audio cheat sheet engine, flashcards, and pre-packaged ZIP bundles.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="project-meta">
+                                <span>Web App • 8 PBQ Labs • Audio TTS</span>
+                                <span class="revenue-potential">$29–$49 One-Time / $19/mo</span>
+                            </div>
+                            <div class="card-actions">
+                                <a href="../comptia exam simulator/index.html" target="_blank" class="btn btn-primary">▶ Launch Simulator</a>
+                                <a href="../comptia exam simulator/README.md" class="btn btn-outline">📦 View Bundles</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 5 -->
+                    <div class="project-card card-edtech">
+                        <div>
+                            <div class="card-top">
+                                <div class="project-name">🐧 RHCSA EX200 Kit</div>
+                                <span class="readiness-tag tag-ready">90% READY</span>
+                            </div>
+                            <p class="project-desc">
+                                Interactive browser terminal for Red Hat Certified System Administrator on RHEL 9. Includes 20 practice scenarios, 18-task 300-point mock exam, and grading rubrics.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="project-meta">
+                                <span>Interactive Terminal • RHEL 9</span>
+                                <span class="revenue-potential">$39 Kit / $69 Dual-Bundle</span>
+                            </div>
+                            <div class="card-actions">
+                                <a href="../RHCSA Exam200/RHCSA_Terminal_Practice.html" target="_blank" class="btn btn-primary">▶ Launch Terminal</a>
+                                <a href="../RHCSA Exam200/README.md" class="btn btn-outline">📖 Exam Guide</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 6 -->
+                    <div class="project-card card-edtech">
+                        <div>
+                            <div class="card-top">
+                                <div class="project-name">🔍 Choogle IT Hub</div>
+                                <span class="readiness-tag tag-ready">75% TRAFFIC</span>
+                            </div>
+                            <p class="project-desc">
+                                Central cheat sheet portal and IT intranet hub covering RHCSA, CCNA, VMware, PowerShell, and outages. Serves as the free organic traffic funnel to your paid simulators.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="project-meta">
+                                <span>HTML5 • Multi-Tool Intranet</span>
+                                <span class="revenue-potential">Organic Lead Magnet Engine</span>
+                            </div>
+                            <div class="card-actions">
+                                <a href="../Choogle/index.html" target="_blank" class="btn btn-primary">🌐 Open Choogle</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 7 -->
+                    <div class="project-card card-edtech">
+                        <div>
+                            <div class="card-top">
+                                <div class="project-name">🍎 1st Grade Learning</div>
+                                <span class="readiness-tag tag-dev">70% IN DEV</span>
+                            </div>
+                            <p class="project-desc">
+                                Educational web app with typing mechanics, letter mastery, and foundational practice for young learners. Excellent for Teachers Pay Teachers / parent subscriptions.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="project-meta">
+                                <span>HTML5 • Typing Engine</span>
+                                <span class="revenue-potential">$4.99/mo / $15 TPT Bundle</span>
+                            </div>
+                            <div class="card-actions">
+                                <a href="../1st grade learning/index.html" target="_blank" class="btn btn-outline">▶ Play App</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PILLAR 3: Micro-SaaS & Desktop Apps -->
+            <div class="pillar-group">
+                <div class="pillar-header">
+                    <div class="pillar-badge badge-saas">🤖 Pillar 3: Micro-SaaS & Desktop Software ($4.99 - $9.99/mo)</div>
+                </div>
+                <div class="projects-grid">
+                    <!-- Project 8 -->
+                    <div class="project-card card-saas">
+                        <div>
+                            <div class="card-top">
+                                <div class="project-name">🤖 BotFinder & RageShield</div>
+                                <span class="readiness-tag tag-near">80% READY</span>
+                            </div>
+                            <p class="project-desc">
+                                Real-time AI bot network & ragebait detection suite. Manifest V3 Chrome extension with circadian sleep-curve analysis and handle entropy evaluation for X & Reddit.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="project-meta">
+                                <span>FastAPI • Chrome MV3 • Tailwind</span>
+                                <span class="revenue-potential">$7.99/mo Pro / $49/mo API</span>
+                            </div>
+                            <div class="card-actions">
+                                <a href="../bot finder/README.md" class="btn btn-primary">📖 Setup Guide</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 9 -->
+                    <div class="project-card card-saas">
+                        <div>
+                            <div class="card-top">
+                                <div class="project-name">🎧 Kindle Voice Narrator</div>
+                                <span class="readiness-tag tag-ready">85% READY</span>
+                            </div>
+                            <p class="project-desc">
+                                Assistive screen reader & AI study companion. Links to Kindle, highlights sentences in real time, auto-turns pages, and generates executive Markdown notes.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="project-meta">
+                                <span>Python • Edge-TTS • WinOCR</span>
+                                <span class="revenue-potential">$24.99 Lifetime / $4.99/mo</span>
+                            </div>
+                            <div class="card-actions">
+                                <a href="../screen reader/README.md" class="btn btn-primary">📖 Documentation</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 10 -->
+                    <div class="project-card card-creative">
+                        <div>
+                            <div class="card-top">
+                                <div class="project-name">🌆 Cosmic Cityscape</div>
+                                <span class="readiness-tag tag-ready">85% READY</span>
+                            </div>
+                            <p class="project-desc">
+                                Generative HTML5 canvas ambient screensavers featuring dynamic weather particles across Rain, Spring, Summer, Autumn, and Winter seasons.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="project-meta">
+                                <span>Canvas • Particle Physics</span>
+                                <span class="revenue-potential">Steam / Wallpaper Engine ($2.99)</span>
+                            </div>
+                            <div class="card-actions">
+                                <a href="../desktopscreensaver/Cosmic_Cityscape.html" target="_blank" class="btn btn-primary">✨ View Ambient</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Central Command, Revenue Model & Quick Actions -->
+        <aside class="sidebar">
+
+            <!-- Real-time Revenue Model Simulator -->
+            <div class="sidebar-card">
+                <div class="sidebar-title">
+                    <span>💵</span> Revenue Goal Simulator
+                </div>
+                
+                <div class="calc-group">
+                    <div class="calc-label">
+                        <span>B2B Reconciliation Clients ($500/mo)</span>
+                        <span class="calc-value" id="val-b2b">4 clients</span>
+                    </div>
+                    <input type="range" id="input-b2b" min="0" max="20" value="4">
+                </div>
+
+                <div class="calc-group">
+                    <div class="calc-label">
+                        <span>VulnGuard MSP Retainers ($650/mo)</span>
+                        <span class="calc-value" id="val-msp">3 clients</span>
+                    </div>
+                    <input type="range" id="input-msp" min="0" max="15" value="3">
+                </div>
+
+                <div class="calc-group">
+                    <div class="calc-label">
+                        <span>Security+ / RHCSA Sim Sales/mo ($39)</span>
+                        <span class="calc-value" id="val-exams">80 sales</span>
+                    </div>
+                    <input type="range" id="input-exams" min="0" max="500" value="80" step="10">
+                </div>
+
+                <div class="calc-group">
+                    <div class="calc-label">
+                        <span>RageShield / Narrator Subs ($7.99/mo)</span>
+                        <span class="calc-value" id="val-subs">120 users</span>
+                    </div>
+                    <input type="range" id="input-subs" min="0" max="1000" value="120" step="10">
+                </div>
+
+                <div class="calc-total-box">
+                    <div class="calc-total-label">Projected Monthly Recurring</div>
+                    <div class="calc-total-amount" id="total-monthly">$8,028</div>
+                    <div class="calc-annual" id="total-annual">≈ $96,336 / year</div>
+                </div>
+            </div>
+
+            <!-- Central Operations Links -->
+            <div class="sidebar-card">
+                <div class="sidebar-title">
+                    <span>⚡</span> Project Management Hub
+                </div>
+                <ul class="quick-links">
+                    <li>
+                        <a href="PORTFOLIO_MANIFEST.md">
+                            <span>📋 Master Project Manifest</span>
+                            <span>View Specs</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="MONETIZATION_BLUEPRINT.md">
+                            <span>💰 30-Day Monetization Blueprint</span>
+                            <span>View Playbook</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../using ai agents for profit/CLIENT_PITCH_PLAYBOOK.md">
+                            <span>🎯 B2B Sales Pitch & Scripts</span>
+                            <span>Sales Script</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../comptia exam simulator/index.html" target="_blank">
+                            <span>🛡️ Live Security+ Simulator</span>
+                            <span>Open App</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../RHCSA Exam200/RHCSA_Terminal_Practice.html" target="_blank">
+                            <span>🐧 Live RHCSA Web Terminal</span>
+                            <span>Open App</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../Choogle/index.html" target="_blank">
+                            <span>🌐 Choogle Central Portal</span>
+                            <span>Open Hub</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Immediate Action Items -->
+            <div class="sidebar-card" style="border-color: rgba(59, 130, 246, 0.4);">
+                <div class="sidebar-title" style="color: #60a5fa;">
+                    <span>🎯</span> Immediate Money Actions
+                </div>
+                <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+                    <p style="margin-bottom: 8px;"><strong>1. Launch CompTIA Store</strong>: Zip the simulator and list on Gumroad/Whop at $39.</p>
+                    <p style="margin-bottom: 8px;"><strong>2. Send 20 Cold InMails</strong>: Target local HVAC/Logistics operations managers with the 3-minute demo script.</p>
+                    <p><strong>3. Publish Choogle with Sim Banners</strong>: Funnel free traffic directly to your high-margin checkout.</p>
+                </div>
+            </div>
+
+        </aside>
+
+    </main>
+
+    <footer class="footer">
+        <p>Antigravity Project Operating System • Managed via Central Thread: <code>synergize and pay</code> • 🔒 Internal Confidential</p>
+    </footer>
+    </div> <!-- End synergy-protected-app -->
+
+    <script>
+        // Security Access Guard for Private Monetization Work
+        function checkSynergyAccess() {
+            const auth = window.antigravityAuth;
+            const isOwnerOrAdmin = auth && auth.isAdmin();
+            const appEl = document.getElementById('synergy-protected-app');
+            const shieldEl = document.getElementById('synergy-security-shield');
+            if (!appEl || !shieldEl) return;
+
+            if (isOwnerOrAdmin) {
+                appEl.style.display = 'block';
+                shieldEl.style.display = 'none';
+            } else {
+                appEl.style.display = 'none';
+                shieldEl.style.display = 'block';
+                shieldEl.innerHTML = `
+                    <div class="agy-security-shield">
+                        <div class="agy-shield-icon">🔒</div>
+                        <h2>Confidential Internal Asset — Restricted Access</h2>
+                        <p>
+                            <strong>Project Synergy & Monetization Blueprint</strong> contains proprietary pricing strategies, financial projections, client retainer frameworks, and internal valuation manifests.
+                            <br><br>
+                            This is private internal work and is protected from unauthorized or public view. Please sign in with an authorized Google Owner or Administrator account.
+                        </p>
+                        <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+                            <button class="agy-btn-signin" onclick="antigravityAuth.openAuthModal()">
+                                <svg class="agy-google-icon" viewBox="0 0 24 24" width="16" height="16">
+                                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                                </svg>
+                                Authenticate with Google
+                            </button>
+                            <a href="../deploy/index.html" class="btn btn-outline" style="padding: 8px 16px; border-radius: 9999px; text-decoration: none; color: #cbd5e1; border: 1px solid #334155; font-size: 13px; display: inline-flex; align-items: center;">
+                                &larr; Return to Deployment Hub
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        if (window.antigravityAuth) {
+            window.antigravityAuth.onAuthStateChanged(() => {
+                checkSynergyAccess();
+            });
+        } else {
+            document.addEventListener('DOMContentLoaded', checkSynergyAccess);
+        }
+
+        // Interactive Revenue Calculator Logic
+        const inputB2B = document.getElementById('input-b2b');
+        const inputMSP = document.getElementById('input-msp');
+        const inputExams = document.getElementById('input-exams');
+        const inputSubs = document.getElementById('input-subs');
+
+        const valB2B = document.getElementById('val-b2b');
+        const valMSP = document.getElementById('val-msp');
+        const valExams = document.getElementById('val-exams');
+        const valSubs = document.getElementById('val-subs');
+
+        const totalMonthly = document.getElementById('total-monthly');
+        const totalAnnual = document.getElementById('total-annual');
+
+        function recalculate() {
+            if (!inputB2B) return;
+            const b2bCount = parseInt(inputB2B.value, 10);
+            const mspCount = parseInt(inputMSP.value, 10);
+            const examsCount = parseInt(inputExams.value, 10);
+            const subsCount = parseInt(inputSubs.value, 10);
+
+            valB2B.textContent = `${b2bCount} clients`;
+            valMSP.textContent = `${mspCount} clients`;
+            valExams.textContent = `${examsCount} sales`;
+            valSubs.textContent = `${subsCount} users`;
+
+            const monthly = (b2bCount * 500) + (mspCount * 650) + (examsCount * 39) + (subsCount * 7.99);
+            const annual = monthly * 12;
+
+            totalMonthly.textContent = `$${Math.round(monthly).toLocaleString()}`;
+            totalAnnual.textContent = `≈ $${Math.round(annual).toLocaleString()} / year`;
+        }
+
+        if (inputB2B) {
+            inputB2B.addEventListener('input', recalculate);
+            inputMSP.addEventListener('input', recalculate);
+            inputExams.addEventListener('input', recalculate);
+            inputSubs.addEventListener('input', recalculate);
+            recalculate();
+        }
+    </script>
+</body>
+</html>

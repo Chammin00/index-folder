@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BotFinder & RageShield | Social Media Bot & Ragebait Detector</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="cosmic-background.js"></script>
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <script src="high-gloss-lacquer.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    :root {
+      /* High-Gloss Lacquer Brand Colors — Navy Blue (#050B18 to #0E1D3A) & Tan (#C5A059 to #DFBA73) */
+      --c-navy: #0E1D3A;
+      --c-navy-deep: #050B18;
+      --c-navy-light: #16284D;
+      --c-tan: #C5A059;
+      --c-tan-bright: #DFBA73;
+      --c-tan-glow: rgba(197, 160, 89, 0.3);
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #050B18;
+      color: #f0f4f8;
+    }
+    .glass-panel {
+      background: rgba(20, 30, 48, 0.82);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(200, 169, 110, 0.22);
+      border-radius: 14px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 16px rgba(200, 169, 110, 0.08);
+      transition: all 0.2s ease;
+    }
+    .glass-panel:hover {
+      border-color: rgba(200, 169, 110, 0.7);
+      box-shadow: 0 12px 36px rgba(27, 42, 74, 0.5), 0 0 20px rgba(200, 169, 110, 0.18);
+    }
+    .glow-red {
+      box-shadow: 0 0 25px -5px rgba(239, 68, 68, 0.25);
+    }
+    .glow-blue {
+      box-shadow: 0 0 25px -5px rgba(200, 169, 110, 0.35);
+    }
+  </style>
+
+  <!-- Antigravity Baseline Integration -->
+  <script src="mcp-baseline.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="aws-enterprise-baseline.css">
+  <script src="aws-enterprise-baseline.js"></script>
+</head>
+<body class="app-shell min-h-screen flex flex-row">
+
+  <!-- ==================== LEFT NAVIGATION PANEL ==================== -->
+  <aside class="left-panel" style="width: 280px; min-width: 280px; height: 100vh; position: sticky; top: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 1.5rem 1rem; z-index: 100; overflow-y: auto;">
+    <div>
+      <div class="flex items-center gap-3 pb-5 mb-5 border-b border-zinc-800/80">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20 flex-shrink-0">
+          <i class="fa-solid fa-shield-halved text-white text-lg"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-base tracking-tight bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">BotFinder & RageShield</h1>
+          <span class="text-xs px-2 py-0.5 rounded-full font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">v1.0 Live</span>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="sidebar-section-title" style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #DFBA73; margin-bottom: 0.5rem;">INTELLIGENCE MODES</div>
+      <div class="flex flex-col gap-1.5 mb-6">
+        <button id="tab-feed" class="tab-btn sidebar-nav-item active flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg text-xs font-semibold bg-blue-600 text-white shadow-sm transition w-full text-left">
+          <i class="fa-solid fa-satellite-dish"></i>
+          <span>Live Feed Auto-Scan</span>
+        </button>
+        <button id="tab-inspector" class="tab-btn sidebar-nav-item flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-zinc-400 hover:text-white transition w-full text-left">
+          <i class="fa-solid fa-user-secret"></i>
+          <span>Profile Deep Scan</span>
+        </button>
+        <button id="tab-text" class="tab-btn sidebar-nav-item flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg text-xs font-semibold text-zinc-400 hover:text-white transition w-full text-left">
+          <i class="fa-solid fa-bolt"></i>
+          <span>Ragebait Text Analyzer</span>
+        </button>
+      </div>
+
+      <!-- Ecosystem Links -->
+      <div class="sidebar-section-title" style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #DFBA73; margin-bottom: 0.5rem;">ECOSYSTEM</div>
+      <nav class="flex flex-col gap-1">
+        <a href="../../deploy/index.html" class="flex items-center gap-2 px-3 py-2 text-zinc-400 hover:text-white hover:bg-zinc-800/60 rounded-lg text-xs font-medium transition">
+          <span>🚀</span>
+          <span>Deploy Hub</span>
+        </a>
+        <a href="../../Choogle/hub.html" class="flex items-center gap-2 px-3 py-2 text-zinc-400 hover:text-white hover:bg-zinc-800/60 rounded-lg text-xs font-medium transition">
+          <span>⚡</span>
+          <span>Choogle Hub</span>
+        </a>
+        <a href="../../deploy/lacquer.html" class="flex items-center gap-2 px-3 py-2 text-amber-300 hover:text-white hover:bg-zinc-800/60 rounded-lg text-xs font-medium transition">
+          <span>✨</span>
+          <span>Lacquer Studio</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="pt-4 border-t border-zinc-800 text-center">
+      <p class="text-xs text-zinc-500">Real-Time Bot & Ragebait Radar</p>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="main-viewport flex-1 max-w-7xl w-full mx-auto p-6 overflow-y-auto">
+
+    <!-- VIEW 1: LIVE FEED AUTO-SCAN SIMULATOR -->
+    <section id="view-feed" class="space-y-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 glass-panel p-5 rounded-2xl">
+        <div>
+          <h2 class="text-base font-bold text-white flex items-center gap-2">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            Simulated Feed & On-Screen Scanner
+          </h2>
+          <p class="text-xs text-zinc-400 mt-0.5">Scroll through posts below to watch the detector analyze author handles and content in real-time (< 50ms).</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <button id="btn-add-bot" class="text-xs px-3.5 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 font-medium text-zinc-300 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-robot text-red-400"></i> Inject Bot Post
+          </button>
+          <button id="btn-scan-all" class="text-xs px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 font-bold text-white shadow-lg shadow-blue-600/20 transition flex items-center gap-1.5">
+            <i class="fa-solid fa-bolt"></i> Scan Viewport
+          </button>
+        </div>
+      </div>
+
+      <!-- Feed Container -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Feed Column (2 cols) -->
+        <div class="lg:col-span-2 space-y-4" id="feed-container">
+          <!-- Feed items injected dynamically via app.js -->
+        </div>
+
+        <!-- Live Intelligence Summary Sidebar (1 col) -->
+        <div class="space-y-4">
+          <div class="glass-panel p-5 rounded-2xl space-y-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400 flex items-center justify-between">
+              <span>Feed Protection Metrics</span>
+              <i class="fa-solid fa-chart-simple text-blue-400"></i>
+            </h3>
+            
+            <div class="grid grid-cols-2 gap-3">
+              <div class="bg-zinc-900/90 p-3.5 rounded-xl border border-zinc-800/80">
+                <div class="text-2xl font-black text-white" id="stat-scanned">4</div>
+                <div class="text-[11px] text-zinc-400 mt-1">Posts Ingested</div>
+              </div>
+              <div class="bg-zinc-900/90 p-3.5 rounded-xl border border-zinc-800/80">
+                <div class="text-2xl font-black text-red-400" id="stat-threats">2</div>
+                <div class="text-[11px] text-zinc-400 mt-1">High Risk Detected</div>
+              </div>
+            </div>
+
+            <div class="space-y-2 pt-2 border-t border-zinc-800/80">
+              <div class="text-xs font-semibold text-zinc-300">Active Detection Filters:</div>
+              <div class="flex flex-wrap gap-1.5 text-[11px]">
+                <span class="px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">Circadian Sleep Anomaly</span>
+                <span class="px-2 py-0.5 rounded bg-red-500/10 text-red-400 border border-red-500/20">Outrage Lexicons</span>
+                <span class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">Copypasta Repetition</span>
+                <span class="px-2 py-0.5 rounded bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">Follow-Farm Ratios</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chrome Extension Quick Card -->
+          <div class="glass-panel p-5 rounded-2xl bg-gradient-to-br from-blue-950/30 to-indigo-950/20 border-blue-900/40 space-y-3">
+            <div class="flex items-center gap-2">
+              <i class="fa-brands fa-chrome text-blue-400 text-lg"></i>
+              <h4 class="text-xs font-bold text-white">Browser Extension Ready</h4>
+            </div>
+            <p class="text-xs text-zinc-400 leading-relaxed">
+              Load the <code class="text-blue-300 font-mono">extension/</code> folder in Chrome/Edge (<span class="text-zinc-300">chrome://extensions</span>) to auto-scan live feeds on X and Reddit directly.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: PROFILE DEEP SCAN -->
+    <section id="view-inspector" class="space-y-6 hidden">
+      <div class="glass-panel p-6 rounded-2xl">
+        <h2 class="text-base font-bold text-white mb-2">Deep Account & Profile Inspector</h2>
+        <p class="text-xs text-zinc-400 mb-4">Analyze past posting patterns, circadian rhythm, content repetition, and follower graph in under 1.5 seconds.</p>
+        
+        <div class="flex flex-col sm:flex-row gap-3">
+          <div class="relative flex-1">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-500 text-sm">@</span>
+            <input type="text" id="inspector-handle" value="rage_daily_news88" placeholder="Enter username (e.g. elonmusk, user982371982)" class="w-full pl-8 pr-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-sm focus:outline-none focus:border-blue-500 transition">
+          </div>
+          <button id="btn-inspect-profile" class="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 font-bold text-sm text-white shadow-lg shadow-blue-600/20 transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-magnifying-glass"></i> Deep Scan Profile
+          </button>
+        </div>
+
+        <!-- Quick Select Examples -->
+        <div class="flex flex-wrap items-center gap-2 mt-3 text-xs text-zinc-400">
+          <span>Try Presets:</span>
+          <button class="preset-btn px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800" data-handle="@rage_daily_news88">🚨 @rage_daily_news88 (Ragebait Farm)</button>
+          <button class="preset-btn px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800" data-handle="@user982371982">🤖 @user982371982 (Spam Bot)</button>
+          <button class="preset-btn px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800" data-handle="@elonmusk">👤 @elonmusk (Organic)</button>
+          <button class="preset-btn px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800" data-handle="@tech_insider">📰 @tech_insider (News)</button>
+        </div>
+      </div>
+
+      <!-- Inspector Results Container -->
+      <div id="inspector-results" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Profile Metrics & Summary -->
+        <div class="glass-panel p-6 rounded-2xl space-y-6">
+          <div class="flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-purple-600 to-pink-600 flex items-center justify-center font-bold text-lg text-white" id="res-avatar">
+                R
+              </div>
+              <div>
+                <h3 class="font-bold text-white text-base" id="res-name">Truth Seeker</h3>
+                <p class="text-xs text-zinc-400" id="res-handle">@rage_daily_news88</p>
+              </div>
+            </div>
+            <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-red-500/20 text-red-400 border border-red-500/30" id="res-badge">CRITICAL RISK</span>
+          </div>
+
+          <!-- Overall Bot & Ragebait Meter -->
+          <div class="space-y-4 pt-4 border-t border-zinc-800">
+            <div>
+              <div class="flex justify-between text-xs font-semibold mb-1.5">
+                <span class="text-zinc-300">🤖 Bot Probability Score</span>
+                <span class="text-blue-400 font-bold" id="res-bot-score">85%</span>
+              </div>
+              <div class="w-full h-2.5 bg-zinc-900 rounded-full overflow-hidden">
+                <div id="bar-bot" class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-500" style="width: 85%;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-semibold mb-1.5">
+                <span class="text-zinc-300">😡 Outrage / Ragebait Index</span>
+                <span class="text-red-400 font-bold" id="res-rage-score">92%</span>
+              </div>
+              <div class="w-full h-2.5 bg-zinc-900 rounded-full overflow-hidden">
+                <div id="bar-rage" class="h-full bg-gradient-to-r from-orange-500 to-red-500 transition-all duration-500" style="width: 92%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile Stats Grid -->
+          <div class="grid grid-cols-2 gap-2 text-xs pt-2 border-t border-zinc-800">
+            <div class="bg-zinc-900/60 p-2.5 rounded-lg">
+              <div class="text-zinc-500 text-[10px]">Followers</div>
+              <div class="font-bold text-white mt-0.5" id="res-followers">120</div>
+            </div>
+            <div class="bg-zinc-900/60 p-2.5 rounded-lg">
+              <div class="text-zinc-500 text-[10px]">Following</div>
+              <div class="font-bold text-white mt-0.5" id="res-following">4,890</div>
+            </div>
+            <div class="bg-zinc-900/60 p-2.5 rounded-lg">
+              <div class="text-zinc-500 text-[10px]">Total Posts</div>
+              <div class="font-bold text-white mt-0.5" id="res-posts">14,500</div>
+            </div>
+            <div class="bg-zinc-900/60 p-2.5 rounded-lg">
+              <div class="text-zinc-500 text-[10px]">Account Age</div>
+              <div class="font-bold text-white mt-0.5" id="res-age">42 Days</div>
+            </div>
+          </div>
+
+          <!-- Detected Flags -->
+          <div class="space-y-2 pt-2 border-t border-zinc-800">
+            <div class="text-xs font-bold text-zinc-300">Diagnostic Signals Detected:</div>
+            <div id="res-signals" class="space-y-1.5">
+              <!-- Injected by app.js -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 24-Hour Diurnal Chart & Copypasta Cluster Analysis (2 cols) -->
+        <div class="lg:col-span-2 space-y-6">
+          <!-- Circadian Chart -->
+          <div class="glass-panel p-6 rounded-2xl">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h4 class="text-sm font-bold text-white">24-Hour Diurnal Activity (Circadian Rhythm Analysis)</h4>
+                <p class="text-xs text-zinc-400">Biological humans display a pronounced 6-8 hour nocturnal sleep dip. Bots maintain unbroken 24/7 volume.</p>
+              </div>
+              <span class="text-xs px-2.5 py-1 rounded bg-zinc-800 text-zinc-300 font-mono" id="res-circadian-label">24/7 Unbroken</span>
+            </div>
+            <div class="h-56 w-full">
+              <canvas id="circadianChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Copypasta & History Scanner -->
+          <div class="glass-panel p-6 rounded-2xl space-y-3">
+            <h4 class="text-sm font-bold text-white">Recent Timeline Harvest & Copypasta Repetition</h4>
+            <div id="res-recent-posts" class="space-y-2 max-h-60 overflow-y-auto pr-2">
+              <!-- Injected by app.js -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: RAGEBAIT TEXT ANALYZER -->
+    <section id="view-text" class="space-y-6 hidden">
+      <div class="glass-panel p-6 rounded-2xl space-y-4">
+        <h2 class="text-base font-bold text-white">Ragebait & Outrage Text Classifier</h2>
+        <p class="text-xs text-zinc-400">Paste any headline, tweet, or statement to detect moral outrage lexicon, engagement-farming traps, and formatting intensity.</p>
+        
+        <textarea id="rage-input" rows="4" class="w-full p-4 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-sm focus:outline-none focus:border-red-500 transition" placeholder="Paste tweet text or post title here..."></textarea>
+        
+        <div class="flex justify-between items-center">
+          <div class="flex gap-2">
+            <button class="text-xs px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 text-sample-btn" data-text="LOOK WHAT THEY DID! The mainstream media refuses to report this disgusting behavior!! Wake up sheeple! 🤬🚨🔥">Example 1: High Outrage</button>
+            <button class="text-xs px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 text-sample-btn" data-text="Unpopular opinion: drop your thoughts below and change my mind if you disagree! 👇🚩">Example 2: Engagement Farm</button>
+            <button class="text-xs px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 text-sample-btn" data-text="New research paper published on quantum computing error mitigation techniques.">Example 3: Neutral Tech</button>
+          </div>
+          <button id="btn-analyze-text" class="px-6 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 font-bold text-sm text-white shadow-lg shadow-red-600/20 transition flex items-center gap-2">
+            <i class="fa-solid fa-bolt"></i> Analyze Text
+          </button>
+        </div>
+      </div>
+
+      <!-- Text Analysis Results -->
+      <div id="text-results" class="glass-panel p-6 rounded-2xl hidden space-y-6">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-bold text-white">Linguistic Diagnostic Breakdown</h3>
+          <span id="text-score-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-red-500/20 text-red-400 border border-red-500/30">88% Ragebait</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-zinc-900/90 p-4 rounded-xl border border-zinc-800">
+            <div class="text-xs text-zinc-400">Emotional Manipulation Index</div>
+            <div class="text-xl font-bold text-red-400 mt-1" id="text-emo-index">0.85</div>
+          </div>
+          <div class="bg-zinc-900/90 p-4 rounded-xl border border-zinc-800">
+            <div class="text-xs text-zinc-400">Engagement Farming Index</div>
+            <div class="text-xl font-bold text-yellow-400 mt-1" id="text-eng-index">0.70</div>
+          </div>
+          <div class="bg-zinc-900/90 p-4 rounded-xl border border-zinc-800">
+            <div class="text-xs text-zinc-400">Caps & Formatting Threat</div>
+            <div class="text-xl font-bold text-purple-400 mt-1" id="text-caps-intensity">High (48% Caps)</div>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <div class="text-xs font-bold text-zinc-300">Detected Trigger Markers:</div>
+          <div id="text-triggers-list" class="flex flex-wrap gap-2">
+            <!-- Injected by app.js -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

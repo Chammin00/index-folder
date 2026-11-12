@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CHANCENVADERS 1978 — Authentic Space Invaders Arcade Replica</title>
+  <link rel="stylesheet" href="css/style.css">
+  <meta name="description" content="Museum-grade authentic 1978 Space Invaders arcade replica with discrete Web Audio procedural synthesis, pixel-eroding bunkers, and original 1978 Pepper's Ghost Lunar Backdrop optical mirror illusion.">
+  <meta name="theme-color" content="#0d0f12">
+
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <script src="high-gloss-lacquer.js"></script>
+  <script src="cosmic-background.js"></script>
+  <script src="mcp-baseline.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="aws-enterprise-baseline.css">
+  <script src="aws-enterprise-baseline.js"></script>
+</head>
+<body>
+
+  <!-- Retro Arcade Cabinet -->
+  <main class="arcade-cabinet" role="main">
+    
+    <!-- Cabinet Marquee -->
+    <header class="marquee">
+      <div class="marquee-title">
+        <span>SPACE INVADERS</span>
+        <span class="marquee-badge">1978</span>
+      </div>
+      <div class="marquee-meta" id="marqueeStatus">
+        TAITO ARCADE
+      </div>
+    </header>
+
+    <!-- CRT Screen Housing -->
+    <div class="crt-housing curved" id="crtHousing">
+      <!-- 1978 Lunar Backdrop Canvas (Pepper's Ghost Illusion) -->
+      <canvas id="backdropCanvas" width="448" height="512" aria-hidden="true"></canvas>
+
+      <!-- Game Canvas (448x512 native scale) -->
+      <canvas id="gameCanvas" width="448" height="512" aria-label="Space Invaders Arcade Game Screen"></canvas>
+      
+      <!-- Scanlines & Glare Overlays -->
+      <div class="crt-scanlines" id="crtScanlines"></div>
+      <div class="crt-glass-glare"></div>
+    </div>
+
+    <!-- 1978 Cabinet Angled Mirror Shelf Reflection (As seen in Papa Brad's Gaming video) -->
+    <div class="cab-mirror-shelf" id="cabMirrorShelf" title="Pepper's Ghost Mirror Reflection">
+      <canvas id="mirrorCanvas" width="448" height="80"></canvas>
+    </div>
+
+    <!-- Arcade Control Panel -->
+    <section class="control-panel" aria-label="Arcade Controls">
+      
+      <!-- Top Functional Buttons: Coin, 1P Start, Overlay Mode -->
+      <div class="panel-top-row">
+        <div class="arcade-btn-group">
+          <button id="btnCoin" class="btn-arcade btn-coin" title="Insert 25¢ Coin (Keyboard: Enter)">
+            🪙 25¢ INSERT
+          </button>
+          <button id="btnStart" class="btn-arcade btn-start" title="1-Player Start (Keyboard: 1 or Enter)">
+            1 PLAYER START
+          </button>
+        </div>
+
+        <div class="arcade-btn-group">
+          <label for="colorModeSelect" class="sr-only" style="display:none;">Color Overlay:</label>
+          <select id="colorModeSelect" class="select-arcade" title="Cycle Color Mode (Keyboard: C)">
+            <option value="0">1978 Lunar Backdrop (Pepper's Ghost)</option>
+            <option value="1">1978 Cellophane (Original)</option>
+            <option value="2">Retro Neon Arcade</option>
+            <option value="3">1978 Monochrome B&amp;W</option>
+            <option value="4">Phosphor Green CRT</option>
+            <option value="5">Phosphor Amber CRT</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Action Row: Left / Right Arrows & Heavy Red FIRE Button -->
+      <div class="panel-play-row">
+        <div class="dpad-container">
+          <button id="btnLeft" class="btn-dpad" aria-label="Move Cannon Left" title="Left Arrow / A">◀</button>
+          <button id="btnRight" class="btn-dpad" aria-label="Move Cannon Right" title="Right Arrow / D">▶</button>
+        </div>
+
+        <button id="btnFire" class="btn-fire" aria-label="Fire Laser Cannon" title="Fire Laser (Keyboard: Spacebar)">
+          FIRE
+        </button>
+      </div>
+
+      <!-- Settings & Audio Controls Footer -->
+      <div class="cabinet-footer">
+        <div class="footer-controls">
+          <label class="toggle-label" title="Toggle CRT Scanline Shader">
+            <input type="checkbox" id="chkScanlines" checked>
+            <span>Scanlines</span>
+          </label>
+          <label class="toggle-label" title="Toggle CRT Glass Curvature">
+            <input type="checkbox" id="chkCurved" checked>
+            <span>CRT Curve</span>
+          </label>
+          <label class="toggle-label" title="Toggle Cabinet Mirror Reflection Shelf">
+            <input type="checkbox" id="chkMirror" checked>
+            <span>Mirror Shelf</span>
+          </label>
+        </div>
+
+        <div class="footer-controls">
+          <button id="btnMute" class="btn-arcade" style="min-height:30px; padding:4px 8px; font-size:0.7rem; background:#1b222d; border-color:#3a475a; color:#fff;" title="Mute Audio (Keyboard: M)">
+            🔊 SOUND ON
+          </button>
+          <input type="range" id="volSlider" class="vol-slider" min="0" max="1" step="0.05" value="0.7" title="Master Volume">
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Keyboard Shortcuts & Specs Guide -->
+  <footer class="keyboard-guide">
+    <div><span class="key-badge">◀</span> <span class="key-badge">▶</span> / <span class="key-badge">A</span> <span class="key-badge">D</span> Move Cannon</div>
+    <div><span class="key-badge">SPACE</span> Fire Laser</div>
+    <div><span class="key-badge">1</span> / <span class="key-badge">ENTER</span> Start Game</div>
+    <div><span class="key-badge">P</span> Pause</div>
+    <div><span class="key-badge">C</span> Cycle Overlay</div>
+    <div><span class="key-badge">M</span> Mute Sound</div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/sprites.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/backdrop.js"></script>
+  <script src="js/bunkers.js"></script>
+  <script src="js/controls.js"></script>
+  <script src="js/game.js"></script>
+
+  <script>
+    (function () {
+      'use strict';
+
+      const canvas = document.getElementById('gameCanvas');
+      const backdropCanvas = document.getElementById('backdropCanvas');
+      const mirrorCanvas = document.getElementById('mirrorCanvas');
+      const mirrorCtx = mirrorCanvas.getContext('2d');
+      const cabMirrorShelf = document.getElementById('cabMirrorShelf');
+
+      // Initialize Backdrop
+      const backdrop = new SpaceInvadersBackdrop(backdropCanvas);
+
+      // Initialize Game Engine
+      const game = new SpaceInvadersGame(canvas, backdropCanvas);
+
+      // Elements
+      const btnLeft = document.getElementById('btnLeft');
+      const btnRight = document.getElementById('btnRight');
+      const btnFire = document.getElementById('btnFire');
+      const btnCoin = document.getElementById('btnCoin');
+      const btnStart = document.getElementById('btnStart');
+      const btnMute = document.getElementById('btnMute');
+      const volSlider = document.getElementById('volSlider');
+      const colorSelect = document.getElementById('colorModeSelect');
+      const chkScanlines = document.getElementById('chkScanlines');
+      const chkCurved = document.getElementById('chkCurved');
+      const chkMirror = document.getElementById('chkMirror');
+      const crtHousing = document.getElementById('crtHousing');
+      const crtScanlines = document.getElementById('crtScanlines');
+      const marqueeStatus = document.getElementById('marqueeStatus');
+
+      // Bind tactile buttons
+      SpaceInvadersInput.bindVirtualButtons({
+        btnLeft,
+        btnRight,
+        btnFire,
+        btnCoin,
+        btnStart
+      });
+
+      // Bind direct Point-and-Click / Touch Finger Tracking
+      SpaceInvadersInput.bindPointerCanvas(canvas, 448, 512);
+      SpaceInvadersInput.bindPointerCanvas(crtHousing, 448, 512);
+
+      // Stats and Marquee Sync
+      game.onStatsChange = function (stats) {
+        if (stats.state === 0) {
+          marqueeStatus.textContent = 'ATTRACT MODE';
+        } else if (stats.state === 1) {
+          marqueeStatus.textContent = 'WAVE ' + stats.wave;
+        } else if (stats.state === 5) {
+          marqueeStatus.textContent = 'PAUSED';
+        } else if (stats.state === 4) {
+          marqueeStatus.textContent = 'GAME OVER';
+        }
+        colorSelect.value = game.currentPaletteIndex;
+
+        // Toggle backdrop canvas visibility based on overlay mode
+        if (game.palette.overlayMode === 'lunar') {
+          backdropCanvas.style.display = 'block';
+        } else {
+          backdropCanvas.style.display = 'none';
+        }
+      };
+
+      // Color Mode Select
+      const COLOR_KEYS = ['lunarDiorama', 'cellophane', 'neon', 'monochrome', 'greenPhosphor', 'amberPhosphor'];
+      colorSelect.addEventListener('change', (e) => {
+        const idx = parseInt(e.target.value, 10);
+        game.currentPaletteIndex = idx;
+        const key = COLOR_KEYS[idx] || 'lunarDiorama';
+        game.palette = [window.SpaceInvadersSprites.SPRITES, null] && game.palette; // safe reference
+        // Direct set
+        const keys = ['lunarDiorama', 'cellophane', 'neon', 'monochrome', 'greenPhosphor', 'amberPhosphor'];
+        while (game.currentPaletteIndex !== idx) {
+          game.cycleColorMode();
+        }
+        game.triggerStats();
+      });
+
+      // Scanline Toggle
+      chkScanlines.addEventListener('change', (e) => {
+        if (e.target.checked) {
+          crtScanlines.classList.remove('disabled');
+        } else {
+          crtScanlines.classList.add('disabled');
+        }
+      });
+
+      // Curved Screen Toggle
+      chkCurved.addEventListener('change', (e) => {
+        if (e.target.checked) {
+          crtHousing.classList.add('curved');
+        } else {
+          crtHousing.classList.remove('curved');
+        }
+      });
+
+      // Cabinet Mirror Shelf Toggle
+      chkMirror.addEventListener('change', (e) => {
+        cabMirrorShelf.style.display = e.target.checked ? 'flex' : 'none';
+      });
+
+      // Mute Toggle
+      btnMute.addEventListener('click', () => {
+        const isMuted = SpaceInvadersAudio.toggleMute();
+        btnMute.textContent = isMuted ? '🔇 MUTED' : '🔊 SOUND ON';
+        btnMute.style.color = isMuted ? '#ff4d5a' : '#fff';
+      });
+
+      // Volume Slider
+      volSlider.addEventListener('input', (e) => {
+        const v = parseFloat(e.target.value);
+        SpaceInvadersAudio.setVolume(v);
+      });
+
+      // Unlock audio on any initial interaction
+      document.body.addEventListener('pointerdown', () => {
+        SpaceInvadersAudio.ensureUnlocked();
+      }, { once: true });
+
+      // Ambient Animation Loop (Diorama Stars Twinkle & Lower Glass Mirror Reflection)
+      let mirrorFrameSkip = 0;
+      function renderCabinetFx() {
+        if (game.palette.overlayMode === 'lunar') {
+          backdrop.render(backdropCanvas.width, backdropCanvas.height);
+        }
+
+        mirrorFrameSkip++;
+        if (mirrorFrameSkip % 2 === 0 && chkMirror.checked) {
+          // Draw bottom 120px of game canvas into mirror canvas
+          mirrorCtx.clearRect(0, 0, mirrorCanvas.width, mirrorCanvas.height);
+          mirrorCtx.drawImage(
+            canvas,
+            0, canvas.height - 180, canvas.width, 180,
+            0, 0, mirrorCanvas.width, mirrorCanvas.height
+          );
+        }
+
+        requestAnimationFrame(renderCabinetFx);
+      }
+      requestAnimationFrame(renderCabinetFx);
+
+      // Start Arcade Engine
+      game.start();
+    })();
+  </script>
+</body>
+</html>

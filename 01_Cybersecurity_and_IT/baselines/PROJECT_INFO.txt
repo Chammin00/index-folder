@@ -1,0 +1,18 @@
+﻿========================================================================
+PROJECT: baselines
+CATEGORY: 01_Cybersecurity_and_IT
+DESCRIPTION: Security Baseline & Compliance Benchmarking
+========================================================================
+
+Original Project Directory:
+G:\My Drive\Antigravity\Projects\baselines
+
+Original Index File:
+G:\My Drive\Antigravity\Projects\baselines\index.html
+
+How to Open in Antigravity:
+1. In Antigravity / VS Code: Click File -> Open Folder...
+2. Paste this path: G:\My Drive\Antigravity\Projects\baselines
+3. Press Enter
+
+Or launch directly in browser using: Launch_Original_Index.url

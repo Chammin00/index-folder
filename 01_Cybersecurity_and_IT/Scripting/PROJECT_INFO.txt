@@ -1,0 +1,18 @@
+﻿========================================================================
+PROJECT: Scripting
+CATEGORY: 01_Cybersecurity_and_IT
+DESCRIPTION: PowerShell & Bash Automation Script Hub
+========================================================================
+
+Original Project Directory:
+G:\My Drive\Antigravity\Projects\Scripting\webpage
+
+Original Index File:
+G:\My Drive\Antigravity\Projects\Scripting\webpage\index.html
+
+How to Open in Antigravity:
+1. In Antigravity / VS Code: Click File -> Open Folder...
+2. Paste this path: G:\My Drive\Antigravity\Projects\Scripting\webpage
+3. Press Enter
+
+Or launch directly in browser using: Launch_Original_Index.url

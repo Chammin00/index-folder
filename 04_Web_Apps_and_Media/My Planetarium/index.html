@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Antigravity Deep Space Planetary Observatory — Sector Atlas 2026</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+
+  <!-- Baseline High-Gloss Lacquer System & Optics -->
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <link rel="stylesheet" href="planetarium.css">
+
+  <!-- Antigravity Native Sidecar SDK (Loaded dynamically when running in sidecar container) -->
+  <script>
+    if (window.location.protocol === 'file:' || window.navigator.userAgent.includes('Electron')) {
+      const s = document.createElement('script');
+      s.src = './preload.js';
+      s.onerror = () => {};
+      document.head.appendChild(s);
+    }
+  </script>
+
+  <!-- Baseline Scripts -->
+  <script src="high-gloss-lacquer.js"></script>
+  <script src="cosmic-background.js"></script>
+  <script src="mcp-baseline.js"></script>
+  <script src="projects-data.js"></script>
+  <script src="canvas-3d-modeler.js"></script>
+  <script src="planetarium.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="aws-enterprise-baseline.css">
+  <script src="aws-enterprise-baseline.js"></script>
+</head>
+<body class="bg-[#050B18] text-slate-100 min-h-screen overflow-hidden select-none font-sans antialiased">
+
+  <!-- Fullscreen Panoramic Deep Space Canvas -->
+  <canvas id="planetarium-canvas"></canvas>
+
+  <!-- Top Celestial Observatory Navigation Bar -->
+  <header class="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 py-2.5 border-b border-[#C5A059]/30 lacquer-glass flex flex-wrap items-center justify-between gap-3 shadow-2xl">
+    <!-- Brand / Observatory Badge -->
+    <div class="flex items-center gap-3">
+      <!-- Antigravity Secondary Side Panel Toggle Button -->
+      <button id="toggle-antigravity-panel-btn"
+              class="p-2 px-3 rounded-xl bg-gradient-to-r from-indigo-950/90 via-[#0B162C] to-[#C5A059]/25 hover:from-indigo-900 hover:to-[#DFBA73]/40 border border-indigo-400/40 text-indigo-200 hover:text-white transition-all text-xs flex items-center gap-2 shadow-lg shadow-indigo-950/40"
+              title="Toggle Antigravity Secondary Side Panel [Alt+A / Ctrl+B / M]">
+        <span class="w-4 h-4 rounded-md bg-indigo-500/25 border border-indigo-400/50 flex items-center justify-center text-[10px] text-amber-300 font-bold">⊞</span>
+        <span class="font-bold tracking-wide">Antigravity Secondary</span>
+        <span id="ag-panel-status-badge" class="text-[9px] px-1.5 py-0.2 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 font-mono hidden sm:inline">64 WORLDS</span>
+      </button>
+
+      <!-- Manifest Sidebar Toggle Button (Quick shortcut) -->
+      <button id="toggle-manifest-btn"
+              class="p-2 rounded-xl bg-[#0B162C]/80 hover:bg-[#0E1D3A] border border-[#C5A059]/30 text-[#DFBA73] transition-all text-xs flex items-center gap-1.5"
+              title="Open Planetary Manifest [M]">
+        <span class="text-sm">📑</span>
+        <span class="hidden md:inline font-semibold">Manifest</span>
+      </button>
+
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 via-[#C5A059] to-indigo-600 p-[1.5px] shadow-lg shadow-amber-500/20">
+        <div class="w-full h-full bg-[#050B18] rounded-[10px] flex items-center justify-center text-lg">
+          🪐
+        </div>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="text-xs sm:text-sm font-bold tracking-tight bg-gradient-to-r from-white via-[#DFBA73] to-[#C5A059] bg-clip-text text-transparent uppercase">
+            Deep Space Planetary Observatory
+          </h1>
+          <span class="text-[9px] px-2 py-0.5 rounded-full font-mono font-bold bg-[#C5A059]/15 text-[#DFBA73] border border-[#C5A059]/30">
+            SECTOR 2026
+          </span>
+          <span id="antigravity-indicator-pill" class="text-[9px] px-2 py-0.5 rounded-full font-mono font-bold bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 hidden sm:inline-flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
+            <span>ANTIGRAVITY UPLINK</span>
+          </span>
+        </div>
+        <p class="text-[10px] text-slate-400 hidden sm:block">
+          Exoplanetary Survey & Planetary Science Atlas
+        </p>
+      </div>
+    </div>
+
+    <!-- Search & Warp Input -->
+    <div class="flex-1 max-w-sm mx-2 relative">
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#DFBA73]">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <input type="text" id="planet-search-input"
+               placeholder="Search 64 planetary bodies, biomes, directives [/]..."
+               class="w-full pl-8 pr-3 py-1.5 text-xs bg-[#0B162C]/90 text-white placeholder-slate-400 rounded-xl border border-[#C5A059]/30 focus:border-[#DFBA73] focus:ring-1 focus:ring-[#DFBA73] outline-none shadow-inner transition-all">
+      </div>
+      <!-- Autocomplete Dropdown -->
+      <div id="search-results-dropdown"
+           class="absolute top-full left-0 right-0 mt-1.5 p-1.5 bg-[#050B18]/95 backdrop-blur-xl border border-[#C5A059]/40 rounded-xl shadow-2xl max-h-80 overflow-y-auto space-y-1 hidden z-50">
+      </div>
+    </div>
+
+    <!-- Top Action Controls -->
+    <div class="flex items-center gap-1.5">
+      <!-- Auto-Fit Fullscreen Button -->
+      <button id="fit-screen-btn"
+              class="px-2.5 py-1.5 rounded-xl bg-[#C5A059]/20 hover:bg-[#C5A059]/40 text-[#DFBA73] border border-[#C5A059]/40 transition-all text-xs font-semibold flex items-center gap-1 shadow-sm"
+              title="Fit Entire Sector to Full Screen [F]">
+        <span class="text-xs">⛶</span>
+        <span class="hidden sm:inline">Fit Galaxy</span>
+      </button>
+
+      <!-- Celestial Tour Mode Button -->
+      <button id="toggle-tour-btn"
+              class="px-2.5 py-1.5 rounded-xl bg-indigo-900/30 hover:bg-indigo-900/50 text-indigo-300 border border-indigo-500/35 hover:border-indigo-400 transition-all text-xs font-semibold flex items-center gap-1"
+              title="Initiate Autonomous Celestial Tour [T]">
+        <span class="text-xs">🛸</span>
+        <span class="hidden md:inline">Celestial Tour</span>
+      </button>
+
+      <!-- MCP Baseline Hub Button -->
+      <button id="open-mcp-hud-btn"
+              class="px-2.5 py-1.5 rounded-xl bg-purple-900/30 hover:bg-purple-900/50 text-purple-300 border border-purple-500/40 hover:border-purple-400 transition-all text-xs font-semibold flex items-center gap-1 shadow-sm"
+              title="Open Global MCP Hyperspace Matrix">
+        <span class="text-xs">⚡</span>
+        <span class="hidden lg:inline">MCP Matrix</span>
+      </button>
+
+      <!-- Gravitational Web Toggle -->
+      <button id="toggle-web-btn"
+              class="p-1.5 px-2 rounded-xl bg-[#0B162C]/80 hover:bg-[#0E1D3A] border border-[#C5A059]/30 text-[#DFBA73] transition-all text-xs flex items-center gap-1"
+              title="Toggle Gravitational Filaments">
+        <span class="text-xs">🕸️</span>
+      </button>
+
+      <!-- Orbit Drift Toggle -->
+      <button id="toggle-orbit-btn"
+              class="p-1.5 px-2 rounded-xl bg-[#0B162C]/80 hover:bg-[#0E1D3A] border border-[#C5A059]/30 text-[#DFBA73] transition-all text-xs flex items-center gap-1"
+              title="Toggle Planetary Orbit Drift [Space]">
+        <span class="text-xs">🪐</span>
+      </button>
+
+      <!-- Hand-Drawn Celestial Sketch Style Toggle -->
+      <button id="toggle-sketch-btn"
+              class="px-2.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/40 text-[#DFBA73] border border-[#DFBA73]/50 transition-all text-xs font-semibold flex items-center gap-1 shadow-sm"
+              title="Toggle Hand-Drawn Celestial Sketch & Color Shading Mode [K]">
+        <span class="text-xs">✏️</span>
+        <span class="hidden md:inline">Sketch Mode</span>
+      </button>
+
+      <!-- 3D Celestial Model Lab Button -->
+      <button id="open-model-lab-btn"
+              class="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/25 via-indigo-600/30 to-[#C5A059]/25 hover:from-amber-500/40 hover:to-[#DFBA73]/50 text-[#DFBA73] border border-[#DFBA73]/60 transition-all text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-amber-500/20"
+              title="Launch 3D Celestial Model Studio & Armillary Lab [L]">
+        <span class="text-xs">🔬</span>
+        <span class="hidden lg:inline">3D Model Lab</span>
+      </button>
+
+      <!-- 3D Perspective Orrery System Toggle -->
+      <button id="toggle-orrery-btn"
+              class="p-1.5 px-2 rounded-xl bg-[#0B162C]/80 hover:bg-[#0E1D3A] border border-[#C5A059]/30 text-[#DFBA73] transition-all text-xs flex items-center gap-1"
+              title="Toggle 3D Perspective Orrery [O]">
+        <span class="text-xs">🌐</span>
+      </button>
+
+      <!-- Audio Resonance Toggle -->
+      <button id="toggle-audio-btn"
+              class="p-1.5 px-2 rounded-xl bg-[#0B162C]/80 hover:bg-[#0E1D3A] border border-[#C5A059]/30 text-slate-400 transition-all text-xs flex items-center gap-1"
+              title="Toggle Celestial Resonance Audio">
+        <span class="text-xs">🔊</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Sector Constellation Filter Bar (Full-Width Scrollable Bar) -->
+  <div class="fixed top-[52px] left-0 right-0 z-40 px-4 sm:px-6 py-2 bg-[#050B18]/75 backdrop-blur-md border-b border-white/5 flex items-center gap-2 overflow-x-auto no-scrollbar"
+       id="sector-filter-bar">
+    <!-- Populated by planetarium.js -->
+  </div>
+
+  <!-- Tour Mode Live Indicator Banner -->
+  <div id="tour-banner"
+       class="fixed top-[96px] left-1/2 -translate-x-1/2 z-40 hidden px-4 py-1.5 rounded-full lacquer-glass border border-[#DFBA73] text-xs font-semibold text-white flex items-center gap-2 shadow-2xl">
+    <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+    <span>CELESTIAL TOUR ACTIVE // AUTONOMOUS PLANETARY SURVEY</span>
+    <button id="stop-tour-btn" class="ml-2 text-[10px] uppercase font-mono px-2 py-0.5 rounded-md bg-white/10 hover:bg-white/20 text-slate-300">
+      Stop [T]
+    </button>
+  </div>
+
+  <!-- =========================================================================
+       ANTIGRAVITY SECONDARY SIDE PANEL (FULL-FEATURED IDE AUXILIARY PANE)
+       ========================================================================= -->
+  <aside id="antigravity-secondary-panel"
+         class="lacquer-glass fixed top-[52px] bottom-0 z-45 flex shadow-2xl transition-all duration-350 ease-out border-r border-[#C5A059]/35 open"
+         data-active-tab="projects">
+    <!-- Activity Bar Rail (Leftmost thin strip inside panel) -->
+    <div class="w-12 bg-[#030712]/95 border-r border-white/10 flex flex-col items-center py-3 justify-between shrink-0 select-none">
+      <div class="flex flex-col items-center gap-2.5 w-full">
+        <!-- Antigravity Brand Glyph -->
+        <button id="ag-panel-brand-btn"
+                class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 via-[#C5A059] to-amber-400 p-[1px] shadow-md shadow-indigo-500/30 mb-1 cursor-pointer hover:scale-105 transition-transform"
+                title="Antigravity Deep Space Planetary Secondary">
+          <div class="w-full h-full bg-[#050B18] rounded-[11px] flex items-center justify-center text-xs">
+            ⚡
+          </div>
+        </button>
+
+        <!-- Activity Bar Tab Buttons -->
+        <button class="ag-activity-btn w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-[#DFBA73] text-sm active"
+                data-tab="projects" title="Projects Explorer [Mapped to Celestial Worlds]">
+          📁
+        </button>
+        <button class="ag-activity-btn w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-[#DFBA73] text-sm"
+                data-tab="inspector" title="Planet Telemetry & Hologram Inspector">
+          🪐
+        </button>
+        <button class="ag-activity-btn w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-[#DFBA73] text-sm"
+                data-tab="directives" title="Sector Mission Directives Matrix">
+          ⚡
+        </button>
+        <button class="ag-activity-btn w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-[#DFBA73] text-sm"
+                data-tab="mcp" title="Hyperspace MCP Relays & Tools Bus">
+          🔌
+        </button>
+        <button class="ag-activity-btn w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-[#DFBA73] text-sm"
+                data-tab="agent" title="Antigravity Agent Uplink Console">
+          🤖
+        </button>
+      </div>
+
+      <!-- Bottom Activity Controls -->
+      <div class="flex flex-col items-center gap-2">
+        <button id="ag-panel-dock-toggle"
+                class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 text-xs transition-colors"
+                title="Switch Dock Side (Left / Right)">
+          ⇄
+        </button>
+        <button id="ag-panel-width-toggle"
+                class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 text-xs transition-colors"
+                title="Toggle Panel Width (Compact / Normal / Wide)">
+          ⤢
+        </button>
+      </div>
+    </div>
+
+    <!-- Panel Main Body Area -->
+    <div class="flex-1 flex flex-col min-w-0 bg-[#050B18]/92 overflow-hidden">
+      <!-- Top Secondary Header -->
+      <div class="px-3.5 py-2.5 border-b border-white/10 flex items-center justify-between gap-2 shrink-0 bg-[#070E1F]/80">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 status-beacon shrink-0"></span>
+          <div class="min-w-0">
+            <div class="text-[9px] font-mono font-bold tracking-widest text-[#DFBA73] uppercase flex items-center gap-1.5">
+              <span>ANTIGRAVITY // SECONDARY</span>
+              <span class="text-[8px] px-1 rounded bg-indigo-500/20 text-indigo-300 font-normal">v2.6</span>
+            </div>
+            <div id="ag-panel-title" class="text-xs font-bold text-white truncate">
+              Projects Explorer
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-1">
+          <button id="ag-panel-fit-btn" class="p-1 px-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 text-xs" title="Auto-Fit Galaxy to Canvas [F]">
+            ⛶
+          </button>
+          <button id="close-ag-panel-btn" class="p-1 px-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 text-xs" title="Collapse Side Panel [Esc]">
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab 1: PROJECTS EXPLORER (MAPS TO PLANETS) -->
+      <div id="ag-view-projects" class="ag-tab-view flex-1 flex flex-col min-h-0 overflow-hidden">
+        <!-- Search & Quick Filters -->
+        <div class="p-3 border-b border-white/10 space-y-2 shrink-0 bg-[#081226]/50">
+          <div class="relative">
+            <input type="text" id="ag-project-search"
+                   placeholder="Filter 64 projects by name, stack, directive..."
+                   class="w-full pl-7 pr-7 py-1.5 text-xs bg-[#030712]/90 text-white placeholder-slate-400 rounded-lg border border-[#C5A059]/30 focus:border-[#DFBA73] outline-none transition-all">
+            <span class="absolute left-2.5 top-2 text-slate-400 text-xs">🔍</span>
+            <button id="ag-search-clear-btn" class="absolute right-2 top-2 text-slate-400 hover:text-white text-xs hidden">✕</button>
+          </div>
+
+          <!-- Constellation filter chips -->
+          <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5 text-[10px]" id="ag-sector-chips">
+            <!-- Populated dynamically -->
+          </div>
+
+          <div class="flex items-center justify-between text-[10px] text-slate-400 font-mono">
+            <span id="ag-projects-counter">64 planetary projects</span>
+            <span class="text-[#DFBA73] flex items-center gap-1 font-semibold">
+              <span>Click to map to planet</span> ➔
+            </span>
+          </div>
+        </div>
+
+        <!-- Scrollable Project List -->
+        <div id="ag-projects-scroll-list" class="flex-1 overflow-y-auto p-2.5 space-y-2">
+          <!-- Populated dynamically with rich project cards -->
+        </div>
+      </div>
+
+      <!-- Tab 2: PLANETARY INSPECTOR & TELEMETRY -->
+      <div id="ag-view-inspector" class="ag-tab-view flex-1 overflow-y-auto p-3.5 hidden space-y-3">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Tab 3: MISSION DIRECTIVES MATRIX -->
+      <div id="ag-view-directives" class="ag-tab-view flex-1 overflow-y-auto p-3.5 hidden space-y-2.5">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Tab 4: MCP RELAYS & TOOLS BUS -->
+      <div id="ag-view-mcp" class="ag-tab-view flex-1 overflow-y-auto p-3.5 hidden space-y-3">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Tab 5: ANTIGRAVITY AGENT UPLINK CONSOLE -->
+      <div id="ag-view-agent" class="ag-tab-view flex-1 overflow-y-auto p-3.5 hidden space-y-3">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Secondary Panel Footer / Telemetry Status -->
+      <div class="px-3 py-1.5 border-t border-white/10 shrink-0 bg-[#030712]/95 flex items-center justify-between text-[10px] font-mono text-slate-400">
+        <div class="flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
+          <span>ANTIGRAVITY UPLINK: <strong class="text-indigo-300">CONNECTED</strong></span>
+        </div>
+        <div class="text-[#DFBA73]">
+          SECTOR ATLAS 2026
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Left Collapsible Planetary Manifest Sidebar (Legacy fallback) -->
+  <aside id="manifest-sidebar" class="hidden">
+    <button id="close-manifest-btn" class="hidden"></button>
+    <div id="manifest-planet-list"></div>
+  </aside>
+
+  <!-- Right Docked Observation Deck & Telemetry Console -->
+  <aside id="telemetry-deck" class="shadow-2xl">
+    <!-- Populated dynamically when planet is selected/hovered -->
+  </aside>
+
+  <!-- Bottom-Left Astronomical Telemetry Bar -->
+  <div id="bottom-telemetry-bar" class="fixed bottom-3.5 left-4 z-30 hidden sm:flex items-center gap-4 px-4 py-2 rounded-xl lacquer-glass border border-[#C5A059]/30 text-[10px] text-slate-300 shadow-xl font-mono">
+    <div class="flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 status-beacon"></span>
+      <span>OBSERVATORY: <strong class="text-white">ACTIVE</strong></span>
+    </div>
+    <div class="h-3 w-px bg-white/20"></div>
+    <div>WORLDS: <strong class="text-[#DFBA73]">64 MAPPED</strong></div>
+    <div class="h-3 w-px bg-white/20"></div>
+    <div>RELAYS: <strong class="text-purple-400">7 MCP ONLINE</strong></div>
+    <div class="h-3 w-px bg-white/20"></div>
+    <div>SHORTCUTS: <span class="text-slate-400">[F] Fit &bull; [K] Sketch &bull; [L] 3D Lab &bull; [O] 3D Orrery &bull; [Space] Pause &bull; [T] Tour &bull; [M] Panel</span></div>
+  </div>
+
+  <!-- Bottom-Right Radar Minimap & Zoom Controls -->
+  <div id="bottom-radar-controls" class="fixed bottom-3.5 right-4 z-30 flex flex-col items-end gap-2">
+    <!-- Zoom Level Controls -->
+    <div class="flex items-center gap-1 p-1 rounded-xl lacquer-glass border border-[#C5A059]/30 text-xs shadow-lg">
+      <button id="zoom-out-btn" class="w-6 h-6 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white flex items-center justify-center font-bold">
+        −
+      </button>
+      <span id="zoom-level-text" class="px-1 font-mono text-[10px] text-[#DFBA73] min-w-[38px] text-center">
+        100%
+      </span>
+      <button id="zoom-in-btn" class="w-6 h-6 rounded-lg hover:bg-white/10 text-slate-300 hover:text-white flex items-center justify-center font-bold">
+        +
+      </button>
+    </div>
+
+    <!-- Mini-Map Radar -->
+    <div id="minimap-container" class="relative rounded-xl border border-[#C5A059]/40 lacquer-glass overflow-hidden shadow-2xl p-1 bg-[#050B18]/90">
+      <canvas id="minimap-canvas" class="block w-[170px] h-[115px] rounded-lg"></canvas>
+      <div class="absolute bottom-1 right-2 text-[8px] font-mono text-[#DFBA73] pointer-events-none">
+        SECTOR RADAR
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       3D CELESTIAL MODEL STUDIO & INTERACTIVE PLANETARY LAB MODAL
+       ========================================================================= -->
+  <div id="celestial-model-lab-backdrop" class="fixed inset-0 bg-black/75 backdrop-blur-md z-50 hidden transition-opacity"></div>
+  <div id="celestial-model-lab" class="fixed inset-2 sm:inset-6 md:inset-10 z-50 rounded-2xl lacquer-glass border border-[#C5A059]/45 shadow-2xl flex flex-col overflow-hidden hidden bg-[#050B18]/95 backdrop-blur-2xl">
+    <!-- Lab Header -->
+    <div class="px-4 py-3 border-b border-white/10 flex flex-wrap items-center justify-between gap-3 bg-[#070E1F]/90 shrink-0">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500 via-[#C5A059] to-indigo-600 p-[1px] flex items-center justify-center text-sm shadow-md shadow-amber-500/20">
+          🔬
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-[9px] font-mono font-bold tracking-widest text-[#DFBA73] uppercase">
+              ANTIGRAVITY // 3D CELESTIAL MODEL LAB
+            </span>
+            <span id="model-lab-category-pill" class="text-[9px] px-2 py-0.2 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 font-mono">
+              AI WORLD
+            </span>
+          </div>
+          <h2 id="model-lab-planet-title" class="text-sm sm:text-base font-bold text-white tracking-tight">
+            Ollama-Prime
+          </h2>
+        </div>
+      </div>
+
+      <!-- 3D Render Mode Switcher -->
+      <div class="flex items-center gap-1 p-1 bg-[#030712]/80 rounded-xl border border-white/10 text-xs" id="model-lab-mode-group">
+        <button class="model-mode-btn active px-2.5 py-1 rounded-lg text-slate-300 hover:text-white font-medium flex items-center gap-1 transition-all" data-mode="solid" title="3D Solid Textured Biome">
+          <span>🌐</span><span class="hidden sm:inline">Solid</span>
+        </button>
+        <button class="model-mode-btn px-2.5 py-1 rounded-lg text-slate-400 hover:text-white font-medium flex items-center gap-1 transition-all" data-mode="wireframe" title="Renaissance Armillary Wireframe">
+          <span>📐</span><span class="hidden sm:inline">Armillary</span>
+        </button>
+        <button class="model-mode-btn px-2.5 py-1 rounded-lg text-slate-400 hover:text-white font-medium flex items-center gap-1 transition-all" data-mode="sketch" title="Real-Time 3D Cross-Hatch Sketch">
+          <span>✏️</span><span class="hidden sm:inline">3D Sketch</span>
+        </button>
+        <button class="model-mode-btn px-2.5 py-1 rounded-lg text-slate-400 hover:text-white font-medium flex items-center gap-1 transition-all" data-mode="hologram" title="Quantum Laser Elevation Scanner">
+          <span>📡</span><span class="hidden sm:inline">Quantum</span>
+        </button>
+        <button class="model-mode-btn px-2.5 py-1 rounded-lg text-slate-400 hover:text-white font-medium flex items-center gap-1 transition-all" data-mode="cutaway" title="Geological Core Strata Dissection">
+          <span>🔬</span><span class="hidden sm:inline">Core Cutaway</span>
+        </button>
+      </div>
+
+      <!-- Planet Dropdown & Action Controls -->
+      <div class="flex items-center gap-2">
+        <select id="model-lab-planet-select" class="px-2.5 py-1 text-xs bg-[#030712]/90 text-white rounded-lg border border-[#C5A059]/35 outline-none font-mono max-w-[160px] sm:max-w-[200px] cursor-pointer">
+          <!-- Populated dynamically with 64 planets -->
+        </select>
+        <button id="model-lab-export-btn" class="px-2.5 py-1 rounded-lg bg-[#C5A059]/20 hover:bg-[#C5A059]/40 border border-[#C5A059]/40 text-[#DFBA73] text-xs font-semibold flex items-center gap-1 transition-all" title="Export Technical Blueprint Schematic PNG">
+          <span>📸</span><span class="hidden md:inline">Blueprint</span>
+        </button>
+        <button id="close-model-lab-btn" class="p-1 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 text-xs font-bold transition-all" title="Close 3D Lab [Esc / L]">
+          ✕
+        </button>
+      </div>
+    </div>
+
+    <!-- Lab Body -->
+    <div class="flex-1 flex flex-col lg:flex-row min-h-0 overflow-hidden">
+      <!-- 3D Canvas Stage Viewport (Left / Main) -->
+      <div class="flex-1 relative bg-gradient-to-b from-[#020610] via-[#050B18] to-[#081226] flex items-center justify-center overflow-hidden select-none">
+        <canvas id="model-lab-canvas" width="800" height="600" class="block w-full h-full cursor-grab active:cursor-grabbing"></canvas>
+
+        <!-- On-Canvas Floating 3D HUD Controls -->
+        <div class="absolute bottom-4 left-4 z-10 flex flex-wrap items-center gap-2 p-1.5 rounded-xl lacquer-glass border border-white/10 backdrop-blur-md text-xs text-slate-300">
+          <button id="model-spin-toggle-btn" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-[#DFBA73] font-semibold flex items-center gap-1 transition-all" title="Toggle Auto-Spin [Space]">
+            <span id="model-spin-icon">⏸</span>
+            <span class="hidden sm:inline">Spin</span>
+          </button>
+          <div class="h-4 w-px bg-white/20"></div>
+          <button id="model-zoom-in-btn" class="w-7 h-7 rounded-lg hover:bg-white/10 text-white font-bold flex items-center justify-center" title="Zoom In [+]">
+            +
+          </button>
+          <button id="model-zoom-out-btn" class="w-7 h-7 rounded-lg hover:bg-white/10 text-white font-bold flex items-center justify-center" title="Zoom Out [-]">
+            −
+          </button>
+          <button id="model-reset-camera-btn" class="px-2 py-1 rounded-lg hover:bg-white/10 text-slate-300 text-[11px]" title="Reset Camera [R]">
+            Reset
+          </button>
+          <div class="h-4 w-px bg-white/20"></div>
+          <!-- Explode / Dissection Slider -->
+          <div class="flex items-center gap-1.5 text-[10px] font-mono px-1">
+            <span class="text-slate-400">CORE DISSECT:</span>
+            <input type="range" id="model-explode-slider" min="0" max="100" value="0" class="w-16 sm:w-24 accent-[#DFBA73] cursor-pointer">
+          </div>
+        </div>
+
+        <!-- 3D Orientation Compass / Axes Indicator (Top-Left of viewport) -->
+        <div class="absolute top-4 left-4 z-10 pointer-events-none p-2 rounded-xl lacquer-glass border border-white/10 text-[9px] font-mono text-[#DFBA73] space-y-0.5">
+          <div>POLAR AXIS: <span id="model-pitch-text">+21.0°</span></div>
+          <div>ROTATION YAW: <span id="model-yaw-text">45.0°</span></div>
+          <div>SURFACE MESH: <span id="model-poly-count" class="text-emerald-400">1,120 TRIS</span></div>
+        </div>
+      </div>
+
+      <!-- Right Telemetry & Scientific Spec Panel -->
+      <aside class="w-full lg:w-96 bg-[#030712]/95 border-t lg:border-t-0 lg:border-l border-white/10 flex flex-col shrink-0 overflow-y-auto p-4 space-y-4">
+        <!-- Planetary Overview Card -->
+        <div class="p-3 rounded-xl bg-[#081226]/80 border border-[#C5A059]/30 space-y-2">
+          <div class="text-[10px] font-mono text-[#DFBA73] tracking-widest uppercase flex items-center justify-between">
+            <span>ASTROPHYSICAL DATA</span>
+            <span id="model-lab-readiness-badge" class="px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-bold">100% OPERATIONAL</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+            <div class="bg-[#020610]/60 p-2 rounded-lg border border-white/5">
+              <span class="text-[10px] text-slate-400 block">SURFACE GRAVITY</span>
+              <strong id="model-lab-gravity" class="text-[#DFBA73] text-sm">1.82g</strong>
+            </div>
+            <div class="bg-[#020610]/60 p-2 rounded-lg border border-white/5">
+              <span class="text-[10px] text-slate-400 block">ORBIT DISTANCE</span>
+              <strong id="model-lab-distance" class="text-indigo-300 text-sm">140 AU</strong>
+            </div>
+            <div class="bg-[#020610]/60 p-2 rounded-lg border border-white/5">
+              <span class="text-[10px] text-slate-400 block">ORBITAL PERIOD</span>
+              <strong id="model-lab-period" class="text-slate-200 text-xs">420 Cycles</strong>
+            </div>
+            <div class="bg-[#020610]/60 p-2 rounded-lg border border-white/5">
+              <span class="text-[10px] text-slate-400 block">CORE DIAMETER</span>
+              <strong id="model-lab-size" class="text-slate-200 text-xs">28,000 km</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Biome & Geological Survey -->
+        <div class="space-y-1.5">
+          <h4 class="text-[10px] font-mono tracking-wider text-slate-400 uppercase">
+            GEOLOGICAL & SYSTEMS SURVEY
+          </h4>
+          <p id="model-lab-survey-text" class="text-xs text-slate-300 leading-relaxed bg-[#081226]/50 p-2.5 rounded-xl border border-white/5">
+            Surveys indicate high-density neural strata and autonomous agent dispatch pipelines.
+          </p>
+        </div>
+
+        <!-- Atmosphere & Core Stack Tags -->
+        <div class="space-y-1.5">
+          <h4 class="text-[10px] font-mono tracking-wider text-slate-400 uppercase">
+            ATMOSPHERIC TECHNOLOGY COMPOSITION
+          </h4>
+          <div id="model-lab-stack-tags" class="flex flex-wrap gap-1.5">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Mission Directive Horizon -->
+        <div class="p-3 rounded-xl bg-gradient-to-br from-indigo-950/70 to-[#070E1F] border border-indigo-500/35 space-y-2">
+          <div class="text-[10px] font-mono font-bold text-amber-300 flex items-center gap-1.5 uppercase">
+            <span>⚡ IMMEDIATE MISSION DIRECTIVE</span>
+          </div>
+          <p id="model-lab-directive-text" class="text-xs text-slate-200 leading-relaxed font-mono">
+            Execute synchronization pipeline across model strata.
+          </p>
+          <button id="model-lab-dispatch-btn" class="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-[#C5A059] hover:from-indigo-500 hover:to-[#DFBA73] text-white font-bold text-xs shadow-md shadow-indigo-500/25 transition-all flex items-center justify-center gap-2">
+            <span>🚀</span>
+            <span>Dispatch to Antigravity Agent</span>
+          </button>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Lab Footer -->
+    <div class="px-4 py-2 border-t border-white/10 bg-[#030712]/95 flex items-center justify-between text-[10px] font-mono text-slate-400 shrink-0">
+      <div>
+        CANVAS 3D ENGINE: <strong class="text-emerald-400">ACTIVE</strong> &bull; CONTROLS: <span class="text-slate-300">[Drag] Orbit &bull; [Scroll] Zoom &bull; [Space] Spin</span>
+      </div>
+      <div class="text-[#DFBA73]">
+        SECTOR ATLAS 2026 // MODEL STUDIO
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

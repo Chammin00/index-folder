@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microsoft 365 Suite — Enterprise Autonomous Copilot</title>
+  <!-- Bootstrap 5 CSS & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Baseline High-Gloss Lacquer System & Custom Theme -->
+  <link rel="stylesheet" href="static/css/high-gloss-lacquer.css">
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="m365-app-root">
+
+  <!-- TOP HEADER (AUTHENTIC M365 HEADER) -->
+  <header class="m365-topbar d-flex align-items-center justify-content-between px-3">
+    <!-- Left: Waffle & Brand -->
+    <div class="d-flex align-items-center gap-3">
+      <!-- 9-dot Waffle App Launcher -->
+      <button class="btn btn-icon m365-waffle-btn" id="waffleBtn" onclick="toggleWaffleFlyout()" title="App launcher" aria-label="App launcher">
+        <svg class="m365-waffle-svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+          <circle cx="3" cy="3" r="2"/>
+          <circle cx="10" cy="3" r="2"/>
+          <circle cx="17" cy="3" r="2"/>
+          <circle cx="3" cy="10" r="2"/>
+          <circle cx="10" cy="10" r="2"/>
+          <circle cx="17" cy="10" r="2"/>
+          <circle cx="3" cy="17" r="2"/>
+          <circle cx="10" cy="17" r="2"/>
+          <circle cx="17" cy="17" r="2"/>
+        </svg>
+      </button>
+
+      <!-- Microsoft 365 Quad Logo & Title -->
+      <div class="m365-brand d-flex align-items-center gap-2 cursor-pointer" onclick="switchApp('hub')">
+        <svg class="m365-quad-logo" width="20" height="20" viewBox="0 0 21 21">
+          <rect x="1" y="1" width="9" height="9" fill="#f25022"/>
+          <rect x="11" y="1" width="9" height="9" fill="#7fba00"/>
+          <rect x="1" y="11" width="9" height="9" fill="#00a4ef"/>
+          <rect x="11" y="11" width="9" height="9" fill="#ffb900"/>
+        </svg>
+        <span class="m365-title fw-semibold text-light">Microsoft 365</span>
+        <span class="badge m365-env-badge ms-1" id="activeAppBadge">Home</span>
+      </div>
+
+      <!-- Windows 11 AutoSave Pill -->
+      <div class="m365-autosave-pill ms-3 d-none d-lg-flex" title="AutoSave is turned on for cloud documents">
+        <span class="m365-autosave-dot"></span>
+        <span>AutoSave</span>
+      </div>
+    </div>
+
+    <!-- Center: Global Search Bar (Mimicking Windows 11 Office Alt+Q) -->
+    <div class="m365-search-container flex-grow-1 mx-4 d-none d-md-block" style="max-width: 640px;">
+      <div class="input-group m365-search-group">
+        <span class="input-group-text bg-transparent border-0 text-muted ps-3">
+          <i class="bi bi-search"></i>
+        </span>
+        <input type="text" id="globalSearchInput" class="form-control bg-transparent border-0 text-light m365-search-input" placeholder="Search (Alt + Q)" onkeydown="handleGlobalSearch(event)">
+      </div>
+    </div>
+
+    <!-- Right: Tenant Mode, Copilot Quick Toggle, User Account -->
+    <div class="d-flex align-items-center gap-2">
+      <!-- Copilot Toggle Pill -->
+      <button class="btn btn-sm m365-copilot-pill d-flex align-items-center gap-2 px-3 rounded-pill" onclick="toggleCopilotDrawer()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="url(#copilot-grad)"/>
+          <defs>
+            <linearGradient id="copilot-grad" x1="2" y1="2" x2="22" y2="22">
+              <stop offset="0%" stop-color="#0078D4"/>
+              <stop offset="100%" stop-color="#8764B8"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="fw-semibold">Copilot</span>
+      </button>
+
+      <!-- Mode Selector Badge -->
+      <button class="btn btn-sm m365-mode-btn rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#settingsModal">
+        <i class="bi bi-shield-lock me-1 text-info"></i>
+        <span id="topbarModeLabel">Sandbox Mock</span>
+      </button>
+
+      <!-- User Profile Initials -->
+      <div class="m365-user-avatar" title="Microsoft 365 Account">
+        <span>C</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- APP LAUNCHER WAFFLE FLYOUT (OVERLAY) -->
+  <div class="m365-waffle-flyout glass-panel shadow-lg d-none" id="waffleFlyout">
+    <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
+      <span class="small fw-bold text-uppercase tracking-wider text-muted">Microsoft 365 Apps</span>
+      <button class="btn-close btn-close-white btn-sm" onclick="toggleWaffleFlyout()"></button>
+    </div>
+    <div class="p-3 row g-2">
+      <div class="col-4 text-center">
+        <div class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('word')">
+          <div class="app-icon-box bg-word mx-auto mb-1"><i class="bi bi-file-earmark-word text-white fs-5"></i></div>
+          <span class="small text-light d-block">Word</span>
+        </div>
+      </div>
+      <div class="col-4 text-center">
+        <div class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('excel')">
+          <div class="app-icon-box bg-excel mx-auto mb-1"><i class="bi bi-file-earmark-spreadsheet text-white fs-5"></i></div>
+          <span class="small text-light d-block">Excel</span>
+        </div>
+      </div>
+      <div class="col-4 text-center">
+        <div class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('powerpoint')">
+          <div class="app-icon-box bg-powerpoint mx-auto mb-1"><i class="bi bi-file-earmark-slides text-white fs-5"></i></div>
+          <span class="small text-light d-block">PowerPoint</span>
+        </div>
+      </div>
+      <div class="col-4 text-center">
+        <div class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('outlook')">
+          <div class="app-icon-box bg-outlook mx-auto mb-1"><i class="bi bi-envelope text-white fs-5"></i></div>
+          <span class="small text-light d-block">Outlook</span>
+        </div>
+      </div>
+      <div class="col-4 text-center">
+        <div class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('teams')">
+          <div class="app-icon-box bg-teams mx-auto mb-1"><i class="bi bi-chat-dots text-white fs-5"></i></div>
+          <span class="small text-light d-block">Teams</span>
+        </div>
+      </div>
+      <div class="col-4 text-center">
+        <div class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('onedrive')">
+          <div class="app-icon-box bg-onedrive mx-auto mb-1"><i class="bi bi-cloud text-white fs-5"></i></div>
+          <span class="small text-light d-block">OneDrive</span>
+        </div>
+      </div>
+      <div class="col-4 text-center">
+        <div class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('onenote')">
+          <div class="app-icon-box bg-onenote mx-auto mb-1"><i class="bi bi-journal-text text-white fs-5"></i></div>
+          <span class="small text-light d-block">OneNote</span>
+        </div>
+      </div>
+      <div class="col-4 text-center">
+        <div class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('copilot')">
+          <div class="app-icon-box bg-copilot mx-auto mb-1"><i class="bi bi-robot text-white fs-5"></i></div>
+          <span class="small text-light d-block">Copilot</span>
+        </div>
+      </div>
+      <div class="col-4 text-center">
+        <div class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('registry')">
+          <div class="app-icon-box bg-secondary mx-auto mb-1"><i class="bi bi-diagram-3 text-white fs-5"></i></div>
+          <span class="small text-light d-block">Registry</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATION WORKSPACE WRAPPER -->
+  <div class="m365-workspace d-flex">
+
+    <!-- LEFT APP RAIL (AUTHENTIC M365 VERTICAL BAR) -->
+    <nav class="m365-left-rail d-flex flex-column align-items-center py-2" aria-label="App Navigation Rail">
+      <!-- 1. Home / M365 Hub -->
+      <button class="rail-item active" id="rail-btn-hub" onclick="switchApp('hub')" title="Microsoft 365 Home">
+        <i class="bi bi-house-door fs-5"></i>
+        <span class="rail-label">Home</span>
+      </button>
+
+      <!-- 2. Word -->
+      <button class="rail-item" id="rail-btn-word" onclick="switchApp('word')" title="Word">
+        <div class="rail-app-badge bg-word"><i class="bi bi-file-earmark-word"></i></div>
+        <span class="rail-label">Word</span>
+      </button>
+
+      <!-- 3. Excel -->
+      <button class="rail-item" id="rail-btn-excel" onclick="switchApp('excel')" title="Excel">
+        <div class="rail-app-badge bg-excel"><i class="bi bi-file-earmark-spreadsheet"></i></div>
+        <span class="rail-label">Excel</span>
+      </button>
+
+      <!-- 4. PowerPoint -->
+      <button class="rail-item" id="rail-btn-powerpoint" onclick="switchApp('powerpoint')" title="PowerPoint">
+        <div class="rail-app-badge bg-powerpoint"><i class="bi bi-file-earmark-slides"></i></div>
+        <span class="rail-label">PowerPoint</span>
+      </button>
+
+      <!-- 5. Outlook -->
+      <button class="rail-item" id="rail-btn-outlook" onclick="switchApp('outlook')" title="Outlook Mail & Calendar">
+        <div class="rail-app-badge bg-outlook"><i class="bi bi-envelope"></i></div>
+        <span class="rail-label">Outlook</span>
+      </button>
+
+      <!-- 6. Teams -->
+      <button class="rail-item" id="rail-btn-teams" onclick="switchApp('teams')" title="Microsoft Teams">
+        <div class="rail-app-badge bg-teams"><i class="bi bi-chat-dots"></i></div>
+        <span class="rail-label">Teams</span>
+      </button>
+
+      <!-- 7. OneDrive -->
+      <button class="rail-item" id="rail-btn-onedrive" onclick="switchApp('onedrive')" title="OneDrive Files">
+        <div class="rail-app-badge bg-onedrive"><i class="bi bi-cloud"></i></div>
+        <span class="rail-label">OneDrive</span>
+      </button>
+
+      <!-- 8. OneNote -->
+      <button class="rail-item" id="rail-btn-onenote" onclick="switchApp('onenote')" title="OneNote Pages & Notebooks">
+        <div class="rail-app-badge bg-onenote"><i class="bi bi-journal-text"></i></div>
+        <span class="rail-label">OneNote</span>
+      </button>
+
+      <div class="rail-divider my-2 w-75 border-top border-secondary opacity-25"></div>
+
+      <!-- 9. Copilot / Chief of Staff -->
+      <button class="rail-item" id="rail-btn-copilot" onclick="switchApp('copilot')" title="Agent 365 Copilot">
+        <div class="rail-app-badge bg-copilot"><i class="bi bi-stars"></i></div>
+        <span class="rail-label">Copilot</span>
+      </button>
+
+      <!-- Bottom Settings -->
+      <button class="rail-item mt-auto" onclick="switchApp('registry')" title="Agent Registry & Settings">
+        <i class="bi bi-gear fs-5"></i>
+        <span class="rail-label">Settings</span>
+      </button>
+    </nav>
+
+    <!-- MAIN APP CANVAS (SWITCHABLE VIEWS) -->
+    <main class="m365-content-area flex-grow-1 overflow-auto p-0" id="mainContentArea">
+
+      <!-- =========================================================================
+           VIEW 1: MICROSOFT 365 HOME / HUB (FRESH OUT OF THE BOX)
+           ========================================================================= -->
+      <section class="app-view p-4 active" id="view-hub">
+        <!-- Hero Welcome -->
+        <div class="card glass-card mb-4 border-0 p-4">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <span class="badge bg-primary-subtle text-primary border border-primary-subtle mb-2">Microsoft 365 Enterprise</span>
+              <h2 class="h3 fw-bold text-light mb-2">Good afternoon</h2>
+              <p class="text-muted mb-3">Welcome to Microsoft 365. Create, collaborate, and manage your cloud workspace.</p>
+              <div class="d-flex flex-wrap gap-2">
+                <button class="btn btn-sm btn-action rounded-pill" onclick="switchApp('word'); createNewWordDocument();"><i class="bi bi-file-earmark-plus text-primary me-1"></i> Blank Document</button>
+                <button class="btn btn-sm btn-action rounded-pill" onclick="switchApp('excel'); createNewExcelWorkbook();"><i class="bi bi-table text-success me-1"></i> Blank Workbook</button>
+                <button class="btn btn-sm btn-action rounded-pill" onclick="switchApp('powerpoint'); addSlide();"><i class="bi bi-file-earmark-slides text-danger me-1"></i> Blank Presentation</button>
+                <button class="btn btn-sm btn-action rounded-pill" onclick="switchApp('onenote'); createNewOneNotePagePrompt();"><i class="bi bi-journal-plus text-purple me-1"></i> Blank Notebook</button>
+                <button class="btn btn-sm btn-action rounded-pill" onclick="switchApp('outlook'); openOutlookComposer();"><i class="bi bi-envelope-plus text-info me-1"></i> New Message</button>
+                <button class="btn btn-sm btn-primary rounded-pill" onclick="switchApp('copilot')"><i class="bi bi-stars me-1"></i> Launch Copilot</button>
+              </div>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+              <div class="p-3 bg-surface-subtle rounded-3 border d-inline-block text-start" style="min-width: 220px;">
+                <div class="small text-muted mb-1">Cloud Storage Usage</div>
+                <div class="d-flex justify-content-between small fw-bold mb-1">
+                  <span>OneDrive Business</span>
+                  <span class="text-info" id="hubStorageUsageText">0.0 GB / 1 TB</span>
+                </div>
+                <div class="progress bg-dark" style="height: 6px;">
+                  <div class="progress-bar bg-info" id="hubStorageBar" style="width: 0%;"></div>
+                </div>
+                <div class="small text-success mt-2"><i class="bi bi-shield-check me-1"></i> Entra ID Zero-Trust: Compliant</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Create Ribbon Cards -->
+        <div class="row g-3 mb-4">
+          <div class="col-sm-6 col-lg-3">
+            <div class="card glass-card p-3 h-100 cursor-pointer" onclick="switchApp('word'); createNewWordDocument();">
+              <div class="d-flex align-items-center gap-3">
+                <div class="app-icon-box bg-word"><i class="bi bi-file-earmark-word text-white fs-4"></i></div>
+                <div>
+                  <h6 class="mb-0 fw-bold text-light">Blank document</h6>
+                  <small class="text-muted">Word for Web</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-3">
+            <div class="card glass-card p-3 h-100 cursor-pointer" onclick="switchApp('excel'); createNewExcelWorkbook();">
+              <div class="d-flex align-items-center gap-3">
+                <div class="app-icon-box bg-excel"><i class="bi bi-file-earmark-spreadsheet text-white fs-4"></i></div>
+                <div>
+                  <h6 class="mb-0 fw-bold text-light">Blank workbook</h6>
+                  <small class="text-muted">Excel for Web</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-3">
+            <div class="card glass-card p-3 h-100 cursor-pointer" onclick="switchApp('powerpoint'); addSlide();">
+              <div class="d-flex align-items-center gap-3">
+                <div class="app-icon-box bg-powerpoint"><i class="bi bi-file-earmark-slides text-white fs-4"></i></div>
+                <div>
+                  <h6 class="mb-0 fw-bold text-light">Blank presentation</h6>
+                  <small class="text-muted">PowerPoint for Web</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-3">
+            <div class="card glass-card p-3 h-100 cursor-pointer" onclick="switchApp('onenote'); createNewOneNotePagePrompt();">
+              <div class="app-icon-box bg-onenote"><i class="bi bi-journal-text text-white fs-4"></i></div>
+              <div>
+                <h6 class="mb-0 fw-bold text-light">Blank notebook</h6>
+                <small class="text-muted">OneNote for Web</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Cloud Files (Out of the box clean state) -->
+        <div class="card glass-card shadow-sm border-0">
+          <div class="card-header bg-transparent border-bottom py-3 d-flex justify-content-between align-items-center">
+            <h6 class="mb-0 fw-bold"><i class="bi bi-clock-history me-2 text-primary"></i>Recent Documents</h6>
+            <button class="btn btn-sm btn-outline-secondary" onclick="loadFilesData()"><i class="bi bi-arrow-clockwise me-1"></i> Refresh</button>
+          </div>
+          <div class="card-body p-0" id="hubRecentFilesContainer">
+            <div class="m365-empty-state py-5">
+              <i class="bi bi-clock-history m365-empty-icon text-secondary"></i>
+              <h5 class="fw-semibold text-light mb-1">No recent documents</h5>
+              <p class="text-muted small mb-3">Documents you create or edit in Word, Excel, PowerPoint, or OneNote will appear here.</p>
+              <button class="btn btn-sm btn-primary rounded-pill px-3" onclick="switchApp('word'); createNewWordDocument();">
+                <i class="bi bi-plus-lg me-1"></i> Create a document
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           VIEW 2: MICROSOFT WORD FOR WEB (1-TO-1 REPLICA)
+           ========================================================================= -->
+      <section class="app-view d-flex flex-column h-100" id="view-word">
+        <!-- Word App Header -->
+        <div class="m365-office-header px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
+          <div class="d-flex align-items-center gap-3">
+            <div class="app-icon-box bg-word sm"><i class="bi bi-file-earmark-word text-white"></i></div>
+            <div>
+              <input type="text" id="wordDocTitleInput" class="form-control form-control-sm bg-transparent border-0 text-light fw-bold p-0" value="Document1" style="font-size: 1.05rem; width: 340px;">
+              <small class="text-muted"><i class="bi bi-cloud-check text-success me-1"></i>Saved to OneDrive &bull; Version 1.0</small>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-sm btn-outline-secondary" onclick="createNewWordDocument()"><i class="bi bi-file-earmark-plus me-1"></i> New Doc</button>
+            <button class="btn btn-sm btn-outline-secondary" onclick="exportWordDocument()"><i class="bi bi-download me-1"></i> Export (.docx)</button>
+            <button class="btn btn-sm btn-outline-secondary" onclick="window.print()"><i class="bi bi-printer me-1"></i> Print</button>
+            <button class="btn btn-sm btn-primary" onclick="saveWordDoc()"><i class="bi bi-check-lg me-1"></i> Save</button>
+          </div>
+        </div>
+
+        <!-- Word Simplified Ribbon -->
+        <div class="m365-ribbon border-bottom px-3 py-1">
+          <!-- Ribbon Tab Switcher -->
+          <ul class="nav nav-tabs border-0 ribbon-tabs mb-1" id="wordRibbonTabs">
+            <li class="nav-item"><button class="nav-link active py-1 px-3" onclick="switchWordRibbonTab('home', this)">Home</button></li>
+            <li class="nav-item"><button class="nav-link py-1 px-3" onclick="switchWordRibbonTab('insert', this)">Insert</button></li>
+            <li class="nav-item"><button class="nav-link py-1 px-3" onclick="switchWordRibbonTab('layout', this)">Layout</button></li>
+            <li class="nav-item"><button class="nav-link py-1 px-3" onclick="switchWordRibbonTab('review', this)">Review</button></li>
+            <li class="nav-item"><button class="nav-link py-1 px-3" onclick="switchWordRibbonTab('view', this)">View</button></li>
+          </ul>
+
+          <!-- Sub-Ribbon 1: Home -->
+          <div class="ribbon-subpanel" id="wordRibbon-home">
+            <div class="ribbon-toolbar d-flex align-items-center gap-2 py-1 flex-wrap">
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-dark" onclick="execWordCmd('undo')" title="Undo"><i class="bi bi-arrow-counterclockwise"></i></button>
+                <button class="btn btn-dark" onclick="execWordCmd('redo')" title="Redo"><i class="bi bi-arrow-clockwise"></i></button>
+              </div>
+              <div class="vr bg-secondary"></div>
+              <select class="form-select form-select-sm bg-dark text-light border-secondary" style="width: 120px;" onchange="execWordCmd('fontName', this.value)">
+                <option value="Segoe UI">Segoe UI</option>
+                <option value="Calibri">Calibri</option>
+                <option value="Arial">Arial</option>
+                <option value="Times New Roman">Times New Roman</option>
+              </select>
+              <select class="form-select form-select-sm bg-dark text-light border-secondary" style="width: 70px;" onchange="execWordCmd('fontSize', this.value)">
+                <option value="3">11pt</option>
+                <option value="2">10pt</option>
+                <option value="4">12pt</option>
+                <option value="5">14pt</option>
+                <option value="6">18pt</option>
+                <option value="7">24pt</option>
+              </select>
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-dark fw-bold" onclick="execWordCmd('bold')" title="Bold">B</button>
+                <button class="btn btn-dark fst-italic" onclick="execWordCmd('italic')" title="Italic">I</button>
+                <button class="btn btn-dark text-decoration-underline" onclick="execWordCmd('underline')" title="Underline">U</button>
+                <button class="btn btn-dark" onclick="execWordCmd('strikeThrough')" title="Strikethrough">S</button>
+              </div>
+              <div class="vr bg-secondary"></div>
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-dark" onclick="execWordCmd('justifyLeft')" title="Align Left"><i class="bi bi-text-left"></i></button>
+                <button class="btn btn-dark" onclick="execWordCmd('justifyCenter')" title="Align Center"><i class="bi bi-text-center"></i></button>
+                <button class="btn btn-dark" onclick="execWordCmd('justifyRight')" title="Align Right"><i class="bi bi-text-right"></i></button>
+                <button class="btn btn-dark" onclick="execWordCmd('insertUnorderedList')" title="Bullet List"><i class="bi bi-list-ul"></i></button>
+                <button class="btn btn-dark" onclick="execWordCmd('insertOrderedList')" title="Numbered List"><i class="bi bi-list-ol"></i></button>
+              </div>
+              <div class="vr bg-secondary"></div>
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-dark" onclick="execWordCmd('formatBlock', '<h1>')">Title</button>
+                <button class="btn btn-dark" onclick="execWordCmd('formatBlock', '<h2>')">Heading 1</button>
+                <button class="btn btn-dark" onclick="execWordCmd('formatBlock', '<h3>')">Heading 2</button>
+                <button class="btn btn-dark" onclick="execWordCmd('formatBlock', '<p>')">Normal</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sub-Ribbon 2: Insert -->
+          <div class="ribbon-subpanel d-none" id="wordRibbon-insert">
+            <div class="ribbon-toolbar d-flex align-items-center gap-2 py-1 flex-wrap">
+              <button class="btn btn-sm btn-dark" onclick="insertWordPage()"><i class="bi bi-file-earmark-plus text-primary me-1"></i> Blank Page</button>
+              <button class="btn btn-sm btn-dark" onclick="insertWordTable()"><i class="bi bi-table text-success me-1"></i> Table</button>
+              <button class="btn btn-sm btn-dark" onclick="insertWordLink()"><i class="bi bi-link-45deg text-info me-1"></i> Link</button>
+              <button class="btn btn-sm btn-dark" onclick="insertWordHorizontalRule()"><i class="bi bi-hr me-1"></i> Horizontal Line</button>
+            </div>
+          </div>
+
+          <!-- Sub-Ribbon 3: Layout -->
+          <div class="ribbon-subpanel d-none" id="wordRibbon-layout">
+            <div class="ribbon-toolbar d-flex align-items-center gap-2 py-1 flex-wrap">
+              <span class="small text-muted">Margins:</span>
+              <button class="btn btn-sm btn-dark" onclick="setWordMargins('normal')">Normal (1 in)</button>
+              <button class="btn btn-sm btn-dark" onclick="setWordMargins('narrow')">Narrow (0.5 in)</button>
+              <span class="small text-muted ms-2">Orientation:</span>
+              <button class="btn btn-sm btn-dark" onclick="setWordOrientation('portrait')"><i class="bi bi-file-earmark"></i> Portrait</button>
+              <button class="btn btn-sm btn-dark" onclick="setWordOrientation('landscape')"><i class="bi bi-file-earmark-landscape"></i> Landscape</button>
+            </div>
+          </div>
+
+          <!-- Sub-Ribbon 4: Review -->
+          <div class="ribbon-subpanel d-none" id="wordRibbon-review">
+            <div class="ribbon-toolbar d-flex align-items-center gap-2 py-1 flex-wrap">
+              <button class="btn btn-sm btn-dark" onclick="showWordCountModal()"><i class="bi bi-calculator me-1"></i> Word Count</button>
+              <button class="btn btn-sm btn-dark" onclick="alert('Spelling and grammar check: No errors detected.')"><i class="bi bi-spellcheck text-success me-1"></i> Check Document</button>
+            </div>
+          </div>
+
+          <!-- Sub-Ribbon 5: View -->
+          <div class="ribbon-subpanel d-none" id="wordRibbon-view">
+            <div class="ribbon-toolbar d-flex align-items-center gap-2 py-1 flex-wrap">
+              <span class="small text-muted">Zoom:</span>
+              <button class="btn btn-sm btn-dark" onclick="setWordZoom(75)">75%</button>
+              <button class="btn btn-sm btn-dark active" onclick="setWordZoom(100)">100%</button>
+              <button class="btn btn-sm btn-dark" onclick="setWordZoom(125)">125%</button>
+              <button class="btn btn-sm btn-dark" onclick="toggleWordDarkMode()"><i class="bi bi-moon-stars me-1"></i> Canvas Contrast</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Word Document Multi-Page Stage (Fresh blank sheet, no examples) -->
+        <div class="m365-document-stage flex-grow-1 overflow-auto p-4 d-flex flex-column align-items-center" id="wordPagesContainer">
+          <!-- Page 1 Container (Pristine empty out of the box) -->
+          <div class="word-page-sheet shadow-lg p-5 mb-4" id="wordDocumentCanvas" contenteditable="true" spellcheck="false" oninput="updateWordStats()" data-empty="true" data-placeholder="Type / to insert content or start typing..."></div>
+        </div>
+
+        <!-- Word Status Bar -->
+        <div class="m365-office-statusbar px-3 py-1 border-top d-flex justify-content-between align-items-center small text-muted">
+          <div class="d-flex align-items-center gap-3">
+            <span id="wordPageIndicator">Page 1 of 1</span>
+            <span id="wordWordCount">0 words</span>
+            <span id="wordCharCount">0 characters</span>
+            <span>English (United States)</span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <span id="wordZoomLabel">100%</span>
+            <i class="bi bi-layout-text-window-reverse"></i>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           VIEW 3: MICROSOFT EXCEL FOR WEB (1-TO-1 REPLICA)
+           ========================================================================= -->
+      <section class="app-view d-flex flex-column h-100" id="view-excel">
+        <!-- Excel App Header -->
+        <div class="m365-office-header px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
+          <div class="d-flex align-items-center gap-3">
+            <div class="app-icon-box bg-excel sm"><i class="bi bi-file-earmark-spreadsheet text-white"></i></div>
+            <div>
+              <span class="text-light fw-bold" style="font-size: 1.05rem;">Book1</span>
+              <small class="text-muted d-block"><i class="bi bi-cloud-check text-success me-1"></i>Saved to OneDrive &bull; Sheet: <span id="excelCurrentSheetBadge">Sheet1</span></small>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-sm btn-outline-secondary" onclick="exportExcelCsv()"><i class="bi bi-file-earmark-arrow-down me-1"></i> Export CSV</button>
+            <button class="btn btn-sm btn-outline-secondary" onclick="addExcelRow()"><i class="bi bi-plus-lg me-1"></i> Add Row</button>
+            <button class="btn btn-sm btn-outline-secondary" onclick="addExcelColumn()"><i class="bi bi-layout-split me-1"></i> Add Column</button>
+            <button class="btn btn-sm btn-success" onclick="loadExcelData()"><i class="bi bi-calculator me-1"></i> Recalculate</button>
+          </div>
+        </div>
+
+        <!-- Excel Simplified Ribbon -->
+        <div class="m365-ribbon border-bottom px-3 py-1">
+          <ul class="nav nav-tabs border-0 ribbon-tabs mb-1" id="excelRibbonTabs">
+            <li class="nav-item"><button class="nav-link active py-1 px-3" onclick="switchExcelRibbonTab('home', this)">Home</button></li>
+            <li class="nav-item"><button class="nav-link py-1 px-3" onclick="switchExcelRibbonTab('insert', this)">Insert</button></li>
+            <li class="nav-item"><button class="nav-link py-1 px-3" onclick="switchExcelRibbonTab('formulas', this)">Formulas</button></li>
+            <li class="nav-item"><button class="nav-link py-1 px-3" onclick="switchExcelRibbonTab('data', this)">Data</button></li>
+          </ul>
+
+          <div class="ribbon-subpanel" id="excelRibbon-home">
+            <div class="ribbon-toolbar d-flex align-items-center gap-2 py-1 flex-wrap">
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-dark" onclick="formatSelectedCell('bold')" title="Bold"><i class="bi bi-type-bold"></i></button>
+                <button class="btn btn-dark" onclick="formatSelectedCell('italic')" title="Italic"><i class="bi bi-type-italic"></i></button>
+              </div>
+              <div class="vr bg-secondary"></div>
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-dark" onclick="formatSelectedCellNumber('currency')" title="Currency">$</button>
+                <button class="btn btn-dark" onclick="formatSelectedCellNumber('percent')" title="Percent">%</button>
+              </div>
+              <div class="vr bg-secondary"></div>
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-dark" onclick="applyQuickFormula('SUM')" title="AutoSum">=SUM</button>
+                <button class="btn btn-dark" onclick="applyQuickFormula('AVERAGE')" title="Average">=AVERAGE</button>
+                <button class="btn btn-dark" onclick="applyQuickFormula('COUNT')" title="Count">=COUNT</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="ribbon-subpanel d-none" id="excelRibbon-insert">
+            <div class="ribbon-toolbar d-flex align-items-center gap-2 py-1 flex-wrap">
+              <button class="btn btn-sm btn-dark" onclick="insertExcelSummaryRow()"><i class="bi bi-table text-success me-1"></i> Insert Total Row</button>
+              <button class="btn btn-sm btn-dark" onclick="alert('Select a cell range with numeric data to generate chart.')"><i class="bi bi-bar-chart-line text-info me-1"></i> Insert Chart</button>
+            </div>
+          </div>
+
+          <div class="ribbon-subpanel d-none" id="excelRibbon-formulas">
+            <div class="ribbon-toolbar d-flex align-items-center gap-2 py-1 flex-wrap">
+              <button class="btn btn-sm btn-dark" onclick="applyQuickFormula('SUM')">SUM</button>
+              <button class="btn btn-sm btn-dark" onclick="applyQuickFormula('AVERAGE')">AVERAGE</button>
+              <button class="btn btn-sm btn-dark" onclick="applyQuickFormula('MIN')">MIN</button>
+              <button class="btn btn-sm btn-dark" onclick="applyQuickFormula('MAX')">MAX</button>
+            </div>
+          </div>
+
+          <div class="ribbon-subpanel d-none" id="excelRibbon-data">
+            <div class="ribbon-toolbar d-flex align-items-center gap-2 py-1 flex-wrap">
+              <button class="btn btn-sm btn-dark" onclick="sortExcelData(0, 'asc')"><i class="bi bi-sort-alpha-down me-1"></i> Sort Column A-Z</button>
+              <button class="btn btn-sm btn-dark" onclick="sortExcelData(0, 'desc')"><i class="bi bi-sort-alpha-up me-1"></i> Sort Column Z-A</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Excel Formula Bar -->
+        <div class="excel-formula-bar px-3 py-1 border-bottom d-flex align-items-center gap-2 bg-surface-dark">
+          <div class="name-box bg-dark border text-center text-info small fw-bold px-2 py-1 rounded" id="excelNameBox" style="min-width: 50px;">A1</div>
+          <span class="text-muted fw-bold fst-italic">fx</span>
+          <input type="text" id="excelFormulaInput" class="form-control form-control-sm bg-dark text-light border-secondary" placeholder="Enter cell value or formula (e.g. =SUM(A1:A10))" onkeydown="handleFormulaEnter(event)">
+        </div>
+
+        <!-- Excel Interactive Spreadsheet Grid -->
+        <div class="excel-grid-container flex-grow-1 overflow-auto p-0">
+          <table class="excel-table table table-bordered mb-0" id="interactiveExcelTable">
+            <thead class="sticky-top">
+              <tr id="excelColHeaders">
+                <th class="excel-corner-cell"></th>
+                <th>A</th>
+                <th>B</th>
+                <th>C</th>
+                <th>D</th>
+                <th>E</th>
+                <th>F</th>
+                <th>G</th>
+              </tr>
+            </thead>
+            <tbody id="excelGridBody">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Excel Sheet Tabs & Status Bar -->
+        <div class="m365-office-statusbar px-3 py-1 border-top d-flex justify-content-between align-items-center small text-muted">
+          <div class="d-flex align-items-center gap-2" id="excelSheetTabsList">
+            <button class="btn btn-sm btn-dark py-0 px-2 fw-semibold active border-top-0 rounded-bottom" onclick="switchExcelSheet('Sheet1', this)">Sheet1</button>
+            <button class="btn btn-sm btn-icon text-muted py-0" onclick="addNewExcelSheetTab()" title="New sheet"><i class="bi bi-plus"></i></button>
+          </div>
+          <div class="d-flex align-items-center gap-3">
+            <span id="excelSelectionStats">Ready</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           VIEW 4: MICROSOFT POWERPOINT FOR WEB (1-TO-1 REPLICA)
+           ========================================================================= -->
+      <section class="app-view d-flex flex-column h-100" id="view-powerpoint">
+        <!-- PowerPoint App Header -->
+        <div class="m365-office-header px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
+          <div class="d-flex align-items-center gap-3">
+            <div class="app-icon-box bg-powerpoint sm"><i class="bi bi-file-earmark-slides text-white"></i></div>
+            <div>
+              <span class="text-light fw-bold" style="font-size: 1.05rem;">Presentation1</span>
+              <small class="text-muted d-block"><i class="bi bi-cloud-check text-success me-1"></i>Saved to OneDrive &bull; <span id="pptSlideCountBadge">1 Slide</span></small>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-sm btn-danger px-3" onclick="startPresentation()"><i class="bi bi-play-fill me-1"></i> Present</button>
+            <button class="btn btn-sm btn-outline-secondary" onclick="addSlide()"><i class="bi bi-plus-lg me-1"></i> New Slide</button>
+            <button class="btn btn-sm btn-outline-secondary" onclick="duplicateSlide()"><i class="bi bi-copy me-1"></i> Duplicate</button>
+            <button class="btn btn-sm btn-outline-danger" onclick="deleteCurrentSlide()"><i class="bi bi-trash3"></i></button>
+          </div>
+        </div>
+
+        <!-- PowerPoint Simplified Ribbon -->
+        <div class="m365-ribbon border-bottom px-3 py-1">
+          <ul class="nav nav-tabs border-0 ribbon-tabs mb-1" id="pptRibbonTabs">
+            <li class="nav-item"><button class="nav-link active py-1 px-3" onclick="switchPptRibbonTab('home', this)">Home</button></li>
+            <li class="nav-item"><button class="nav-link py-1 px-3" onclick="switchPptRibbonTab('insert', this)">Insert</button></li>
+            <li class="nav-item"><button class="nav-link py-1 px-3" onclick="switchPptRibbonTab('design', this)">Design</button></li>
+            <li class="nav-item"><button class="nav-link py-1 px-3" onclick="switchPptRibbonTab('slideshow', this)">Slide Show</button></li>
+          </ul>
+
+          <div class="ribbon-subpanel" id="pptRibbon-home">
+            <div class="ribbon-toolbar d-flex align-items-center gap-2 py-1 flex-wrap">
+              <button class="btn btn-sm btn-dark" onclick="addSlide()"><i class="bi bi-plus-lg me-1"></i> New Slide</button>
+              <button class="btn btn-sm btn-dark" onclick="duplicateSlide()"><i class="bi bi-copy me-1"></i> Duplicate Slide</button>
+            </div>
+          </div>
+
+          <div class="ribbon-subpanel d-none" id="pptRibbon-insert">
+            <div class="ribbon-toolbar d-flex align-items-center gap-2 py-1 flex-wrap">
+              <button class="btn btn-sm btn-dark" onclick="addPptBullet('New milestone strategic deliverable')"><i class="bi bi-card-text text-info me-1"></i> Add Bullet Item</button>
+            </div>
+          </div>
+
+          <div class="ribbon-subpanel d-none" id="pptRibbon-design">
+            <div class="ribbon-toolbar d-flex align-items-center gap-2 py-1 flex-wrap">
+              <span class="small text-muted">Theme:</span>
+              <button class="btn btn-sm btn-dark" onclick="setPptTheme('navy')">Deep Navy</button>
+              <button class="btn btn-sm btn-dark" onclick="setPptTheme('slate')">Slate</button>
+              <button class="btn btn-sm btn-dark" onclick="setPptTheme('emerald')">Emerald</button>
+            </div>
+          </div>
+
+          <div class="ribbon-subpanel d-none" id="pptRibbon-slideshow">
+            <div class="ribbon-toolbar d-flex align-items-center gap-2 py-1 flex-wrap">
+              <button class="btn btn-sm btn-danger" onclick="startPresentation()"><i class="bi bi-play-fill me-1"></i> Start from Beginning</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PowerPoint Stage (Left Thumbnails + Right Slide Canvas) -->
+        <div class="ppt-workspace flex-grow-1 d-flex overflow-hidden">
+          <!-- Slide Thumbnails Strip -->
+          <div class="ppt-thumbnail-pane border-end p-2 d-flex flex-column gap-2" id="pptThumbnailList">
+            <!-- Populated via JS -->
+          </div>
+
+          <!-- Active Slide Canvas (Fresh OOTB: Click to add title/subtitle dashed boxes) -->
+          <div class="ppt-canvas-stage flex-grow-1 p-4 d-flex flex-column align-items-center justify-content-center bg-dark">
+            <div class="ppt-slide-canvas shadow-lg p-5 rounded" id="activeSlideCanvas">
+              <div class="ppt-title-placeholder-box mb-3">
+                <input type="text" id="pptActiveTitle" class="ppt-title-box w-100 fw-bold border-0 bg-transparent text-light" placeholder="Click to add title" value="" oninput="saveCurrentSlideText()">
+              </div>
+              <div class="ppt-subtitle-placeholder-box mb-4">
+                <input type="text" id="pptActiveSubtitle" class="ppt-subtitle-box w-100 border-0 bg-transparent text-secondary" placeholder="Click to add subtitle" value="" oninput="saveCurrentSlideText()">
+              </div>
+              <div id="pptBulletsList" class="ppt-bullets-area text-light">
+                <!-- Bullets -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide Show Modal / Fullscreen Runner -->
+        <div class="ppt-fullscreen-viewer d-none" id="pptFullscreenRunner">
+          <div class="ppt-runner-content p-5 text-center">
+            <h1 class="display-4 fw-bold text-light mb-4" id="runnerTitle">Slide Title</h1>
+            <h3 class="h4 text-info mb-5" id="runnerSubtitle">Slide Subtitle</h3>
+            <div class="ppt-runner-bullets text-start mx-auto" style="max-width: 700px;" id="runnerBullets"></div>
+          </div>
+          <div class="ppt-runner-controls d-flex justify-content-between align-items-center px-4 py-3">
+            <span class="text-muted small" id="runnerCounter">Slide 1 of 3</span>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-dark" onclick="prevSlide()"><i class="bi bi-arrow-left"></i> Previous</button>
+              <button class="btn btn-sm btn-dark" onclick="nextSlide()">Next <i class="bi bi-arrow-right"></i></button>
+              <button class="btn btn-sm btn-outline-danger" onclick="exitPresentation()">Exit</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           VIEW 5: MICROSOFT OUTLOOK FOR WEB (1-TO-1 REPLICA)
+           ========================================================================= -->
+      <section class="app-view d-flex flex-column h-100" id="view-outlook">
+        <!-- Outlook Top Command Bar -->
+        <div class="m365-office-header px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
+          <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-sm btn-primary rounded-pill px-3" onclick="openOutlookComposer()"><i class="bi bi-envelope-plus me-1"></i> New mail</button>
+            <div class="vr bg-secondary mx-2"></div>
+            <button class="btn btn-sm btn-outline-danger" onclick="deleteSelectedMail()"><i class="bi bi-trash3 me-1"></i> Delete</button>
+            <button class="btn btn-sm btn-outline-secondary" onclick="archiveSelectedMail()"><i class="bi bi-archive me-1"></i> Archive</button>
+            <button class="btn btn-sm btn-outline-secondary" onclick="markSelectedMailRead()"><i class="bi bi-envelope-open me-1"></i> Mark as read</button>
+            <button class="btn btn-sm btn-outline-secondary" onclick="flagSelectedMail()"><i class="bi bi-flag me-1"></i> Flag</button>
+            <button class="btn btn-sm btn-outline-secondary" onclick="loadMailData()"><i class="bi bi-arrow-clockwise me-1"></i> Refresh</button>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <!-- Mail / Calendar View Toggle -->
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-dark active" id="outlookMailModeBtn" onclick="setOutlookViewMode('mail')"><i class="bi bi-envelope me-1"></i> Mail</button>
+              <button class="btn btn-dark" id="outlookCalendarModeBtn" onclick="setOutlookViewMode('calendar')"><i class="bi bi-calendar-event me-1"></i> Calendar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mode A: Outlook Mail 3-Pane View -->
+        <div class="outlook-workspace flex-grow-1 d-flex overflow-hidden" id="outlookMailContainer">
+          <!-- Pane 1: Folders -->
+          <div class="outlook-folder-pane border-end p-2" style="width: 200px; min-width: 200px;">
+            <div class="small fw-bold text-uppercase text-muted px-2 py-1">Favorites</div>
+            <div class="outlook-folder-item active" onclick="filterMailFolder('inbox', this)">
+              <i class="bi bi-inbox me-2"></i> Inbox <span class="badge bg-primary float-end d-none" id="outlookUnreadBadge">0</span>
+            </div>
+            <div class="outlook-folder-item" onclick="filterMailFolder('sent', this)">
+              <i class="bi bi-send me-2"></i> Sent Items
+            </div>
+            <div class="outlook-folder-item" onclick="filterMailFolder('drafts', this)">
+              <i class="bi bi-file-earmark me-2"></i> Drafts
+            </div>
+            <div class="small fw-bold text-uppercase text-muted px-2 py-1 mt-3">Folders</div>
+            <div class="outlook-folder-item" onclick="filterMailFolder('archive', this)">
+              <i class="bi bi-archive me-2"></i> Archive
+            </div>
+            <div class="outlook-folder-item" onclick="filterMailFolder('deleted', this)">
+              <i class="bi bi-trash3 me-2"></i> Deleted Items
+            </div>
+          </div>
+
+          <!-- Pane 2: Message List -->
+          <div class="outlook-list-pane border-end d-flex flex-column" style="width: 340px; min-width: 340px;">
+            <div class="p-2 border-bottom d-flex gap-2">
+              <button class="btn btn-sm btn-dark flex-grow-1 active" id="mailFilterAllBtn" onclick="toggleMailFilter('all')">All</button>
+              <button class="btn btn-sm btn-dark flex-grow-1" id="mailFilterUnreadBtn" onclick="toggleMailFilter('unread')">Unread</button>
+            </div>
+            <div class="overflow-auto flex-grow-1 p-2" id="outlookMessageListContainer">
+              <div class="m365-empty-state py-5 text-center">
+                <i class="bi bi-inbox m365-empty-icon text-muted"></i>
+                <div class="fw-semibold text-light mb-1">Your inbox is all caught up</div>
+                <small class="text-muted">No messages in this folder.</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pane 3: Reading Pane & Composer -->
+          <div class="outlook-reading-pane flex-grow-1 p-4 overflow-auto bg-surface-dark" id="outlookReadingPane">
+            <div class="m365-empty-state py-5 text-center">
+              <i class="bi bi-envelope-open m365-empty-icon text-muted"></i>
+              <div class="fw-semibold text-light mb-1">Select an item to read</div>
+              <small class="text-muted">Nothing is selected</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mode B: Outlook Calendar View -->
+        <div class="outlook-calendar-view flex-grow-1 overflow-auto p-4 d-none" id="outlookCalendarContainer">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold text-light mb-0"><i class="bi bi-calendar-event text-danger me-2"></i>Daily Agenda & Meetings</h5>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-danger" onclick="openNewEventModal()"><i class="bi bi-plus-lg me-1"></i> New Event</button>
+              <button class="btn btn-sm btn-outline-info" onclick="checkCalendarConflictsNow()"><i class="bi bi-shield-check me-1"></i> Check Conflicts</button>
+            </div>
+          </div>
+          <div class="row g-3" id="calendarEventCards">
+            <div class="m365-empty-state py-5 w-100 text-center">
+              <i class="bi bi-calendar3 m365-empty-icon text-danger"></i>
+              <h5 class="fw-semibold text-light mb-1">No events scheduled for today</h5>
+              <p class="text-muted small mb-3">Click '+ New event' to schedule your first meeting.</p>
+              <div>
+                <button class="btn btn-sm btn-danger rounded-pill px-3" onclick="openNewEventModal()"><i class="bi bi-plus-lg me-1"></i> New event</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           VIEW 6: MICROSOFT TEAMS FOR WEB (1-TO-1 REPLICA)
+           ========================================================================= -->
+      <section class="app-view d-flex flex-column h-100" id="view-teams">
+        <!-- Teams Top Bar -->
+        <div class="m365-office-header px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
+          <div class="d-flex align-items-center gap-2">
+            <span class="fw-bold text-light" id="activeTeamsChannelHeader"><i class="bi bi-hash text-purple me-1"></i> General &bull; Team Workspace</span>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-sm btn-outline-secondary" onclick="promptNewChannel()"><i class="bi bi-plus-lg me-1"></i> Add Channel</button>
+            <span class="small text-muted"><i class="bi bi-people me-1"></i> 1 Member</span>
+          </div>
+        </div>
+
+        <!-- Teams 2-Pane Layout (Channel Tree | Conversation Stage) -->
+        <div class="teams-workspace flex-grow-1 d-flex overflow-hidden">
+          <!-- Channel Tree Sidebar -->
+          <div class="teams-channel-pane border-end p-2" style="width: 240px; min-width: 240px;">
+            <div class="small fw-bold text-uppercase text-muted px-2 py-1">Teams & Channels</div>
+            <div class="teams-tree-group mb-2" id="teamsChannelTree">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+
+          <!-- Discussion Stream & Composer -->
+          <div class="teams-chat-pane flex-grow-1 d-flex flex-column bg-surface-dark">
+            <div class="teams-messages-stream flex-grow-1 overflow-auto p-3" id="teamsMessagesStream">
+              <div class="m365-empty-state py-5 text-center">
+                <i class="bi bi-chat-dots m365-empty-icon text-purple"></i>
+                <h5 class="fw-semibold text-light mb-1">Welcome to General</h5>
+                <p class="text-muted small">This is the start of the General channel. Use this space to collaborate, post announcements, and chat with your team.</p>
+              </div>
+            </div>
+            <!-- Teams Composer -->
+            <div class="teams-composer-box p-3 border-top bg-surface-subtle">
+              <form onsubmit="handleTeamsPost(event)" class="d-flex flex-column gap-2">
+                <textarea id="teamsMessageInput" class="form-control bg-dark text-light border-secondary" rows="2" placeholder="Type a new message or announcement..."></textarea>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="d-flex gap-2 text-muted small">
+                    <i class="bi bi-type-bold cursor-pointer"></i>
+                    <i class="bi bi-type-italic cursor-pointer"></i>
+                    <i class="bi bi-paperclip cursor-pointer"></i>
+                  </div>
+                  <button type="submit" class="btn btn-sm btn-primary px-3 rounded-pill">
+                    <span>Send</span> <i class="bi bi-send-fill ms-1"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           VIEW 7: ONEDRIVE FOR WEB (1-TO-1 REPLICA)
+           ========================================================================= -->
+      <section class="app-view d-flex flex-column h-100" id="view-onedrive">
+        <!-- OneDrive Command Bar -->
+        <div class="m365-office-header px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
+          <div class="d-flex align-items-center gap-2">
+            <div class="dropdown">
+              <button class="btn btn-sm btn-primary rounded-pill px-3 dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                <i class="bi bi-plus-lg me-1"></i> New
+              </button>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li><a class="dropdown-item cursor-pointer" onclick="switchApp('word'); createNewWordDocument();"><i class="bi bi-file-earmark-word text-primary me-2"></i> Word document</a></li>
+                <li><a class="dropdown-item cursor-pointer" onclick="switchApp('excel'); createNewExcelWorkbook();"><i class="bi bi-file-earmark-spreadsheet text-success me-2"></i> Excel workbook</a></li>
+                <li><a class="dropdown-item cursor-pointer" onclick="switchApp('powerpoint'); addSlide();"><i class="bi bi-file-earmark-slides text-danger me-2"></i> PowerPoint presentation</a></li>
+                <li><a class="dropdown-item cursor-pointer" onclick="switchApp('onenote'); createNewOneNotePagePrompt();"><i class="bi bi-journal-plus text-purple me-2"></i> OneNote page</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item cursor-pointer" onclick="createNewOneDriveFolder()"><i class="bi bi-folder-plus me-2"></i> New Folder</a></li>
+              </ul>
+            </div>
+            <button class="btn btn-sm btn-outline-secondary" onclick="simulateFileUpload()"><i class="bi bi-upload me-1"></i> Upload</button>
+            <button class="btn btn-sm btn-outline-secondary" onclick="loadFilesData()"><i class="bi bi-arrow-clockwise me-1"></i> Refresh</button>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <span class="small text-muted">Breadcrumb: <strong>My files &gt; Documents</strong></span>
+          </div>
+        </div>
+
+        <!-- OneDrive Files Table -->
+        <div class="flex-grow-1 overflow-auto p-3">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 text-light custom-table">
+              <thead class="table-dark">
+                <tr>
+                  <th>Type</th>
+                  <th>Name</th>
+                  <th>Modified</th>
+                  <th>File Size</th>
+                  <th>Sharing</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="onedriveExplorerBody">
+                <tr>
+                  <td colspan="6" class="text-center py-5">
+                    <div class="m365-empty-state">
+                      <i class="bi bi-cloud-arrow-up m365-empty-icon text-info"></i>
+                      <h5 class="fw-semibold text-light mb-1">This folder is empty</h5>
+                      <p class="text-muted small mb-3">Drag files here or click '+ New' to create your first document.</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           VIEW 8: ONENOTE FOR WEB (1-TO-1 REPLICA)
+           ========================================================================= -->
+      <section class="app-view d-flex flex-column h-100" id="view-onenote">
+        <!-- OneNote App Header -->
+        <div class="m365-office-header px-3 py-2 d-flex align-items-center justify-content-between border-bottom">
+          <div class="d-flex align-items-center gap-3">
+            <div class="app-icon-box bg-onenote sm"><i class="bi bi-journal-text text-white"></i></div>
+            <div>
+              <span class="text-light fw-bold" style="font-size: 1.05rem;">My Notebook</span>
+              <small class="text-muted d-block"><i class="bi bi-cloud-check text-success me-1"></i>Notebook synced with OneDrive</small>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-sm btn-outline-secondary" onclick="createNewOneNoteSectionPrompt()"><i class="bi bi-folder-plus me-1"></i> Add Section</button>
+            <button class="btn btn-sm btn-primary rounded-pill px-3" onclick="createNewOneNotePagePrompt()"><i class="bi bi-plus-lg me-1"></i> Add Page</button>
+          </div>
+        </div>
+
+        <!-- OneNote 3-Column Layout (Sections | Pages | Active Note Canvas) -->
+        <div class="onenote-workspace flex-grow-1 d-flex overflow-hidden">
+          <!-- Column 1: Sections Pane -->
+          <div class="onenote-sections-pane border-end p-2" style="width: 220px; min-width: 220px; background: #0a0f1d;">
+            <div class="small fw-bold text-uppercase text-muted px-2 py-1 d-flex justify-content-between align-items-center">
+              <span>Sections</span>
+              <i class="bi bi-plus-lg cursor-pointer" onclick="createNewOneNoteSectionPrompt()" title="Add section"></i>
+            </div>
+            <div id="onenoteSectionList" class="mt-1">
+              <!-- Sections -->
+            </div>
+          </div>
+
+          <!-- Column 2: Pages Pane -->
+          <div class="onenote-pages-pane border-end p-2" style="width: 240px; min-width: 240px; background: #0c1324;">
+            <div class="small fw-bold text-uppercase text-muted px-2 py-1 d-flex justify-content-between align-items-center">
+              <span>Pages</span>
+              <i class="bi bi-plus-lg cursor-pointer" onclick="createNewOneNotePagePrompt()" title="Add page"></i>
+            </div>
+            <div id="onenotePageList" class="mt-1">
+              <!-- Pages -->
+            </div>
+          </div>
+
+          <!-- Column 3: Active Note Canvas (Fresh blank note) -->
+          <div class="onenote-canvas-pane flex-grow-1 p-5 overflow-auto bg-surface-dark" id="onenoteActiveCanvas">
+            <input type="text" id="onenoteActivePageTitle" class="form-control form-control-lg bg-transparent border-0 text-light fw-bold p-0 mb-2" value="" placeholder="Page Title" oninput="saveActiveOneNoteContent()">
+            <div class="text-muted small mb-4" id="onenoteActiveDate">Monday, November 2, 2026 &bull; Synced with Microsoft Cloud</div>
+            <div class="onenote-page-editor text-light" id="onenoteEditorContent" contenteditable="true" spellcheck="false" oninput="saveActiveOneNoteContent()"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           VIEW 9: COPILOT / CHIEF OF STAFF MULTI-AGENT SUITE
+           ========================================================================= -->
+      <section class="app-view p-4" id="view-copilot">
+        <div class="row g-3">
+          <!-- Left: Conversational Orchestrator -->
+          <div class="col-lg-7">
+            <div class="card glass-card h-100 shadow-sm border-0">
+              <div class="card-header bg-transparent border-bottom d-flex justify-content-between align-items-center py-3">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="agent-avatar bg-copilot text-white"><i class="bi bi-stars"></i></div>
+                  <div>
+                    <h6 class="mb-0 fw-bold">Chief of Staff Multi-Agent Orchestrator</h6>
+                    <small class="text-muted">Coordinates Outlook, Calendar, OneDrive, Teams, Excel & OneNote</small>
+                  </div>
+                </div>
+                <button class="btn btn-sm btn-outline-secondary" onclick="clearChat()"><i class="bi bi-trash3"></i></button>
+              </div>
+
+              <!-- Quick Action Pills (Fresh Productivity Starters) -->
+              <div class="p-3 bg-surface-subtle border-bottom">
+                <div class="small fw-semibold text-secondary mb-2">Suggested Actions:</div>
+                <div class="d-flex flex-wrap gap-2">
+                  <button class="btn btn-sm btn-action rounded-pill" onclick="sendPrompt('Draft a project proposal document in Word.')">
+                    <i class="bi bi-file-earmark-word text-primary me-1"></i> Draft in Word
+                  </button>
+                  <button class="btn btn-sm btn-action rounded-pill" onclick="sendPrompt('Create a budget tracker spreadsheet in Excel.')">
+                    <i class="bi bi-file-earmark-spreadsheet text-success me-1"></i> Create Excel Spreadsheet
+                  </button>
+                  <button class="btn btn-sm btn-action rounded-pill" onclick="sendPrompt('Schedule a team sync meeting on my calendar.')">
+                    <i class="bi bi-calendar-plus text-danger me-1"></i> Schedule Team Sync
+                  </button>
+                  <button class="btn btn-sm btn-action rounded-pill" onclick="sendPrompt('Draft an update email to send via Outlook.')">
+                    <i class="bi bi-envelope text-info me-1"></i> Compose Outlook Email
+                  </button>
+                </div>
+              </div>
+
+              <!-- Chat Message Stream -->
+              <div class="card-body chat-box" id="chatStream">
+                <div class="chat-msg ai-msg mb-3">
+                  <div class="d-flex align-items-start gap-2">
+                    <div class="agent-avatar bg-copilot text-white"><i class="bi bi-robot"></i></div>
+                    <div class="msg-bubble p-3 rounded-4 bg-surface-dark border">
+                      <p class="mb-1 fw-semibold text-primary">Chief of Staff</p>
+                      <p class="mb-0 text-light">Good day. I am your Microsoft 365 Chief of Staff orchestrator. I coordinate across your Outlook emails, Calendar schedules, OneDrive files, Teams discussions, Excel workbooks, and OneNote pages. How can I assist you today?</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Chat Input Box -->
+              <div class="card-footer bg-transparent border-top p-3">
+                <form id="chatForm" onsubmit="handleChatSubmit(event)" class="d-flex gap-2">
+                  <input type="text" id="userInput" class="form-control form-control-lg bg-surface-dark border text-light" placeholder="Ask your Chief of Staff or enter any M365 command..." autocomplete="off">
+                  <button type="submit" id="sendBtn" class="btn btn-primary px-4 d-flex align-items-center gap-2">
+                    <span>Send</span> <i class="bi bi-send-fill"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Live Multi-Agent Execution Trace -->
+          <div class="col-lg-5">
+            <div class="card glass-card h-100 shadow-sm border-0">
+              <div class="card-header bg-transparent border-bottom py-3 d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="bi bi-activity text-info fs-5"></i>
+                  <h6 class="mb-0 fw-bold">Live Multi-Agent Tracing</h6>
+                </div>
+                <span class="badge bg-secondary-subtle text-secondary" id="trace-count">0 steps</span>
+              </div>
+              <div class="card-body overflow-auto p-3 trace-panel" id="traceContainer">
+                <div class="text-center text-muted py-5">
+                  <i class="bi bi-diagram-3 fs-1 opacity-25"></i>
+                  <p class="mt-2 small">Execution steps and tool calls from specialist agents will be displayed here in real time.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           VIEW 10: AGENT REGISTRY & SETTINGS
+           ========================================================================= -->
+      <section class="app-view p-4" id="view-registry">
+        <div class="card glass-card shadow-sm border-0 mb-4">
+          <div class="card-header bg-transparent border-bottom py-3">
+            <h6 class="mb-0 fw-bold"><i class="bi bi-cpu text-secondary me-2"></i>Specialist Agent Registry & Governance Status</h6>
+          </div>
+          <div class="card-body">
+            <div class="row g-3" id="agentRegistryCards">
+              <div class="text-center py-4 text-muted">Loading registered agents...</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Modal: New Calendar Event -->
+  <div class="modal fade" id="newEventModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-surface-dark text-light border">
+        <div class="modal-header border-bottom">
+          <h5 class="modal-title fw-bold"><i class="bi bi-calendar-plus text-danger me-2"></i>Schedule Meeting</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-2">
+            <label class="small text-muted">Title:</label>
+            <input type="text" id="newEventTitle" class="form-control bg-dark text-light border-secondary" placeholder="Meeting title" value="">
+          </div>
+          <div class="row g-2 mb-2">
+            <div class="col-6">
+              <label class="small text-muted">Start Time:</label>
+              <input type="time" id="newEventStart" class="form-control bg-dark text-light border-secondary" value="10:00">
+            </div>
+            <div class="col-6">
+              <label class="small text-muted">End Time:</label>
+              <input type="time" id="newEventEnd" class="form-control bg-dark text-light border-secondary" value="11:00">
+            </div>
+          </div>
+          <div class="mb-2">
+            <label class="small text-muted">Attendees (comma separated):</label>
+            <input type="text" id="newEventAttendees" class="form-control bg-dark text-light border-secondary" placeholder="colleague@company.com" value="">
+          </div>
+        </div>
+        <div class="modal-footer border-top">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" onclick="saveNewCalendarEvent()">Schedule</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings / Tenant Governance Modal -->
+  <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-surface-dark text-light border">
+        <div class="modal-header border-bottom">
+          <h5 class="modal-title fw-bold" id="settingsModalLabel"><i class="bi bi-gear-fill me-2 text-primary"></i>Microsoft 365 Tenant Configuration</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Execution Mode</label>
+            <select id="modalModeSelect" class="form-select bg-dark text-light border-secondary">
+              <option value="mock">Sandbox Mock Mode (Offline Demo & Instant Testing)</option>
+              <option value="live">Microsoft Graph API Live Mode (Entra ID OAuth2)</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Azure Entra Tenant ID</label>
+            <input type="text" id="modalTenantId" class="form-control bg-dark text-light border-secondary" placeholder="00000000-0000-0000-0000-000000000000">
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Azure Client ID (App ID)</label>
+            <input type="text" id="modalClientId" class="form-control bg-dark text-light border-secondary" placeholder="11111111-1111-1111-1111-111111111111">
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Azure Client Secret</label>
+            <input type="password" id="modalClientSecret" class="form-control bg-dark text-light border-secondary" placeholder="••••••••••••••••">
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Target User Email</label>
+            <input type="email" id="modalUserEmail" class="form-control bg-dark text-light border-secondary" placeholder="user@tenant.onmicrosoft.com">
+          </div>
+        </div>
+        <div class="modal-footer border-top">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="saveSettings()">Save & Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Baseline High-Gloss Lacquer Dynamic Engine -->
+  <script src="static/js/high-gloss-lacquer.js"></script>
+  <!-- Main Application Controller -->
+  <script src="static/js/app.js"></script>
+</body>
+</html>

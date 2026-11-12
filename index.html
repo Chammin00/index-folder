@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Antigravity Project Directory & Index Hub</title>
+  <style>
+    :root {
+      --bg-canvas: #0d1117;
+      --bg-subtle: #161b22;
+      --bg-card: #1c2128;
+      --bg-card-hover: #22272e;
+      --border-default: #30363d;
+      --border-muted: #21262d;
+      --text-primary: #f0f6fc;
+      --text-secondary: #8b949e;
+      --text-muted: #6e7681;
+      --accent-blue: #58a6ff;
+      --accent-green: #3fb950;
+      --accent-purple: #bc8cff;
+      --accent-orange: #d29922;
+      --accent-cyan: #39c5bb;
+      --tag-bg: rgba(56, 139, 253, 0.15);
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: var(--font-family);
+      line-height: 1.5;
+      padding: 24px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    /* Header & Notice */
+    .header {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border-default);
+      margin-bottom: 24px;
+    }
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .title-group h1 {
+      font-size: 24px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge {
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 500;
+      background: var(--tag-bg);
+      color: var(--accent-blue);
+      border: 1px solid rgba(56, 139, 253, 0.3);
+    }
+    .notice-box {
+      background: rgba(88, 166, 255, 0.08);
+      border: 1px solid rgba(88, 166, 255, 0.25);
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .notice-title {
+      font-weight: 600;
+      color: var(--accent-blue);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .notice-box code {
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-muted);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: var(--text-primary);
+    }
+
+    /* Controls Bar */
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .search-wrapper {
+      position: relative;
+      width: 100%;
+    }
+    .search-input {
+      width: 100%;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-default);
+      border-radius: 8px;
+      padding: 12px 16px 12px 42px;
+      color: var(--text-primary);
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-input:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.2);
+    }
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+    .tabs-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tab-btn {
+      background: var(--bg-subtle);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-default);
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tab-btn:hover {
+      background: var(--bg-card);
+      color: var(--text-primary);
+    }
+    .tab-btn.active {
+      background: #238636;
+      color: #fff;
+      border-color: #2ea043;
+    }
+    .tab-counter {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-size: 11px;
+    }
+
+    /* Grid & Cards */
+    .stats-bar {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-default);
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .card:hover {
+      border-color: #58a6ff;
+      background: var(--bg-card-hover);
+    }
+    .card-top {
+      margin-bottom: 12px;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--accent-blue);
+      word-break: break-word;
+    }
+    .category-tag {
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .tag-cyber { background: rgba(210, 153, 34, 0.15); color: #e3b341; border: 1px solid rgba(210, 153, 34, 0.3); }
+    .tag-games { background: rgba(188, 140, 255, 0.15); color: #d2a8ff; border: 1px solid rgba(188, 140, 255, 0.3); }
+    .tag-ai { background: rgba(57, 197, 187, 0.15); color: #56d4dd; border: 1px solid rgba(57, 197, 187, 0.3); }
+    .tag-web { background: rgba(88, 166, 255, 0.15); color: #79c0ff; border: 1px solid rgba(88, 166, 255, 0.3); }
+    .tag-prod { background: rgba(63, 185, 80, 0.15); color: #7ee787; border: 1px solid rgba(63, 185, 80, 0.3); }
+    .tag-other { background: rgba(110, 118, 129, 0.15); color: #8b949e; border: 1px solid rgba(110, 118, 129, 0.3); }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+    .path-display {
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-muted);
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-bottom: 14px;
+    }
+
+    /* Actions */
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background-color 0.15s, border-color 0.15s;
+    }
+    .btn-primary {
+      background: #238636;
+      color: #ffffff;
+      border-color: #2ea043;
+    }
+    .btn-primary:hover {
+      background: #2ea043;
+    }
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border-color: var(--border-default);
+    }
+    .btn-secondary:hover {
+      background: #30363d;
+      border-color: #8b949e;
+    }
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #238636;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      z-index: 1000;
+    }
+    .toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-top">
+        <div class="title-group">
+          <h1>
+            <svg width="24" height="24" viewBox="0 0 16 16" fill="currentColor" style="color:var(--accent-blue)">
+              <path d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3H7.5a.25.25 0 01-.2-.1L5.938 1.4A1.75 1.75 0 004.75 1H1.75z"></path>
+            </svg>
+            Antigravity Project Directory & Index Hub
+          </h1>
+          <span class="badge" id="totalBadge">Loading...</span>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap: wrap;">
+          <a class="btn" style="background: linear-gradient(135deg, rgba(223, 186, 115, 0.25), rgba(197, 160, 89, 0.15)); border: 1px solid var(--accent-orange); color: var(--accent-orange); font-weight: 600;" href="3d-gallery-studio.html">
+            🏛️ 3D Art Gallery Studio (Walk-Around)
+          </a>
+          <a class="btn" style="background: rgba(88, 166, 255, 0.15); border: 1px solid var(--accent-blue); color: var(--accent-blue); font-weight: 600;" href="../My Planetarium/index.html">
+            🪐 Deep Space Planetarium
+          </a>
+          <a class="btn btn-secondary" href="file:///G:/My%20Drive/Antigravity/Projects/Projects.code-workspace" target="_blank">
+            📁 Open Workspace
+          </a>
+          <a class="btn btn-secondary" href="file:///G:/My%20Drive/Antigravity/Projects/" target="_blank">
+            📂 Open Projects Folder
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Guidance for Antigravity Navigation -->
+      <div class="notice-box">
+        <div class="notice-title">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z"></path>
+          </svg>
+          Why Were You Having Trouble Locating Projects in Antigravity?
+        </div>
+        <p>
+          Antigravity was only viewing this subfolder (<code>index folder</code>) instead of your root projects directory. Because of that, only this folder was visible in your sidebar explorer!
+        </p>
+        <p>
+          <strong>To view all your projects simultaneously in Antigravity:</strong><br>
+          1. Go to <code>File</code> &rarr; <code>Open Workspace from File...</code> &rarr; Choose <code>G:\My Drive\Antigravity\Projects\Projects.code-workspace</code>.<br>
+          2. Or click <code>File</code> &rarr; <code>Open Folder...</code> &rarr; Select <code>G:\My Drive\Antigravity\Projects</code>. All 60+ projects will immediately appear in your sidebar!
+        </p>
+      </div>
+    </header>
+
+    <!-- Controls -->
+    <div class="controls">
+      <div class="search-wrapper">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M11.5 7a4.499 4.499 0 11-8.998 0A4.499 4.499 0 0111.5 7zm-.82 4.74a6 6 0 111.06-1.06l3.04 3.04a.75.75 0 11-1.06 1.06l-3.04-3.04z"></path>
+        </svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search by project name, index file, technology, or category (Press '/' to focus)..." autofocus>
+      </div>
+
+      <div class="tabs-bar" id="categoryTabs">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- Stats & Card Grid -->
+    <div class="stats-bar">
+      <span id="filteredStats">Showing all projects</span>
+      <span>Base Location: <code>G:\My Drive\Antigravity\Projects\</code></span>
+    </div>
+
+    <div class="cards-grid" id="projectsGrid">
+      <!-- Injected by JavaScript -->
+    </div>
+  </div>
+
+  <div id="toast" class="toast">Path copied to clipboard!</div>
+
+  <script>
+    const projectsData = [
+      // 01: Cybersecurity & IT
+      {
+        name: "vulnerability management",
+        category: "Cybersecurity & IT",
+        tagClass: "tag-cyber",
+        desc: "Enterprise Vulnerability Management System with Dashboard, Network Scanner, Firewall, Remediation & Threat Intel.",
+        indexFile: "G:/My Drive/Antigravity/Projects/vulnerability management/Views/Home/Index.cshtml",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\vulnerability management",
+        type: "MVC Razor / C#"
+      },
+      {
+        name: "MY Security",
+        category: "Cybersecurity & IT",
+        tagClass: "tag-cyber",
+        desc: "Local Security and Defense System Dashboard with active monitoring widgets.",
+        indexFile: "G:/My Drive/Antigravity/Projects/MY Security/wwwroot/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\MY Security",
+        type: "HTML / JS"
+      },
+      {
+        name: "ai defense",
+        category: "Cybersecurity & IT",
+        tagClass: "tag-cyber",
+        desc: "AI Threat Defense, Adversarial Protection, and Security Monitoring Console.",
+        indexFile: "G:/My Drive/Antigravity/Projects/ai defense/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\ai defense",
+        type: "HTML / CSS / JS"
+      },
+      {
+        name: "comptia exam simulator",
+        category: "Cybersecurity & IT",
+        tagClass: "tag-cyber",
+        desc: "Interactive CompTIA Certification Exam Simulator with timed modes and domain drills.",
+        indexFile: "G:/My Drive/Antigravity/Projects/comptia exam simulator/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\comptia exam simulator",
+        type: "Interactive Web App"
+      },
+      {
+        name: "baselines",
+        category: "Cybersecurity & IT",
+        tagClass: "tag-cyber",
+        desc: "Security Baseline Benchmarking, CIS Standards, and Hardening Audits.",
+        indexFile: "G:/My Drive/Antigravity/Projects/baselines/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\baselines",
+        type: "HTML / Dashboard"
+      },
+      {
+        name: "bot finder",
+        category: "Cybersecurity & IT",
+        tagClass: "tag-cyber",
+        desc: "Automated Bot Identification, Network Anomaly Detection, and Threat Hunting Dashboard.",
+        indexFile: "G:/My Drive/Antigravity/Projects/bot finder/dashboard/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\bot finder",
+        type: "Analytics Web App"
+      },
+      {
+        name: "aws",
+        category: "Cybersecurity & IT",
+        tagClass: "tag-cyber",
+        desc: "AWS Cloud Infrastructure Management, IAM, and Web Portal.",
+        indexFile: "G:/My Drive/Antigravity/Projects/aws/web-app/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\aws",
+        type: "Cloud Dashboard"
+      },
+      {
+        name: "Scripting",
+        category: "Cybersecurity & IT",
+        tagClass: "tag-cyber",
+        desc: "PowerShell and Linux Bash automation challenge engine and script library.",
+        indexFile: "G:/My Drive/Antigravity/Projects/Scripting/webpage/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\Scripting",
+        type: "Web Portal / Scripts"
+      },
+
+      // 02: Games & Simulation
+      {
+        name: "chess",
+        category: "Games & Simulation",
+        tagClass: "tag-games",
+        desc: "Interactive Web Chess Game with full move validation, AI opponent, and board visuals.",
+        indexFile: "G:/My Drive/Antigravity/Projects/chess/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\chess",
+        type: "Web Game"
+      },
+      {
+        name: "monopoly",
+        category: "Games & Simulation",
+        tagClass: "tag-games",
+        desc: "Full browser-based Monopoly Board Game with property trading and banking.",
+        indexFile: "G:/My Drive/Antigravity/Projects/monopoly/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\monopoly",
+        type: "Board Game / JS"
+      },
+      {
+        name: "chancenvaders",
+        category: "Games & Simulation",
+        tagClass: "tag-games",
+        desc: "Space Invaders arcade shooter with sound effects, particle blasts, and scoreboards.",
+        indexFile: "G:/My Drive/Antigravity/Projects/chancenvaders/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\chancenvaders",
+        type: "Arcade Canvas Game"
+      },
+      {
+        name: "Game Library",
+        category: "Games & Simulation",
+        tagClass: "tag-games",
+        desc: "Centralized Game Launcher and catalog interface for personal game titles.",
+        indexFile: "G:/My Drive/Antigravity/Projects/Game Library/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\Game Library",
+        type: "Game Hub"
+      },
+      {
+        name: "game studio: Shadow Blade BR",
+        category: "Games & Simulation",
+        tagClass: "tag-games",
+        desc: "Shadow Blade Battle Royale high-octane 3D combat action game.",
+        indexFile: "G:/My Drive/Antigravity/Projects/game studio/shadow_blade_br/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\game studio\\shadow_blade_br",
+        type: "3D Game Engine"
+      },
+      {
+        name: "game studio: Paper Ronin",
+        category: "Games & Simulation",
+        tagClass: "tag-games",
+        desc: "Paper Ronin Expedition story-driven adventure game and visuals.",
+        indexFile: "G:/My Drive/Antigravity/Projects/game studio/paper_ronin_expedition/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\game studio\\paper_ronin_expedition",
+        type: "Game Prototype"
+      },
+      {
+        name: "game studio: Aether Ascent",
+        category: "Games & Simulation",
+        tagClass: "tag-games",
+        desc: "Aether Ascent Spire vertical platforming simulator.",
+        indexFile: "G:/My Drive/Antigravity/Projects/game studio/aether_ascent_spire/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\game studio\\aether_ascent_spire",
+        type: "Game Prototype"
+      },
+      {
+        name: "Scary Water Slides",
+        category: "Games & Simulation",
+        tagClass: "tag-games",
+        desc: "Physics-based 3D water slide ride simulator with dynamic cameras.",
+        indexFile: "G:/My Drive/Antigravity/Projects/Scary Water Slides/simulator/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\Scary Water Slides",
+        type: "Physics Simulator"
+      },
+      {
+        name: "VR creation apps",
+        category: "Games & Simulation",
+        tagClass: "tag-games",
+        desc: "WebXR & Virtual Reality 3D experiences including Moonrider rhythm game.",
+        indexFile: "G:/My Drive/Antigravity/Projects/VR creation apps/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\VR creation apps",
+        type: "WebXR / VR"
+      },
+      {
+        name: "mobile game",
+        category: "Games & Simulation",
+        tagClass: "tag-games",
+        desc: "TypeScript based mobile gaming engine and mechanics.",
+        indexFile: "G:/My Drive/Antigravity/Projects/mobile game/index.ts",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\mobile game",
+        type: "TypeScript Game"
+      },
+
+      // 03: AI & Agent Systems
+      {
+        name: "AAC",
+        category: "AI & Agent Systems",
+        tagClass: "tag-ai",
+        desc: "Advanced Agentic Coding (AAC) Command Center & Developer Workspace.",
+        indexFile: "G:/My Drive/Antigravity/Projects/AAC/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\AAC",
+        type: "AI Platform"
+      },
+      {
+        name: "agent 365",
+        category: "AI & Agent Systems",
+        tagClass: "tag-ai",
+        desc: "Autonomous Enterprise AI Agent Workflow Execution Engine.",
+        indexFile: "G:/My Drive/Antigravity/Projects/agent 365/agent365/web/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\agent 365",
+        type: "Enterprise AI"
+      },
+      {
+        name: "using ai agents for profit",
+        category: "AI & Agent Systems",
+        tagClass: "tag-ai",
+        desc: "Automated monetization workflows and AI revenue agent orchestration.",
+        indexFile: "G:/My Drive/Antigravity/Projects/using ai agents for profit/static/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\using ai agents for profit",
+        type: "AI Monetization"
+      },
+      {
+        name: "ai models tools from threads",
+        category: "AI & Agent Systems",
+        tagClass: "tag-ai",
+        desc: "Synthetix AI Studio and curated model catalog extracted from top threads.",
+        indexFile: "G:/My Drive/Antigravity/Projects/ai models tools from threads/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\ai models tools from threads",
+        type: "Model Hub"
+      },
+      {
+        name: "ollama",
+        category: "AI & Agent Systems",
+        tagClass: "tag-ai",
+        desc: "Local LLM Ollama Web Client, Prompt Studio & Model Manager.",
+        indexFile: "G:/My Drive/Antigravity/Projects/ollama/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\ollama",
+        type: "Local LLM Hub"
+      },
+      {
+        name: "is this AI",
+        category: "AI & Agent Systems",
+        tagClass: "tag-ai",
+        desc: "AI vs Human Content Detection & Linguistic Analysis Interface.",
+        indexFile: "G:/My Drive/Antigravity/Projects/is this AI/is this ai mobile/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\is this AI",
+        type: "Detection System"
+      },
+      {
+        name: "personal assistant",
+        category: "AI & Agent Systems",
+        tagClass: "tag-ai",
+        desc: "Personal AI Assistant with automated task execution and interactive chat UI.",
+        indexFile: "G:/My Drive/Antigravity/Projects/personal assistant/ui/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\personal assistant",
+        type: "Voice / Chat Assistant"
+      },
+
+      // 04: Web Apps & Media Portals
+      {
+        name: "Choogle",
+        category: "Web Apps & Media",
+        tagClass: "tag-web",
+        desc: "Custom Search Engine, Navigation Dashboard, and curated Knowledge Hub.",
+        indexFile: "G:/My Drive/Antigravity/Projects/Choogle/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\Choogle",
+        type: "Search Portal"
+      },
+      {
+        name: "My Planetarium",
+        category: "Web Apps & Media",
+        tagClass: "tag-web",
+        desc: "Interactive 3D Solar System, Astronomical Orbit Simulator, and Star Atlas.",
+        indexFile: "G:/My Drive/Antigravity/Projects/My Planetarium/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\My Planetarium",
+        type: "3D Space Web App"
+      },
+      {
+        name: "youtube channels",
+        category: "Web Apps & Media",
+        tagClass: "tag-web",
+        desc: "YouTube Channel Feed Aggregator, Media Dashboard, and Video Player.",
+        indexFile: "G:/My Drive/Antigravity/Projects/youtube channels/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\youtube channels",
+        type: "Media Aggregator"
+      },
+      {
+        name: "anime",
+        category: "Web Apps & Media",
+        tagClass: "tag-web",
+        desc: "Anime Series Tracking, Episode Library, and Watchlist Portal.",
+        indexFile: "G:/My Drive/Antigravity/Projects/anime/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\anime",
+        type: "Streaming / Tracker"
+      },
+      {
+        name: "3d images",
+        category: "Web Apps & Media",
+        tagClass: "tag-web",
+        desc: "Interactive 3D Graphics, Shaders, and WebGL Rendering Playground.",
+        indexFile: "G:/My Drive/Antigravity/Projects/3d images/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\3d images",
+        type: "Three.js / WebGL"
+      },
+      {
+        name: "backgrounds for gaming,apps",
+        category: "Web Apps & Media",
+        tagClass: "tag-web",
+        desc: "Procedural, Animated, and High-Gloss backgrounds for apps & games.",
+        indexFile: "G:/My Drive/Antigravity/Projects/backgrounds for gaming,apps/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\backgrounds for gaming,apps",
+        type: "Procedural Canvas"
+      },
+      {
+        name: "architect",
+        category: "Web Apps & Media",
+        tagClass: "tag-web",
+        desc: "Interactive System Architecture, Node Flow Designer, and Cloud Schematics.",
+        indexFile: "G:/My Drive/Antigravity/Projects/architect/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\architect",
+        type: "Diagramming Tool"
+      },
+      {
+        name: "sandbox",
+        category: "Web Apps & Media",
+        tagClass: "tag-web",
+        desc: "Web Experimentation and Component Playground sandbox.",
+        indexFile: "G:/My Drive/Antigravity/Projects/sandbox/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\sandbox",
+        type: "Frontend Sandbox"
+      },
+
+      // 05: Productivity, Finance & Dev
+      {
+        name: "onestop",
+        category: "Productivity & Finance",
+        tagClass: "tag-prod",
+        desc: "All-in-one productivity hub, tool aggregation, and everyday command dashboard.",
+        indexFile: "G:/My Drive/Antigravity/Projects/onestop/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\onestop",
+        type: "Productivity Suite"
+      },
+      {
+        name: "synergize and pay",
+        category: "Productivity & Finance",
+        tagClass: "tag-prod",
+        desc: "Financial operations, payment calculations, and business bookkeeping.",
+        indexFile: "G:/My Drive/Antigravity/Projects/synergize and pay/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\synergize and pay",
+        type: "Finance Hub"
+      },
+      {
+        name: "deploy",
+        category: "Productivity & Finance",
+        tagClass: "tag-prod",
+        desc: "Application deployment management, status monitoring, and cloud hosting.",
+        indexFile: "G:/My Drive/Antigravity/Projects/deploy/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\deploy",
+        type: "DevOps Console"
+      },
+      {
+        name: "portfolio",
+        category: "Productivity & Finance",
+        tagClass: "tag-prod",
+        desc: "Personal Developer Showcase and Professional Portfolio Web Page.",
+        indexFile: "G:/My Drive/Antigravity/Projects/portfolio/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\portfolio",
+        type: "Portfolio Site"
+      },
+      {
+        name: "Github Portfolio",
+        category: "Productivity & Finance",
+        tagClass: "tag-prod",
+        desc: "Live GitHub Repository showcase with commit statistics and project cards.",
+        indexFile: "G:/My Drive/Antigravity/Projects/Github Portfolio/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\Github Portfolio",
+        type: "GitHub Showcase"
+      },
+      {
+        name: "1st grade learning",
+        category: "Productivity & Finance",
+        tagClass: "tag-prod",
+        desc: "Interactive educational math, spelling, and reading games for 1st grade.",
+        indexFile: "G:/My Drive/Antigravity/Projects/1st grade learning/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\1st grade learning",
+        type: "EduTech App"
+      },
+      {
+        name: "google drive organizer",
+        category: "Productivity & Finance",
+        tagClass: "tag-prod",
+        desc: "Cloud storage cleanup, duplicate file detector, and folder organizer.",
+        indexFile: "G:/My Drive/Antigravity/Projects/google drive organizer/public/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\google drive organizer",
+        type: "Cloud Tool"
+      },
+      {
+        name: "stock Bot traders",
+        category: "Productivity & Finance",
+        tagClass: "tag-prod",
+        desc: "Algorithmic stock trading bot dashboard with real-time indicators and trade logs.",
+        indexFile: "G:/My Drive/Antigravity/Projects/stock Bot traders/gui/templates/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\stock Bot traders",
+        type: "Trading GUI"
+      },
+      {
+        name: "My Custom Gui",
+        category: "Productivity & Finance",
+        tagClass: "tag-prod",
+        desc: "Modular UI widgets, dark-mode themes, and reusable frontend controls.",
+        indexFile: "G:/My Drive/Antigravity/Projects/My Custom Gui/index.html",
+        folderPath: "G:\\My Drive\\Antigravity\\Projects\\My Custom Gui",
+        type: "Component Kit"
+      }
+    ];
+
+    // Additional directories that don't have an index file but exist in Projects
+    const otherProjects = [
+      { name: "RHCSA Exam200", category: "Other System Directories", type: "Red Hat Lab / Guide", folderPath: "G:\\My Drive\\Antigravity\\Projects\\RHCSA Exam200", desc: "Red Hat Certified System Administrator EX200 mock exams, study guides, and lab scripts." },
+      { name: "desktopscreensaver", category: "Other System Directories", type: "Screensaver App", folderPath: "G:\\My Drive\\Antigravity\\Projects\\desktopscreensaver", desc: "Cosmic cityscape screensaver animations and rain effects." },
+      { name: "note taker", category: "Other System Directories", type: "Notes & Security+", folderPath: "G:\\My Drive\\Antigravity\\Projects\\note taker", desc: "Security+ SY0-701 cheatsheets, must-know concepts, and markdown note system." },
+      { name: "inspect my pc for improvements", category: "Other System Directories", type: "PowerShell Audit", folderPath: "G:\\My Drive\\Antigravity\\Projects\\inspect my pc for improvements", desc: "Deep PC inspection, disk audit, and AppData diagnostic scripts." },
+      { name: "improve gaming pc performance", category: "Other System Directories", type: "Gaming Optimization", folderPath: "G:\\My Drive\\Antigravity\\Projects\\improve gaming pc performance", desc: "PBZ optimization scripts and Steam gaming performance watcher." },
+      { name: "automate my day", category: "Other System Directories", type: "Daily Automation", folderPath: "G:\\My Drive\\Antigravity\\Projects\\automate my day", desc: "Daily briefing generator and Sentinel background routines." },
+      { name: "How to train your AI", category: "Other System Directories", type: "LLM Fine-tuning", folderPath: "G:\\My Drive\\Antigravity\\Projects\\How to train your AI", desc: "DeepSeek and Forge modelfiles and training pipelines." },
+      { name: "Track Home Value", category: "Other System Directories", type: "Real Estate Tracker", folderPath: "G:\\My Drive\\Antigravity\\Projects\\Track Home Value", desc: "Real estate value tracking scripts, price history, and dashboard." },
+      { name: "track most wanted", category: "Other System Directories", type: "Item Tracker", folderPath: "G:\\My Drive\\Antigravity\\Projects\\track most wanted", desc: "Item price monitoring and price history tracker." },
+      { name: "spam block", category: "Other System Directories", type: "Email Protection", folderPath: "G:\\My Drive\\Antigravity\\Projects\\spam block", desc: "Data broker opt-out engine and automated Gmail spam filter rules." },
+      { name: "Record my Gameplay", category: "Other System Directories", type: "Game Recorder", folderPath: "G:\\My Drive\\Antigravity\\Projects\\Record my Gameplay", desc: "OBS/FFmpeg Python game capture routines and calibration." },
+      { name: "docker", category: "Other System Directories", type: "Docker Infrastructure", folderPath: "G:\\My Drive\\Antigravity\\Projects\\docker", desc: "Docker Compose environments and container setup test scripts." },
+      { name: "MCP", category: "Other System Directories", type: "Model Context Protocol", folderPath: "G:\\My Drive\\Antigravity\\Projects\\MCP", desc: "Custom Model Context Protocol servers and high-gloss lacquer themes." },
+      { name: "ai slop", category: "Other System Directories", type: "Quality Auditor", folderPath: "G:\\My Drive\\Antigravity\\Projects\\ai slop", desc: "Anti-slop code audit and quality assurance scripts." }
+    ];
+
+    const allItems = [
+      ...projectsData,
+      ...otherProjects.map(p => ({
+        ...p,
+        tagClass: "tag-other",
+        indexFile: null
+      }))
+    ];
+
+    let currentCategory = "All";
+
+    const searchInput = document.getElementById('searchInput');
+    const categoryTabs = document.getElementById('categoryTabs');
+    const projectsGrid = document.getElementById('projectsGrid');
+    const filteredStats = document.getElementById('filteredStats');
+    const totalBadge = document.getElementById('totalBadge');
+    const toast = document.getElementById('toast');
+
+    totalBadge.textContent = `${allItems.length} Projects Total`;
+
+    // Build Categories
+    const categoriesList = ["All", "Cybersecurity & IT", "Games & Simulation", "AI & Agent Systems", "Web Apps & Media", "Productivity & Finance", "Other System Directories"];
+
+    function renderTabs() {
+      categoryTabs.innerHTML = categoriesList.map(cat => {
+        const count = cat === "All" ? allItems.length : allItems.filter(p => p.category === cat).length;
+        const activeClass = cat === currentCategory ? "active" : "";
+        return `
+          <button class="tab-btn ${activeClass}" onclick="selectCategory('${cat}')">
+            ${cat} <span class="tab-counter">${count}</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectCategory(cat) {
+      currentCategory = cat;
+      renderTabs();
+      renderCards();
+    }
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    function copyPath(path) {
+      navigator.clipboard.writeText(path).then(() => {
+        showToast("Copied: " + path);
+      }).catch(() => {
+        const el = document.createElement('textarea');
+        el.value = path;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        showToast("Copied: " + path);
+      });
+    }
+
+    function renderCards() {
+      const q = searchInput.value.toLowerCase().trim();
+      const filtered = allItems.filter(item => {
+        const matchesCat = (currentCategory === "All") || (item.category === currentCategory);
+        const matchesQuery = !q || 
+          item.name.toLowerCase().includes(q) || 
+          item.desc.toLowerCase().includes(q) || 
+          item.type.toLowerCase().includes(q) ||
+          item.folderPath.toLowerCase().includes(q);
+        return matchesCat && matchesQuery;
+      });
+
+      filteredStats.textContent = `Showing ${filtered.length} of ${allItems.length} projects`;
+
+      if (filtered.length === 0) {
+        projectsGrid.innerHTML = `
+          <div style="grid-column: 1 / -1; padding: 48px; text-align: center; color: var(--text-muted); background: var(--bg-subtle); border-radius: 8px; border: 1px dashed var(--border-default);">
+            <h3>No projects found</h3>
+            <p style="margin-top: 8px;">Try searching for a different keyword or select "All" categories.</p>
+          </div>
+        `;
+        return;
+      }
+
+      projectsGrid.innerHTML = filtered.map(item => {
+        const hasIndex = !!item.indexFile;
+        const launchBtn = hasIndex 
+          ? `<a class="btn btn-primary" href="file:///${item.indexFile.replace(/\\/g, '/')}" target="_blank">
+               🚀 Launch Index
+             </a>`
+          : `<span class="badge" style="background:#21262d; color:#8b949e; border-color:#30363d;">No Index File</span>`;
+
+        return `
+          <div class="card">
+            <div class="card-top">
+              <div class="card-header">
+                <div class="card-title">${item.name}</div>
+                <span class="category-tag ${item.tagClass}">${item.type}</span>
+              </div>
+              <div class="card-desc">${item.desc}</div>
+              <div class="path-display" title="${item.folderPath}">${item.folderPath}</div>
+            </div>
+            <div class="card-actions">
+              ${launchBtn}
+              <a class="btn btn-secondary" style="border-color: rgba(197, 160, 89, 0.4); color: #dfba73;" href="3d-gallery-studio.html?focus=${encodeURIComponent(item.name)}">
+                🏛️ 3D Gallery
+              </a>
+              <button class="btn btn-secondary" onclick="copyPath('${item.folderPath.replace(/\\/g, '\\\\')}')">
+                📋 Copy Path
+              </button>
+              <a class="btn btn-secondary" href="file:///${item.folderPath.replace(/\\/g, '/')}" target="_blank">
+                📂 Open Folder
+              </a>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    searchInput.addEventListener('input', renderCards);
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement !== searchInput) {
+        e.preventDefault();
+        searchInput.focus();
+        searchInput.select();
+      }
+    });
+
+    renderTabs();
+    renderCards();
+  </script>
+</body>
+</html>

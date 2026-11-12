@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xbox PC App & Game Library | Clean-Room Tailwind/React Visual Reconstruction</title>
+
+  <!-- Tailwind CSS Engine -->
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <link rel="stylesheet" href="aws-enterprise-baseline.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="high-gloss-lacquer.js" defer></script>
+  <script src="cosmic-background.js" defer></script>
+  <script src="mcp-baseline.js" defer></script>
+  <script src="aws-enterprise-baseline.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body class="bg-[#090d16] text-white w-screen h-screen overflow-hidden select-none font-sans">
+
+  <div class="app-root">
+
+    <!-- ===================================================================
+         TOP GLOBAL COMMAND HEADER (52px fixed)
+         Reconstructed from Xbox PC App Top Bar + Enterprise Baseline
+         =================================================================== -->
+    <header class="top-header">
+      <div class="header-left">
+        <!-- Sidebar Collapse Toggle (Ctrl+B) -->
+        <button id="sidebar-toggle-btn" class="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition-colors" onclick="AntigravityEnterprise.toggleSidebar()" title="Collapse/Expand Left Rail (Ctrl+B)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
+        <!-- Xbox Nexus Vector Emblem & Gamertag Pill -->
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-[#107C10]/25 border border-[#22c55e]/50 flex items-center justify-center shadow-[0_0_15px_rgba(34,197,94,0.25)]">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M6.5 6.5C9.5 9.5 14.5 9.5 17.5 6.5"></path>
+              <path d="M6.2 17.2C9.2 13.5 14.8 13.5 17.8 17.2"></path>
+              <path d="M7.5 5.5C10.5 10.5 10.5 14.5 6.2 17.2"></path>
+              <path d="M16.5 5.5C13.5 10.5 13.5 14.5 17.8 17.2"></path>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-extrabold tracking-tight text-white">XBOX PC APP</span>
+              <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#107C10]/30 text-[#22c55e] border border-[#22c55e]/40 uppercase">
+                GAME PASS ULTIMATE
+              </span>
+              <span class="hidden xl:inline-flex text-[10px] font-mono px-2 py-0.5 rounded bg-[#0E1D3A] text-[#DFBA73] border border-[#C5A059]/40">
+                Clean-Room Tailwind/React
+              </span>
+            </div>
+            <div class="flex items-center gap-2 text-[11px] text-slate-400 font-mono">
+              <span id="hdr-gamertag">CHASE // RTX-4080</span>
+              <span>•</span>
+              <span class="text-[#DFBA73] font-bold">48,920 G</span>
+              <span>•</span>
+              <span id="hdr-gpu-pill" class="text-emerald-400">RTX 4080 12GB (70°C)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center Command Search Bar (Ctrl+K) -->
+      <div class="header-center hidden md:block">
+        <div class="command-search-box">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8b949e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="global-search-input" placeholder="Find games, WinGDK builds, DVR clips, or React components... (Ctrl+K)">
+          <span class="command-kbd">Ctrl+K</span>
+        </div>
+      </div>
+
+      <!-- Right Action Controls -->
+      <div class="header-right">
+        <!-- Quick Jump to Clean-Room Visual-to-Code Studio -->
+        <button id="btn-open-v2c" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#107C10]/25 hover:bg-[#107C10]/40 text-[#22c55e] border border-[#22c55e]/40 transition-all flex items-center gap-1.5" onclick="XboxApp.switchPerspective('v2c-studio')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6"></polyline>
+            <polyline points="8 6 2 12 8 18"></polyline>
+          </svg>
+          <span>JSX Reconstructor</span>
+        </button>
+
+        <!-- Trigger Xbox Game Bar Record Clip via MCP -->
+        <button id="btn-record-that" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#0d1117] hover:bg-[#161b22] text-slate-200 border border-[#30363d] hover:border-[#58a6ff] transition-all flex items-center gap-1.5" onclick="XboxApp.triggerRecordThat()" title="Trigger Win+Alt+G via Game Capture MCP">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f85149" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <circle cx="12" cy="12" r="4" fill="#f85149"></circle>
+          </svg>
+          <span class="hidden lg:inline">Record That</span>
+        </button>
+
+        <!-- MCP Telemetry HUD Drawer -->
+        <button id="open-mcp-hud-btn" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#0E1D3A] text-[#DFBA73] border border-[#C5A059]/40 hover:border-[#C5A059] transition-all flex items-center gap-1.5" onclick="window.AntigravityMCP && window.AntigravityMCP.toggleHUD()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+          <span>MCP HUD</span>
+        </button>
+
+        <!-- Fullscreen Toggle -->
+        <button class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 transition-all flex items-center gap-1" onclick="AntigravityEnterprise.toggleFullscreen()" title="Toggle Fullscreen">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+          </svg>
+          <span class="hidden sm:inline">Fullscreen</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ===================================================================
+         MAIN WORKSPACE BODY (Left Xbox Sidebar + Fluid Viewport + Inspector)
+         =================================================================== -->
+    <div class="workspace-body">
+
+      <!-- LEFT COLLAPSIBLE XBOX NAVIGATION SIDEBAR (280px <-> 64px) -->
+      <aside class="app-sidebar" id="app-sidebar">
+        <!-- Core Perspectives -->
+        <div class="p-3 border-b border-[#30363d]">
+          <div class="text-[10px] font-extrabold uppercase tracking-wider text-[#22c55e] mb-2 sidebar-label">
+            Xbox Navigation Rail
+          </div>
+          <ul class="sidebar-nav-list">
+            <li>
+              <div class="sidebar-item active" data-perspective="game-pass" onclick="XboxApp.switchPerspective('game-pass')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                  <path d="M6 12h4m-2-2v4"></path>
+                  <line x1="15" y1="11" x2="15.01" y2="11"></line>
+                  <line x1="18" y1="13" x2="18.01" y2="13"></line>
+                </svg>
+                <span class="sidebar-label">Game Pass & Library</span>
+                <span class="ml-auto text-[10px] font-mono text-[#22c55e] nav-badge" id="badge-total-games">8</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item" data-perspective="v2c-studio" onclick="XboxApp.switchPerspective('v2c-studio')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="16 18 22 12 16 6"></polyline>
+                  <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+                <span class="sidebar-label">Visual-to-Code Studio</span>
+                <span class="ml-auto text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 nav-badge">JSX</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item" data-perspective="dvr-captures" onclick="XboxApp.switchPerspective('dvr-captures')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                  <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                </svg>
+                <span class="sidebar-label">Game Bar DVR (MCP)</span>
+                <span class="ml-auto text-[10px] font-mono text-sky-400 nav-badge" id="badge-dvr-count">8</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item" data-perspective="xcloud-sim" onclick="XboxApp.switchPerspective('xcloud-sim')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+                </svg>
+                <span class="sidebar-label">DirectStorage & xCloud</span>
+                <span class="ml-auto text-[10px] font-mono text-amber-400 nav-badge">SIM</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item" data-perspective="practice-drills" onclick="XboxApp.switchPerspective('practice-drills')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <span class="sidebar-label">Architecture Drills</span>
+                <span class="ml-auto text-[10px] font-mono text-purple-400 nav-badge" id="badge-drill-score">0/4</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Installed Local NVMe Queue (Reconstructed from Xbox App Left Queue) -->
+        <div class="p-3 border-b border-[#30363d] sidebar-label">
+          <div class="flex items-center justify-between text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-2">
+            <span>Installed Ready (NVMe)</span>
+            <span class="text-[#22c55e] font-mono">Gen4 x4</span>
+          </div>
+          <div id="sidebar-installed-list" class="space-y-1.5">
+            <!-- Populated by app.js -->
+          </div>
+        </div>
+
+        <!-- NVMe Telemetry & Download Queue Footer -->
+        <div class="p-3 mt-auto sidebar-readiness-box border-t border-[#30363d] bg-[#010409]/60">
+          <div class="flex items-center justify-between text-xs font-bold text-white mb-1">
+            <span>NVMe DirectStorage</span>
+            <span class="text-[#22c55e] font-mono">1.42 TB Free</span>
+          </div>
+          <div class="w-full bg-[#090d16] h-1.5 rounded-full overflow-hidden border border-[#30363d] mb-2">
+            <div class="bg-gradient-to-r from-[#107C10] via-[#22c55e] to-[#38bdf8] h-full w-[68%]"></div>
+          </div>
+          <div class="text-[10px] text-slate-400 font-mono flex items-center justify-between">
+            <span id="sidebar-pkg-ver">GamingApp 2611.1001</span>
+            <span class="text-emerald-400">MCP Active</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- =================================================================
+           CENTER FLUID VIEWPORT (flex: 1, zero dead margins)
+           ================================================================= -->
+      <main class="app-main-viewport" id="main-viewport">
+
+        <!-- Live Notification Toast Banner -->
+        <div id="mcp-toast" class="hidden rounded-lg bg-[#107C10]/25 border border-[#22c55e] px-4 py-2.5 flex items-center justify-between text-xs text-white">
+          <div class="flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span id="mcp-toast-text" class="font-mono">MCP Action Executed.</span>
+          </div>
+          <button class="text-slate-300 hover:text-white font-bold" onclick="document.getElementById('mcp-toast').classList.add('hidden')">✕</button>
+        </div>
+
+        <!-- ===============================================================
+             PERSPECTIVE 1: GAME PASS & MY LIBRARY (XBOX PC APP CLONE)
+             =============================================================== -->
+        <div id="view-game-pass" class="space-y-6">
+
+          <!-- Hero Featured Spotlight Banner (Reconstructed from Xbox App Hero) -->
+          <section id="hero-spotlight" class="relative rounded-2xl overflow-hidden border border-[#30363d] bg-[#0d1117] shadow-2xl">
+            <div class="grid grid-cols-1 lg:grid-cols-12 min-h-[290px]">
+              <!-- Left Hero Copy & Controls -->
+              <div class="lg:col-span-7 p-6 sm:p-8 flex flex-col justify-between z-10 bg-gradient-to-r from-[#090d16] via-[#090d16]/95 to-transparent">
+                <div class="space-y-3">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="px-2.5 py-0.5 rounded text-[10px] font-mono font-extrabold uppercase tracking-wider bg-[#107C10] text-white">
+                      DAY ONE GAME PASS
+                    </span>
+                    <span class="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-[#0E1D3A] text-[#DFBA73] border border-[#C5A059]/40">
+                      WinGDK • DirectStorage 1.2
+                    </span>
+                    <span class="px-2.5 py-0.5 rounded text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30">
+                      4K 120 FPS • RTX 4080 Verified
+                    </span>
+                  </div>
+
+                  <h1 id="hero-title" class="text-2xl sm:text-3xl font-black tracking-tight text-white">
+                    GEARS OF WAR: E-DAY
+                  </h1>
+
+                  <p id="hero-desc" class="text-xs sm:text-sm text-slate-300 max-w-xl leading-relaxed">
+                    14 years before the original Gears of War: Marcus Fenix and Dom Santiago return home to face the Locust Horde eruption on Emergence Day. Built on Unreal Engine 5.8 with linear-algebraic destruction, ray-traced lumen shadows, and live Xbox Game Bar DVR telemetry.
+                  </p>
+                </div>
+
+                <!-- Hero Action Bar -->
+                <div class="pt-5 flex flex-wrap items-center gap-3">
+                  <button class="xbox-action-btn px-5 py-2.5 bg-[#107C10] hover:bg-[#159915] text-white text-xs uppercase tracking-wider shadow-lg shadow-[#107C10]/30" onclick="XboxApp.launchFeatured()">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    <span>PLAY NOW (WinGDK)</span>
+                  </button>
+
+                  <button class="xbox-action-btn px-4 py-2.5 bg-[#161b22] hover:bg-[#21262d] text-white border border-[#30363d] hover:border-[#22c55e] text-xs" onclick="XboxApp.inspectFeaturedJsx()">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="16 18 22 12 16 6"></polyline>
+                      <polyline points="8 6 2 12 8 18"></polyline>
+                    </svg>
+                    <span>View Reconstructed Tailwind/React JSX</span>
+                  </button>
+
+                  <button class="xbox-action-btn px-4 py-2.5 bg-[#161b22] hover:bg-[#21262d] text-slate-200 border border-[#30363d] text-xs" onclick="XboxApp.narrateFeatured()">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#DFBA73" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                    <span>Audio Specs</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Right Hand-Drawn Ink & Watercolor Artwork Canvas -->
+              <div class="lg:col-span-5 relative min-h-[220px] bg-[#050B18] flex items-center justify-center overflow-hidden watercolor-canvas" id="hero-art-container">
+                <!-- Populated with hand-drawn ink & watercolor SVG illustration by app.js -->
+              </div>
+            </div>
+          </section>
+
+          <!-- Filter & Category Pills Bar (Xbox App Library Filters) -->
+          <section class="flex flex-wrap items-center justify-between gap-4 border-b border-[#30363d] pb-3">
+            <div class="flex flex-wrap items-center gap-2" id="library-filter-pills">
+              <button class="lib-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#107C10] text-white border border-[#22c55e]" data-cat="all" onclick="XboxApp.setCategory('all')">
+                All Games (8)
+              </button>
+              <button class="lib-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#161b22] text-slate-300 border border-[#30363d] hover:border-slate-500" data-cat="installed" onclick="XboxApp.setCategory('installed')">
+                Installed Local NVMe
+              </button>
+              <button class="lib-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#161b22] text-slate-300 border border-[#30363d] hover:border-slate-500" data-cat="gamepass" onclick="XboxApp.setCategory('gamepass')">
+                PC Game Pass
+              </button>
+              <button class="lib-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#161b22] text-slate-300 border border-[#30363d] hover:border-slate-500" data-cat="studio-mcp" onclick="XboxApp.setCategory('studio-mcp')">
+                Game Studio MCP Builds
+              </button>
+              <button class="lib-filter-btn px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#161b22] text-slate-300 border border-[#30363d] hover:border-slate-500" data-cat="cloud" onclick="XboxApp.setCategory('cloud')">
+                Cloud Gaming (xCloud)
+              </button>
+            </div>
+
+            <div class="text-xs font-mono text-slate-400">
+              Baseline: <span class="text-[#22c55e] font-bold">Visual-to-Code Clean-Room React</span>
+            </div>
+          </section>
+
+          <!-- Game Pass & Library Cards Grid -->
+          <section>
+            <div id="games-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+              <!-- Populated by app.js -->
+            </div>
+          </section>
+
+        </div>
+
+        <!-- ===============================================================
+             PERSPECTIVE 2: VISUAL-TO-CODE CLEAN-ROOM STUDIO
+             ("Write a clean Tailwind/React component that looks like this")
+             =============================================================== -->
+        <div id="view-v2c-studio" class="hidden space-y-6">
+          <section class="p-6 rounded-xl bg-[#0d1117] border border-[#30363d] space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold uppercase bg-[#107C10]/30 text-[#22c55e] border border-[#22c55e]/40">
+                    NEW WORKSPACE BASELINE #8
+                  </span>
+                  <span class="text-xs font-mono text-[#DFBA73]">Zero Underlying HTML/CSS Carryover</span>
+                </div>
+                <h2 class="text-xl font-extrabold text-white mt-1">
+                  Visual-to-Code Clean-Room Reconstructor (Tailwind CSS + React 18)
+                </h2>
+                <p class="text-xs text-slate-300 mt-1 max-w-3xl">
+                  Prompt Directive: <code class="text-[#22c55e] bg-[#010409] px-2 py-0.5 rounded border border-[#30363d]">"Write a clean Tailwind/React component that looks exactly like this."</code> — Reconstructs production JSX components from visual appearance alone, completely bypassing obfuscated Electron/React-Native-Web DOM trees.
+                </p>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <button class="xbox-action-btn px-4 py-2 bg-[#107C10] hover:bg-[#159915] text-white text-xs" onclick="XboxApp.copyCleanReactCode()">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  <span id="copy-code-label">Copy Clean React/Tailwind JSX</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Component Target Selector -->
+            <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-[#21262d]">
+              <span class="text-xs font-mono text-slate-400 mr-2">Select Visual Component Target:</span>
+              <button class="v2c-target-btn px-3 py-1.5 rounded text-xs font-bold bg-[#107C10] text-white" data-target="card" onclick="XboxApp.selectV2CTarget('card')">
+                1. Xbox Game Pass Tile Card
+              </button>
+              <button class="v2c-target-btn px-3 py-1.5 rounded text-xs font-bold bg-[#161b22] text-slate-300 border border-[#30363d]" data-target="sidebar" onclick="XboxApp.selectV2CTarget('sidebar')">
+                2. Collapsible Left Install Rail
+              </button>
+              <button class="v2c-target-btn px-3 py-1.5 rounded text-xs font-bold bg-[#161b22] text-slate-300 border border-[#30363d]" data-target="hero" onclick="XboxApp.selectV2CTarget('hero')">
+                3. Day-One Hero Spotlight Banner
+              </button>
+            </div>
+          </section>
+
+          <!-- Side-by-Side Comparison: Bypassed Bloated DOM vs. Clean-Room Tailwind/React -->
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+            <!-- Left: Legacy Obfuscated DOM (BYPASSED) -->
+            <div class="lg:col-span-5 rounded-xl bg-[#0d1117] border border-[#f85149]/40 overflow-hidden flex flex-col">
+              <div class="p-3.5 bg-[#f85149]/10 border-b border-[#f85149]/30 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f85149" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                  </svg>
+                  <span class="text-xs font-extrabold text-[#f85149] uppercase">Bypassed Underlying HTML/CSS (Ignored)</span>
+                </div>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#010409] text-[#f85149]">38 Nested Divs • Hashed CSS</span>
+              </div>
+              <pre id="v2c-legacy-code" class="p-4 text-slate-400 overflow-x-auto code-scroll flex-1 bg-[#010409]"></pre>
+            </div>
+
+            <!-- Right: Clean-Room Reconstructed Tailwind/React Component -->
+            <div class="lg:col-span-7 rounded-xl bg-[#0d1117] border border-[#22c55e]/50 overflow-hidden flex flex-col">
+              <div class="p-3.5 bg-[#107C10]/20 border-b border-[#22c55e]/40 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  <span class="text-xs font-extrabold text-[#22c55e] uppercase">Reconstructed Clean Tailwind/React Component</span>
+                </div>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-[#010409] text-[#22c55e]">Semantic JSX • Utility-First Tailwind</span>
+              </div>
+              <pre id="v2c-clean-code" class="p-4 text-emerald-300 overflow-x-auto code-scroll flex-1 bg-[#010409]"></pre>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===============================================================
+             PERSPECTIVE 3: XBOX GAME BAR DVR & NVIDIA CAPTURES (MCP LIVE)
+             =============================================================== -->
+        <div id="view-dvr-captures" class="hidden space-y-6">
+          <section class="p-5 rounded-xl bg-[#0d1117] border border-[#30363d] flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <div class="text-[10px] font-mono uppercase text-[#22c55e] font-bold">game-capture MCP Server Live Feed</div>
+              <h2 class="text-lg font-extrabold text-white">Xbox Game Bar DVR & NVIDIA ShadowPlay Captures</h2>
+              <p class="text-xs text-slate-400">
+                Direct telemetry from <code class="text-slate-200">C:\Users\chase\Videos\Captures</code> and <code class="text-slate-200">C:\Users\chase\Videos\NVIDIA</code>
+              </p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button class="xbox-action-btn px-3.5 py-2 bg-[#107C10] hover:bg-[#159915] text-white text-xs" onclick="XboxApp.triggerRecordThat()">
+                <span>Trigger Record That (Win+Alt+G)</span>
+              </button>
+              <button class="xbox-action-btn px-3.5 py-2 bg-[#161b22] hover:bg-[#21262d] text-slate-200 border border-[#30363d] text-xs" onclick="XboxApp.triggerScreenshot()">
+                <span>Capture Screenshot (Win+Alt+PrtScn)</span>
+              </button>
+            </div>
+          </section>
+
+          <div id="dvr-captures-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Populated by app.js from real MCP telemetry -->
+          </div>
+        </div>
+
+        <!-- ===============================================================
+             PERSPECTIVE 4: DIRECTSTORAGE 1.2 & XCLOUD PIPELINE SIMULATOR
+             =============================================================== -->
+        <div id="view-xcloud-sim" class="hidden space-y-6">
+          <section class="p-5 rounded-xl bg-[#0d1117] border border-[#30363d] flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <span class="text-[10px] font-mono uppercase text-[#DFBA73] font-bold">Interactive Simulation Engine</span>
+              <h2 class="text-lg font-extrabold text-white">Xbox WinGDK DirectStorage 1.2 & Game Capture MCP Frame Pipeline</h2>
+              <p class="text-xs text-slate-400">
+                Trace a real-time frame from XInput Controller interrupt through NVMe DirectStorage decompression to RTX 4080 NVENC AV1 capture.
+              </p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button class="xbox-action-btn px-4 py-2 bg-[#107C10] hover:bg-[#159915] text-white text-xs" onclick="XboxApp.stepSimulator()">
+                <span>Step Next Stage</span>
+              </button>
+              <button class="xbox-action-btn px-4 py-2 bg-[#0E1D3A] hover:bg-[#16284D] text-[#DFBA73] border border-[#C5A059]/40 text-xs" onclick="XboxApp.autoRunSimulator()">
+                <span>Auto-Trace Full Pipeline</span>
+              </button>
+              <button class="xbox-action-btn px-3 py-2 bg-[#161b22] text-slate-300 border border-[#30363d] text-xs" onclick="XboxApp.resetSimulator()">
+                <span>Reset</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- 5-Stage Pipeline Nodes -->
+          <div id="sim-nodes-grid" class="grid grid-cols-1 md:grid-cols-5 gap-3">
+            <!-- Populated by app.js -->
+          </div>
+
+          <!-- Live Streaming Terminal Log -->
+          <div class="rounded-xl bg-[#010409] border border-[#30363d] overflow-hidden">
+            <div class="px-4 py-2 bg-[#0d1117] border-b border-[#30363d] flex items-center justify-between text-xs font-mono text-slate-400">
+              <span>WINGDK_DIRECTSTORAGE_TELEMETRY_STREAM // RTX 4080 NODE</span>
+              <span id="sim-status-label" class="text-[#22c55e]">IDLE — READY TO TRACE</span>
+            </div>
+            <div id="sim-terminal-logs" class="p-4 h-56 overflow-y-auto font-mono text-xs space-y-1.5 text-slate-300">
+              <div class="text-slate-500">[00.000ms] Press "Step Next Stage" or "Auto-Trace Full Pipeline" to begin telemetry trace...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===============================================================
+             PERSPECTIVE 5: SELF-GRADING ARCHITECTURE PRACTICE DRILLS
+             =============================================================== -->
+        <div id="view-practice-drills" class="hidden space-y-6">
+          <section class="p-5 rounded-xl bg-[#0d1117] border border-[#30363d] flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <span class="text-[10px] font-mono uppercase text-purple-400 font-bold">Gamified Verification Engine</span>
+              <h2 class="text-lg font-extrabold text-white">Visual-to-Code Reconstruction & Xbox Architecture Drills</h2>
+              <p class="text-xs text-slate-400">
+                Validate mastery of clean-room Tailwind/React UI reconstruction, DOM bypass patterns, DirectStorage 1.2, and MCP integration.
+              </p>
+            </div>
+            <div class="flex items-center gap-4 bg-[#010409] px-4 py-2 rounded-lg border border-[#30363d]">
+              <div>
+                <div class="text-[10px] font-mono uppercase text-slate-400">Mastery Score</div>
+                <div id="drill-score-display" class="text-base font-extrabold text-[#22c55e] font-mono">0 / 4 (0%)</div>
+              </div>
+              <div class="h-7 w-px bg-[#30363d]"></div>
+              <div>
+                <div class="text-[10px] font-mono uppercase text-slate-400">Streak</div>
+                <div id="drill-streak-display" class="text-base font-extrabold text-[#DFBA73] font-mono">0x</div>
+              </div>
+            </div>
+          </section>
+
+          <div id="drills-container" class="space-y-4">
+            <!-- Populated by app.js -->
+          </div>
+        </div>
+
+      </main>
+
+      <!-- =================================================================
+           MULTI-DOCK INSPECTOR (Left / Center Modal / Right Dock)
+           ================================================================= -->
+      <div class="inspector-backdrop" id="inspector-backdrop" onclick="AntigravityEnterprise.closeInspector()"></div>
+      <aside class="app-inspector mode-center hidden" id="app-inspector">
+        <div class="inspector-head">
+          <div class="inspector-head-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <span id="insp-header-title">Xbox Component & MCP Telemetry Inspector</span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div class="dock-mode-bar">
+              <button class="dock-mode-btn" data-dock="left" onclick="AntigravityEnterprise.setInspectorDock('left')" title="Dock Left">Left</button>
+              <button class="dock-mode-btn active" data-dock="center" onclick="AntigravityEnterprise.setInspectorDock('center')" title="Center Modal">Center</button>
+              <button class="dock-mode-btn" data-dock="right" onclick="AntigravityEnterprise.setInspectorDock('right')" title="Dock Right">Right</button>
+            </div>
+            <button class="btn-close-icon" onclick="AntigravityEnterprise.closeInspector()" title="Close (Esc)">✕</button>
+          </div>
+        </div>
+
+        <div class="inspector-body">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <div id="insp-title" class="text-lg font-extrabold text-white">Gears of War: E-Day</div>
+              <div id="insp-category" class="text-xs text-[#22c55e] font-mono">WinGDK • DirectStorage 1.2 • MCP Linked</div>
+            </div>
+            <button class="xbox-action-btn px-3 py-1.5 bg-[#0E1D3A] text-[#DFBA73] border border-[#C5A059]/40 text-xs" onclick="XboxApp.narrateInspector()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              </svg>
+              <span>Narrate</span>
+            </button>
+          </div>
+
+          <div class="detail-card">
+            <div class="detail-heading">Mechanical & Architectural Specification</div>
+            <div id="insp-role" class="detail-text text-xs text-slate-200">
+              Reconstructed via Visual-to-Code Clean-Room Baseline.
+            </div>
+          </div>
+
+          <div class="detail-card">
+            <div class="detail-heading">Live MCP & Runtime Parameters</div>
+            <table class="w-full text-xs font-mono border-collapse">
+              <tbody id="insp-params"></tbody>
+            </table>
+          </div>
+
+          <div class="detail-card">
+            <div class="detail-heading">Reconstructed Clean-Room Tailwind/React JSX</div>
+            <pre id="insp-jsx-code" class="p-3 rounded bg-[#010409] border border-[#30363d] text-emerald-300 overflow-x-auto code-scroll"></pre>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+
+  </div>
+
+</body>
+</html>

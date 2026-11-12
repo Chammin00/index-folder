@@ -1,0 +1,18 @@
+﻿========================================================================
+PROJECT: using ai agents for profit
+CATEGORY: 03_AI_and_Agent_Systems
+DESCRIPTION: AI Revenue Agents & Monetization Matrix
+========================================================================
+
+Original Project Directory:
+G:\My Drive\Antigravity\Projects\using ai agents for profit\static
+
+Original Index File:
+G:\My Drive\Antigravity\Projects\using ai agents for profit\static\index.html
+
+How to Open in Antigravity:
+1. In Antigravity / VS Code: Click File -> Open Folder...
+2. Paste this path: G:\My Drive\Antigravity\Projects\using ai agents for profit\static
+3. Press Enter
+
+Or launch directly in browser using: Launch_Original_Index.url

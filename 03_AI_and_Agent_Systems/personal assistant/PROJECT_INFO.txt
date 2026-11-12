@@ -1,0 +1,18 @@
+﻿========================================================================
+PROJECT: personal assistant
+CATEGORY: 03_AI_and_Agent_Systems
+DESCRIPTION: Personal AI Assistant Chat & Task Automation
+========================================================================
+
+Original Project Directory:
+G:\My Drive\Antigravity\Projects\personal assistant\ui
+
+Original Index File:
+G:\My Drive\Antigravity\Projects\personal assistant\ui\index.html
+
+How to Open in Antigravity:
+1. In Antigravity / VS Code: Click File -> Open Folder...
+2. Paste this path: G:\My Drive\Antigravity\Projects\personal assistant\ui
+3. Press Enter
+
+Or launch directly in browser using: Launch_Original_Index.url

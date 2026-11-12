@@ -1,0 +1,253 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antigravity // Projects Sandbox Studio</title>
+    <link rel="stylesheet" href="sandbox.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <script src="high-gloss-lacquer.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <script src="mcp-baseline.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="aws-enterprise-baseline.css">
+  <script src="aws-enterprise-baseline.js"></script>
+</head>
+<body class="cosmic-theme">
+    <canvas id="cosmic-canvas" class="cosmic-bg"></canvas>
+    <div class="app-layout">
+        <!-- Top App Bar -->
+        <header class="top-bar glass">
+            <div class="brand">
+                <div class="brand-logo">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">ANTIGRAVITY</span>
+                    <span class="brand-subtitle">PROJECTS SANDBOX STUDIO</span>
+                </div>
+            </div>
+
+            <!-- Health Summary Metric Pills -->
+            <div class="stats-ribbon">
+                <div class="stat-pill">
+                    <span class="stat-label">PROJECTS</span>
+                    <span class="stat-value" id="stat-total">--</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">PASSED</span>
+                    <span class="stat-value stat-pass" id="stat-passed">--</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">WARNINGS</span>
+                    <span class="stat-value stat-warn" id="stat-warnings">--</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">FAILED</span>
+                    <span class="stat-value stat-fail" id="stat-failed">--</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-label">HEALTH</span>
+                    <span class="stat-value stat-highlight" id="stat-health">--%</span>
+                </div>
+            </div>
+
+            <!-- Global Action Controls -->
+            <div class="top-actions">
+                <button id="btn-run-all-tests" class="btn btn-primary">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    <span>Run All Tests</span>
+                </button>
+                <button id="btn-refresh" class="btn btn-glass" title="Refresh Project Catalog">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="main-body">
+            <!-- Sidebar: Project Explorer -->
+            <aside class="sidebar glass">
+                <div class="sidebar-header">
+                    <div class="search-box">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" id="project-search" placeholder="Search 18+ apps...">
+                    </div>
+                    <div class="category-filters" id="category-filters">
+                        <button class="filter-chip active" data-filter="All">All</button>
+                        <button class="filter-chip" data-filter="Static Web">Web</button>
+                        <button class="filter-chip" data-filter="Python API">Python</button>
+                        <button class="filter-chip" data-filter=".NET Hub">.NET</button>
+                        <button class="filter-chip" data-filter="Study Suite">Study</button>
+                        <button class="filter-chip" data-filter="PowerShell Server">Scripts</button>
+                    </div>
+                </div>
+
+                <!-- Projects Scrollable List -->
+                <div class="project-list" id="project-list">
+                    <div class="empty-state">Scanning Antigravity projects...</div>
+                </div>
+            </aside>
+
+            <!-- Main Content Area: Test Bed & Diagnostics Tabs -->
+            <section class="stage-container">
+                <!-- Navigation Tabs -->
+                <nav class="stage-tabs">
+                    <button class="stage-tab active" data-tab="preview">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                        <span>Interactive Test Bed</span>
+                    </button>
+                    <button class="stage-tab" data-tab="diagnostics">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                        <span>Diagnostics & Health Matrix</span>
+                    </button>
+                    <button class="stage-tab" data-tab="staging">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path></svg>
+                        <span>Ephemeral Staging</span>
+                    </button>
+                </nav>
+
+                <!-- TAB 1: Interactive Test Bed -->
+                <div class="tab-pane active" id="pane-preview">
+                    <div class="preview-toolbar glass">
+                        <div class="app-identity">
+                            <div class="app-badge" id="preview-category">WEB</div>
+                            <h2 class="app-title" id="preview-app-title">Select an Application</h2>
+                            <span class="app-entry" id="preview-app-entry">--</span>
+                        </div>
+
+                        <!-- Device Presets -->
+                        <div class="device-toggles">
+                            <button class="device-btn active" data-viewport="100%" title="Desktop View (Fluid)">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                            </button>
+                            <button class="device-btn" data-viewport="1366px" title="Laptop (1366px)">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="12" rx="1"></rect><line x1="2" y1="20" x2="22" y2="20"></line></svg>
+                            </button>
+                            <button class="device-btn" data-viewport="768px" title="Tablet (768px)">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                            </button>
+                            <button class="device-btn" data-viewport="375px" title="Mobile (375px)">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                            </button>
+                        </div>
+
+                        <!-- Runner Controls -->
+                        <div class="preview-actions">
+                            <button id="btn-stage-current" class="btn btn-secondary" title="Clone to isolated staging workspace">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path></svg>
+                                <span>Stage</span>
+                            </button>
+                            <button id="btn-test-current" class="btn btn-secondary" title="Run diagnostic suite on this app">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                                <span>Test App</span>
+                            </button>
+                            <button id="btn-reload-preview" class="btn btn-glass" title="Reload Testbed Frame">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                            </button>
+                            <a id="btn-open-tab" href="#" target="_blank" class="btn btn-glass" title="Open directly in new browser tab">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Frame Stage -->
+                    <div class="iframe-wrapper">
+                        <div class="iframe-viewport-container" id="viewport-container">
+                            <iframe id="testbed-frame" src="about:blank" sandbox="allow-scripts allow-forms allow-same-origin allow-modals"></iframe>
+                            <div class="frame-empty-overlay" id="frame-empty">
+                                <div class="empty-icon">🪐</div>
+                                <h3>Select a Project to Launch Testbed</h3>
+                                <p>Click any application in the sidebar to load it into the isolated testing viewport.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sandbox Console / Inspector Tray -->
+                    <div class="console-tray glass" id="console-tray">
+                        <div class="console-header">
+                            <div class="console-title">
+                                <span class="indicator-dot"></span>
+                                <span>SANDBOX TESTBED CONSOLE &amp; RUNTIME MONITOR</span>
+                            </div>
+                            <div class="console-actions">
+                                <button id="btn-clear-console" class="btn-tiny">Clear</button>
+                                <button id="btn-toggle-console" class="btn-tiny">Minimize</button>
+                            </div>
+                        </div>
+                        <div class="console-logs" id="console-logs">
+                            <div class="log-line log-info">[Sandbox] Ready. Select an application to initiate test monitor.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: Diagnostics & Health Matrix -->
+                <div class="tab-pane" id="pane-diagnostics">
+                    <div class="diagnostics-summary glass">
+                        <div class="summary-metric">
+                            <div class="metric-num stat-pass" id="diag-passed">--</div>
+                            <div class="metric-label">Passed Checks</div>
+                        </div>
+                        <div class="summary-metric">
+                            <div class="metric-num stat-warn" id="diag-warnings">--</div>
+                            <div class="metric-label">Warnings</div>
+                        </div>
+                        <div class="summary-metric">
+                            <div class="metric-num stat-fail" id="diag-failed">--</div>
+                            <div class="metric-label">Failed</div>
+                        </div>
+                        <div class="summary-metric">
+                            <div class="metric-num" id="diag-total">--</div>
+                            <div class="metric-label">Total Evaluated</div>
+                        </div>
+                    </div>
+
+                    <div class="diagnostics-matrix" id="diagnostics-matrix">
+                        <div class="empty-state">No diagnostic runs yet. Click "Run All Tests" or test an individual app.</div>
+                    </div>
+
+                    <div class="cli-output-card glass">
+                        <div class="card-header">
+                            <span>POWERSHELL / TEST ENGINE RAW OUTPUT</span>
+                            <button id="btn-clear-cli" class="btn-tiny">Clear</button>
+                        </div>
+                        <pre class="cli-log" id="cli-log">Engine idle. Click 'Run All Tests' to execute Test-Sandbox.ps1.</pre>
+                    </div>
+                </div>
+
+                <!-- TAB 3: Ephemeral Staging -->
+                <div class="tab-pane" id="pane-staging">
+                    <div class="staging-banner glass">
+                        <div class="banner-info">
+                            <h3>Ephemeral Staging Workspace</h3>
+                            <p>Staging clones an entire project into an isolated environment (<code>sandbox/staging/&lt;project&gt;</code>) with safe sandbox environment variables. Modify files, test destructive changes, or run mock pipelines with 100% isolation from production repositories.</p>
+                        </div>
+                        <button id="btn-wipe-staging" class="btn btn-danger">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            <span>Wipe All Staging</span>
+                        </button>
+                    </div>
+
+                    <div class="staging-grid" id="staging-grid">
+                        <div class="empty-state">No staged projects currently active. Use the "Stage" button on any project card.</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="cosmic-background.js"></script>
+    <script src="sandbox.js"></script>
+</body>
+</html>
+

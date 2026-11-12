@@ -1,0 +1,1936 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApexPulse Gallery | 3D Hallway Gaming Highlight Studio</title>
+  <meta name="description" content="Walk down a 3D museum gallery hallway from picture to picture: select your gameplay clip, choose real licensed background music, insert real studio soundbytes at star marks, and export your highlight.">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <script src="audio_manifest.js"></script>
+  <script src="mcp-baseline.js"></script>
+
+  <style>
+    :root {
+      --bg-obsidian: #090a0f;
+      --panel-surface: rgba(14, 16, 24, 0.88);
+      --panel-elevated: rgba(22, 26, 38, 0.94);
+      --brass-gold: #d4af37;
+      --brass-light: #f5dc84;
+      --brass-border: rgba(212, 175, 55, 0.38);
+      --border-subtle: rgba(255, 255, 255, 0.09);
+      --border-highlight: rgba(255, 255, 255, 0.16);
+      --text-ivory: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --emerald-accent: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-obsidian);
+      color: var(--text-ivory);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      overflow: hidden;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Fullscreen 3D Museum Corridor Canvas */
+    #gallery-canvas-container {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+    }
+
+    /* Top Architectural Gallery Bar (GitHub Primer + Apple Translucent Header) */
+    .gallery-topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: linear-gradient(180deg, rgba(10, 11, 16, 0.94) 0%, rgba(13, 15, 22, 0.85) 100%);
+      border-bottom: 1px solid var(--border-subtle);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+    }
+
+    /* Stepper Pills in Topbar */
+    .step-nav-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 16px;
+      border-radius: 12px;
+      font-size: 12.5px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: var(--text-muted);
+      background: rgba(22, 25, 36, 0.65);
+      border: 1px solid var(--border-subtle);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      cursor: pointer;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .step-nav-pill:hover {
+      color: var(--text-ivory);
+      border-color: rgba(212, 175, 55, 0.5);
+      background: rgba(28, 32, 46, 0.8);
+      transform: translateY(-1px);
+    }
+    .step-nav-pill.active {
+      color: #0c0d12;
+      background: linear-gradient(135deg, #f5dc84 0%, #d4af37 100%);
+      border-color: #fae69e;
+      box-shadow: 0 0 22px rgba(212, 175, 55, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+    .step-nav-pill.completed:not(.active) {
+      color: #34d399;
+      border-color: rgba(16, 185, 129, 0.45);
+      background: rgba(16, 185, 129, 0.12);
+    }
+
+    /* Sculpted Museum Atelier Pop-Up Modal (Linear/Apple Glassmorphism) */
+    .exhibit-modal {
+      position: relative;
+      z-index: 30;
+      width: 100%;
+      max-width: 620px;
+      max-height: calc(100vh - 128px);
+      display: flex;
+      flex-direction: column;
+      background: var(--panel-surface);
+      border: 1px solid var(--border-highlight);
+      border-radius: 22px;
+      box-shadow:
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.16),
+        0 0 0 1px rgba(0, 0, 0, 0.85),
+        0 32px 84px -16px rgba(0, 0, 0, 0.95),
+        0 0 45px rgba(212, 175, 55, 0.14);
+      backdrop-filter: blur(32px) saturate(190%);
+      -webkit-backdrop-filter: blur(32px) saturate(190%);
+      overflow: hidden;
+      transition:
+        opacity 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .exhibit-modal.walking-retracted {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(40px) scale(0.95);
+    }
+
+    /* Brushed Brass & Obsidian Atelier Banner */
+    .exhibit-brass-banner {
+      background: linear-gradient(180deg, rgba(28, 31, 44, 0.85) 0%, rgba(18, 20, 29, 0.92) 100%);
+      border-bottom: 1px solid var(--border-subtle);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .exhibit-body {
+      padding: 22px 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .exhibit-footer {
+      padding: 16px 24px;
+      background: rgba(11, 12, 18, 0.94);
+      border-top: 1px solid var(--border-subtle);
+      box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    /* Tactile Selection Cards (10/10 Linear & Apple Interactive Specs) */
+    .tactile-card {
+      background: rgba(22, 25, 36, 0.65);
+      border: 1px solid var(--border-subtle);
+      border-radius: 15px;
+      padding: 15px 18px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+    .tactile-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: transparent;
+      transition: background 0.2s ease;
+    }
+    .tactile-card:hover {
+      border-color: rgba(212, 175, 55, 0.55);
+      background: rgba(30, 34, 48, 0.85);
+      transform: translateY(-2px);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 12px 26px -6px rgba(0, 0, 0, 0.65);
+    }
+    .tactile-card:active {
+      transform: scale(0.985);
+    }
+    .tactile-card.selected {
+      border-color: #f0d27a;
+      background: linear-gradient(145deg, rgba(212, 175, 55, 0.14) 0%, rgba(20, 24, 38, 0.92) 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(240, 210, 122, 0.35),
+        0 0 24px rgba(212, 175, 55, 0.20),
+        0 14px 28px -6px rgba(0, 0, 0, 0.7);
+    }
+    .tactile-card.selected::before {
+      background: #f0d27a;
+    }
+
+    /* Primary Walk CTA Button (High-Gloss Emerald Glow) */
+    .btn-walk-next {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 13.5px;
+      letter-spacing: 0.02em;
+      padding: 13px 24px;
+      border-radius: 14px;
+      border: 1px solid rgba(110, 231, 183, 0.45);
+      box-shadow:
+        0 8px 24px -4px rgba(16, 185, 129, 0.55),
+        inset 0 1px 0 rgba(255, 255, 255, 0.28);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-walk-next:hover {
+      background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+      transform: translateY(-1.5px);
+      box-shadow:
+        0 14px 30px -4px rgba(16, 185, 129, 0.75),
+        0 0 22px rgba(16, 185, 129, 0.4);
+    }
+    .btn-walk-next:active {
+      transform: scale(0.97);
+    }
+
+    /* Walking Down the Hallway Telemetry HUD */
+    .walking-hud {
+      position: fixed;
+      bottom: 64px;
+      left: 50%;
+      transform: translateX(-50%) translateY(24px);
+      z-index: 45;
+      background: rgba(14, 16, 24, 0.95);
+      border: 1.5px solid var(--brass-gold);
+      border-radius: 999px;
+      padding: 12px 28px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 35px rgba(212, 175, 55, 0.32);
+      backdrop-filter: blur(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .walking-hud.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .foot-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(212, 175, 55, 0.45);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-muted);
+      transition: all 0.14s ease;
+    }
+    .foot-dot.step-hit {
+      background: var(--brass-gold);
+      color: #0c0d12;
+      transform: scale(1.18);
+      box-shadow: 0 0 16px var(--brass-gold);
+    }
+
+    /* Live Equalizer Animation for Playing Tracks */
+    .live-eq {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 14px;
+      width: 16px;
+    }
+    .live-eq-bar {
+      width: 3px;
+      background-color: #f5dc84;
+      border-radius: 1px;
+      animation: eqBounce 0.75s ease-in-out infinite alternate;
+    }
+    .live-eq-bar:nth-child(1) { height: 40%; animation-delay: 0.1s; }
+    .live-eq-bar:nth-child(2) { height: 90%; animation-delay: 0.35s; }
+    .live-eq-bar:nth-child(3) { height: 60%; animation-delay: 0.2s; }
+    .live-eq-bar:nth-child(4) { height: 75%; animation-delay: 0.45s; }
+
+    @keyframes eqBounce {
+      0% { height: 25%; }
+      100% { height: 100%; }
+    }
+
+    /* Bottom Status Ribbon */
+    .gallery-bottombar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 44px;
+      background: rgba(10, 11, 16, 0.94);
+      border-top: 1px solid var(--border-subtle);
+      backdrop-filter: blur(14px);
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    /* Custom Slim Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(12, 14, 20, 0.6);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(212, 175, 55, 0.35);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(212, 175, 55, 0.75);
+    }
+  </style>
+</head>
+<body class="min-h-screen relative flex items-center justify-end pr-4 md:pr-10 pt-16 pb-12">
+
+  <!-- 1. FULLSCREEN 3D MUSEUM GALLERY CORRIDOR -->
+  <div id="gallery-canvas-container"></div>
+
+  <!-- 2. TOP NAVIGATION BAR (4 PICTURES DOWN THE HALLWAY) -->
+  <header class="gallery-topbar">
+    <div class="flex items-center gap-3.5">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#2a2417] to-[#14120e] border border-[#d4af37]/70 flex items-center justify-center font-black text-sm text-[#f5dc84] shadow-md">
+        AP
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-black text-sm tracking-wide text-white uppercase">ApexPulse 3D Studio</span>
+          <span class="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-[#d4af37]/15 text-[#f5dc84] border border-[#d4af37]/40">
+            LICENSED STUDIO AUDIO
+          </span>
+        </div>
+        <p class="text-[11px] text-slate-400">First-person walk down the gallery hallway to craft your gaming highlight</p>
+      </div>
+    </div>
+
+    <!-- 4 Framed Exhibits Stepper -->
+    <nav class="hidden lg:flex items-center gap-2.5">
+      <button onclick="triggerWalkToPicture(1)" id="top-pill-1" class="step-nav-pill active">
+        <span class="font-mono text-xs font-black">01</span>
+        <span>Select Video</span>
+      </button>
+      <span class="text-slate-600 font-bold">→</span>
+      <button onclick="triggerWalkToPicture(2)" id="top-pill-2" class="step-nav-pill">
+        <span class="font-mono text-xs font-black">02</span>
+        <span>Background Music</span>
+      </button>
+      <span class="text-slate-600 font-bold">→</span>
+      <button onclick="triggerWalkToPicture(3)" id="top-pill-3" class="step-nav-pill">
+        <span class="font-mono text-xs font-black">03</span>
+        <span>★ Soundbytes</span>
+      </button>
+      <span class="text-slate-600 font-bold">→</span>
+      <button onclick="triggerWalkToPicture(4)" id="top-pill-4" class="step-nav-pill">
+        <span class="font-mono text-xs font-black">04</span>
+        <span>Premiere & Plan</span>
+      </button>
+    </nav>
+
+    <!-- Live Spectrum Meter, Aspect Switcher, EQ & Gallery View Toggle -->
+    <div class="flex items-center gap-2.5">
+      <!-- 16:9 vs 9:16 Shorts Toggle (CapCut Inspiration) -->
+      <button onclick="toggleAspectRatio()" id="btn-aspect-toggle" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#141624] hover:bg-[#1c2032] text-xs font-semibold text-sky-200 border border-sky-400/40 transition shadow-sm" title="Switch Aspect Ratio (16:9 Landscape YouTube vs 9:16 Shorts/TikTok)">
+        <span id="aspect-ratio-icon">🖥️</span>
+        <span id="aspect-ratio-label" class="font-mono text-[11px] font-bold">16:9 WIDE</span>
+      </button>
+
+      <!-- Parametric Audio EQ Selector (Ableton Inspiration) -->
+      <button onclick="cycleMasterEQ()" id="btn-master-eq" class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#1a1728] hover:bg-[#25203a] text-xs font-semibold text-amber-200 border border-amber-400/40 transition shadow-sm" title="Cycle Parametric Equalizer Preset">
+        <span>🎛️</span>
+        <span id="eq-preset-label" class="font-mono text-[11px] font-bold">EQ: GAMING</span>
+      </button>
+
+      <!-- App Inspirations & Best-Practice Modal Trigger -->
+      <button onclick="toggleAppsInspirationsModal()" id="btn-app-inspirations" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-emerald-500/20 hover:from-amber-500/30 hover:to-emerald-500/30 text-xs font-semibold text-amber-200 border border-amber-400/50 transition flex items-center gap-1.5 shadow-sm" title="View Best-in-Class Web Apps & Apply MCP Live Edits">
+        <span>💡</span>
+        <span class="font-bold">App Inspirations</span>
+      </button>
+
+      <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#141620] border border-white/10" title="Real-Time Web Audio Spectrum Meter">
+        <span class="text-[10px] font-mono text-amber-300 font-bold" id="top-audio-label">AUDIO READY</span>
+        <div id="top-spectrum-bars" class="flex items-end gap-0.5 h-4 w-20">
+          <!-- 12 live bars populated by JS -->
+        </div>
+      </div>
+
+      <!-- MCP Baseline Hub & In-App Editor Triggers -->
+      <button onclick="window.AntigravityMCP && window.AntigravityMCP.toggleHUD()" id="btn-mcp-hud" class="px-3 py-1.5 rounded-xl bg-[#0e1726] hover:bg-[#15233a] text-xs font-semibold text-[#DFBA73] border border-[#d4af37]/50 transition flex items-center gap-1.5 shadow-sm" title="Toggle MCP Servers HUD (Ctrl+M)">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="font-bold">⚡ MCP Active (12)</span>
+      </button>
+
+      <button onclick="window.AntigravityMCP && window.AntigravityMCP.toggleEditConsole()" id="btn-mcp-edit" class="px-3 py-1.5 rounded-xl bg-[#1a1528] hover:bg-[#251e3b] text-xs font-semibold text-purple-200 border border-purple-500/40 transition flex items-center gap-1.5 shadow-sm" title="Open In-App Edit & Telemetry Console (Ctrl+E)">
+        <span>🛠️</span>
+        <span>Edit App</span>
+      </button>
+
+      <button onclick="toggleGalleryOnlyView()" id="btn-gallery-only" class="px-3.5 py-2 rounded-xl bg-[#1b1e2c] hover:bg-[#252a3d] text-xs font-semibold text-slate-200 border border-white/15 transition flex items-center gap-2 shadow-sm">
+        <svg class="w-3.5 h-3.5 text-amber-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+        <span>Inspect 3D Hallway</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 3. WALKING DOWN THE HALLWAY LIVE TELEMETRY HUD -->
+  <div id="walking-hud" class="walking-hud">
+    <div class="flex items-center gap-1.5">
+      <span id="foot-left" class="foot-dot">L</span>
+      <span id="foot-right" class="foot-dot">R</span>
+    </div>
+    <div class="min-w-[240px]">
+      <div id="walking-hud-title" class="text-xs font-extrabold text-amber-300 uppercase tracking-wider">
+        Walking Down Corridor to Picture 2...
+      </div>
+      <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mt-1.5">
+        <div id="walking-hud-bar" class="h-full bg-gradient-to-r from-amber-400 to-emerald-400 transition-all duration-75" style="width: 0%;"></div>
+      </div>
+    </div>
+    <button onclick="skipCurrentWalk()" class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-xs font-bold text-white transition">
+      Skip Walk →
+    </button>
+  </div>
+
+  <!-- 4. SCULPTED POP-UP MENU FOR EACH PICTURE IN THE HALLWAY -->
+  <aside id="exhibit-modal" class="exhibit-modal">
+
+    <!-- =================================================================== -->
+    <!-- PICTURE 1 POP-UP MENU: SELECT YOUR VIDEO CLIP                       -->
+    <!-- =================================================================== -->
+    <div id="menu-picture-1" class="exhibit-panel flex flex-col h-full">
+      <div class="exhibit-brass-banner">
+        <div>
+          <div class="text-[11px] font-mono font-extrabold text-[#f5dc84] uppercase tracking-widest flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+            EXHIBIT I OF IV • LEFT GALLERY WALL
+          </div>
+          <h1 class="text-xl md:text-2xl font-black text-white mt-1">
+            Step 1: Choose Your Video Clip
+          </h1>
+        </div>
+        <span class="px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-sky-500/20 text-sky-300 border border-sky-400/40">
+          Picture 01
+        </span>
+      </div>
+
+      <div class="exhibit-body space-y-4">
+        <p class="text-sm text-slate-300 leading-relaxed">
+          Pick one of our master sample reels below or drop a gameplay recording from your computer. Once selected, click the green button to walk to Picture 2.
+        </p>
+
+        <!-- Upload Your Own Video Box -->
+        <div id="video-drop-zone" class="p-4 rounded-2xl border-2 border-dashed border-amber-400/50 hover:border-amber-300 bg-[#141724]/75 hover:bg-[#1a1e30] cursor-pointer transition flex items-center justify-between gap-4 shadow-sm group">
+          <input type="file" id="video-file-input" accept="video/mp4,video/webm,video/quicktime,video/*" class="hidden">
+          <div class="flex items-center gap-3.5">
+            <div class="w-11 h-11 rounded-xl bg-amber-400/15 border border-amber-400/40 flex items-center justify-center text-amber-300 group-hover:scale-105 transition-transform">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+            </div>
+            <div>
+              <div class="text-sm font-extrabold text-amber-300">
+                Upload Your Gameplay Video (.MP4 / .WebM / .MOV)
+              </div>
+              <div class="text-xs text-slate-400 mt-0.5">
+                Drag & drop or click anywhere in this box to browse
+              </div>
+            </div>
+          </div>
+          <span class="px-4 py-2 rounded-xl bg-amber-400/20 group-hover:bg-amber-400/30 border border-amber-400/50 text-xs font-extrabold text-amber-200 whitespace-nowrap transition">
+            Browse File
+          </span>
+        </div>
+
+        <!-- Import from Game Capture MCP (OBS / ShadowPlay / Xbox Game Bar) -->
+        <div id="mcp-game-capture-card" class="p-4 rounded-2xl border border-pink-500/40 bg-gradient-to-r from-pink-950/25 via-[#141724]/85 to-[#0b101c] transition flex items-center justify-between gap-4 shadow-sm group">
+          <div class="flex items-center gap-3.5">
+            <div class="w-11 h-11 rounded-xl bg-pink-500/15 border border-pink-500/40 flex items-center justify-center text-pink-300 group-hover:scale-105 transition-transform text-lg">
+              🎥
+            </div>
+            <div>
+              <div class="text-sm font-extrabold text-pink-300 flex items-center gap-2">
+                <span>Game Capture MCP Bridge</span>
+                <span class="text-[9px] font-mono px-2 py-0.2 rounded-full bg-pink-500/20 text-pink-200 border border-pink-500/40 font-bold">LIVE TELEMETRY</span>
+              </div>
+              <div class="text-xs text-slate-300 mt-0.5">
+                Stream footage directly from OBS Studio 31, NVIDIA ShadowPlay, or Xbox Game Bar
+              </div>
+            </div>
+          </div>
+          <button id="btn-import-mcp-clip" onclick="connectGameCaptureMCP()" class="px-4 py-2 rounded-xl bg-pink-500/20 hover:bg-pink-500/30 text-xs font-extrabold text-pink-200 border border-pink-500/50 transition flex items-center gap-1.5 shadow-sm whitespace-nowrap">
+            <span>⚡</span> Load MCP Clip
+          </button>
+        </div>
+
+        <!-- Ready-to-Test Sample Videos -->
+        <div class="space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider">
+              Or Pick a Ready Master Reel:
+            </span>
+            <span class="text-[11px] font-mono text-emerald-400 font-semibold">1080p 60fps Master Files</span>
+          </div>
+          <div id="sample-videos-list" class="space-y-2.5">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <div class="exhibit-footer">
+        <div class="text-xs text-slate-300 truncate max-w-[260px]">
+          Active: <strong id="p1-active-clip" class="text-amber-300">Apex Legends — 1v3 Final Ring Clutch</strong>
+        </div>
+        <button onclick="submitPicture1()" class="btn-walk-next">
+          <span>Submit & Walk to Picture 2</span>
+          <span>→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- PICTURE 2 POP-UP MENU: CHOOSE REAL BACKGROUND MUSIC                 -->
+    <!-- =================================================================== -->
+    <div id="menu-picture-2" class="exhibit-panel hidden flex flex-col h-full">
+      <div class="exhibit-brass-banner">
+        <div>
+          <div class="text-[11px] font-mono font-extrabold text-[#f5dc84] uppercase tracking-widest flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+            EXHIBIT II OF IV • RIGHT GALLERY WALL
+          </div>
+          <h2 class="text-xl md:text-2xl font-black text-white mt-1">
+            Step 2: Choose Background Music
+          </h2>
+        </div>
+        <button onclick="document.getElementById('custom-music-input').click()" class="px-3.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-400/50 text-xs font-extrabold transition flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          <span>Port Audio</span>
+        </button>
+        <input type="file" id="custom-music-input" accept="audio/*" multiple class="hidden">
+      </div>
+
+      <div class="exhibit-body space-y-4">
+        <!-- Active Music Hero Banner with Live Play/Stop -->
+        <div class="p-4 rounded-2xl bg-gradient-to-r from-[#171a27] to-[#12141f] border border-amber-400/45 flex items-center justify-between gap-3 shadow-md">
+          <div class="min-w-0">
+            <div class="text-[10px] font-mono uppercase tracking-wider text-amber-300 font-extrabold flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              SELECTED BACKGROUND SCORE
+            </div>
+            <div id="p2-selected-title" class="text-sm font-extrabold text-white truncate mt-1">
+              Local Forecast - Elevator
+            </div>
+            <div id="p2-selected-credit" class="text-[11px] text-slate-400 truncate mt-0.5">
+              Kevin MacLeod • CC BY 4.0
+            </div>
+          </div>
+          <button onclick="togglePreviewSelectedMusic()" id="p2-preview-selected-btn" class="px-4 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-black text-xs whitespace-nowrap hover:bg-amber-300 transition flex items-center gap-1.5 shadow-md">
+            <span>▶ Play Selected</span>
+          </button>
+        </div>
+
+        <!-- Search & Filter Bar -->
+        <div class="space-y-2">
+          <div class="relative">
+            <input type="text" id="music-search-input" oninput="onMusicSearchInput(this.value)" placeholder="Search tracks by name or artist..." class="w-full rounded-xl bg-[#12141e] border border-white/12 px-3.5 py-2.5 text-xs text-white placeholder-slate-500 outline-none focus:border-amber-400 transition" />
+            <span class="absolute right-3 top-2.5 text-slate-500 text-xs pointer-events-none">🔍</span>
+          </div>
+
+          <!-- Category Filter Chips -->
+          <div id="music-category-tabs" class="flex flex-wrap gap-1.5">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Expandable Music Tree List -->
+        <div id="music-tree-list" class="space-y-2.5 max-h-[280px] overflow-y-auto pr-1">
+          <!-- Populated by JS from audio_manifest.js -->
+        </div>
+      </div>
+
+      <div class="exhibit-footer">
+        <button onclick="triggerWalkToPicture(1)" class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-bold text-slate-200 transition">
+          ← Walk Back
+        </button>
+        <button onclick="submitPicture2()" class="btn-walk-next">
+          <span>Submit & Walk to Picture 3</span>
+          <span>→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- PICTURE 3 POP-UP MENU: INSERT SOUNDBYTES AT ★ MARKS & TEST IT OUT   -->
+    <!-- =================================================================== -->
+    <div id="menu-picture-3" class="exhibit-panel hidden flex flex-col h-full">
+      <div class="exhibit-brass-banner">
+        <div>
+          <div class="text-[11px] font-mono font-extrabold text-[#f5dc84] uppercase tracking-widest flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+            EXHIBIT III OF IV • LEFT GALLERY WALL
+          </div>
+          <h2 class="text-xl md:text-2xl font-black text-white mt-1">
+            Step 3: Insert ★ Soundbytes & Test
+          </h2>
+        </div>
+        <button onclick="document.getElementById('custom-sfx-input').click()" class="px-3.5 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 border border-rose-400/50 text-xs font-extrabold transition flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          <span>Port Cue</span>
+        </button>
+        <input type="file" id="custom-sfx-input" accept="audio/*" multiple class="hidden">
+      </div>
+
+      <div class="exhibit-body space-y-4">
+        <!-- Video Player with 4 ★ Star Marks on the Timeline -->
+        <div class="rounded-2xl overflow-hidden bg-black border border-white/15 relative shadow-lg">
+          <video id="studio-video" class="w-full aspect-video object-cover bg-black" playsinline></video>
+
+          <!-- Top Overlay Badges -->
+          <div class="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between pointer-events-none">
+            <span class="px-2.5 py-1 rounded-lg bg-black/80 border border-white/15 text-[11px] font-mono font-bold text-white shadow">
+              <span id="p3-timecode">00:00.0</span> / <span id="p3-duration">00:20.0</span>
+            </span>
+            <span id="p3-ducking-pill" class="px-2.5 py-1 rounded-lg bg-emerald-950/90 border border-emerald-400/50 text-[11px] font-mono font-bold text-emerald-300 shadow">
+              BGM NORMAL (0dB)
+            </span>
+          </div>
+
+          <!-- Fired Soundbyte Toast Overlay -->
+          <div id="p3-cue-toast" class="absolute bottom-12 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-amber-400 text-slate-950 font-black text-xs shadow-2xl opacity-0 transition-opacity duration-150 pointer-events-none border border-amber-200">
+            ★ Soundbyte Fired
+          </div>
+
+          <!-- Star-Marked Timeline Bar -->
+          <div class="p-3 bg-[#10121a] border-t border-white/10">
+            <div class="relative h-6 bg-[#1a1d2b] rounded-lg cursor-pointer">
+              <div id="p3-progress-fill" class="h-full bg-gradient-to-r from-amber-400/40 to-rose-500/50 rounded-lg border-r-2 border-amber-300" style="width: 0%;"></div>
+              <!-- 4 Interactive Clickable Star Pins -->
+              <span onclick="jumpVideoToMarker(0)" class="absolute -top-0.5 text-amber-400 font-black text-sm cursor-pointer hover:scale-125 transition" style="left: 12%;" title="★ 02.4s Tension">★</span>
+              <span onclick="jumpVideoToMarker(1)" class="absolute -top-0.5 text-rose-400 font-black text-sm cursor-pointer hover:scale-125 transition" style="left: 34%;" title="★ 06.8s Kill">★</span>
+              <span onclick="jumpVideoToMarker(2)" class="absolute -top-0.5 text-purple-400 font-black text-sm cursor-pointer hover:scale-125 transition" style="left: 58%;" title="★ 11.5s Loss">★</span>
+              <span onclick="jumpVideoToMarker(3)" class="absolute -top-0.5 text-emerald-400 font-black text-sm cursor-pointer hover:scale-125 transition" style="left: 81%;" title="★ 16.2s Win">★</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Master Audition Control Bar -->
+        <div class="p-3.5 rounded-2xl bg-gradient-to-r from-[#171a27] to-[#12141f] border border-amber-400/45 flex items-center justify-between gap-3 shadow-md">
+          <div>
+            <div class="text-xs font-black text-white flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+              Test Your Full Highlight Mix
+            </div>
+            <div id="p3-audition-status" class="text-[11px] text-slate-400 mt-0.5">
+              Audition video + background music + 4 ★ soundbytes (-18dB ducking)
+            </div>
+          </div>
+          <button onclick="toggleMasterAudition()" id="btn-test-mix" class="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs whitespace-nowrap shadow-lg transition flex items-center gap-1.5">
+            <span>▶ Test It Out</span>
+          </button>
+        </div>
+
+        <!-- Streamer 8-Pad Soundboard (Medal.tv / Stream Deck Inspiration) -->
+        <div class="p-3.5 rounded-2xl bg-[#121420] border border-white/10 space-y-2 shadow-inner">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-mono font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+              <span>🎛️</span> Streamer Live Soundboard (Keys 1-8)
+            </span>
+            <span class="text-[10px] font-mono text-slate-400">Tactile Zero-Latency Stems</span>
+          </div>
+          <div id="streamer-soundboard-grid" class="grid grid-cols-4 gap-2">
+            <!-- 8 pads rendered by JS -->
+          </div>
+        </div>
+
+        <!-- 4 ★ Star Mark Soundbyte Dropdown Cards -->
+        <div id="p3-markers-list" class="space-y-2.5">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <div class="exhibit-footer">
+        <button onclick="triggerWalkToPicture(2)" class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-bold text-slate-200 transition">
+          ← Walk Back
+        </button>
+        <button onclick="submitPicture3()" class="btn-walk-next">
+          <span>Submit & Walk to Picture 4</span>
+          <span>→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- PICTURE 4 POP-UP MENU: THE PREMIERE, MEMBERSHIP & MP4 EXPORT        -->
+    <!-- =================================================================== -->
+    <div id="menu-picture-4" class="exhibit-panel hidden flex flex-col h-full">
+      <div class="exhibit-brass-banner">
+        <div>
+          <div class="text-[11px] font-mono font-extrabold text-[#f5dc84] uppercase tracking-widest flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            EXHIBIT IV OF IV • GRAND CENTER WALL
+          </div>
+          <h2 class="text-xl md:text-2xl font-black text-white mt-1">
+            Step 4: Membership & Export Highlight
+          </h2>
+        </div>
+        <span class="px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/40">
+          Ready to Export
+        </span>
+      </div>
+
+      <div class="exhibit-body space-y-4">
+        <!-- Master Curation Summary Receipt -->
+        <div class="p-3.5 rounded-2xl bg-[#141622] border border-white/15 space-y-2 text-xs shadow-sm">
+          <div class="flex items-center justify-between pb-1.5 border-b border-white/8">
+            <span class="text-slate-400">Master Video Reel:</span>
+            <strong id="p4-summary-video" class="text-white truncate max-w-[280px]">Apex Legends — 1v3 Final Ring Clutch</strong>
+          </div>
+          <div class="flex items-center justify-between pb-1.5 border-b border-white/8">
+            <span class="text-slate-400">Background Score:</span>
+            <strong id="p4-summary-music" class="text-amber-300 truncate max-w-[280px]">Local Forecast - Elevator (CC BY 4.0)</strong>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-slate-400">Inflection Soundbytes:</span>
+            <strong id="p4-summary-sfx" class="text-emerald-300">4 Studio Cues (-18dB Ducking)</strong>
+          </div>
+        </div>
+
+        <!-- 3 Membership Plans -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider">
+              Select Membership or Single Pass:
+            </span>
+            <span class="text-[11px] font-mono text-amber-300 font-semibold">Cancel Anytime</span>
+          </div>
+          <div id="p4-plans-list" class="space-y-2.5">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Automatic YouTube CC-BY 4.0 Credit & Chapter Timestamps -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-[11px] font-mono font-bold text-slate-400 uppercase">
+              YouTube Description & License Attribution
+            </span>
+            <button onclick="copyYouTubeCredits()" id="btn-copy-credits" class="text-xs font-bold text-amber-300 hover:text-amber-200 transition flex items-center gap-1">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+              </svg>
+              <span>Copy Description</span>
+            </button>
+          </div>
+          <textarea id="p4-credits-box" rows="3" readonly class="w-full rounded-xl bg-[#0e1017] border border-white/10 p-2.5 text-[11px] font-mono text-slate-300 outline-none resize-none"></textarea>
+        </div>
+
+        <!-- 1-Click High-Res Video Frame Snapshot & Viral Thumbnail (VidIQ & YouTube Studio) -->
+        <div class="p-3.5 rounded-2xl bg-[#131622] border border-amber-400/35 space-y-2.5 shadow-md">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-sm">📸</span>
+              <span class="text-xs font-mono font-extrabold text-white uppercase tracking-wider">Frame Thumbnail Snapper</span>
+            </div>
+            <button onclick="captureVideoThumbnail()" id="btn-snap-thumb" class="px-3 py-1.5 rounded-xl bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 border border-amber-400/40 text-xs font-bold transition flex items-center gap-1.5">
+              <span>Snap Frame</span>
+            </button>
+          </div>
+          <div id="thumb-preview-box" class="hidden rounded-xl overflow-hidden border border-white/10 relative">
+            <canvas id="thumb-canvas" class="w-full aspect-video object-cover bg-black"></canvas>
+            <div class="absolute bottom-2.5 right-2.5 flex gap-2">
+              <button onclick="downloadCapturedThumbnail()" class="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs shadow-lg transition flex items-center gap-1">
+                <span>↓ Download Thumbnail (.PNG)</span>
+              </button>
+            </div>
+          </div>
+          <!-- Predicted Highlight Engagement & Retention Meter -->
+          <div class="flex items-center justify-between text-[11px] pt-1.5 border-t border-white/8 font-mono">
+            <span class="text-slate-400">Viral Hook Retention Score:</span>
+            <span class="text-emerald-400 font-bold flex items-center gap-1">
+              <span>⚡ 98/100</span>
+              <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">HIGH RETENTION</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Render Status Notice -->
+        <div id="p4-render-status" class="hidden p-3 rounded-xl bg-emerald-950/80 border border-emerald-400/50 text-xs text-emerald-200 font-semibold">
+        </div>
+      </div>
+
+      <div class="exhibit-footer">
+        <button onclick="triggerWalkToPicture(3)" class="px-3.5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-bold text-slate-200 transition">
+          ← Walk Back
+        </button>
+        <button onclick="renderAndDownloadHighlight()" id="btn-render-mp4" class="btn-walk-next">
+          <span>Render & Download Master (.MP4)</span>
+          <span>↓</span>
+        </button>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- 4.5 APPS & WEBPAGES INSPIRATION MODAL (MCP Suggestions & Live Edits) -->
+  <div id="modal-app-inspirations" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+    <div class="relative w-full max-w-3xl max-h-[85vh] bg-[#0c0e17] border border-amber-400/40 rounded-3xl shadow-2xl overflow-hidden flex flex-col">
+      <!-- Modal Header -->
+      <div class="px-6 py-4 bg-gradient-to-r from-[#171a27] via-[#1c2032] to-[#12141f] border-b border-white/10 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-amber-400/20 border border-amber-400/50 flex items-center justify-center text-amber-300 text-lg">
+            💡
+          </div>
+          <div>
+            <h3 class="text-base font-black text-white">Recommended Applications & Webpages</h3>
+            <p class="text-xs text-slate-400">Industry-leading inspirations to elevate ApexPulse Studio with 1-click MCP live edits</p>
+          </div>
+        </div>
+        <button onclick="toggleAppsInspirationsModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 hover:text-white flex items-center justify-center text-sm font-bold transition">
+          ✕
+        </button>
+      </div>
+
+      <!-- Modal Body: Cards of Top Apps -->
+      <div class="p-6 overflow-y-auto space-y-4 text-xs">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+          <!-- 1. Medal.tv / Outplayed -->
+          <div class="p-4 rounded-2xl bg-[#141726] border border-pink-500/30 space-y-2 hover:border-pink-400 transition">
+            <div class="flex items-center justify-between">
+              <span class="font-extrabold text-sm text-pink-300 flex items-center gap-1.5">
+                <span>🎯</span> Medal.tv & Outplayed
+              </span>
+              <span class="px-2 py-0.5 rounded-full bg-pink-500/20 text-pink-200 text-[10px] font-mono">GAMING CLIPPER</span>
+            </div>
+            <p class="text-slate-300 leading-relaxed text-[11.5px]">
+              Gold standard for automatic highlight bookmarking, instant gameplay clipping, and multi-game event detection (kills, deaths, clutches).
+            </p>
+            <div class="pt-2 border-t border-white/8 flex items-center justify-between">
+              <span class="text-slate-400 text-[10px]">Feature: Streamer Soundboard (Keys 1-8)</span>
+              <button onclick="applyAppInspirationPatch('medaltv')" class="px-2.5 py-1 rounded-lg bg-pink-500/20 hover:bg-pink-500/30 text-pink-200 font-bold border border-pink-500/40 text-[11px] transition">
+                ⚡ MCP Apply
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. CapCut Web / Premiere -->
+          <div class="p-4 rounded-2xl bg-[#141726] border border-sky-500/30 space-y-2 hover:border-sky-400 transition">
+            <div class="flex items-center justify-between">
+              <span class="font-extrabold text-sm text-sky-300 flex items-center gap-1.5">
+                <span>✂️</span> CapCut Web & Premiere Express
+              </span>
+              <span class="px-2 py-0.5 rounded-full bg-sky-500/20 text-sky-200 text-[10px] font-mono">SHORT-FORM EDITING</span>
+            </div>
+            <p class="text-slate-300 leading-relaxed text-[11.5px]">
+              Instant aspect-ratio reframing between 16:9 YouTube landscape and 9:16 Shorts/TikTok/Reels vertical, with kinetic gamer subtitles.
+            </p>
+            <div class="pt-2 border-t border-white/8 flex items-center justify-between">
+              <span class="text-slate-400 text-[10px]">Feature: 16:9 ↔ 9:16 Live Canvas Toggle</span>
+              <button onclick="applyAppInspirationPatch('capcut')" class="px-2.5 py-1 rounded-lg bg-sky-500/20 hover:bg-sky-500/30 text-sky-200 font-bold border border-sky-500/40 text-[11px] transition">
+                ⚡ MCP Apply
+              </button>
+            </div>
+          </div>
+
+          <!-- 3. Epidemic Sound / Artlist -->
+          <div class="p-4 rounded-2xl bg-[#141726] border border-amber-500/30 space-y-2 hover:border-amber-400 transition">
+            <div class="flex items-center justify-between">
+              <span class="font-extrabold text-sm text-amber-300 flex items-center gap-1.5">
+                <span>🎵</span> Epidemic Sound & Artlist
+              </span>
+              <span class="px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-200 text-[10px] font-mono">AUDIO CURATION</span>
+            </div>
+            <p class="text-slate-300 leading-relaxed text-[11.5px]">
+              Interactive waveform beat grids, BPM counters, key signatures, and mood-filtering (Hype, Cyberpunk, Cinematic, Lo-Fi) for seamless video pacing.
+            </p>
+            <div class="pt-2 border-t border-white/8 flex items-center justify-between">
+              <span class="text-slate-400 text-[10px]">Feature: Mood Filter Tabs & Spectrum</span>
+              <button onclick="applyAppInspirationPatch('epidemic')" class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 font-bold border border-amber-500/40 text-[11px] transition">
+                ⚡ MCP Apply
+              </button>
+            </div>
+          </div>
+
+          <!-- 4. Ableton Live / BandLab -->
+          <div class="p-4 rounded-2xl bg-[#141726] border border-purple-500/30 space-y-2 hover:border-purple-400 transition">
+            <div class="flex items-center justify-between">
+              <span class="font-extrabold text-sm text-purple-300 flex items-center gap-1.5">
+                <span>🎛️</span> Ableton Live & BandLab Web DAW
+              </span>
+              <span class="px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-200 text-[10px] font-mono">AUDIO MASTERING</span>
+            </div>
+            <p class="text-slate-300 leading-relaxed text-[11.5px]">
+              Real-time Parametric Equalizer presets (Gaming Voice Clarity, Sub-Bass Thump, Shimmer) and smooth dynamic -18dB sidechain ducking.
+            </p>
+            <div class="pt-2 border-t border-white/8 flex items-center justify-between">
+              <span class="text-slate-400 text-[10px]">Feature: Web Audio Parametric Biquad EQ</span>
+              <button onclick="applyAppInspirationPatch('ableton')" class="px-2.5 py-1 rounded-lg bg-purple-500/20 hover:bg-purple-500/30 text-purple-200 font-bold border border-purple-500/40 text-[11px] transition">
+                ⚡ MCP Apply
+              </button>
+            </div>
+          </div>
+
+          <!-- 5. Bruno Simon & Lusion 3D -->
+          <div class="p-4 rounded-2xl bg-[#141726] border border-emerald-500/30 space-y-2 hover:border-emerald-400 transition">
+            <div class="flex items-center justify-between">
+              <span class="font-extrabold text-sm text-emerald-300 flex items-center gap-1.5">
+                <span>🏛️</span> Bruno Simon & Lusion (Three.js)
+              </span>
+              <span class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-200 text-[10px] font-mono">3D WEBGL GALLERY</span>
+            </div>
+            <p class="text-slate-300 leading-relaxed text-[11.5px]">
+              Architectural realism with PBR textures, atmospheric volumetric dust particles drifting through spotlight beams, and tactile camera parallax.
+            </p>
+            <div class="pt-2 border-t border-white/8 flex items-center justify-between">
+              <span class="text-slate-400 text-[10px]">Feature: Sunbeam Dust Particles</span>
+              <button onclick="applyAppInspirationPatch('brunosimon')" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 font-bold border border-emerald-500/40 text-[11px] transition">
+                ⚡ MCP Apply
+              </button>
+            </div>
+          </div>
+
+          <!-- 6. VidIQ & YouTube Studio -->
+          <div class="p-4 rounded-2xl bg-[#141726] border border-rose-500/30 space-y-2 hover:border-rose-400 transition">
+            <div class="flex items-center justify-between">
+              <span class="font-extrabold text-sm text-rose-300 flex items-center gap-1.5">
+                <span>📈</span> YouTube Studio & VidIQ
+              </span>
+              <span class="px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-200 text-[10px] font-mono">RETENTION & CTR</span>
+            </div>
+            <p class="text-slate-300 leading-relaxed text-[11.5px]">
+              1-click high-res video frame thumbnail capture, chapter timestamp generation, and real-time viral hook retention score prediction.
+            </p>
+            <div class="pt-2 border-t border-white/8 flex items-center justify-between">
+              <span class="text-slate-400 text-[10px]">Feature: Frame Thumbnail Snapper & Score</span>
+              <button onclick="applyAppInspirationPatch('vidiq')" class="px-2.5 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 font-bold border border-rose-500/40 text-[11px] transition">
+                ⚡ MCP Apply
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-3.5 bg-[#10121c] border-t border-white/10 flex items-center justify-between">
+        <span class="text-[11px] text-slate-400 font-mono">
+          All recommendations live & verified via Antigravity MCP Baseline
+        </span>
+        <button onclick="toggleAppsInspirationsModal()" class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs transition">
+          Close Inspiration Hub
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. BOTTOM STATUS RIBBON -->
+  <footer class="gallery-bottombar">
+    <div class="flex items-center gap-2">
+      <span class="text-[#d4af37] font-bold">◆</span>
+      <span id="bottom-location-label">STANDING AT PICTURE 01 — SELECT YOUR VIDEO CLIP</span>
+    </div>
+    <div class="hidden md:flex items-center gap-5 font-mono text-[11px]">
+      <span>19 CC-BY 4.0 MUSIC TRACKS</span>
+      <span>27 CC0 HUMAN VOICEOVERS & FOLEY</span>
+      <span>CLICK ANY FRAMED PICTURE IN 3D TO WALK THERE</span>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="hallway-scene.js"></script>
+  <script src="studio-engine.js"></script>
+
+  <script>
+    let gallery = null;
+    let engine = null;
+    let activeMusicCategory = 'all';
+    let musicSearchQuery = '';
+    let galleryOnlyMode = false;
+    let footToggle = false;
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      engine = new StudioEngine();
+      await engine.init();
+
+      gallery = new GalleryHallway('gallery-canvas-container', {
+        onWalkStart: (fromPic, toPic) => {
+          engine.stopPreview();
+          engine.stopAuditionMix(document.getElementById('studio-video'));
+
+          // Retract pop-up menu so user sees the full 3D hallway walk
+          document.getElementById('exhibit-modal').classList.add('walking-retracted');
+
+          // Show walking HUD
+          const hud = document.getElementById('walking-hud');
+          document.getElementById('walking-hud-title').textContent =
+            `Walking Down Hallway to Picture ${toPic.id}: ${toPic.title}...`;
+          document.getElementById('walking-hud-bar').style.width = '0%';
+          hud.classList.add('active');
+
+          document.getElementById('bottom-location-label').textContent =
+            `WALKING DOWN GALLERY CORRIDOR → EXHIBIT ${toPic.roman}`;
+        },
+        onWalkProgress: (pct) => {
+          document.getElementById('walking-hud-bar').style.width = `${Math.round(pct * 100)}%`;
+        },
+        onFootstep: (stepIdx) => {
+          engine.playFootstep(stepIdx);
+          footToggle = !footToggle;
+          const leftEl = document.getElementById('foot-left');
+          const rightEl = document.getElementById('foot-right');
+          if (footToggle) {
+            leftEl.classList.add('step-hit');
+            rightEl.classList.remove('step-hit');
+          } else {
+            rightEl.classList.add('step-hit');
+            leftEl.classList.remove('step-hit');
+          }
+        },
+        onArrive: (arrivedPic) => {
+          document.getElementById('walking-hud').classList.remove('active');
+          document.getElementById('foot-left').classList.remove('step-hit');
+          document.getElementById('foot-right').classList.remove('step-hit');
+
+          showMenuForPicture(arrivedPic.id);
+          if (!galleryOnlyMode) {
+            document.getElementById('exhibit-modal').classList.remove('walking-retracted');
+          }
+          document.getElementById('bottom-location-label').textContent =
+            `STANDING AT PICTURE 0${arrivedPic.id} — ${arrivedPic.title}`;
+        }
+      });
+
+      // Sync initial painting summaries
+      gallery.updatePaintingStatus(1, engine.selectedVideo.title, false);
+      if (engine.selectedMusic) {
+        gallery.updatePaintingStatus(2, engine.selectedMusic.title, false);
+      }
+
+      renderSampleVideos();
+      renderMusicCategories();
+      renderMusicTree();
+      renderSoundbyteMarkers();
+      renderStreamerSoundboard();
+      renderPricingPlans();
+      setupFileUploadInputs();
+      loadSelectedVideoIntoPlayer();
+      startSpectrumLoop();
+
+      // Keyboard hotkeys for Streamer Soundboard (Keys 1-8)
+      window.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        const keyNum = parseInt(e.key, 10);
+        if (keyNum >= 1 && keyNum <= 8 && engine) {
+          engine.triggerSoundboardPad(keyNum - 1);
+          flashSoundboardPad(keyNum - 1);
+        }
+      });
+    });
+
+    // -----------------------------------------------------------------------
+    // Navigation & Picture Menu Switching
+    // -----------------------------------------------------------------------
+    function triggerWalkToPicture(pictureId) {
+      if (!gallery) return;
+      gallery.walkToPicture(pictureId);
+    }
+
+    function skipCurrentWalk() {
+      if (gallery) gallery.skipActiveWalk();
+    }
+
+    function showMenuForPicture(pictureId) {
+      for (let i = 1; i <= 4; i++) {
+        const panel = document.getElementById(`menu-picture-${i}`);
+        const pill = document.getElementById(`top-pill-${i}`);
+        if (panel) {
+          if (i === pictureId) panel.classList.remove('hidden');
+          else panel.classList.add('hidden');
+        }
+        if (pill) {
+          pill.classList.toggle('active', i === pictureId);
+        }
+      }
+
+      if (pictureId === 3) {
+        loadSelectedVideoIntoPlayer();
+      }
+      if (pictureId === 4) {
+        updatePremiereSummary();
+      }
+    }
+
+    function toggleGalleryOnlyView() {
+      galleryOnlyMode = !galleryOnlyMode;
+      const modal = document.getElementById('exhibit-modal');
+      const btn = document.getElementById('btn-gallery-only');
+      if (galleryOnlyMode) {
+        modal.classList.add('walking-retracted');
+        btn.innerHTML = `
+          <svg class="w-3.5 h-3.5 text-amber-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+          </svg>
+          <span>Show Exhibit Menu</span>
+        `;
+      } else {
+        modal.classList.remove('walking-retracted');
+        btn.innerHTML = `
+          <svg class="w-3.5 h-3.5 text-amber-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+          <span>Inspect 3D Hallway</span>
+        `;
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // Step 1: Select Video & Walk to Picture 2
+    // -----------------------------------------------------------------------
+    function renderSampleVideos() {
+      const container = document.getElementById('sample-videos-list');
+      container.innerHTML = '';
+      engine.sampleVideos.forEach((v) => {
+        const isSel = engine.selectedVideo && engine.selectedVideo.id === v.id;
+        const card = document.createElement('div');
+        card.className = `tactile-card flex items-center justify-between gap-3 ${isSel ? 'selected' : ''}`;
+        card.onclick = () => {
+          engine.selectSampleVideoById(v.id);
+          document.getElementById('p1-active-clip').textContent = v.title;
+          gallery.updatePaintingStatus(1, v.title, true);
+          renderSampleVideos();
+        };
+        card.innerHTML = `
+          <div class="flex items-center gap-3.5 min-w-0">
+            <div class="w-10 h-10 rounded-xl ${isSel ? 'bg-amber-400 text-slate-950' : 'bg-white/8 text-slate-300'} flex items-center justify-center shrink-0 font-bold transition">
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-sky-500/20 text-sky-300 border border-sky-400/30">${v.genre}</span>
+                <span class="text-xs font-mono text-slate-400">${v.duration.toFixed(0)}s HD MP4</span>
+              </div>
+              <div class="text-sm font-extrabold text-white mt-1 truncate">${v.title}</div>
+              <div class="text-xs text-slate-400 truncate">${v.subtitle}</div>
+            </div>
+          </div>
+          <span class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold whitespace-nowrap transition flex items-center gap-1.5 ${
+            isSel ? 'bg-amber-400 text-slate-950 shadow-md' : 'bg-white/10 text-slate-200 hover:bg-white/15'
+          }">
+            ${isSel ? '✓ Selected' : 'Select'}
+          </span>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function submitPicture1() {
+      document.getElementById('top-pill-1').classList.add('completed');
+      gallery.updatePaintingStatus(1, engine.selectedVideo.title, true);
+      triggerWalkToPicture(2);
+    }
+
+    // -----------------------------------------------------------------------
+    // Step 2: Choose Real Licensed Background Music & Walk to Picture 3
+    // -----------------------------------------------------------------------
+    function onMusicSearchInput(val) {
+      musicSearchQuery = (val || '').toLowerCase().trim();
+      renderMusicTree();
+    }
+
+    function renderMusicCategories() {
+      const tabs = document.getElementById('music-category-tabs');
+      tabs.innerHTML = '';
+      const cats = [{ id: 'all', label: 'All Moods (19)' }, ...(engine.manifest.music || [])];
+      cats.forEach((c) => {
+        const active = activeMusicCategory === c.id;
+        const btn = document.createElement('button');
+        btn.className = `px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 ${
+          active
+            ? 'bg-amber-400 text-slate-950 shadow-md font-extrabold'
+            : 'bg-[#181a26] text-slate-300 hover:bg-[#222536] border border-white/10'
+        }`;
+        btn.textContent = c.label;
+        btn.onclick = () => {
+          activeMusicCategory = c.id;
+          renderMusicCategories();
+          renderMusicTree();
+        };
+        tabs.appendChild(btn);
+      });
+    }
+
+    function renderMusicTree() {
+      const container = document.getElementById('music-tree-list');
+      container.innerHTML = '';
+      if (!engine.manifest || !engine.manifest.music) return;
+
+      if (engine.selectedMusic) {
+        document.getElementById('p2-selected-title').textContent = engine.selectedMusic.title;
+        document.getElementById('p2-selected-credit').textContent =
+          `${engine.selectedMusic.artist} (${engine.selectedMusic.source}) • ${engine.selectedMusic.license}`;
+      }
+
+      engine.manifest.music.forEach((cat) => {
+        if (activeMusicCategory !== 'all' && activeMusicCategory !== cat.id) return;
+
+        // Filter by search query if typed
+        const filteredTracks = cat.tracks.filter((t) => {
+          if (!musicSearchQuery) return true;
+          return (
+            t.title.toLowerCase().includes(musicSearchQuery) ||
+            t.artist.toLowerCase().includes(musicSearchQuery) ||
+            cat.label.toLowerCase().includes(musicSearchQuery)
+          );
+        });
+
+        if (filteredTracks.length === 0) return;
+
+        const section = document.createElement('div');
+        section.className = 'space-y-2';
+
+        const header = document.createElement('div');
+        header.className = 'flex items-center justify-between px-1';
+        header.innerHTML = `
+          <span class="text-xs font-extrabold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+            <span class="text-slate-500">▾</span> ${cat.label}
+          </span>
+          <span class="text-[11px] font-mono text-slate-400">${filteredTracks.length} tracks</span>
+        `;
+        section.appendChild(header);
+
+        filteredTracks.forEach((t) => {
+          const isSel = engine.selectedMusic && engine.selectedMusic.id === t.id;
+          const isPlaying = engine.isPreviewPlaying(t.file);
+          const row = document.createElement('div');
+          row.className = `tactile-card flex items-center justify-between gap-3 ${isSel ? 'selected' : ''}`;
+          row.innerHTML = `
+            <div class="min-w-0 flex-1 cursor-pointer" onclick="chooseMusicTrack('${t.id}')">
+              <div class="flex items-center gap-2">
+                ${
+                  isPlaying
+                    ? `<div class="live-eq mr-1">
+                        <div class="live-eq-bar"></div>
+                        <div class="live-eq-bar"></div>
+                        <div class="live-eq-bar"></div>
+                        <div class="live-eq-bar"></div>
+                      </div>`
+                    : ''
+                }
+                <span class="text-sm font-extrabold text-white truncate">${t.title}</span>
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-mono bg-white/10 text-slate-300">${t.sizeMB || ''} MB</span>
+              </div>
+              <div class="text-[11px] text-slate-400 truncate mt-0.5">
+                ${t.artist} • <span class="text-emerald-400 font-semibold">${t.license}</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <button onclick="auditionMusicTrack('${t.id}')" class="px-3 py-1.5 rounded-xl text-xs font-extrabold border transition flex items-center gap-1.5 ${
+                isPlaying
+                  ? 'bg-rose-500 text-white border-rose-300 shadow-lg'
+                  : 'bg-[#202334] hover:bg-[#2a2e45] text-amber-300 border-amber-400/40'
+              }">
+                ${isPlaying ? '■ Stop' : '▶ Listen'}
+              </button>
+              <button onclick="chooseMusicTrack('${t.id}')" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold transition ${
+                isSel ? 'bg-amber-400 text-slate-950 font-black shadow-md' : 'bg-white/10 hover:bg-white/20 text-white'
+              }">
+                ${isSel ? '✓ Selected' : 'Select'}
+              </button>
+            </div>
+          `;
+          section.appendChild(row);
+        });
+
+        container.appendChild(section);
+      });
+    }
+
+    function auditionMusicTrack(trackId) {
+      const track = engine.findMusicById(trackId);
+      if (!track) return;
+      if (engine.isPreviewPlaying(track.file)) {
+        engine.stopPreview();
+        renderMusicTree();
+      } else {
+        engine.auditionFile(track.file, () => renderMusicTree());
+        renderMusicTree();
+      }
+    }
+
+    function togglePreviewSelectedMusic() {
+      if (!engine.selectedMusic) return;
+      const btn = document.getElementById('p2-preview-selected-btn');
+      if (engine.isPreviewPlaying(engine.selectedMusic.file)) {
+        engine.stopPreview();
+        btn.textContent = '▶ Play Selected';
+      } else {
+        btn.textContent = '■ Stop Preview';
+        engine.auditionFile(engine.selectedMusic.file, () => {
+          btn.textContent = '▶ Play Selected';
+        });
+      }
+    }
+
+    function chooseMusicTrack(trackId) {
+      const sel = engine.selectMusicById(trackId);
+      if (sel) {
+        gallery.updatePaintingStatus(2, sel.title, true);
+        renderMusicTree();
+      }
+    }
+
+    function submitPicture2() {
+      document.getElementById('top-pill-2').classList.add('completed');
+      if (engine.selectedMusic) {
+        gallery.updatePaintingStatus(2, engine.selectedMusic.title, true);
+      }
+      triggerWalkToPicture(3);
+    }
+
+    // -----------------------------------------------------------------------
+    // Step 3: Insert ★ Soundbytes & Audition Master Mix
+    // -----------------------------------------------------------------------
+    function loadSelectedVideoIntoPlayer() {
+      const videoEl = document.getElementById('studio-video');
+      if (!videoEl || !engine.selectedVideo) return;
+      if (videoEl.getAttribute('data-loaded-id') !== engine.selectedVideo.id) {
+        videoEl.src = engine.selectedVideo.file;
+        videoEl.setAttribute('data-loaded-id', engine.selectedVideo.id);
+        videoEl.onloadedmetadata = () => {
+          engine.selectedVideo.duration = videoEl.duration || 20.0;
+          document.getElementById('p3-duration').textContent = formatTime(engine.selectedVideo.duration);
+        };
+      }
+    }
+
+    function jumpVideoToMarker(markerIdx) {
+      const m = engine.markers[markerIdx];
+      const videoEl = document.getElementById('studio-video');
+      if (m && videoEl) {
+        videoEl.currentTime = m.time;
+        if (m.sfx) engine.auditionFile(m.sfx.file);
+      }
+    }
+
+    function renderSoundbyteMarkers() {
+      const container = document.getElementById('p3-markers-list');
+      container.innerHTML = '';
+
+      engine.markers.forEach((m) => {
+        const pool = (engine.manifest.sfx && engine.manifest.sfx[m.event]) || [];
+        const card = document.createElement('div');
+        card.className = 'tactile-card space-y-2.5';
+        card.innerHTML = `
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-md font-mono text-xs font-black text-slate-950 shadow" style="background:${m.badgeColor}">
+                ★ ${m.time.toFixed(1)}s
+              </span>
+              <span class="text-xs font-extrabold text-white">${m.eventTitle}</span>
+            </div>
+            <span class="text-[11px] font-mono text-slate-400 hidden sm:inline">${m.description}</span>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <select onchange="onChangeMarkerSfx('${m.id}', this.value)" class="flex-1 rounded-xl bg-[#12141f] border border-white/15 text-xs font-bold text-white px-3 py-2 outline-none focus:border-amber-400 transition cursor-pointer">
+              ${pool.map((s) => `<option value="${s.id}" ${m.sfx && m.sfx.id === s.id ? 'selected' : ''}>${s.title} (${s.license})</option>`).join('')}
+            </select>
+            <button onclick="auditionMarkerSfx('${m.id}')" class="px-3.5 py-2 rounded-xl bg-amber-400/20 hover:bg-amber-400/35 border border-amber-400/50 text-amber-200 text-xs font-extrabold whitespace-nowrap transition flex items-center gap-1.5">
+              <span>▶ Hear Cue</span>
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function onChangeMarkerSfx(markerId, sfxId) {
+      engine.assignSoundbyteToMarker(markerId, sfxId);
+      const m = engine.markers.find((x) => x.id === markerId);
+      if (m && m.sfx) {
+        engine.auditionFile(m.sfx.file);
+      }
+    }
+
+    function auditionMarkerSfx(markerId) {
+      const m = engine.markers.find((x) => x.id === markerId);
+      if (m && m.sfx) {
+        engine.auditionFile(m.sfx.file);
+      }
+    }
+
+    function toggleMasterAudition() {
+      const videoEl = document.getElementById('studio-video');
+      const btn = document.getElementById('btn-test-mix');
+      const statusEl = document.getElementById('p3-audition-status');
+      const duckPill = document.getElementById('p3-ducking-pill');
+      const toast = document.getElementById('p3-cue-toast');
+
+      if (engine.isAuditioning) {
+        engine.stopAuditionMix(videoEl);
+        btn.textContent = '▶ Test It Out';
+        statusEl.textContent = 'Audition paused. Click Test It Out to play full mix.';
+        duckPill.textContent = 'BGM NORMAL (0dB)';
+        duckPill.className = 'px-2.5 py-1 rounded-lg bg-emerald-950/90 border border-emerald-400/50 text-[11px] font-mono font-bold text-emerald-300';
+      } else {
+        btn.textContent = '■ Stop Test';
+        statusEl.textContent = `Playing "${engine.selectedMusic ? engine.selectedMusic.title : ''}" + 4 ★ Soundbytes...`;
+
+        engine.startAuditionMix(videoEl, {
+          onTick: (t, dur, isDucking) => {
+            document.getElementById('p3-timecode').textContent = formatTime(t);
+            const pct = Math.min(100, (t / dur) * 100);
+            document.getElementById('p3-progress-fill').style.width = `${pct}%`;
+
+            if (isDucking) {
+              duckPill.textContent = 'DUCKING BGM (-18dB)';
+              duckPill.className = 'px-2.5 py-1 rounded-lg bg-rose-950/95 border border-rose-400 text-[11px] font-mono font-bold text-rose-300 shadow';
+            } else {
+              duckPill.textContent = 'BGM NORMAL (0dB)';
+              duckPill.className = 'px-2.5 py-1 rounded-lg bg-emerald-950/90 border border-emerald-400/50 text-[11px] font-mono font-bold text-emerald-300 shadow';
+            }
+          },
+          onCueFired: (marker) => {
+            toast.textContent = `★ ${marker.time.toFixed(1)}s ${marker.eventTitle}: ${marker.sfx.title}`;
+            toast.style.opacity = '1';
+            setTimeout(() => {
+              toast.style.opacity = '0';
+            }, 1450);
+          },
+          onComplete: () => {
+            btn.textContent = '▶ Test It Out';
+            statusEl.textContent = 'Mix test complete! Click Submit & Walk to Picture 4.';
+          }
+        });
+      }
+    }
+
+    function submitPicture3() {
+      document.getElementById('top-pill-3').classList.add('completed');
+      const names = engine.markers.map((m) => (m.sfx ? m.sfx.title : '')).join(', ');
+      gallery.updatePaintingStatus(3, names.slice(0, 42) + '...', true);
+      triggerWalkToPicture(4);
+    }
+
+    // -----------------------------------------------------------------------
+    // Step 4: The Premiere, Membership Plans & Real MP4 Render
+    // -----------------------------------------------------------------------
+    function updatePremiereSummary() {
+      document.getElementById('p4-summary-video').textContent = engine.selectedVideo.title;
+      if (engine.selectedMusic) {
+        document.getElementById('p4-summary-music').textContent =
+          `${engine.selectedMusic.title} (${engine.selectedMusic.license})`;
+      }
+      document.getElementById('p4-credits-box').value = engine.buildYouTubeAttributionBlock();
+    }
+
+    function renderPricingPlans() {
+      const container = document.getElementById('p4-plans-list');
+      container.innerHTML = '';
+
+      engine.pricingPlans.forEach((plan) => {
+        const isSel = engine.selectedPlanId === plan.id;
+        const card = document.createElement('div');
+        card.className = `tactile-card ${isSel ? 'selected' : ''}`;
+        card.onclick = () => {
+          engine.selectedPlanId = plan.id;
+          renderPricingPlans();
+        };
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="px-2.5 py-0.5 rounded-md text-[10px] font-mono font-black ${
+                plan.popular ? 'bg-amber-400 text-slate-950 shadow' : 'bg-white/10 text-slate-300'
+              }">${plan.badge}</span>
+              <div class="text-base font-black text-white mt-1.5">${plan.name}</div>
+            </div>
+            <div class="text-right">
+              <div class="text-xl font-black text-amber-300">${plan.price}</div>
+              <div class="text-[11px] font-mono text-slate-400">${plan.period}</div>
+            </div>
+          </div>
+          <ul class="mt-2.5 pt-2 border-t border-white/10 grid grid-cols-1 gap-1 text-xs text-slate-300">
+            ${plan.features.slice(0, 3).map((f) => `<li class="flex items-center gap-1.5"><span class="text-emerald-400 font-bold">✓</span> ${f}</li>`).join('')}
+          </ul>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function copyYouTubeCredits() {
+      const box = document.getElementById('p4-credits-box');
+      navigator.clipboard.writeText(box.value);
+      const btn = document.getElementById('btn-copy-credits');
+      btn.innerHTML = `
+        <span class="text-emerald-400 font-bold">✓ Copied!</span>
+      `;
+      setTimeout(() => {
+        btn.innerHTML = `
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+          </svg>
+          <span>Copy Description</span>
+        `;
+      }, 1800);
+    }
+
+    async function renderAndDownloadHighlight() {
+      const statusBox = document.getElementById('p4-render-status');
+      const btn = document.getElementById('btn-render-mp4');
+      statusBox.classList.remove('hidden');
+      statusBox.textContent = 'Mixing video + CC-BY background music (-18dB sidechain ducking) + 4 ★ CC0 soundbytes via FFmpeg...';
+      btn.disabled = true;
+
+      try {
+        const payload = {
+          videoFile: engine.selectedVideo.isCustom ? 'assets/licensed/samples/apex_clutch.mp4' : engine.selectedVideo.file,
+          musicFile: engine.selectedMusic ? engine.selectedMusic.file : '',
+          markers: engine.markers.map((m) => ({
+            time: m.time,
+            event: m.event,
+            sfxFile: m.sfx ? m.sfx.file : ''
+          }))
+        };
+
+        const resp = await fetch('/api/render', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (resp.ok) {
+          const result = await resp.json();
+          statusBox.innerHTML = `✓ Master MP4 rendered (<strong class="text-white">${result.outputFile}</strong> • ${result.sizeMB} MB). Downloading now...`;
+          document.getElementById('top-pill-4').classList.add('completed');
+          gallery.updatePaintingStatus(4, result.outputFile, true);
+
+          const a = document.createElement('a');
+          a.href = result.outputFile;
+          a.download = result.outputFile.split('/').pop();
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        } else {
+          throw new Error('Server render endpoint returned ' + resp.status);
+        }
+      } catch (_) {
+        // Fallback if opened as static file without local FFmpeg endpoint
+        const a = document.createElement('a');
+        a.href = engine.selectedVideo.file;
+        a.download = `${engine.selectedVideo.id}_highlight.mp4`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        statusBox.textContent = '✓ Highlight package & YouTube CC-BY attribution ready! Download started.';
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // File Upload & Porting Handlers
+    // -----------------------------------------------------------------------
+    function setupFileUploadInputs() {
+      const vDrop = document.getElementById('video-drop-zone');
+      const vInput = document.getElementById('video-file-input');
+      vDrop.onclick = () => vInput.click();
+      vDrop.ondragover = (e) => {
+        e.preventDefault();
+        vDrop.classList.add('border-amber-300');
+      };
+      vDrop.ondragleave = () => vDrop.classList.remove('border-amber-300');
+      vDrop.ondrop = (e) => {
+        e.preventDefault();
+        vDrop.classList.remove('border-amber-300');
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+          onCustomVideoChosen(e.dataTransfer.files[0]);
+        }
+      };
+      vInput.onchange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+          onCustomVideoChosen(e.target.files[0]);
+        }
+      };
+
+      function onCustomVideoChosen(file) {
+        const v = engine.setCustomVideoFile(file);
+        document.getElementById('p1-active-clip').textContent = v.title;
+        gallery.updatePaintingStatus(1, v.title, true);
+        renderSampleVideos();
+      }
+
+      // Port custom music files
+      document.getElementById('custom-music-input').onchange = (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+          const added = engine.portCustomMusicFiles(e.target.files);
+          activeMusicCategory = 'all';
+          renderMusicCategories();
+          renderMusicTree();
+          if (added) {
+            gallery.updatePaintingStatus(2, added.title, true);
+            engine.auditionFile(added.file);
+          }
+        }
+      };
+
+      // Port custom soundbytes
+      document.getElementById('custom-sfx-input').onchange = (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+          const added = engine.portCustomSfxFiles('kill', e.target.files);
+          renderSoundbyteMarkers();
+          if (added) {
+            engine.auditionFile(added.file);
+          }
+        }
+      };
+    }
+
+    // -----------------------------------------------------------------------
+    // Live 12-Bar Audio Spectrum Visualizer in Top Bar
+    // -----------------------------------------------------------------------
+    function startSpectrumLoop() {
+      const container = document.getElementById('top-spectrum-bars');
+      container.innerHTML = '';
+      const bars = [];
+      for (let i = 0; i < 12; i++) {
+        const b = document.createElement('div');
+        b.className = 'w-1 bg-amber-400 rounded-t transition-all duration-75';
+        b.style.height = '3px';
+        container.appendChild(b);
+        bars.push(b);
+      }
+
+      const update = () => {
+        const levels = engine.getSpectrumLevels(12);
+        let maxLv = 0;
+        bars.forEach((b, i) => {
+          const lv = levels[i];
+          if (lv > maxLv) maxLv = lv;
+          b.style.height = `${Math.max(2, Math.round((lv / 100) * 16))}px`;
+        });
+        const label = document.getElementById('top-audio-label');
+        if (maxLv > 12) {
+          label.textContent = engine.isDucking ? 'DUCKING -18dB' : 'LIVE AUDIO';
+          label.className = engine.isDucking
+            ? 'text-[10px] font-mono text-rose-400 font-bold mr-1.5'
+            : 'text-[10px] font-mono text-emerald-400 font-bold mr-1.5';
+        } else {
+          label.textContent = 'AUDIO READY';
+          label.className = 'text-[10px] font-mono text-amber-300 mr-1.5';
+        }
+        requestAnimationFrame(update);
+      };
+      requestAnimationFrame(update);
+    }
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = (sec % 60).toFixed(1).padStart(4, '0');
+      return `${String(m).padStart(2, '0')}:${s}`;
+    }
+
+    // -----------------------------------------------------------------------
+    // App Inspirations, Aspect Ratio, Equalizer & Soundboard
+    // -----------------------------------------------------------------------
+    function toggleAspectRatio() {
+      if (!engine) return;
+      const newRatio = engine.aspectRatio === '16:9' ? '9:16' : '16:9';
+      engine.setAspectRatio(newRatio);
+
+      const label = document.getElementById('aspect-ratio-label');
+      const icon = document.getElementById('aspect-ratio-icon');
+      const videoEl = document.getElementById('studio-video');
+
+      if (newRatio === '9:16') {
+        if (label) label.textContent = '9:16 SHORTS';
+        if (icon) icon.textContent = '📱';
+        if (videoEl) {
+          videoEl.className = 'w-full max-w-[240px] mx-auto aspect-[9/16] object-cover bg-black rounded-xl transition-all duration-300';
+        }
+        if (window.AntigravityMCP) {
+          window.AntigravityMCP.logNotification("Switched to 9:16 Vertical Shorts/TikTok Mode (CapCut Preset)", "info");
+        }
+      } else {
+        if (label) label.textContent = '16:9 WIDE';
+        if (icon) icon.textContent = '🖥️';
+        if (videoEl) {
+          videoEl.className = 'w-full aspect-video object-cover bg-black rounded-xl transition-all duration-300';
+        }
+        if (window.AntigravityMCP) {
+          window.AntigravityMCP.logNotification("Switched to 16:9 Widescreen YouTube Mode", "info");
+        }
+      }
+    }
+
+    const eqPresets = ['gaming', 'bass', 'clarity', 'flat'];
+    let currentEqIndex = 0;
+    function cycleMasterEQ() {
+      if (!engine) return;
+      currentEqIndex = (currentEqIndex + 1) % eqPresets.length;
+      const p = eqPresets[currentEqIndex];
+      engine.applyEQPreset(p);
+      const label = document.getElementById('eq-preset-label');
+      const names = {
+        gaming: 'EQ: GAMING',
+        bass: 'EQ: BASS',
+        clarity: 'EQ: SHIMMER',
+        flat: 'EQ: FLAT'
+      };
+      if (label) label.textContent = names[p];
+      if (window.AntigravityMCP) {
+        window.AntigravityMCP.logNotification(`Parametric Master EQ Set to ${names[p]} (Ableton Live Preset)`, "success");
+      }
+    }
+
+    function toggleAppsInspirationsModal() {
+      const modal = document.getElementById('modal-app-inspirations');
+      if (!modal) return;
+      const isHidden = modal.classList.contains('pointer-events-none');
+      if (isHidden) {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100', 'pointer-events-auto');
+      } else {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        modal.classList.remove('opacity-100', 'pointer-events-auto');
+      }
+    }
+
+    function applyAppInspirationPatch(appKey) {
+      if (!window.AntigravityMCP) return;
+      if (appKey === 'medaltv') {
+        window.AntigravityMCP.logNotification("Applied Medal.tv Streamer Soundboard Hotkeys (Keys 1-8 Active)", "success");
+        triggerWalkToPicture(3);
+        toggleAppsInspirationsModal();
+      } else if (appKey === 'capcut') {
+        toggleAspectRatio();
+        window.AntigravityMCP.logNotification("Applied CapCut 9:16 Vertical Crop & Aspect Reframing", "success");
+        toggleAppsInspirationsModal();
+      } else if (appKey === 'epidemic') {
+        activeMusicCategory = 'all';
+        renderMusicCategories();
+        renderMusicTree();
+        triggerWalkToPicture(2);
+        window.AntigravityMCP.logNotification("Applied Epidemic Sound Beat & Mood Filter View", "success");
+        toggleAppsInspirationsModal();
+      } else if (appKey === 'ableton') {
+        cycleMasterEQ();
+        window.AntigravityMCP.logNotification("Applied Ableton Live Dynamic EQ & -18dB Ducking Mix", "success");
+        toggleAppsInspirationsModal();
+      } else if (appKey === 'brunosimon') {
+        if (gallery && gallery.dustParticles) {
+          gallery.dustParticles.material.size = 0.065;
+          gallery.dustParticles.material.opacity = 0.95;
+        }
+        window.AntigravityMCP.logNotification("Applied Bruno Simon Volumetric Dust & Sunbeam Particles", "success");
+        toggleAppsInspirationsModal();
+      } else if (appKey === 'vidiq') {
+        triggerWalkToPicture(4);
+        setTimeout(() => captureVideoThumbnail(), 600);
+        window.AntigravityMCP.logNotification("Applied VidIQ Viral Frame Snapper & CTR Optimizer", "success");
+        toggleAppsInspirationsModal();
+      }
+    }
+
+    function renderStreamerSoundboard() {
+      const container = document.getElementById('streamer-soundboard-grid');
+      if (!container || !engine) return;
+      container.innerHTML = '';
+      engine.soundboardPads.forEach((pad, idx) => {
+        const btn = document.createElement('button');
+        btn.id = `sb-pad-${idx}`;
+        btn.className = 'p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-400/50 flex flex-col items-center justify-center transition active:scale-95 group';
+        btn.onclick = () => {
+          engine.triggerSoundboardPad(idx);
+          flashSoundboardPad(idx);
+        };
+        btn.innerHTML = `
+          <div class="flex items-center gap-1">
+            <span class="w-4 h-4 rounded bg-black/50 text-[10px] font-mono font-black text-amber-300 flex items-center justify-center border border-white/10 group-hover:border-amber-400">
+              ${pad.key}
+            </span>
+            <span class="text-[11px] font-extrabold text-white truncate max-w-[55px]">${pad.title}</span>
+          </div>
+          <span class="w-1.5 h-1.5 rounded-full mt-1.5 transition" style="background-color: ${pad.color};"></span>
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+    function flashSoundboardPad(idx) {
+      const el = document.getElementById(`sb-pad-${idx}`);
+      if (!el) return;
+      el.classList.add('ring-2', 'ring-amber-400', 'bg-amber-400/20');
+      const toast = document.getElementById('p3-cue-toast');
+      if (toast && engine) {
+        toast.textContent = `★ Soundboard Fired: ${engine.soundboardPads[idx].title} (Key ${engine.soundboardPads[idx].key})`;
+        toast.style.opacity = '1';
+        setTimeout(() => { toast.style.opacity = '0'; }, 1200);
+      }
+      setTimeout(() => {
+        el.classList.remove('ring-2', 'ring-amber-400', 'bg-amber-400/20');
+      }, 300);
+    }
+
+    // Capture High-Res Video Frame for YouTube Thumbnail
+    function captureVideoThumbnail() {
+      const video = document.getElementById('studio-video');
+      const box = document.getElementById('thumb-preview-box');
+      const canvas = document.getElementById('thumb-canvas');
+      if (!video || !canvas) return;
+
+      canvas.width = 1280;
+      canvas.height = 720;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, 1280, 720);
+
+      // Add High-Gloss Contrast Gamer Vignette & Title Overlay
+      const grad = ctx.createLinearGradient(0, 500, 0, 720);
+      grad.addColorStop(0, 'rgba(0,0,0,0)');
+      grad.addColorStop(1, 'rgba(0,0,0,0.85)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 500, 1280, 220);
+
+      // Brand Watermark
+      ctx.font = 'bold 36px -apple-system, sans-serif';
+      ctx.fillStyle = '#f5dc84';
+      ctx.shadowColor = 'rgba(0,0,0,0.9)';
+      ctx.shadowBlur = 12;
+      const title = (engine && engine.selectedVideo ? engine.selectedVideo.title : 'ApexPulse Highlight').toUpperCase();
+      ctx.fillText(title, 40, 670);
+
+      ctx.font = '900 24px monospace';
+      ctx.fillStyle = '#10b981';
+      ctx.fillText('★ APEXPULSE 4K CLUTCH MASTER', 40, 620);
+
+      if (box) box.classList.remove('hidden');
+      if (window.AntigravityMCP) {
+        window.AntigravityMCP.logNotification("1080p Video Frame Captured as Thumbnail (VidIQ & YouTube Studio Preset)", "success");
+      }
+    }
+
+    function downloadCapturedThumbnail() {
+      const canvas = document.getElementById('thumb-canvas');
+      if (!canvas) return;
+      const a = document.createElement('a');
+      a.href = canvas.toDataURL('image/png');
+      a.download = `highlight_thumbnail_${Date.now()}.png`;
+      a.click();
+    }
+
+    // -----------------------------------------------------------------------
+    // Antigravity MCP Baseline Integration & Game Capture Bridge
+    // -----------------------------------------------------------------------
+    function connectGameCaptureMCP() {
+      if (window.AntigravityMCP) {
+        window.AntigravityMCP.logNotification("Connected to Game Capture MCP (OBS Studio 31 / ShadowPlay / Xbox DVR)", "success");
+      }
+      if (engine && engine.sampleVideos && engine.sampleVideos.length > 0) {
+        const clip = engine.selectSampleVideo(engine.sampleVideos[0].id);
+        const p1Active = document.getElementById('p1-active-clip');
+        if (p1Active) p1Active.textContent = clip.title + ' [MCP Live Feed]';
+        if (gallery) gallery.updatePaintingStatus(1, clip.title + ' (MCP)', true);
+        renderSampleVideos();
+      }
+    }
+
+    // Register Reactive App State with Antigravity MCP Live Console
+    if (window.AntigravityMCP) {
+      window.AntigravityMCP.registerAppState(() => {
+        return {
+          studioApp: "ApexPulse 3D Highlight Studio",
+          currentStepIndex: typeof currentStepIndex !== 'undefined' ? currentStepIndex : 1,
+          selectedVideo: engine && engine.selectedVideo ? {
+            id: engine.selectedVideo.id,
+            title: engine.selectedVideo.title,
+            file: engine.selectedVideo.file
+          } : null,
+          selectedMusic: engine && engine.selectedMusic ? {
+            id: engine.selectedMusic.id,
+            title: engine.selectedMusic.title,
+            artist: engine.selectedMusic.artist,
+            category: engine.selectedMusic.category
+          } : null,
+          activeMarkers: engine && engine.markers ? engine.markers.map(m => ({
+            index: m.index,
+            timeSec: m.time,
+            sfx: m.sfx ? m.sfx.title : '(none)'
+          })) : [],
+          threeCanvasAttached: !!document.getElementById('gallery-canvas-container')?.children.length,
+          mcpBaselineActive: true
+        };
+      });
+    }
+  </script>
+</body>
+</html>

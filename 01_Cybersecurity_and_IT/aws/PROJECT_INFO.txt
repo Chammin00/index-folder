@@ -1,0 +1,18 @@
+﻿========================================================================
+PROJECT: aws
+CATEGORY: 01_Cybersecurity_and_IT
+DESCRIPTION: AWS Cloud Infrastructure & Web Portal
+========================================================================
+
+Original Project Directory:
+G:\My Drive\Antigravity\Projects\aws\web-app
+
+Original Index File:
+G:\My Drive\Antigravity\Projects\aws\web-app\index.html
+
+How to Open in Antigravity:
+1. In Antigravity / VS Code: Click File -> Open Folder...
+2. Paste this path: G:\My Drive\Antigravity\Projects\aws\web-app
+3. Press Enter
+
+Or launch directly in browser using: Launch_Original_Index.url

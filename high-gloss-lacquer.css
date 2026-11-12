@@ -1,0 +1,127 @@
+/**
+ * Antigravity Matte Enterprise System (high-gloss-lacquer.css - Clean Baseline)
+ * 
+ * Authentic GitHub Primer & AWS Enterprise Dark Console styling:
+ * - 100% De-Glossed: Stripped of artificial specular glares, faux glass sweeps, and radial blooms
+ * - Clean 1px matte borders (#30363d) and deep canvas (#090d16 / #0d1117 / #161b22)
+ * - WCAG AAA High-Detectability text (#FFFFFF / #E2E8F0 / #8B949E)
+ * - Motionless 4K Still Cosmic Canvas enforcement
+ */
+
+:root {
+  /* Clean Dark Console Optical Tokens */
+  --gh-canvas-default: #090d16;
+  --gh-canvas-subtle: #0d1117;
+  --gh-canvas-inset: #010409;
+  --gh-panel-bg: rgba(13, 17, 23, 0.95);
+  --gh-card-bg: rgba(22, 27, 34, 0.9);
+  --gh-border-default: #30363d;
+  --gh-border-muted: #21262d;
+  --gh-border-subtle: rgba(240, 246, 252, 0.1);
+
+  /* Legacy variable mapping to prevent breakages */
+  --lacquer-navy-base: #090d16;
+  --lacquer-navy-deep: #0d1117;
+  --lacquer-cobalt-glaze: #161b22;
+  --lacquer-cobalt-light: #21262d;
+  --lacquer-tan-camel: #d29922;
+  --lacquer-tan-sunlit: #f0883e;
+  --lacquer-tan-glow: rgba(240, 136, 62, 0.2);
+  --lacquer-specular-white: transparent;
+  --lacquer-wet-abyss: #010409;
+
+  /* Matte Elevation Profiles (No Wet/Glass Shine) */
+  --lacquer-wet-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 2px 6px rgba(0, 0, 0, 0.2);
+  --lacquer-wet-hover-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+  --lacquer-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   STILL WEBPAGE BACKGROUND ENFORCEMENT
+   ========================================================================== */
+body {
+  background-attachment: fixed !important;
+  animation: none !important;
+}
+
+#screensaver-scene,
+#screensaver-star-canvas,
+#screensaver-planet-glow,
+#screensaver-sun-flare,
+#screensaver-water-shimmer,
+#screensaver-city-glow,
+.glow-container,
+.glow-orb {
+  display: none !important;
+  animation: none !important;
+  transform: none !important;
+}
+
+/* ==========================================================================
+   CLEAN MATTE CARDS & TILES (ZERO GLOSS / ZERO AI SHEEN)
+   ========================================================================= */
+.card, .tile, .app-card, .stat-card, .stat-tile, .glass-panel,
+.player-card, .difficulty-card, .score-card, .remediation-card,
+.hero-readiness-widget, .dash-metric-card, .metric-box, .module-card,
+.feature-card, .board-card, .lesson-card, .drill-card, .summary-card,
+.plan-card, .pricing-card, .inventory-card, .status-card, .widget-card,
+.routine-box, .quick-actions,
+[data-gloss="tile"],
+[class*="card"]:not(.no-gloss):not(.card-face):not(.card-front):not(.card-back):not(.flashcard-box):not(.flashcard-stage),
+[class*="tile"]:not(.no-gloss) {
+  position: relative;
+  background: var(--gh-card-bg) !important;
+  border: 1px solid var(--gh-border-default) !important;
+  border-radius: 8px !important;
+  box-shadow: var(--lacquer-wet-shadow) !important;
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease !important;
+  overflow: visible;
+}
+
+/* Neutralize all artificial specular glare sheets and hover sweeps */
+.card::before, .tile::before, .app-card::before, .stat-card::before, .stat-tile::before, .glass-panel::before,
+.player-card::before, .difficulty-card::before, .score-card::before, .remediation-card::before,
+.hero-readiness-widget::before, .dash-metric-card::before, .metric-box::before, .module-card::before,
+.feature-card::before, .board-card::before, .lesson-card::before, .drill-card::before, .summary-card::before,
+.plan-card::before, .pricing-card::before, .inventory-card::before, .status-card::before, .widget-card::before,
+.routine-box::before, .quick-actions::before,
+[data-gloss="tile"]::before,
+[class*="card"]:not(.card-face):not(.card-front):not(.card-back):not(.flashcard-box):not(.flashcard-stage)::before,
+[class*="tile"]::before,
+.card::after, .tile::after, .app-card::after, .stat-card::after, .stat-tile::after, .glass-panel::after,
+.player-card::after, .difficulty-card::after, .score-card::after, .remediation-card::after,
+.hero-readiness-widget::after, .dash-metric-card::after, .metric-box::after, .module-card::after,
+.feature-card::after, .board-card::after, .lesson-card::after, .drill-card::after, .summary-card::after,
+.plan-card::after, .pricing-card::after, .inventory-card::after, .status-card::after, .widget-card::after,
+.routine-box::after, .quick-actions::after,
+[data-gloss="tile"]::after,
+[class*="card"]:not(.card-face):not(.card-front):not(.card-back):not(.flashcard-box):not(.flashcard-stage)::after,
+[class*="tile"]::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Tasteful, crisp hover lift (zero sweep sheen) */
+.card:hover, .tile:hover, .app-card:hover, .stat-card:hover, .stat-tile:hover,
+[data-gloss="tile"]:hover,
+[class*="card"]:hover:not(.no-hover):not(.card-face):not(.card-front):not(.card-back):not(.flashcard-box):not(.flashcard-stage),
+[class*="tile"]:hover:not(.no-hover) {
+  border-color: #58a6ff !important;
+  transform: translateY(-2px) !important;
+  box-shadow: var(--lacquer-wet-hover-shadow) !important;
+}
+
+/* Clean Button Styling */
+button.primary, .btn-primary, .action-btn-primary {
+  background: #238636 !important;
+  border: 1px solid rgba(240, 246, 252, 0.1) !important;
+  color: #ffffff !important;
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+}
+
+button.primary:hover, .btn-primary:hover, .action-btn-primary:hover {
+  background: #2ea043 !important;
+  border-color: rgba(240, 246, 252, 0.2) !important;
+}

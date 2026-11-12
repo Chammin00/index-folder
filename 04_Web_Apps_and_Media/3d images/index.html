@@ -1,0 +1,254 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CRAFTOPOLY 3D — Living Board Edition (Minecraft Tokens × Mario, Diddy Kong, Hello Kitty &amp; Gears of War)</title>
+  <link rel="stylesheet" href="monopoly.css" />
+  <!-- Local Three.js + OrbitControls (guaranteed to load offline, local server, or file://) -->
+  <script src="three.min.js"></script>
+  <script src="OrbitControls.js"></script>
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <script src="high-gloss-lacquer.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <script src="cosmic-background.js"></script>
+  <script src="mcp-baseline.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="aws-enterprise-baseline.css">
+  <script src="aws-enterprise-baseline.js"></script>
+</head>
+<body>
+  <!-- 3D Living Board WebGL Canvas -->
+  <div id="canvas-container"></div>
+
+  <!-- Top Broadcast Bar -->
+  <header class="top-hud">
+    <div class="brand-wrap">
+      <div class="living-board-logo">
+        <span>🎲 3D LIVING BOARD</span>
+      </div>
+      <div class="brand-titles">
+        <h1>
+          CRAFTOPOLY 3D
+          <span id="active-board-subtitle" style="font-weight:700;font-size:0.8rem;color:#4ade80;">— Super Mario Bros. Kingdom</span>
+        </h1>
+        <p>40-Space Living City • Dynamic Action Camera • Minecraft Voxel Tokens • Gamepad &amp; Keyboard Ready</p>
+      </div>
+    </div>
+
+    <!-- 5 Alternate Living 3D Board Worlds -->
+    <div class="board-theme-bar" role="group" aria-label="Select Living 3D Board World">
+      <span class="theme-label">Living Board:</span>
+      <button class="theme-btn active" data-board="mario" title="Super Mario Bros. Living Kingdom">
+        🍄 Mario Bros
+      </button>
+      <button class="theme-btn" data-board="diddykong" title="Diddy Kong Living Jungle Island">
+        🍌 Diddy Kong
+      </button>
+      <button class="theme-btn" data-board="hellokitty" title="Hello Kitty Sanrio Kawaii Metropolis">
+        🎀 Hello Kitty
+      </button>
+      <button class="theme-btn" data-board="gearsofwar" title="Gears of War Sera Tactical Warzone">
+        ⚙️ Gears of War
+      </button>
+      <button class="theme-btn" data-board="minecraft" title="Minecraft Overworld &amp; Nether Dimension">
+        🧱 Minecraft
+      </button>
+    </div>
+
+    <!-- Top Right Utilities -->
+    <div class="top-right-controls">
+      <button id="btn-time-of-day" class="btn btn-sm" title="Cycle Living City Lighting (Day / Sunset / Night)">
+        ☀️ Time: Day
+      </button>
+      <button id="btn-Customize-Players" class="btn btn-sm" title="Select Minecraft Voxel Characters &amp; Human/AI Setup">
+        🧑‍🎨 Tokens
+      </button>
+      <button id="btn-autoplay" class="btn btn-sm" title="Let AI play automatically with Dynamic Action Camera">
+        🤖 Auto-Sim: OFF
+      </button>
+      <button id="btn-sound" class="btn btn-sm" title="Toggle Sound Effects">
+        🔊 SFX: ON
+      </button>
+      <button id="btn-new-game" class="btn btn-sm" style="border-color:rgba(239,68,68,0.45);color:#fca5a5;" title="Start a fresh match">
+        ↺ Reset
+      </button>
+      <a href="taskmanager.html" class="btn btn-sm" style="border-color:rgba(168,85,247,0.6);color:#c084fc;" title="Open Cyber PC Task Manager 3D">
+        ⚡ PC TaskMgr
+      </a>
+      <a href="tasks.html" class="btn btn-sm" style="border-color:rgba(56,189,248,0.5);color:#38bdf8;" title="Open 3D Spatial Task Manager">
+        📋 3D Tasks
+      </a>
+      <a href="gallery.html" class="btn btn-sm" title="Switch to 3D Photo Gallery Studio">
+        🖼️ Gallery
+      </a>
+    </div>
+  </header>
+
+  <!-- Broadcast Splash Banner (Dice Callouts, Double!, Chance, Monopoly!) -->
+  <div id="center-toast" class="broadcast-banner hidden">
+    <div class="toast-badge" id="toast-kicker">GAME EVENT</div>
+    <h3 id="toast-title">DOUBLE ROLL!</h3>
+    <p id="toast-desc">Roll again after completing your turn!</p>
+  </div>
+
+  <!-- Left Panel: 4 Minecraft Voxel Players (Broadcast HUD Cards) -->
+  <aside id="players-panel" class="left-panel"></aside>
+
+  <!-- Right Panel: 3D Title Deed Card Inspector + Live Broadcast Ticker -->
+  <aside class="right-panel">
+    <div id="deed-card" class="deed-card">
+      <div id="deed-banner" class="deed-banner" style="background: linear-gradient(135deg, #ef4444, #7f1d1d);">
+        <div class="deed-kicker" id="deed-group-name">MUSHROOM KINGDOM</div>
+        <h2 id="deed-title">Peach's Castle</h2>
+      </div>
+      <div class="deed-body">
+        <div class="deed-price-row">
+          <span id="deed-price-label">Title Deed Value</span>
+          <span id="deed-price-val" style="color:#fde047;font-size:0.94rem;">🪙 350</span>
+        </div>
+        <div id="deed-rent-table" class="deed-rent-table"></div>
+        <div class="deed-owner-box">
+          <span>Owner: <strong id="deed-owner-name">Unowned (Bank)</strong></span>
+          <span id="deed-level-badge">0 Structures</span>
+        </div>
+        <div class="deed-actions">
+          <button id="btn-upgrade-prop" class="btn btn-action-y btn-sm" disabled>
+            <span class="pad-btn pad-y">Y</span> Build Structure
+          </button>
+          <button id="btn-focus-tile" class="btn btn-sm">
+            🎥 Inspect Space
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="log-card">
+      <div class="log-header">
+        <span>📡 Broadcast Feed</span>
+        <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:0.67rem;color:#4ade80;" title="Allow building 3D Houses &amp; Hotels on any owned property immediately!">
+          <input type="checkbox" id="chk-arcade-build" checked />
+          ⚡ Speed Build
+        </label>
+      </div>
+      <div id="log-list" class="log-list"></div>
+    </div>
+  </aside>
+
+  <!-- Bottom Left: Dynamic Camera Switcher -->
+  <div class="camera-dock">
+    <span class="pad-bumper">LB / RB</span>
+    <button class="btn btn-sm cam-btn active" data-cam="dynamic" title="Signature Dynamic Action Camera (Follows Dice &amp; Token Walks)">
+      🎬 Action Cam
+    </button>
+    <button class="btn btn-sm cam-btn" data-cam="iso" title="Living City Orbit Camera">
+      🏙️ Living City
+    </button>
+    <button class="btn btn-sm cam-btn" data-cam="street" title="Close-up Third-Person Token Chase Camera">
+      🏃 Street Cam
+    </button>
+    <button class="btn btn-sm cam-btn" data-cam="top" title="Classic Top-Down Board View">
+      🦅 Overhead
+    </button>
+  </div>
+
+  <!-- Bottom Center: Controller Action Deck -->
+  <footer class="bottom-deck">
+    <div class="dice-readout">
+      <div id="die-1" class="die-box">⚄</div>
+      <div id="die-2" class="die-box">⚂</div>
+    </div>
+
+    <div class="turn-status-box">
+      <div class="turn-status-kicker" id="turn-player-label">⛏️ PLAYER 1'S TURN (STEVE)</div>
+      <div class="turn-status-text" id="turn-instruction">Press (A) or Space to throw the 3D dice!</div>
+    </div>
+
+    <div class="action-buttons">
+      <button id="btn-roll" class="btn btn-action-a btn-deck">
+        <span class="pad-btn pad-a">A</span> Roll Dice
+      </button>
+      <button id="btn-jail-pay" class="btn btn-action-y btn-deck hidden">
+        <span class="pad-btn pad-y">Y</span> Pay Bail (50)
+      </button>
+      <button id="btn-buy" class="btn btn-action-a btn-deck hidden">
+        <span class="pad-btn pad-a">A</span> Buy Property
+      </button>
+      <button id="btn-auction" class="btn btn-action-x btn-deck hidden">
+        <span class="pad-btn pad-x">X</span> Auction
+      </button>
+      <button id="btn-end-turn" class="btn btn-action-b btn-deck hidden">
+        <span class="pad-btn pad-b">B</span> End Turn
+      </button>
+    </div>
+  </footer>
+
+  <!-- Live Property Auction Modal -->
+  <div id="auction-modal" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <div class="modal-header" style="background:linear-gradient(135deg,#1d4ed8,#0f172a);">
+        <div>
+          <span style="font-size:0.7rem;font-weight:900;color:#93c5fd;letter-spacing:0.1em;">🔨 LIVE PROPERTY AUCTION</span>
+          <h2 id="auction-prop-title">Peach's Castle</h2>
+        </div>
+        <span id="auction-retail-badge" style="font-size:0.82rem;font-weight:800;color:#fde047;">Retail: 🪙 350</span>
+      </div>
+      <div class="modal-body">
+        <div class="auction-timer-bar">
+          <div id="auction-timer-fill" class="auction-timer-fill"></div>
+        </div>
+        <div class="auction-bid-display">
+          <div>
+            <div style="font-size:0.72rem;color:#94a3b8;font-weight:700;">HIGHEST BIDDER</div>
+            <div id="auction-leader-name" style="font-size:1.15rem;font-weight:900;color:#4ade80;margin-top:2px;">Starting Bid...</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:0.72rem;color:#94a3b8;font-weight:700;">CURRENT BID</div>
+            <div id="auction-current-bid" style="font-size:1.55rem;font-weight:900;color:#fde047;">🪙 20</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:center;">
+          <button id="btn-bid-10" class="btn btn-action-a">
+            <span class="pad-btn pad-a">A</span> Bid +10
+          </button>
+          <button id="btn-bid-50" class="btn btn-action-x">
+            <span class="pad-btn pad-x">X</span> Bid +50
+          </button>
+          <button id="btn-bid-fold" class="btn btn-action-b">
+            <span class="pad-btn pad-b">B</span> Drop Out
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customize Minecraft Characters Modal -->
+  <div id="setup-modal" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <span style="font-size:0.7rem;font-weight:800;color:#22c55e;letter-spacing:0.08em;">MINECRAFT VOXEL ROSTER</span>
+          <h2>Customize Players &amp; Minecraft Character Tokens</h2>
+        </div>
+        <button id="btn-close-setup" class="btn btn-sm">✕ Close</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size:0.82rem;color:#94a3b8;">
+          Pick which articulated 3D Minecraft character represents each player and whether they are controlled by a Human or AI Bot.
+        </p>
+        <div id="setup-grid" class="setup-grid"></div>
+        <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:6px;">
+          <button id="btn-apply-setup" class="btn btn-action-a">
+            <span class="pad-btn pad-a">A</span> Apply &amp; Resume
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="monopoly.js"></script>
+</body>
+</html>
+

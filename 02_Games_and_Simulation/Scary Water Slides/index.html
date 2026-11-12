@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scary Water Slides - 3D Simulation & Creator Studio</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%; height: 100%; overflow: hidden;
+      background: #020614; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      color: #fff;
+    }
+    #canvas-container {
+      width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; z-index: 1;
+    }
+    #canvas-container canvas {
+      display: block !important; width: 100% !important; height: 100% !important;
+      position: absolute; top: 0; left: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    /* Photorealistic Real-Life Background Plate Layer */
+    .real-plate-bg {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background-size: cover; background-position: center; z-index: 2;
+      display: none; transition: opacity 0.5s ease;
+    }
+    .real-plate-bg.active { display: block; }
+    
+    /* Screen Effects: High-Speed Vignette & Water Droplet Shimmer */
+    .screen-fx-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none; z-index: 5;
+      background: radial-gradient(circle at 50% 45%, transparent 55%, rgba(0, 210, 255, 0.22) 100%);
+      box-shadow: inset 0 0 120px rgba(0, 160, 255, 0.28);
+    }
+
+    /* Authentic First-Person Rider Cockpit (Inner Tube & Hands) */
+    .rider-cockpit {
+      position: fixed; bottom: -15px; left: 50%; transform: translateX(-50%);
+      width: 820px; max-width: 95vw; height: 260px;
+      pointer-events: none; z-index: 6;
+      display: flex; justify-content: space-between; align-items: flex-end;
+      padding: 0 40px;
+      transition: transform 0.08s ease-out;
+    }
+    .inner-tube-ring {
+      position: absolute; bottom: -75px; left: 50%; transform: translateX(-50%);
+      width: 740px; height: 220px;
+      background: radial-gradient(ellipse at 50% 25%, #00f0ff 0%, #0052cc 55%, #001238 95%);
+      border-radius: 50% / 40%;
+      border: 8px solid rgba(0, 255, 255, 0.7);
+      box-shadow: 0 0 55px rgba(0, 240, 255, 0.8), inset 0 12px 30px rgba(255, 255, 255, 0.6);
+    }
+    .tube-handle-left, .tube-handle-right {
+      position: absolute; bottom: 65px; width: 85px; height: 38px;
+      border: 6px solid #ff0055; border-radius: 20px;
+      box-shadow: 0 0 20px #ff0055;
+    }
+    .tube-handle-left { left: 95px; transform: rotate(-25deg); }
+    .tube-handle-right { right: 95px; transform: rotate(25deg); }
+
+    .rider-hands {
+      position: absolute; bottom: 42px; width: 100%; display: flex; justify-content: space-between; padding: 0 85px;
+    }
+    .rider-hand {
+      width: 95px; height: 100px; background: linear-gradient(135deg, #f7d0b0, #d4956c);
+      border-radius: 32px 32px 18px 18px; border: 3px solid rgba(0, 0, 0, 0.25);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+      position: relative;
+    }
+    .rider-hand.left { transform: rotate(-20deg); }
+    .rider-hand.right { transform: rotate(20deg); }
+    .rider-hand::after {
+      content: ''; position: absolute; top: -14px; left: 12px; width: 72px; height: 26px;
+      background: #e6b896; border-radius: 13px;
+    }
+
+    /* HUD Overlay */
+    .hud {
+      position: fixed; z-index: 10; pointer-events: none; width: 100vw; height: 100vh;
+      display: flex; flex-direction: column; justify-content: space-between; padding: 24px;
+    }
+    .hud-top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .channel-badge {
+      background: rgba(8, 16, 36, 0.9); border: 2px solid rgba(0, 240, 255, 0.5);
+      padding: 12px 24px; border-radius: 14px; backdrop-filter: blur(12px);
+      box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
+    }
+    .channel-title {
+      font-size: 22px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;
+      background: linear-gradient(90deg, #00f0ff, #ff0055, #ffaa00);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .channel-sub { font-size: 11px; color: #a0c2e8; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 4px; }
+
+    .telemetry-grid { display: flex; gap: 14px; }
+    .tele-card {
+      background: rgba(6, 12, 28, 0.9); border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 10px 18px; border-radius: 12px; min-width: 115px; backdrop-filter: blur(10px);
+    }
+    .tele-label { font-size: 10px; color: #8fa3bf; text-transform: uppercase; letter-spacing: 1px; }
+    .tele-val { font-size: 26px; font-weight: 900; font-family: 'Courier New', monospace; margin-top: 2px; }
+    .val-speed { color: #00f0ff; text-shadow: 0 0 12px rgba(0, 240, 255, 0.7); }
+    .val-alt { color: #ffaa00; text-shadow: 0 0 12px rgba(255, 170, 0, 0.7); }
+    .val-bpm { color: #ff0055; text-shadow: 0 0 12px rgba(255, 0, 85, 0.7); }
+    .val-health { color: #00ff88; text-shadow: 0 0 12px rgba(0, 255, 136, 0.7); }
+
+    /* Danger Warning Banner */
+    .warning-banner {
+      position: fixed; top: 110px; left: 50%; transform: translateX(-50%);
+      background: rgba(255, 0, 55, 0.92); border: 2px solid #ff0055;
+      padding: 10px 36px; border-radius: 30px; font-weight: 900; font-size: 16px;
+      letter-spacing: 3px; text-transform: uppercase; box-shadow: 0 0 40px rgba(255, 0, 85, 0.9);
+      animation: pulse 0.7s infinite alternate; display: none; z-index: 12;
+    }
+    @keyframes pulse { from { opacity: 0.8; transform: translateX(-50%) scale(0.97); } to { opacity: 1; transform: translateX(-50%) scale(1.03); } }
+
+    /* Bottom Control Bar */
+    .hud-bottom { display: flex; justify-content: space-between; align-items: flex-end; z-index: 15; }
+    .stage-tracker {
+      background: rgba(8, 16, 36, 0.9); border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 14px 22px; border-radius: 14px; backdrop-filter: blur(12px); max-width: 440px;
+    }
+    .stage-name { font-size: 17px; font-weight: 900; color: #00f0ff; letter-spacing: 1px; }
+    .stage-desc { font-size: 12px; color: #c0d5f0; margin-top: 4px; line-height: 1.4; }
+
+    .controls-panel {
+      pointer-events: auto; background: rgba(8, 14, 28, 0.94); border: 1px solid rgba(0, 240, 255, 0.45);
+      padding: 12px 18px; border-radius: 14px; display: flex; gap: 10px; align-items: center;
+      backdrop-filter: blur(14px); box-shadow: 0 8px 35px rgba(0, 0, 0, 0.7);
+    }
+    .btn {
+      background: #121c32; border: 1px solid rgba(0, 240, 255, 0.4); color: #fff;
+      padding: 10px 16px; border-radius: 8px; font-weight: 700; font-size: 12px;
+      letter-spacing: 1px; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase;
+    }
+    .btn:hover { background: #00f0ff; color: #000; box-shadow: 0 0 15px rgba(0, 240, 255, 0.7); }
+    .btn-primary { background: linear-gradient(135deg, #00f0ff, #0088ff); border: none; color: #000; font-weight: 900; }
+    .btn-primary:hover { background: linear-gradient(135deg, #33f3ff, #1a94ff); box-shadow: 0 0 20px rgba(0, 240, 255, 0.9); }
+    .btn-plate { background: linear-gradient(135deg, #ffaa00, #ff5500); border: none; color: #000; font-weight: 800; }
+    .btn-plate:hover { background: linear-gradient(135deg, #ffcc33, #ff7722); box-shadow: 0 0 20px rgba(255, 170, 0, 0.8); }
+    .btn-danger { background: #ff0055; border: none; color: #fff; font-weight: 800; }
+    .btn-danger:hover { background: #ff3377; box-shadow: 0 0 20px rgba(255, 0, 85, 0.8); }
+
+    /* Studio Sidebar Drawer */
+    .studio-sidebar {
+      position: fixed; right: 24px; top: 100px; width: 360px;
+      background: rgba(8, 14, 28, 0.96); border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px; padding: 20px; z-index: 25; backdrop-filter: blur(16px);
+      box-shadow: 0 12px 45px rgba(0,0,0,0.85); display: none; max-height: calc(100vh - 180px); overflow-y: auto;
+    }
+    .studio-sidebar.open { display: block; }
+    .studio-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
+    .studio-title { font-size: 15px; font-weight: 900; color: #ffaa00; text-transform: uppercase; letter-spacing: 1px; }
+    .studio-close { cursor: pointer; color: #888; font-weight: bold; font-size: 20px; }
+    .studio-close:hover { color: #fff; }
+    .studio-section { margin-bottom: 14px; }
+    .studio-section-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #8fa3bf; margin-bottom: 6px; }
+    .studio-box { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 10px; font-size: 12px; line-height: 1.5; color: #d0e0f0; }
+    .badge-tag { display: inline-block; background: rgba(0, 240, 255, 0.15); border: 1px solid rgba(0, 240, 255, 0.35); color: #00f0ff; border-radius: 4px; padding: 3px 8px; font-size: 10px; margin: 2px; }
+  </style>
+</head>
+<body>
+  <div id="canvas-container"></div>
+  <div id="real-plate-bg" class="real-plate-bg"></div>
+  <div class="screen-fx-overlay"></div>
+
+  <!-- Rider Cockpit (Tube & Hands) -->
+  <div class="rider-cockpit" id="rider-cockpit">
+    <div class="inner-tube-ring">
+      <div class="tube-handle-left"></div>
+      <div class="tube-handle-right"></div>
+    </div>
+    <div class="rider-hands">
+      <div class="rider-hand left"></div>
+      <div class="rider-hand right"></div>
+    </div>
+  </div>
+
+  <!-- HUD Overlay -->
+  <div class="hud">
+    <div class="hud-top">
+      <div class="channel-badge">
+        <div class="channel-title">🌊 Scary Water Slides</div>
+        <div class="channel-sub">EP 01 • Space Orbital Caldera Plunge</div>
+      </div>
+      <div class="telemetry-grid">
+        <div class="tele-card">
+          <div class="tele-label">Speed</div>
+          <div class="tele-val val-speed" id="hud-speed">180 MPH</div>
+        </div>
+        <div class="tele-card">
+          <div class="tele-label">Altitude</div>
+          <div class="tele-val val-alt" id="hud-alt">250,000 FT</div>
+        </div>
+        <div class="tele-card">
+          <div class="tele-label">Heart Rate</div>
+          <div class="tele-val val-bpm" id="hud-bpm">95 BPM</div>
+        </div>
+        <div class="tele-card">
+          <div class="tele-label">Tube Integrity</div>
+          <div class="tele-val val-health" id="hud-health">100%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="warning-banner" id="warning-banner">⚠️ AVALANCHE DIRECT IMPACT!</div>
+
+    <div class="hud-bottom">
+      <div class="stage-tracker">
+        <div class="stage-name" id="stage-name">ZONE 1: ORBITAL VACUUM LAUNCH</div>
+        <div class="stage-desc" id="stage-desc">Reinforced neon quartz tube sliding outside Earth's atmosphere.</div>
+      </div>
+
+      <div class="controls-panel">
+        <button class="btn btn-primary" id="btn-toggle">▶ LAUNCH SLIDE</button>
+        <button class="btn btn-plate" id="btn-plate-toggle">🏔️ REAL TERRAIN PLATES</button>
+        <button class="btn" id="btn-cam">CAM: POV RIDER</button>
+        <button class="btn" id="btn-audio">🔊 SOUND: ON</button>
+        <button class="btn" id="btn-capture">📸 CAPTURE FRAME</button>
+        <button class="btn btn-danger" id="btn-studio">⚡ YOUTUBE PACKAGING</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- YouTube Studio Drawer -->
+  <div class="studio-sidebar" id="studio-sidebar">
+    <div class="studio-header">
+      <div class="studio-title">YouTube Retention Strategy</div>
+      <div class="studio-close" id="studio-close">✕</div>
+    </div>
+    
+    <div class="studio-section">
+      <div class="studio-section-title">Yu Yu Hakusho Mandate Title (EP 01)</div>
+      <div class="studio-box" style="border-color: #ff0055; color: #ffbbdd; font-weight: bold;">
+        "I have the power to show you the fire" - Space Volcano Slide
+      </div>
+    </div>
+
+    <div class="studio-section">
+      <div class="studio-section-title">Episode 02 Clean Title</div>
+      <div class="studio-box" style="border-color: #00f0ff; color: #aaffff; font-weight: bold;">
+        "Earth to toddler!" - The 36,000 FT Trench Slide
+      </div>
+    </div>
+
+    <div class="studio-section">
+      <div class="studio-section-title">Thumbnail Text Overlay</div>
+      <div class="studio-box" style="color: #00f0ff; font-weight: 800; font-size: 14px;">
+        DO NOT JUMP!
+      </div>
+    </div>
+
+    <div class="studio-section">
+      <div class="studio-section-title">First 30 Seconds Retention Script</div>
+      <div class="studio-box" style="font-size: 11px;">
+        <b>0:00 - 0:05:</b> "Right now we are sitting at 250,000 feet in outer space... and this glass tube is the only thing keeping us from burning up."<br><br>
+        <b>0:06 - 0:15:</b> "If you hit this water at Mach 3, it hits back like concrete. But that isn't even the deadliest part..."<br><br>
+        <b>0:16 - 0:30:</b> "Because three miles down, an avalanche is collapsing the track—and if cooling fails, you don't splash. You evaporate."
+      </div>
+    </div>
+
+    <div class="studio-section">
+      <div class="studio-section-title">Algorithmic Tags</div>
+      <div>
+        <span class="badge-tag">#ScaryWaterSlides</span>
+        <span class="badge-tag">#ExtremeRide</span>
+        <span class="badge-tag">#WaterSlidePOV</span>
+        <span class="badge-tag">#SpaceSlide</span>
+        <span class="badge-tag">#VolcanoDrop</span>
+        <span class="badge-tag">#4K60FPS</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- 1. THREE.JS SCENE SETUP ---
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x020512);
+
+    const camera = new THREE.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.1, 18000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.4;
+    container.appendChild(renderer.domElement);
+
+    function handleResize() {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+    window.addEventListener('resize', handleResize);
+
+    // --- 2. LIGHTING RIG ---
+    const ambientLight = new THREE.AmbientLight(0x224477, 1.8);
+    scene.add(ambientLight);
+
+    const sunLight = new THREE.DirectionalLight(0xfff8ee, 3.5);
+    sunLight.position.set(3000, 5000, -2000);
+    scene.add(sunLight);
+
+    const volcanoLight = new THREE.PointLight(0xff3300, 18, 4000);
+    volcanoLight.position.set(0, -320, 2600);
+    scene.add(volcanoLight);
+
+    const riderHeadlight = new THREE.PointLight(0x00f0ff, 5, 200);
+    scene.add(riderHeadlight);
+
+    // --- 3. SPACE SKYBOX & PLANET EARTH ---
+    const starGeo = new THREE.BufferGeometry();
+    const starCount = 8000;
+    const starPos = new Float32Array(starCount * 3);
+    for(let i = 0; i < starCount * 3; i += 3) {
+      starPos[i] = (Math.random() - 0.5) * 16000;
+      starPos[i+1] = Math.random() * 8000 - 1500;
+      starPos[i+2] = (Math.random() - 0.5) * 16000;
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 3.8, transparent: true, opacity: 0.95 });
+    const stars = new THREE.Points(starGeo, starMat);
+    scene.add(stars);
+
+    const earthGeo = new THREE.SphereGeometry(4500, 64, 48);
+    const earthMat = new THREE.MeshStandardMaterial({
+      color: 0x0a3575,
+      roughness: 0.4,
+      metalness: 0.1,
+      emissive: 0x021128
+    });
+    const earthMesh = new THREE.Mesh(earthGeo, earthMat);
+    earthMesh.position.set(0, -5100, 800);
+    scene.add(earthMesh);
+
+    const atmoGeo = new THREE.SphereGeometry(4560, 48, 32);
+    const atmoMat = new THREE.MeshBasicMaterial({
+      color: 0x00d4ff,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.22
+    });
+    const atmoMesh = new THREE.Mesh(atmoGeo, atmoMat);
+    atmoMesh.position.copy(earthMesh.position);
+    scene.add(atmoMesh);
+
+    // --- 4. THE WATERSLIDE FLUME ---
+    const curvePoints = [
+      new THREE.Vector3(0, 900, -350),     // Orbit launch
+      new THREE.Vector3(50, 780, 80),      // Drop 1
+      new THREE.Vector3(-80, 620, 500),    // Stratosphere spiral
+      new THREE.Vector3(120, 420, 980),    // Cloud deck entry
+      new THREE.Vector3(-90, 240, 1420),   // Alpine avalanche ridge
+      new THREE.Vector3(40, 120, 1820),    // Crevasse run
+      new THREE.Vector3(-40, 20, 2200),    // Volcano gorge
+      new THREE.Vector3(0, -120, 2520),    // Caldera drop
+      new THREE.Vector3(0, -220, 2600),    // Molten lava close scrape
+      new THREE.Vector3(0, -180, 2900)     // Ocean geyser exit
+    ];
+    const slideCurve = new THREE.CatmullRomCurve3(curvePoints);
+
+    const tubeGeo = new THREE.TubeGeometry(slideCurve, 350, 10.5, 20, false);
+    const tubeMat = new THREE.MeshPhysicalMaterial({
+      color: 0x00f0ff,
+      transparent: true,
+      opacity: 0.5,
+      roughness: 0.08,
+      metalness: 0.2,
+      transmission: 0.8,
+      ior: 1.45
+    });
+    const tubeMesh = new THREE.Mesh(tubeGeo, tubeMat);
+    scene.add(tubeMesh);
+
+    const waterGeo = new THREE.TubeGeometry(slideCurve, 350, 8.8, 14, false);
+    const waterMat = new THREE.MeshStandardMaterial({
+      color: 0x00f5ff,
+      roughness: 0.1,
+      metalness: 0.6,
+      emissive: 0x006688,
+      transparent: true,
+      opacity: 0.72
+    });
+    const waterMesh = new THREE.Mesh(waterGeo, waterMat);
+    scene.add(waterMesh);
+
+    const ringGroup = new THREE.Group();
+    const ringGeo = new THREE.TorusGeometry(10.7, 0.45, 8, 24);
+    const ringMat = new THREE.MeshBasicMaterial({ color: 0x00ffff });
+    const ringCount = 160;
+    for(let i = 0; i < ringCount; i++) {
+      const u = i / ringCount;
+      const p = slideCurve.getPointAt(u);
+      const t = slideCurve.getTangentAt(u).normalize();
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.position.copy(p);
+      ring.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), t);
+      ringGroup.add(ring);
+    }
+    scene.add(ringGroup);
+
+    // --- 5. HAZARDS & VOLUMETRIC SCENERY ---
+    const cloudCount = 180;
+    const cloudGeo = new THREE.DodecahedronGeometry(55, 1);
+    const cloudMat = new THREE.MeshStandardMaterial({
+      color: 0xddeeff,
+      roughness: 0.9,
+      transparent: true,
+      opacity: 0.65,
+      flatShading: true
+    });
+    const cloudGroup = new THREE.Group();
+    for(let i = 0; i < cloudCount; i++) {
+      const cloud = new THREE.Mesh(cloudGeo, cloudMat);
+      cloud.position.set(
+        (Math.random() - 0.5) * 2200,
+        380 + Math.random() * 90,
+        Math.random() * 2000 + 400
+      );
+      cloud.scale.set(1 + Math.random()*2, 0.6 + Math.random()*0.5, 1 + Math.random()*2);
+      cloudGroup.add(cloud);
+    }
+    scene.add(cloudGroup);
+
+    const alpineGroup = new THREE.Group();
+    for(let i = 0; i < 12; i++) {
+      const radius = 220 + Math.random() * 180;
+      const height = 450 + Math.random() * 250;
+      const mGeo = new THREE.ConeGeometry(radius, height, 7);
+      const mMat = new THREE.MeshStandardMaterial({
+        color: i % 2 === 0 ? 0xffffff : 0x223348,
+        roughness: 0.8,
+        flatShading: true
+      });
+      const peak = new THREE.Mesh(mGeo, mMat);
+      const xOffset = (i % 2 === 0 ? 1 : -1) * (260 + Math.random() * 320);
+      peak.position.set(xOffset, -50 + Math.random() * 80, 1250 + i * 65);
+      alpineGroup.add(peak);
+    }
+    scene.add(alpineGroup);
+
+    const volcanoOuterGeo = new THREE.CylinderGeometry(350, 900, 600, 24, 1, true);
+    const volcanoOuterMat = new THREE.MeshStandardMaterial({ color: 0x181010, roughness: 0.95, flatShading: true });
+    const volcanoMesh = new THREE.Mesh(volcanoOuterGeo, volcanoOuterMat);
+    volcanoMesh.position.set(0, -320, 2600);
+    scene.add(volcanoMesh);
+
+    const lavaCoreGeo = new THREE.CircleGeometry(340, 32);
+    const lavaCoreMat = new THREE.MeshBasicMaterial({ color: 0xff3b00 });
+    const lavaCore = new THREE.Mesh(lavaCoreGeo, lavaCoreMat);
+    lavaCore.rotation.x = -Math.PI / 2;
+    lavaCore.position.set(0, -280, 2600);
+    scene.add(lavaCore);
+
+    // --- 6. PARTICLES ---
+    const snowCount = 3500;
+    const snowGeo = new THREE.BufferGeometry();
+    const snowPos = new Float32Array(snowCount * 3);
+    for(let i = 0; i < snowCount * 3; i += 3) {
+      snowPos[i] = (Math.random() - 0.5) * 1600;
+      snowPos[i+1] = Math.random() * 600 - 100;
+      snowPos[i+2] = Math.random() * 1800 + 700;
+    }
+    snowGeo.setAttribute('position', new THREE.BufferAttribute(snowPos, 3));
+    const snowMat = new THREE.PointsMaterial({ color: 0xffffff, size: 3.2, transparent: true, opacity: 0.85 });
+    const snowParticles = new THREE.Points(snowGeo, snowMat);
+    scene.add(snowParticles);
+
+    // --- 7. AUDIO ENGINE ---
+    let audioCtx = null;
+    let isMuted = false;
+    let windGain = null;
+
+    function initAudio() {
+      if (audioCtx) return;
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new AudioContext();
+
+      const bufferSize = audioCtx.sampleRate * 2;
+      const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
+      }
+
+      const whiteNoise = audioCtx.createBufferSource();
+      whiteNoise.buffer = noiseBuffer;
+      whiteNoise.loop = true;
+
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = 650;
+
+      windGain = audioCtx.createGain();
+      windGain.gain.value = 0.05;
+
+      whiteNoise.connect(filter);
+      filter.connect(windGain);
+      windGain.connect(audioCtx.destination);
+      whiteNoise.start(0);
+    }
+
+    function playTone(freq, duration, type='sine', gainLevel=0.1) {
+      if (!audioCtx || isMuted) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(gainLevel, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch(e) {}
+    }
+
+    // --- 8. SIMULATION LOOP ---
+    let isRunning = false;
+    let progress = 0;
+    let speed = 0.0008;
+    let camMode = 0;
+    let speedMultiplier = 1.0;
+
+    const hudSpeed = document.getElementById('hud-speed');
+    const hudAlt = document.getElementById('hud-alt');
+    const hudBpm = document.getElementById('hud-bpm');
+    const hudHealth = document.getElementById('hud-health');
+    const stageName = document.getElementById('stage-name');
+    const stageDesc = document.getElementById('stage-desc');
+    const warningBanner = document.getElementById('warning-banner');
+    const riderCockpit = document.getElementById('rider-cockpit');
+
+    function updateTelemetry(t) {
+      let mph, altFt, bpm, health;
+
+      if (t < 0.28) {
+        mph = Math.floor(180 + t * 3.5 * 450);
+        altFt = Math.floor(250000 - t * 3.5 * 140000);
+        bpm = Math.floor(95 + t * 3.5 * 35);
+        health = 100;
+        stageName.innerText = "ZONE 1: ORBITAL VACUUM LAUNCH (250,000 FT)";
+        stageDesc.innerText = "Slicing through thermosphere vacuum with zero-g water globules.";
+        warningBanner.style.display = 'none';
+      } else if (t < 0.65) {
+        let p = (t - 0.28) / 0.37;
+        mph = Math.floor(650 + p * 340);
+        altFt = Math.floor(110000 - p * 88000);
+        bpm = Math.floor(130 + p * 40);
+        health = Math.floor(100 - p * 58);
+        stageName.innerText = "ZONE 2: ALPINE AVALANCHE COLLAPSE";
+        stageDesc.innerText = "Glacier ridge collapsing! Boulders and blinding snow striking tube!";
+        warningBanner.style.display = 'block';
+        warningBanner.innerText = "⚠️ AVALANCHE IMPACT: TUBE COMPROMISED!";
+        if (Math.random() < 0.035) playTone(110, 0.4, 'sawtooth', 0.15);
+      } else {
+        let p = (t - 0.65) / 0.35;
+        mph = Math.floor(990 + p * 210);
+        altFt = Math.floor(22000 - p * 21500);
+        bpm = Math.floor(170 + p * 18);
+        health = 42;
+        stageName.innerText = "ZONE 3: VOLCANIC CALDERA CORE";
+        stageDesc.innerText = "Boiling magma lake! Tube submerged in geothermal fire cavity!";
+        warningBanner.style.display = 'block';
+        warningBanner.innerText = "🔥 CRITICAL HEAT: DO NOT JUMP!";
+        if (Math.random() < 0.03) playTone(900, 0.1, 'square', 0.08);
+      }
+
+      hudSpeed.innerText = `${mph} MPH`;
+      hudAlt.innerText = `${altFt.toLocaleString()} FT`;
+      hudBpm.innerText = `${bpm} BPM`;
+      hudHealth.innerText = `${health}%`;
+
+      if (windGain && audioCtx && !isMuted) {
+        windGain.gain.value = Math.min(0.28, 0.05 + (mph / 1400) * 0.22);
+      }
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      if (isRunning) {
+        progress += speed * speedMultiplier;
+        if (progress > 1) {
+          progress = 0;
+          playTone(520, 0.8, 'sine', 0.25);
+        }
+      }
+
+      const pos = slideCurve.getPointAt(progress);
+      const tangent = slideCurve.getTangentAt(progress).normalize();
+
+      if (camMode === 0) {
+        camera.position.copy(pos).add(new THREE.Vector3(0, 2.2, 0));
+        const lookTarget = pos.clone().add(tangent.clone().multiplyScalar(40));
+        camera.lookAt(lookTarget);
+        riderCockpit.style.display = 'flex';
+        const roll = Math.sin(progress * 35) * 14;
+        riderCockpit.style.transform = `translateX(-50%) rotate(${roll}deg)`;
+      } else if (camMode === 1) {
+        const behind = tangent.clone().multiplyScalar(-45);
+        camera.position.copy(pos).add(behind).add(new THREE.Vector3(0, 20, 0));
+        camera.lookAt(pos.clone().add(tangent.clone().multiplyScalar(25)));
+        riderCockpit.style.display = 'none';
+      } else {
+        camera.position.set(pos.x + 95, pos.y + 75, pos.z + 95);
+        camera.lookAt(pos);
+        riderCockpit.style.display = 'none';
+      }
+
+      riderHeadlight.position.copy(camera.position);
+      earthMesh.rotation.y += 0.0003;
+      atmoMesh.rotation.y += 0.0004;
+
+      const snowArr = snowParticles.geometry.attributes.position.array;
+      for (let i = 1; i < snowArr.length; i += 3) {
+        snowArr[i] -= 2.8;
+        if (snowArr[i] < -100) snowArr[i] = 480;
+      }
+      snowParticles.geometry.attributes.position.needsUpdate = true;
+
+      updateTelemetry(progress);
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // --- 9. EVENT LISTENERS ---
+    const btnToggle = document.getElementById('btn-toggle');
+    btnToggle.addEventListener('click', () => {
+      initAudio();
+      isRunning = !isRunning;
+      btnToggle.innerText = isRunning ? "⏸ PAUSE SLIDE" : "▶ LAUNCH SLIDE";
+      btnToggle.className = isRunning ? "btn btn-danger" : "btn btn-primary";
+    });
+
+    // Real-Life Terrain Drone Plate Toggle
+    let plateMode = 0;
+    const plateBg = document.getElementById('real-plate-bg');
+    const btnPlate = document.getElementById('btn-plate-toggle');
+    const plateImages = [
+      "",
+      "../assets/real_alps_avalanche_slide.jpg",
+      "../assets/real_volcano_slide.jpg"
+    ];
+    const plateLabels = [
+      "🏔️ REAL TERRAIN PLATES",
+      "🏔️ VIEW: REAL ALPS AVALANCHE",
+      "🔥 VIEW: REAL VOLCANO CALDERA"
+    ];
+
+    btnPlate.addEventListener('click', () => {
+      plateMode = (plateMode + 1) % 3;
+      btnPlate.innerText = plateLabels[plateMode];
+      if (plateMode === 0) {
+        plateBg.classList.remove('active');
+        renderer.domElement.style.opacity = '1';
+      } else {
+        plateBg.style.backgroundImage = `url("${plateImages[plateMode]}")`;
+        plateBg.classList.add('active');
+        renderer.domElement.style.opacity = '0.35';
+      }
+    });
+
+    const btnCam = document.getElementById('btn-cam');
+    const camLabels = ["CAM: POV RIDER", "CAM: 3RD PERSON", "CAM: FREE DRONE"];
+    btnCam.addEventListener('click', () => {
+      camMode = (camMode + 1) % 3;
+      btnCam.innerText = camLabels[camMode];
+    });
+
+    const btnAudio = document.getElementById('btn-audio');
+    btnAudio.addEventListener('click', () => {
+      initAudio();
+      isMuted = !isMuted;
+      btnAudio.innerText = isMuted ? "🔇 SOUND: OFF" : "🔊 SOUND: ON";
+      if (windGain) windGain.gain.value = isMuted ? 0 : 0.08;
+    });
+
+    const btnCapture = document.getElementById('btn-capture');
+    btnCapture.addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.download = `scary_waterslide_frame_${Math.floor(Date.now()/1000)}.png`;
+      link.href = renderer.domElement.toDataURL('image/png');
+      link.click();
+      playTone(1200, 0.15, 'sine', 0.25);
+    });
+
+    const btnStudio = document.getElementById('btn-studio');
+    const studioSidebar = document.getElementById('studio-sidebar');
+    const studioClose = document.getElementById('studio-close');
+    btnStudio.addEventListener('click', () => {
+      studioSidebar.classList.toggle('open');
+    });
+    studioClose.addEventListener('click', () => {
+      studioSidebar.classList.remove('open');
+    });
+  </script>
+</body>
+</html>

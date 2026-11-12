@@ -1,0 +1,371 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Architecture Blueprints & Diagrams</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'neutral',
+      securityLevel: 'loose',
+      fontFamily: 'ui-sans-serif, system-ui, sans-serif'
+    });
+  </script>
+  <style>
+    .tab-btn.active {
+      background-color: #0284c7;
+      color: #ffffff;
+      border-color: #0284c7;
+    }
+  </style>
+  <link rel="stylesheet" href="high-gloss-lacquer.css">
+  <script src="high-gloss-lacquer.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <script src="cosmic-background.js"></script>
+  <script src="mcp-baseline.js"></script>
+
+  <!-- Antigravity Baseline Integration -->
+  <link rel="stylesheet" href="aws-enterprise-baseline.css">
+  <script src="aws-enterprise-baseline.js"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans antialiased min-h-screen flex flex-col">
+  <!-- Top Navigation Bar -->
+  <header class="bg-slate-950/80 backdrop-blur border-b border-slate-800 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-sky-500/20 border border-sky-400/30 flex items-center justify-center font-bold text-sky-400">
+          AR
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-tight text-white">System Architecture Hub</h1>
+          <p class="text-xs text-slate-400">Interactive Visual Architecture Diagrams & Blueprints</p>
+        </div>
+      </div>
+      
+      <!-- Tab Controls -->
+      <nav class="flex items-center bg-slate-900 border border-slate-800 p-1 rounded-xl">
+        <button id="tab-projects-btn" onclick="showTab('projects')" class="tab-btn active px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150">
+          All Projects Ecosystem
+        </button>
+        <button id="tab-aws-btn" onclick="showTab('aws')" class="tab-btn text-slate-300 hover:text-white px-4 py-2 text-sm font-medium rounded-lg transition-all duration-150">
+          Amazon (AWS) Reference
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
+    
+    <!-- ==================== TAB 1: ALL PROJECTS ==================== -->
+    <div id="tab-projects" class="space-y-10">
+      <div class="bg-gradient-to-r from-sky-950/40 via-slate-900 to-indigo-950/30 border border-sky-500/20 rounded-2xl p-6">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-xs uppercase font-semibold text-sky-400 tracking-wider">Antigravity Workspace Directory</span>
+        </div>
+        <h2 class="text-2xl font-bold text-white">40+ Projects Functional Architecture</h2>
+        <p class="text-slate-400 text-sm mt-1 max-w-3xl">
+          Visualized topology mapping presentation portals, deployment pipelines, AI intelligence engines, cybersecurity scanners, and creative game/XR studios into a unified ecosystem.
+        </p>
+      </div>
+
+      <!-- Diagram 1: Global Ecosystem Topology -->
+      <section class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden shadow-2xl">
+        <div class="p-5 border-b border-slate-800 bg-slate-900/50 flex items-center justify-between">
+          <div>
+            <h3 class="font-bold text-lg text-white">1. Global Ecosystem Functional Architecture</h3>
+            <p class="text-xs text-slate-400">Inter-system relationships across the 7 primary functional tiers.</p>
+          </div>
+          <span class="text-xs bg-sky-950 text-sky-300 border border-sky-800 px-3 py-1 rounded-full font-mono">Mermaid Flowchart</span>
+        </div>
+        <div class="p-6 overflow-x-auto bg-slate-950 flex justify-center">
+          <pre class="mermaid">
+flowchart TD
+    subgraph Presentation_Portals["1. Presentation & Hub Portals"]
+        Portfolio["portfolio<br/>(Master Showcase & Resume)"]
+        OneStop["onestop<br/>(Unified App Launcher Portal)"]
+        Choogle["Choogle<br/>(Local Search & IT Toolbox)"]
+        Synergize["synergize and pay<br/>(Monetization & Manifest)"]
+        ArchitectApp["architect<br/>(Architecture Blueprints & Diagrams)"]
+    end
+
+    subgraph Control_Plane["2. DevOps & Control Plane"]
+        Deploy["deploy<br/>• Deploy-Manager.ps1<br/>• PROJECT_CATALOG.json<br/>• pipeline_records.db"]
+        AutomateDay["automate my day<br/>• Daily Briefing Engine<br/>• Sentinel Background Daemon"]
+        ScheduledTask["scheduled task<br/>(Cron & Windows Triggers)"]
+        Sandbox["sandbox<br/>(Test Harness & Experiments)"]
+        ProjectRefine["project refinement<br/>(Action Matrix & Tech Frontiers)"]
+    end
+
+    subgraph AI_Core["3. AI & Agentic Intelligence Core"]
+        TrainAI["How to train your AI<br/>(Ollama / Modelfiles / AST Extractor)"]
+        PersonalAssistant["personal assistant<br/>(Faster-Whisper STT / Kokoro TTS)"]
+        AgentsProfit["using ai agents for profit<br/>(LangGraph Cyclic Reconciliation)"]
+        IsThisAI["is this AI<br/>(FFT Spectrum & AI Watermark Detection)"]
+    end
+
+    subgraph Security_Cloud["4. Cybersecurity & Infrastructure Backbone"]
+        VulnMgmt["vulnerability management<br/>(C# / .NET 10 VulnGuard API / Cisco PSIRT)"]
+        MySecurity["MY Security<br/>(Sentinel PC Guard / Zero-Trust Posture)"]
+        WinEventViewer["windows event viewer<br/>(Sysmon ID Analysis / McAfee Scanners)"]
+        BotFinder["bot finder<br/>(Python/UV Rate-Limit & Bot Signatures)"]
+        AWS_Study["aws<br/>(Cloud Architecture & IaC Blueprints)"]
+        RHCSA["RHCSA Exam200<br/>(RHEL 9 / Podman Quadlets / Lab Engine)"]
+    end
+
+    subgraph Automation_SysAdmin["5. Workspace Automation & SysAdmin"]
+        GDriveOrg["google drive organizer<br/>(PowerShell Triage / Deduplication)"]
+        EmailOrg["email organizer<br/>(Python/UV Gmail API Triage)"]
+        ScreenReader["screen reader<br/>(Surya OCR / Piper TTS Engine)"]
+        InspectPC["inspect my pc for improvements<br/>(DPC Latency / Disk Audit)"]
+        GamingPC["improve gaming pc performance<br/>(GPU Latency & Timer Tweaks)"]
+        NoteTaker["note taker<br/>(Security+ Flashcards & Notes)"]
+        ZFold6["zfold6 features<br/>(Mobile Termux / Tasker Automations)"]
+    end
+
+    subgraph Gaming_XR_Media["6. Gaming, XR & Media Studio"]
+        VRApps["VR creation apps<br/>(WebXR / Quest 3 / Three.js)"]
+        GameStudio["game studio<br/>(C++ MSVC / Python ROM Tools)"]
+        GameMods["game mods<br/>(Asset Injector & Mod Tools)"]
+        Monopoly["monopoly<br/>(HTML5 / Canvas AI Engine)"]
+        Chess["chess<br/>(Stockfish WebAssembly / Chess UI)"]
+        Screensaver["desktopscreensaver<br/>(Cosmic Canvas Particles)"]
+        Images3D["3d images & backgrounds<br/>(Stereoscopic Shaders & WebGL)"]
+        YTShorts["youtube shorts edit for gaming<br/>(Whisper Auto-Subs / NVENC 9:16)"]
+        Anime["anime<br/>(Episode Scraper & Metadata Tagger)"]
+    end
+
+    subgraph Education_Health["7. Education & Personal Growth"]
+        CompTIA["comptia exam simulator<br/>(SY0-701 PBQ & Mock Exams)"]
+        Grade1["1st grade learning<br/>(Gamified Phonics & Typing Engine)"]
+        PersonalTraining["personal training<br/>(Progressive Overload Analytics)"]
+    end
+
+    Deploy ==>|"Catalog & Health Audits"| Presentation_Portals
+    Deploy ==>|"Automated Testing & Builds"| Security_Cloud
+    Deploy ==>|"Health Checks"| AI_Core
+    Deploy ==>|"Service Runner"| Automation_SysAdmin
+
+    AutomateDay -->|"Daily Briefing Synthesis"| PersonalAssistant
+    AutomateDay -->|"Telemetry Ingestion"| InspectPC
+    AutomateDay -->|"Morning Task Kickoff"| GDriveOrg
+    AutomateDay -->|"Email Scan"| EmailOrg
+
+    PersonalAssistant <-->|"Voice Command & Audio"| ScreenReader
+    TrainAI -->|"Export Model Weights"| PersonalAssistant
+    TrainAI -->|"Graph Agents"| AgentsProfit
+
+    GDriveOrg <-->|"Attachment Ingest & Dedup"| EmailOrg
+    VulnMgmt <-->|"Cross-feed Security Scores"| MySecurity
+    WinEventViewer -->|"Sysmon Feeds"| MySecurity
+
+    OneStop -->|"Launchpad"| Portfolio
+    OneStop -->|"Launchpad"| Choogle
+    OneStop -->|"Launchpad"| Monopoly
+    OneStop -->|"Launchpad"| Chess
+    OneStop -->|"Launchpad"| VRApps
+          </pre>
+        </div>
+      </section>
+
+      <!-- Diagram 2: Control Plane Sequence Flow -->
+      <section class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden shadow-2xl">
+        <div class="p-5 border-b border-slate-800 bg-slate-900/50">
+          <h3 class="font-bold text-lg text-white">2. Orchestration & Control Plane Sequence</h3>
+          <p class="text-xs text-slate-400">Step-by-step automated workflow between daily daemons, deploy manager, security scanners, and voice assistant.</p>
+        </div>
+        <div class="p-6 overflow-x-auto bg-slate-950 flex justify-center">
+          <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    actor User as User / Voice Command
+    participant Assistant as personal assistant (Whisper / Kokoro)
+    participant Automate as automate my day (Daily Daemon)
+    participant Deploy as deploy (Deploy-Manager / SQLite)
+    participant Cloud as Google APIs (Drive / Gmail)
+    participant Security as Security Stack (VulnGuard / My Security)
+    participant Portals as onestop / portfolio
+
+    Note over Automate: 06:00 AM / Scheduled Trigger
+    Automate->>Deploy: Invoke routine_scan.ps1
+    Deploy->>Security: Run build verification & tests
+    Security-->>Deploy: Posture & Vulnerability Status
+    Deploy->>Cloud: Run GDrive & Gmail triage scripts
+    Cloud-->>Deploy: Storage & inbox telemetry
+    Deploy->>Deploy: Record run in pipeline_records.db & update PROJECT_CATALOG.json
+    Deploy-->>Automate: Consolidated Daily Status
+
+    Automate->>Automate: Synthesize daily_briefing.md
+    Automate->>Assistant: Send brief to speech queue
+
+    User->>Assistant: "Start my day and show system status"
+    Assistant->>User: Play Kokoro audio briefing
+    Assistant->>Portals: Launch onestop dashboard
+    Portals-->>User: Display interactive health & project launchpad
+          </pre>
+        </div>
+      </section>
+    </div>
+
+    <!-- ==================== TAB 2: AWS / AMAZON REFERENCE ==================== -->
+    <div id="tab-aws" class="hidden space-y-10">
+      <div class="bg-gradient-to-r from-amber-950/40 via-slate-900 to-amber-900/20 border border-amber-500/20 rounded-2xl p-6">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+          <span class="text-xs uppercase font-semibold text-amber-400 tracking-wider">Industry Reference Blueprints</span>
+        </div>
+        <h2 class="text-2xl font-bold text-white">Amazon (AWS) Reference Architecture Patterns</h2>
+        <p class="text-slate-400 text-sm mt-1 max-w-3xl">
+          Multi-AZ fault tolerance, Amazon.com e-commerce event-driven microservices, serverless pipelines, and S3 lakehouses.
+        </p>
+      </div>
+
+      <!-- AWS Diagram 1 -->
+      <section class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden shadow-2xl">
+        <div class="p-5 border-b border-slate-800 bg-slate-900/50">
+          <h3 class="font-bold text-lg text-white">1. High-Availability 3-Tier Web Architecture</h3>
+          <p class="text-xs text-slate-400">Multi-AZ Route 53, CloudFront, ALB, Auto-scaling EC2/ECS, Aurora, and ElastiCache.</p>
+        </div>
+        <div class="p-6 overflow-x-auto bg-slate-950 flex justify-center">
+          <pre class="mermaid">
+flowchart TD
+    User["End Users / Mobile & Web"] --> DNS["Route 53 (DNS)"]
+    DNS --> CDN["CloudFront (CDN / Edge Caching)"]
+    CDN --> WAF["AWS WAF (Web Application Firewall)"]
+    WAF --> ALB["Application Load Balancer (ALB)"]
+
+    subgraph AWS_VPC["AWS VPC (10.0.0.0/16)"]
+        subgraph Public_Subnets["Public Subnets"]
+            ALB
+            IGW["Internet Gateway"]
+            NAT1["NAT Gateway (AZ 1)"]
+            NAT2["NAT Gateway (AZ 2)"]
+        end
+
+        subgraph App_Tier["Application Tier (Private Subnets)"]
+            subgraph ASG["Auto Scaling Group"]
+                EC2_1["EC2 / ECS App Server (AZ 1)"]
+                EC2_2["EC2 / ECS App Server (AZ 2)"]
+            end
+        end
+
+        subgraph Data_Tier["Data Tier (Isolated Subnets)"]
+            Cache["ElastiCache (Redis Cluster)"]
+            DB_Primary[("Amazon Aurora Primary (Read/Write)")]
+            DB_Replica[("Amazon Aurora Replica (Read)")]
+        end
+    end
+
+    ALB --> EC2_1
+    ALB --> EC2_2
+
+    EC2_1 --> Cache
+    EC2_2 --> Cache
+
+    EC2_1 --> DB_Primary
+    EC2_2 --> DB_Primary
+    EC2_1 -.-> DB_Replica
+    EC2_2 -.-> DB_Replica
+    DB_Primary === DB_Replica
+
+    CDN -.-> S3_Static["Amazon S3 (Static Web Assets)"]
+    EC2_1 -.-> S3_Media["Amazon S3 (User Media / Storage)"]
+    EC2_2 -.-> S3_Media
+          </pre>
+        </div>
+      </section>
+
+      <!-- AWS Diagram 2 -->
+      <section class="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden shadow-2xl">
+        <div class="p-5 border-b border-slate-800 bg-slate-900/50">
+          <h3 class="font-bold text-lg text-white">2. Amazon E-Commerce Event-Driven Microservices</h3>
+          <p class="text-xs text-slate-400">Decoupled services, DynamoDB, OpenSearch, EventBridge, SQS and SNS.</p>
+        </div>
+        <div class="p-6 overflow-x-auto bg-slate-950 flex justify-center">
+          <pre class="mermaid">
+flowchart LR
+    Client["Clients (Web / iOS / Android)"] --> APIGW["Amazon API Gateway / CloudFront"]
+
+    subgraph Edge["API Gateway & Auth"]
+        APIGW --> Cognito["Cognito / IAM Auth"]
+    end
+
+    subgraph Microservices["Microservices Domain"]
+        APIGW --> OrderSvc["Order Service (ECS / Fargate)"]
+        APIGW --> CatalogSvc["Product Catalog Service (Lambda)"]
+        APIGW --> UserSvc["Customer Profile Service (ECS)"]
+    end
+
+    subgraph Event_Bus["Event-Driven Messaging Backbone"]
+        EventBridge["Amazon EventBridge (Event Bus)"]
+        SQS_Fulfillment["SQS Queue (Fulfillment)"]
+        SQS_Billing["SQS Queue (Billing)"]
+        SNS_Notify["SNS Topic (Customer Notifications)"]
+    end
+
+    subgraph Async_Processors["Asynchronous Worker Services"]
+        Worker_Fulfill["Fulfillment Worker (Lambda)"]
+        Worker_Billing["Payment / Billing Worker (Lambda)"]
+        Worker_Email["SES / Push Notification Service"]
+    end
+
+    subgraph Datastores["Specialized Polyglot Persistence"]
+        DB_Orders[("Amazon DynamoDB (Orders)")]
+        DB_Catalog[("OpenSearch / DynamoDB (Catalog & Search)")]
+        DB_Users[("Aurora Serverless (Users)")]
+    end
+
+    OrderSvc --> DB_Orders
+    CatalogSvc --> DB_Catalog
+    UserSvc --> DB_Users
+
+    OrderSvc -->|"OrderPlaced Event"| EventBridge
+    EventBridge --> SQS_Fulfillment
+    EventBridge --> SQS_Billing
+    EventBridge --> SNS_Notify
+
+    SQS_Fulfillment --> Worker_Fulfill
+    SQS_Billing --> Worker_Billing
+    SNS_Notify --> Worker_Email
+          </pre>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+    Architecture Blueprint Hub &bull; Generated for Antigravity Projects &bull; Stored in <code class="text-slate-400">g:\My Drive\Antigravity\Projects\architect</code>
+  </footer>
+
+  <script>
+    function showTab(tab) {
+      const projectsTab = document.getElementById('tab-projects');
+      const awsTab = document.getElementById('tab-aws');
+      const projectsBtn = document.getElementById('tab-projects-btn');
+      const awsBtn = document.getElementById('tab-aws-btn');
+
+      if (tab === 'projects') {
+        projectsTab.classList.remove('hidden');
+        awsTab.classList.add('hidden');
+        projectsBtn.classList.add('active', 'bg-sky-600', 'text-white');
+        projectsBtn.classList.remove('text-slate-300');
+        awsBtn.classList.remove('active', 'bg-sky-600', 'text-white');
+        awsBtn.classList.add('text-slate-300');
+      } else {
+        awsTab.classList.remove('hidden');
+        projectsTab.classList.add('hidden');
+        awsBtn.classList.add('active', 'bg-sky-600', 'text-white');
+        awsBtn.classList.remove('text-slate-300');
+        projectsBtn.classList.remove('active', 'bg-sky-600', 'text-white');
+        projectsBtn.classList.add('text-slate-300');
+      }
+    }
+  </script>
+</body>
+</html>
+
