@@ -6,9 +6,24 @@
  * - Clean 1px matte borders (#30363d) and deep canvas (#090d16 / #0d1117 / #161b22)
  * - WCAG AAA High-Detectability text (#FFFFFF / #E2E8F0 / #8B949E)
  * - Motionless 4K Still Cosmic Canvas enforcement
+ * - Fontshare.com Commercial-Free ITF Typography (Clash Display, Satoshi, Cabinet Grotesk, General Sans)
+ * - fffuel.co Tactile SVG Fractal Film Grain (nnnoise) & Isometric Micro-Patterns
+ * - jiro.build Asymmetric Bento Grid & Split-Hero Layout Tokens
  */
 
+@import url('https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=satoshi@400,500,700&f[]=cabinet-grotesk@700,800&f[]=general-sans@400,500,600&f[]=zodiak@400,700&display=swap');
+
 :root {
+  /* Fontshare.com ITF Typography Tokens */
+  --font-display: 'Clash Display', 'Cabinet Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-sans: 'Satoshi', 'General Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-editorial: 'Zodiak', Georgia, serif;
+
+  /* fffuel.co SVG Fractal Noise & Micro-Pattern Data URIs */
+  --fffuel-nnnoise-svg: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='nnnoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23nnnoise)' opacity='0.035'/%3E%3C/svg%3E");
+  --fffuel-iso-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill='none' stroke='rgba(212,175,55,0.065)' stroke-width='1'%3E%3Cpath d='M0 20L20 0L40 20L20 40Z'/%3E%3C/g%3E%3C/svg%3E");
+  --fffuel-topo-pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath d='M0 40 Q 20 20, 40 40 T 80 40' fill='none' stroke='rgba(88,166,255,0.06)' stroke-width='1'/%3E%3C/svg%3E");
+
   /* Clean Dark Console Optical Tokens */
   --gh-canvas-default: #090d16;
   --gh-canvas-subtle: #0d1117;
@@ -124,4 +139,43 @@ button.primary, .btn-primary, .action-btn-primary {
 button.primary:hover, .btn-primary:hover, .action-btn-primary:hover {
   background: #2ea043 !important;
   border-color: rgba(240, 246, 252, 0.2) !important;
+}
+
+/* ==========================================================================
+   FONTSHARE.COM ITF TYPOGRAPHY & FFFUEL.CO SVG GRAIN / JIRO.BUILD LAYOUTS
+   ========================================================================== */
+h1, h2, .display-heading, .hero-title, #inspector-title {
+  font-family: var(--font-display) !important;
+  letter-spacing: -0.022em;
+}
+
+.fffuel-grain-surface {
+  background-image: var(--fffuel-nnnoise-svg);
+}
+
+.fffuel-iso-grid {
+  background-image: var(--fffuel-iso-pattern);
+}
+
+.fffuel-topo-surface {
+  background-image: var(--fffuel-topo-pattern);
+}
+
+/* jiro.build Asymmetric 12-Column Bento Telemetry Grid */
+.jiro-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 16px;
+  grid-auto-rows: minmax(140px, auto);
+}
+
+.jiro-bento-span-7 { grid-column: span 7 / span 7; }
+.jiro-bento-span-5 { grid-column: span 5 / span 5; }
+.jiro-bento-span-4 { grid-column: span 4 / span 4; }
+.jiro-bento-span-8 { grid-column: span 8 / span 8; }
+
+@media (max-width: 1024px) {
+  .jiro-bento-span-7, .jiro-bento-span-5, .jiro-bento-span-4, .jiro-bento-span-8 {
+    grid-column: span 12 / span 12;
+  }
 }
