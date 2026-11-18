@@ -10,6 +10,7 @@
   <!-- Baseline High-Gloss Lacquer System & Custom Theme -->
   <link rel="stylesheet" href="static/css/high-gloss-lacquer.css">
   <link rel="stylesheet" href="static/css/style.css">
+<style>:where(button[data-btn-reset]){font:inherit;color:inherit;background:transparent;border:none;padding:0;margin:0;text-align:inherit;}</style>
 </head>
 <body class="m365-app-root">
 
@@ -33,7 +34,7 @@
       </button>
 
       <!-- Microsoft 365 Quad Logo & Title -->
-      <div class="m365-brand d-flex align-items-center gap-2 cursor-pointer" onclick="switchApp('hub')">
+      <button type="button" class="m365-brand d-flex align-items-center gap-2 cursor-pointer" onclick="switchApp('hub')" data-btn-reset>
         <svg class="m365-quad-logo" width="20" height="20" viewBox="0 0 21 21">
           <rect x="1" y="1" width="9" height="9" fill="#f25022"/>
           <rect x="11" y="1" width="9" height="9" fill="#7fba00"/>
@@ -42,7 +43,7 @@
         </svg>
         <span class="m365-title fw-semibold text-light">Microsoft 365</span>
         <span class="badge m365-env-badge ms-1" id="activeAppBadge">Home</span>
-      </div>
+      </button>
 
       <!-- Windows 11 AutoSave Pill -->
       <div class="m365-autosave-pill ms-3 d-none d-lg-flex" title="AutoSave is turned on for cloud documents">
@@ -98,58 +99,58 @@
     </div>
     <div class="p-3 row g-2">
       <div class="col-4 text-center">
-        <div class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('word')">
+        <button type="button" class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('word')" data-btn-reset>
           <div class="app-icon-box bg-word mx-auto mb-1"><i class="bi bi-file-earmark-word text-white fs-5"></i></div>
           <span class="small text-light d-block">Word</span>
-        </div>
+        </button>
       </div>
       <div class="col-4 text-center">
-        <div class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('excel')">
+        <button type="button" class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('excel')" data-btn-reset>
           <div class="app-icon-box bg-excel mx-auto mb-1"><i class="bi bi-file-earmark-spreadsheet text-white fs-5"></i></div>
           <span class="small text-light d-block">Excel</span>
-        </div>
+        </button>
       </div>
       <div class="col-4 text-center">
-        <div class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('powerpoint')">
+        <button type="button" class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('powerpoint')" data-btn-reset>
           <div class="app-icon-box bg-powerpoint mx-auto mb-1"><i class="bi bi-file-earmark-slides text-white fs-5"></i></div>
           <span class="small text-light d-block">PowerPoint</span>
-        </div>
+        </button>
       </div>
       <div class="col-4 text-center">
-        <div class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('outlook')">
+        <button type="button" class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('outlook')" data-btn-reset>
           <div class="app-icon-box bg-outlook mx-auto mb-1"><i class="bi bi-envelope text-white fs-5"></i></div>
           <span class="small text-light d-block">Outlook</span>
-        </div>
+        </button>
       </div>
       <div class="col-4 text-center">
-        <div class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('teams')">
+        <button type="button" class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('teams')" data-btn-reset>
           <div class="app-icon-box bg-teams mx-auto mb-1"><i class="bi bi-chat-dots text-white fs-5"></i></div>
           <span class="small text-light d-block">Teams</span>
-        </div>
+        </button>
       </div>
       <div class="col-4 text-center">
-        <div class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('onedrive')">
+        <button type="button" class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('onedrive')" data-btn-reset>
           <div class="app-icon-box bg-onedrive mx-auto mb-1"><i class="bi bi-cloud text-white fs-5"></i></div>
           <span class="small text-light d-block">OneDrive</span>
-        </div>
+        </button>
       </div>
       <div class="col-4 text-center">
-        <div class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('onenote')">
+        <button type="button" class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('onenote')" data-btn-reset>
           <div class="app-icon-box bg-onenote mx-auto mb-1"><i class="bi bi-journal-text text-white fs-5"></i></div>
           <span class="small text-light d-block">OneNote</span>
-        </div>
+        </button>
       </div>
       <div class="col-4 text-center">
-        <div class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('copilot')">
+        <button type="button" class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('copilot')" data-btn-reset>
           <div class="app-icon-box bg-copilot mx-auto mb-1"><i class="bi bi-robot text-white fs-5"></i></div>
           <span class="small text-light d-block">Copilot</span>
-        </div>
+        </button>
       </div>
       <div class="col-4 text-center">
-        <div class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('registry')">
+        <button type="button" class="waffle-app-item p-2 rounded cursor-pointer" onclick="switchApp('registry')" data-btn-reset>
           <div class="app-icon-box bg-secondary mx-auto mb-1"><i class="bi bi-diagram-3 text-white fs-5"></i></div>
           <span class="small text-light d-block">Registry</span>
-        </div>
+        </button>
       </div>
     </div>
   </div>
@@ -264,7 +265,7 @@
         <!-- Quick Create Ribbon Cards -->
         <div class="row g-3 mb-4">
           <div class="col-sm-6 col-lg-3">
-            <div class="card glass-card p-3 h-100 cursor-pointer" onclick="switchApp('word'); createNewWordDocument();">
+            <button type="button" class="card glass-card p-3 h-100 cursor-pointer" onclick="switchApp('word'); createNewWordDocument();" data-btn-reset>
               <div class="d-flex align-items-center gap-3">
                 <div class="app-icon-box bg-word"><i class="bi bi-file-earmark-word text-white fs-4"></i></div>
                 <div>
@@ -272,10 +273,10 @@
                   <small class="text-muted">Word for Web</small>
                 </div>
               </div>
-            </div>
+            </button>
           </div>
           <div class="col-sm-6 col-lg-3">
-            <div class="card glass-card p-3 h-100 cursor-pointer" onclick="switchApp('excel'); createNewExcelWorkbook();">
+            <button type="button" class="card glass-card p-3 h-100 cursor-pointer" onclick="switchApp('excel'); createNewExcelWorkbook();" data-btn-reset>
               <div class="d-flex align-items-center gap-3">
                 <div class="app-icon-box bg-excel"><i class="bi bi-file-earmark-spreadsheet text-white fs-4"></i></div>
                 <div>
@@ -283,10 +284,10 @@
                   <small class="text-muted">Excel for Web</small>
                 </div>
               </div>
-            </div>
+            </button>
           </div>
           <div class="col-sm-6 col-lg-3">
-            <div class="card glass-card p-3 h-100 cursor-pointer" onclick="switchApp('powerpoint'); addSlide();">
+            <button type="button" class="card glass-card p-3 h-100 cursor-pointer" onclick="switchApp('powerpoint'); addSlide();" data-btn-reset>
               <div class="d-flex align-items-center gap-3">
                 <div class="app-icon-box bg-powerpoint"><i class="bi bi-file-earmark-slides text-white fs-4"></i></div>
                 <div>
@@ -294,16 +295,16 @@
                   <small class="text-muted">PowerPoint for Web</small>
                 </div>
               </div>
-            </div>
+            </button>
           </div>
           <div class="col-sm-6 col-lg-3">
-            <div class="card glass-card p-3 h-100 cursor-pointer" onclick="switchApp('onenote'); createNewOneNotePagePrompt();">
+            <button type="button" class="card glass-card p-3 h-100 cursor-pointer" onclick="switchApp('onenote'); createNewOneNotePagePrompt();" data-btn-reset>
               <div class="app-icon-box bg-onenote"><i class="bi bi-journal-text text-white fs-4"></i></div>
               <div>
                 <h6 class="mb-0 fw-bold text-light">Blank notebook</h6>
                 <small class="text-muted">OneNote for Web</small>
               </div>
-            </div>
+            </button>
           </div>
         </div>
 
@@ -710,22 +711,22 @@
           <!-- Pane 1: Folders -->
           <div class="outlook-folder-pane border-end p-2" style="width: 200px; min-width: 200px;">
             <div class="small fw-bold text-uppercase text-muted px-2 py-1">Favorites</div>
-            <div class="outlook-folder-item active" onclick="filterMailFolder('inbox', this)">
+            <button type="button" class="outlook-folder-item active" onclick="filterMailFolder('inbox', this)" data-btn-reset>
               <i class="bi bi-inbox me-2"></i> Inbox <span class="badge bg-primary float-end d-none" id="outlookUnreadBadge">0</span>
-            </div>
-            <div class="outlook-folder-item" onclick="filterMailFolder('sent', this)">
+            </button>
+            <button type="button" class="outlook-folder-item" onclick="filterMailFolder('sent', this)" data-btn-reset>
               <i class="bi bi-send me-2"></i> Sent Items
-            </div>
-            <div class="outlook-folder-item" onclick="filterMailFolder('drafts', this)">
+            </button>
+            <button type="button" class="outlook-folder-item" onclick="filterMailFolder('drafts', this)" data-btn-reset>
               <i class="bi bi-file-earmark me-2"></i> Drafts
-            </div>
+            </button>
             <div class="small fw-bold text-uppercase text-muted px-2 py-1 mt-3">Folders</div>
-            <div class="outlook-folder-item" onclick="filterMailFolder('archive', this)">
+            <button type="button" class="outlook-folder-item" onclick="filterMailFolder('archive', this)" data-btn-reset>
               <i class="bi bi-archive me-2"></i> Archive
-            </div>
-            <div class="outlook-folder-item" onclick="filterMailFolder('deleted', this)">
+            </button>
+            <button type="button" class="outlook-folder-item" onclick="filterMailFolder('deleted', this)" data-btn-reset>
               <i class="bi bi-trash3 me-2"></i> Deleted Items
-            </div>
+            </button>
           </div>
 
           <!-- Pane 2: Message List -->

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TEKKEN: IRON SHADOW - 3D Arena Battle</title>
   <style>
     * {
@@ -431,7 +431,7 @@
       border-radius: 3px;
       cursor: pointer;
       font-family: 'Segoe UI', sans-serif;
-      transition: all 0.2s;
+      transition: transform 0.2s, opacity 0.2s, background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
     }
     .tool-btn:hover, .tool-btn.active {
       border-color: #ffd32a;
@@ -508,7 +508,7 @@
       padding: 4px 6px;
       border-radius: 3px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: transform 0.2s, opacity 0.2s, background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
     }
     .bf-area-item:hover {
       background: rgba(255, 255, 255, 0.06);
@@ -547,6 +547,7 @@
   </style>
   <link rel="stylesheet" href="high-gloss-lacquer.css">
   <script src="high-gloss-lacquer.js"></script>
+<style>:where(button[data-btn-reset]){font:inherit;color:inherit;background:transparent;border:none;padding:0;margin:0;text-align:inherit;}</style>
 </head>
 <body>
   <div id="canvas-container"></div>
@@ -610,35 +611,35 @@
         <div class="bf-title">🗺️ BATTLEFIELD SECTORS</div>
         <div class="bf-active-badge">AREA 1 IMPORTED</div>
       </div>
-      <div class="bf-area-item active" id="bf-area-1" onclick="selectBattlefieldSector(1)">
+      <button type="button" class="bf-area-item active" id="bf-area-1" onclick="selectBattlefieldSector(1)" data-btn-reset>
         <span class="bf-num">1</span>
         <span>Dragon Castle & Pagoda</span>
         <span class="bf-imported-tag">ACTIVE</span>
-      </div>
-      <div class="bf-area-item" id="bf-area-2" onclick="selectBattlefieldSector(2)">
+      </button>
+      <button type="button" class="bf-area-item" id="bf-area-2" onclick="selectBattlefieldSector(2)" data-btn-reset>
         <span class="bf-num">2</span>
         <span>Dragon Chasm Gorge</span>
-      </div>
-      <div class="bf-area-item" id="bf-area-3" onclick="selectBattlefieldSector(3)">
+      </button>
+      <button type="button" class="bf-area-item" id="bf-area-3" onclick="selectBattlefieldSector(3)" data-btn-reset>
         <span class="bf-num">3</span>
         <span>Whispering Bamboo Grove</span>
-      </div>
-      <div class="bf-area-item" id="bf-area-4" onclick="selectBattlefieldSector(4)">
+      </button>
+      <button type="button" class="bf-area-item" id="bf-area-4" onclick="selectBattlefieldSector(4)" data-btn-reset>
         <span class="bf-num">4</span>
         <span>Crimson Maple Shrine</span>
-      </div>
-      <div class="bf-area-item" id="bf-area-5" onclick="selectBattlefieldSector(5)">
+      </button>
+      <button type="button" class="bf-area-item" id="bf-area-5" onclick="selectBattlefieldSector(5)" data-btn-reset>
         <span class="bf-num">5</span>
         <span>Iron Forges of Muramasa</span>
-      </div>
-      <div class="bf-area-item" id="bf-area-6" onclick="selectBattlefieldSector(6)">
+      </button>
+      <button type="button" class="bf-area-item" id="bf-area-6" onclick="selectBattlefieldSector(6)" data-btn-reset>
         <span class="bf-num">6</span>
         <span>Sunken Morus Altar</span>
-      </div>
-      <div class="bf-area-item" id="bf-area-7" onclick="selectBattlefieldSector(7)">
+      </button>
+      <button type="button" class="bf-area-item" id="bf-area-7" onclick="selectBattlefieldSector(7)" data-btn-reset>
         <span class="bf-num">7</span>
         <span>Mountain Ridge Crags</span>
-      </div>
+      </button>
     </div>
 
     <!-- Combo & Juggle Damage Feed -->

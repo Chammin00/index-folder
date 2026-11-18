@@ -2,7 +2,7 @@
 <html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DriveFlow | Cloud & PC AutoOrganizer</title>
   <!-- Tailwind CSS via CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -178,8 +178,8 @@
           <div class="mt-4">
             <label class="text-xs font-semibold text-slate-300 block mb-1">Cron Expression</label>
             <div class="flex items-center space-x-2">
-              <input id="cronInput" type="text" value="0 9 * * *" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 mono focus:outline-none focus:border-indigo-500" placeholder="* * * * *">
-              <input id="timeInput" type="time" value="09:00" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 mono focus:outline-none focus:border-indigo-500">
+              <input id="cronInput" type="text" value="0 9 * * *" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 mono focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-indigo-500" placeholder="* * * * *">
+              <input id="timeInput" type="time" value="09:00" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 mono focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-indigo-500">
             </div>
             <p id="cronHelp" class="text-xs text-slate-500 mt-1">Fires every day at 09:00 AM.</p>
           </div>

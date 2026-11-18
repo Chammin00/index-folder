@@ -47,7 +47,7 @@
       width: 100%;
       border-radius: var(--radius-md);
       background: #000;
-      outline: none;
+      outline: 2px solid transparent; outline-offset: 2px;
     }
     .video-badge {
       display: inline-block;
@@ -103,16 +103,17 @@
       border-color: var(--accent-aws);
     }
   </style>
+<style>:where(button[data-btn-reset]){font:inherit;color:inherit;background:transparent;border:none;padding:0;margin:0;text-align:inherit;}</style>
 </head>
 <body>
 
   <!-- App Header -->
   <header class="app-header">
     <div class="header-container">
-      <div class="logo-group" onclick="window.switchView('dashboard')">
+      <button type="button" class="logo-group" onclick="window.switchView('dashboard')" data-btn-reset>
         <span class="aws-badge-pill">AWS</span>
         <span class="logo-text">Solutions Architect & Cloud <span class="logo-sub" id="header-cert-sub">SAA-C03 / CLF-C02</span></span>
-      </div>
+      </button>
 
       <nav class="nav-tabs">
         <button class="nav-btn active" data-view="dashboard">

@@ -133,7 +133,7 @@
           <!-- Symbol Search Box -->
           <form onsubmit="searchSymbol(event)" class="flex items-center space-x-2">
             <input type="text" id="custom-sym-input" placeholder="Enter symbol (e.g. NVDA, BTC)"
-              class="bg-[#131722] border border-tvBorder rounded px-2.5 py-1 text-xs text-white uppercase outline-none focus:border-[#2962ff]">
+              class="bg-[#131722] border border-tvBorder rounded px-2.5 py-1 text-xs text-white uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-[#2962ff]">
             <button type="submit" class="px-2.5 py-1 rounded bg-[#2a2e39] hover:bg-[#363a45] text-xs text-white">Load</button>
           </form>
         </div>
@@ -169,14 +169,14 @@
             <div>
               <label class="block text-[11px] font-mono text-tvTextMuted mb-1">ASSET SYMBOL</label>
               <input type="text" id="order-symbol" value="AAPL" required
-                class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs font-mono text-white uppercase outline-none focus:border-[#2962ff]">
+                class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs font-mono text-white uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-[#2962ff]">
             </div>
 
             <!-- Quantity Input -->
             <div>
               <label class="block text-[11px] font-mono text-tvTextMuted mb-1">QUANTITY (SHARES / COINS)</label>
               <input type="number" step="any" id="order-qty" placeholder="e.g. 5" required
-                class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs font-mono text-white outline-none focus:border-[#2962ff]">
+                class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs font-mono text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-[#2962ff]">
             </div>
 
             <!-- Quick Size Buttons -->
@@ -239,11 +239,11 @@
         <div>
           <label class="block text-xs font-mono text-tvTextMuted mb-1">ASSETS (COMMA-SEPARATED)</label>
           <input type="text" id="bt-symbols" value="AAPL,NVDA,BTC-USD" required
-            class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs font-mono text-white uppercase outline-none focus:border-[#2962ff]">
+            class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs font-mono text-white uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-[#2962ff]">
         </div>
         <div>
           <label class="block text-xs font-mono text-tvTextMuted mb-1">STRATEGY</label>
-          <select id="bt-strategy" class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs font-mono text-white outline-none focus:border-[#2962ff]">
+          <select id="bt-strategy" class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs font-mono text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-[#2962ff]">
             <option value="qlib_alpha" selected>Microsoft Qlib Alpha Factors</option>
             <option value="momentum">Momentum Crossover (MACD/EMA)</option>
             <option value="mean_reversion">Mean Reversion (RSI/Bollinger)</option>
@@ -252,7 +252,7 @@
         </div>
         <div>
           <label class="block text-xs font-mono text-tvTextMuted mb-1">HORIZON</label>
-          <select id="bt-period" class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs font-mono text-white outline-none focus:border-[#2962ff]">
+          <select id="bt-period" class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs font-mono text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-[#2962ff]">
             <option value="6mo">6 Months</option>
             <option value="1y" selected>1 Year</option>
             <option value="2y">2 Years</option>
@@ -341,18 +341,18 @@
         <div>
           <label class="block text-xs font-mono text-tvTextMuted mb-1">TOKEN SYMBOL</label>
           <input type="text" id="audit-symbol" value="BTC-USD" required
-            class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs font-mono text-white uppercase outline-none focus:border-[#2962ff]">
+            class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs font-mono text-white uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-[#2962ff]">
         </div>
         <div>
           <label class="block text-xs font-mono text-tvTextMuted mb-1">BUY / SELL TAX %</label>
           <div class="grid grid-cols-2 gap-2">
-            <input type="number" id="audit-buy-tax" value="0.0" class="bg-[#131722] border border-tvBorder rounded px-2 py-2 text-xs text-white outline-none">
-            <input type="number" id="audit-sell-tax" value="0.0" class="bg-[#131722] border border-tvBorder rounded px-2 py-2 text-xs text-white outline-none">
+            <input type="number" id="audit-buy-tax" value="0.0" class="bg-[#131722] border border-tvBorder rounded px-2 py-2 text-xs text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">
+            <input type="number" id="audit-sell-tax" value="0.0" class="bg-[#131722] border border-tvBorder rounded px-2 py-2 text-xs text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">
           </div>
         </div>
         <div>
           <label class="block text-xs font-mono text-tvTextMuted mb-1">LOCKED LIQUIDITY %</label>
-          <input type="number" id="audit-locked-lp" value="100.0" class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs text-white outline-none">
+          <input type="number" id="audit-locked-lp" value="100.0" class="w-full bg-[#131722] border border-tvBorder rounded px-3 py-2 text-xs text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">
         </div>
         <div>
           <button type="submit" class="w-full py-2 px-4 rounded bg-tvRed hover:opacity-90 text-white font-bold text-xs transition uppercase font-mono">

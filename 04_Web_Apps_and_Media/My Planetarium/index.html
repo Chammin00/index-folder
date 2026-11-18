@@ -45,7 +45,7 @@
     <div class="flex items-center gap-3">
       <!-- Antigravity Secondary Side Panel Toggle Button -->
       <button id="toggle-antigravity-panel-btn"
-              class="p-2 px-3 rounded-xl bg-gradient-to-r from-indigo-950/90 via-[#0B162C] to-[#C5A059]/25 hover:from-indigo-900 hover:to-[#DFBA73]/40 border border-indigo-400/40 text-indigo-200 hover:text-white transition-all text-xs flex items-center gap-2 shadow-lg shadow-indigo-950/40"
+              class="p-2 px-3 rounded-xl bg-gradient-to-r from-indigo-950/90 via-[#0B162C] to-[#C5A059]/25 hover:from-indigo-900 hover:to-[#DFBA73]/40 border border-indigo-400/40 text-indigo-200 hover:text-white transition-[transform,opacity,background-color,border-color,color,box-shadow] text-xs flex items-center gap-2 shadow-lg shadow-indigo-950/40"
               title="Toggle Antigravity Secondary Side Panel [Alt+A / Ctrl+B / M]">
         <span class="w-4 h-4 rounded-md bg-indigo-500/25 border border-indigo-400/50 flex items-center justify-center text-[10px] text-amber-300 font-bold">⊞</span>
         <span class="font-bold tracking-wide">Antigravity Secondary</span>
@@ -54,7 +54,7 @@
 
       <!-- Manifest Sidebar Toggle Button (Quick shortcut) -->
       <button id="toggle-manifest-btn"
-              class="p-2 rounded-xl bg-[#0B162C]/80 hover:bg-[#0E1D3A] border border-[#C5A059]/30 text-[#DFBA73] transition-all text-xs flex items-center gap-1.5"
+              class="p-2 rounded-xl bg-[#0B162C]/80 hover:bg-[#0E1D3A] border border-[#C5A059]/30 text-[#DFBA73] transition-[transform,opacity,background-color,border-color,color,box-shadow] text-xs flex items-center gap-1.5"
               title="Open Planetary Manifest [M]">
         <span class="text-sm">📑</span>
         <span class="hidden md:inline font-semibold">Manifest</span>
@@ -94,7 +94,7 @@
         </div>
         <input type="text" id="planet-search-input"
                placeholder="Search 64 planetary bodies, biomes, directives [/]..."
-               class="w-full pl-8 pr-3 py-1.5 text-xs bg-[#0B162C]/90 text-white placeholder-slate-400 rounded-xl border border-[#C5A059]/30 focus:border-[#DFBA73] focus:ring-1 focus:ring-[#DFBA73] outline-none shadow-inner transition-all">
+               class="w-full pl-8 pr-3 py-1.5 text-xs bg-[#0B162C]/90 text-white placeholder-slate-400 rounded-xl border border-[#C5A059]/30 focus:border-[#DFBA73] focus:ring-1 focus:ring-[#DFBA73] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 shadow-inner transition-[transform,opacity,background-color,border-color,color,box-shadow]">
       </div>
       <!-- Autocomplete Dropdown -->
       <div id="search-results-dropdown"
@@ -106,7 +106,7 @@
     <div class="flex items-center gap-1.5">
       <!-- Auto-Fit Fullscreen Button -->
       <button id="fit-screen-btn"
-              class="px-2.5 py-1.5 rounded-xl bg-[#C5A059]/20 hover:bg-[#C5A059]/40 text-[#DFBA73] border border-[#C5A059]/40 transition-all text-xs font-semibold flex items-center gap-1 shadow-sm"
+              class="px-2.5 py-1.5 rounded-xl bg-[#C5A059]/20 hover:bg-[#C5A059]/40 text-[#DFBA73] border border-[#C5A059]/40 transition-[transform,opacity,background-color,border-color,color,box-shadow] text-xs font-semibold flex items-center gap-1 shadow-sm"
               title="Fit Entire Sector to Full Screen [F]">
         <span class="text-xs">⛶</span>
         <span class="hidden sm:inline">Fit Galaxy</span>
@@ -114,7 +114,7 @@
 
       <!-- Celestial Tour Mode Button -->
       <button id="toggle-tour-btn"
-              class="px-2.5 py-1.5 rounded-xl bg-indigo-900/30 hover:bg-indigo-900/50 text-indigo-300 border border-indigo-500/35 hover:border-indigo-400 transition-all text-xs font-semibold flex items-center gap-1"
+              class="px-2.5 py-1.5 rounded-xl bg-indigo-900/30 hover:bg-indigo-900/50 text-indigo-300 border border-indigo-500/35 hover:border-indigo-400 transition-[transform,opacity,background-color,border-color,color,box-shadow] text-xs font-semibold flex items-center gap-1"
               title="Initiate Autonomous Celestial Tour [T]">
         <span class="text-xs">🛸</span>
         <span class="hidden md:inline">Celestial Tour</span>
@@ -122,7 +122,7 @@
 
       <!-- MCP Baseline Hub Button -->
       <button id="open-mcp-hud-btn"
-              class="px-2.5 py-1.5 rounded-xl bg-purple-900/30 hover:bg-purple-900/50 text-purple-300 border border-purple-500/40 hover:border-purple-400 transition-all text-xs font-semibold flex items-center gap-1 shadow-sm"
+              class="px-2.5 py-1.5 rounded-xl bg-purple-900/30 hover:bg-purple-900/50 text-purple-300 border border-purple-500/40 hover:border-purple-400 transition-[transform,opacity,background-color,border-color,color,box-shadow] text-xs font-semibold flex items-center gap-1 shadow-sm"
               title="Open Global MCP Hyperspace Matrix">
         <span class="text-xs">⚡</span>
         <span class="hidden lg:inline">MCP Matrix</span>
@@ -130,21 +130,21 @@
 
       <!-- Gravitational Web Toggle -->
       <button id="toggle-web-btn"
-              class="p-1.5 px-2 rounded-xl bg-[#0B162C]/80 hover:bg-[#0E1D3A] border border-[#C5A059]/30 text-[#DFBA73] transition-all text-xs flex items-center gap-1"
+              class="p-1.5 px-2 rounded-xl bg-[#0B162C]/80 hover:bg-[#0E1D3A] border border-[#C5A059]/30 text-[#DFBA73] transition-[transform,opacity,background-color,border-color,color,box-shadow] text-xs flex items-center gap-1"
               title="Toggle Gravitational Filaments">
         <span class="text-xs">🕸️</span>
       </button>
 
       <!-- Orbit Drift Toggle -->
       <button id="toggle-orbit-btn"
-              class="p-1.5 px-2 rounded-xl bg-[#0B162C]/80 hover:bg-[#0E1D3A] border border-[#C5A059]/30 text-[#DFBA73] transition-all text-xs flex items-center gap-1"
+              class="p-1.5 px-2 rounded-xl bg-[#0B162C]/80 hover:bg-[#0E1D3A] border border-[#C5A059]/30 text-[#DFBA73] transition-[transform,opacity,background-color,border-color,color,box-shadow] text-xs flex items-center gap-1"
               title="Toggle Planetary Orbit Drift [Space]">
         <span class="text-xs">🪐</span>
       </button>
 
       <!-- Hand-Drawn Celestial Sketch Style Toggle -->
       <button id="toggle-sketch-btn"
-              class="px-2.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/40 text-[#DFBA73] border border-[#DFBA73]/50 transition-all text-xs font-semibold flex items-center gap-1 shadow-sm"
+              class="px-2.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/40 text-[#DFBA73] border border-[#DFBA73]/50 transition-[transform,opacity,background-color,border-color,color,box-shadow] text-xs font-semibold flex items-center gap-1 shadow-sm"
               title="Toggle Hand-Drawn Celestial Sketch & Color Shading Mode [K]">
         <span class="text-xs">✏️</span>
         <span class="hidden md:inline">Sketch Mode</span>
@@ -152,7 +152,7 @@
 
       <!-- 3D Celestial Model Lab Button -->
       <button id="open-model-lab-btn"
-              class="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/25 via-indigo-600/30 to-[#C5A059]/25 hover:from-amber-500/40 hover:to-[#DFBA73]/50 text-[#DFBA73] border border-[#DFBA73]/60 transition-all text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-amber-500/20"
+              class="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/25 via-indigo-600/30 to-[#C5A059]/25 hover:from-amber-500/40 hover:to-[#DFBA73]/50 text-[#DFBA73] border border-[#DFBA73]/60 transition-[transform,opacity,background-color,border-color,color,box-shadow] text-xs font-semibold flex items-center gap-1.5 shadow-sm shadow-amber-500/20"
               title="Launch 3D Celestial Model Studio & Armillary Lab [L]">
         <span class="text-xs">🔬</span>
         <span class="hidden lg:inline">3D Model Lab</span>
@@ -160,14 +160,14 @@
 
       <!-- 3D Perspective Orrery System Toggle -->
       <button id="toggle-orrery-btn"
-              class="p-1.5 px-2 rounded-xl bg-[#0B162C]/80 hover:bg-[#0E1D3A] border border-[#C5A059]/30 text-[#DFBA73] transition-all text-xs flex items-center gap-1"
+              class="p-1.5 px-2 rounded-xl bg-[#0B162C]/80 hover:bg-[#0E1D3A] border border-[#C5A059]/30 text-[#DFBA73] transition-[transform,opacity,background-color,border-color,color,box-shadow] text-xs flex items-center gap-1"
               title="Toggle 3D Perspective Orrery [O]">
         <span class="text-xs">🌐</span>
       </button>
 
       <!-- Audio Resonance Toggle -->
       <button id="toggle-audio-btn"
-              class="p-1.5 px-2 rounded-xl bg-[#0B162C]/80 hover:bg-[#0E1D3A] border border-[#C5A059]/30 text-slate-400 transition-all text-xs flex items-center gap-1"
+              class="p-1.5 px-2 rounded-xl bg-[#0B162C]/80 hover:bg-[#0E1D3A] border border-[#C5A059]/30 text-slate-400 transition-[transform,opacity,background-color,border-color,color,box-shadow] text-xs flex items-center gap-1"
               title="Toggle Celestial Resonance Audio">
         <span class="text-xs">🔊</span>
       </button>
@@ -194,7 +194,7 @@
        ANTIGRAVITY SECONDARY SIDE PANEL (FULL-FEATURED IDE AUXILIARY PANE)
        ========================================================================= -->
   <aside id="antigravity-secondary-panel"
-         class="lacquer-glass fixed top-[52px] bottom-0 z-45 flex shadow-2xl transition-all duration-350 ease-out border-r border-[#C5A059]/35 open"
+         class="lacquer-glass fixed top-[52px] bottom-0 z-45 flex shadow-2xl transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-350 ease-out border-r border-[#C5A059]/35 open"
          data-active-tab="projects">
     <!-- Activity Bar Rail (Leftmost thin strip inside panel) -->
     <div class="w-12 bg-[#030712]/95 border-r border-white/10 flex flex-col items-center py-3 justify-between shrink-0 select-none">
@@ -280,7 +280,7 @@
           <div class="relative">
             <input type="text" id="ag-project-search"
                    placeholder="Filter 64 projects by name, stack, directive..."
-                   class="w-full pl-7 pr-7 py-1.5 text-xs bg-[#030712]/90 text-white placeholder-slate-400 rounded-lg border border-[#C5A059]/30 focus:border-[#DFBA73] outline-none transition-all">
+                   class="w-full pl-7 pr-7 py-1.5 text-xs bg-[#030712]/90 text-white placeholder-slate-400 rounded-lg border border-[#C5A059]/30 focus:border-[#DFBA73] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 transition-[transform,opacity,background-color,border-color,color,box-shadow]">
             <span class="absolute left-2.5 top-2 text-slate-400 text-xs">🔍</span>
             <button id="ag-search-clear-btn" class="absolute right-2 top-2 text-slate-400 hover:text-white text-xs hidden">✕</button>
           </div>
@@ -414,32 +414,32 @@
 
       <!-- 3D Render Mode Switcher -->
       <div class="flex items-center gap-1 p-1 bg-[#030712]/80 rounded-xl border border-white/10 text-xs" id="model-lab-mode-group">
-        <button class="model-mode-btn active px-2.5 py-1 rounded-lg text-slate-300 hover:text-white font-medium flex items-center gap-1 transition-all" data-mode="solid" title="3D Solid Textured Biome">
+        <button class="model-mode-btn active px-2.5 py-1 rounded-lg text-slate-300 hover:text-white font-medium flex items-center gap-1 transition-[transform,opacity,background-color,border-color,color,box-shadow]" data-mode="solid" title="3D Solid Textured Biome">
           <span>🌐</span><span class="hidden sm:inline">Solid</span>
         </button>
-        <button class="model-mode-btn px-2.5 py-1 rounded-lg text-slate-400 hover:text-white font-medium flex items-center gap-1 transition-all" data-mode="wireframe" title="Renaissance Armillary Wireframe">
+        <button class="model-mode-btn px-2.5 py-1 rounded-lg text-slate-400 hover:text-white font-medium flex items-center gap-1 transition-[transform,opacity,background-color,border-color,color,box-shadow]" data-mode="wireframe" title="Renaissance Armillary Wireframe">
           <span>📐</span><span class="hidden sm:inline">Armillary</span>
         </button>
-        <button class="model-mode-btn px-2.5 py-1 rounded-lg text-slate-400 hover:text-white font-medium flex items-center gap-1 transition-all" data-mode="sketch" title="Real-Time 3D Cross-Hatch Sketch">
+        <button class="model-mode-btn px-2.5 py-1 rounded-lg text-slate-400 hover:text-white font-medium flex items-center gap-1 transition-[transform,opacity,background-color,border-color,color,box-shadow]" data-mode="sketch" title="Real-Time 3D Cross-Hatch Sketch">
           <span>✏️</span><span class="hidden sm:inline">3D Sketch</span>
         </button>
-        <button class="model-mode-btn px-2.5 py-1 rounded-lg text-slate-400 hover:text-white font-medium flex items-center gap-1 transition-all" data-mode="hologram" title="Quantum Laser Elevation Scanner">
+        <button class="model-mode-btn px-2.5 py-1 rounded-lg text-slate-400 hover:text-white font-medium flex items-center gap-1 transition-[transform,opacity,background-color,border-color,color,box-shadow]" data-mode="hologram" title="Quantum Laser Elevation Scanner">
           <span>📡</span><span class="hidden sm:inline">Quantum</span>
         </button>
-        <button class="model-mode-btn px-2.5 py-1 rounded-lg text-slate-400 hover:text-white font-medium flex items-center gap-1 transition-all" data-mode="cutaway" title="Geological Core Strata Dissection">
+        <button class="model-mode-btn px-2.5 py-1 rounded-lg text-slate-400 hover:text-white font-medium flex items-center gap-1 transition-[transform,opacity,background-color,border-color,color,box-shadow]" data-mode="cutaway" title="Geological Core Strata Dissection">
           <span>🔬</span><span class="hidden sm:inline">Core Cutaway</span>
         </button>
       </div>
 
       <!-- Planet Dropdown & Action Controls -->
       <div class="flex items-center gap-2">
-        <select id="model-lab-planet-select" class="px-2.5 py-1 text-xs bg-[#030712]/90 text-white rounded-lg border border-[#C5A059]/35 outline-none font-mono max-w-[160px] sm:max-w-[200px] cursor-pointer">
+        <select id="model-lab-planet-select" class="px-2.5 py-1 text-xs bg-[#030712]/90 text-white rounded-lg border border-[#C5A059]/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 font-mono max-w-[160px] sm:max-w-[200px] cursor-pointer">
           <!-- Populated dynamically with 64 planets -->
         </select>
-        <button id="model-lab-export-btn" class="px-2.5 py-1 rounded-lg bg-[#C5A059]/20 hover:bg-[#C5A059]/40 border border-[#C5A059]/40 text-[#DFBA73] text-xs font-semibold flex items-center gap-1 transition-all" title="Export Technical Blueprint Schematic PNG">
+        <button id="model-lab-export-btn" class="px-2.5 py-1 rounded-lg bg-[#C5A059]/20 hover:bg-[#C5A059]/40 border border-[#C5A059]/40 text-[#DFBA73] text-xs font-semibold flex items-center gap-1 transition-[transform,opacity,background-color,border-color,color,box-shadow]" title="Export Technical Blueprint Schematic PNG">
           <span>📸</span><span class="hidden md:inline">Blueprint</span>
         </button>
-        <button id="close-model-lab-btn" class="p-1 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 text-xs font-bold transition-all" title="Close 3D Lab [Esc / L]">
+        <button id="close-model-lab-btn" class="p-1 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 text-xs font-bold transition-[transform,opacity,background-color,border-color,color,box-shadow]" title="Close 3D Lab [Esc / L]">
           ✕
         </button>
       </div>
@@ -453,7 +453,7 @@
 
         <!-- On-Canvas Floating 3D HUD Controls -->
         <div class="absolute bottom-4 left-4 z-10 flex flex-wrap items-center gap-2 p-1.5 rounded-xl lacquer-glass border border-white/10 backdrop-blur-md text-xs text-slate-300">
-          <button id="model-spin-toggle-btn" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-[#DFBA73] font-semibold flex items-center gap-1 transition-all" title="Toggle Auto-Spin [Space]">
+          <button id="model-spin-toggle-btn" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-[#DFBA73] font-semibold flex items-center gap-1 transition-[transform,opacity,background-color,border-color,color,box-shadow]" title="Toggle Auto-Spin [Space]">
             <span id="model-spin-icon">⏸</span>
             <span class="hidden sm:inline">Spin</span>
           </button>
@@ -539,7 +539,7 @@
           <p id="model-lab-directive-text" class="text-xs text-slate-200 leading-relaxed font-mono">
             Execute synchronization pipeline across model strata.
           </p>
-          <button id="model-lab-dispatch-btn" class="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-[#C5A059] hover:from-indigo-500 hover:to-[#DFBA73] text-white font-bold text-xs shadow-md shadow-indigo-500/25 transition-all flex items-center justify-center gap-2">
+          <button id="model-lab-dispatch-btn" class="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-indigo-600 via-indigo-500 to-[#C5A059] hover:from-indigo-500 hover:to-[#DFBA73] text-white font-bold text-xs shadow-md shadow-indigo-500/25 transition-[transform,opacity,background-color,border-color,color,box-shadow] flex items-center justify-center gap-2">
             <span>🚀</span>
             <span>Dispatch to Antigravity Agent</span>
           </button>

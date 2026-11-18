@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>OneStop - Unified Work, Social, Health & Automation Hub</title>
   <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -73,7 +73,7 @@
       background: rgba(255, 255, 255, 0.22);
       border-radius: 9999px;
       border: 2px solid rgba(5, 7, 14, 0.85);
-      transition: all 0.2s ease;
+      transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
     }
 
     ::-webkit-scrollbar-thumb:hover {
@@ -210,7 +210,7 @@
       -webkit-backdrop-filter: blur(18px);
       border: 1px solid var(--card-border);
       box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.11);
-      transition: all 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.26s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.26s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.26s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.26s cubic-bezier(0.16, 1, 0.3, 1), color 0.26s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.26s cubic-bezier(0.16, 1, 0.3, 1);
       position: relative;
     }
 
@@ -276,7 +276,7 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.18);
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: pointer;
     }
     .shelf-wrapper:hover .shelf-nav-btn {
@@ -303,6 +303,7 @@
   <!-- Antigravity Baseline Integration -->
   <link rel="stylesheet" href="aws-enterprise-baseline.css">
   <script src="aws-enterprise-baseline.js"></script>
+<style>:where(button[data-btn-reset]){font:inherit;color:inherit;background:transparent;border:none;padding:0;margin:0;text-align:inherit;}</style>
 </head>
 <body class="text-slate-100 min-h-screen pb-44 selection:bg-sky-500 selection:text-white relative" style="touch-action: pan-y pinch-zoom;">
 
@@ -328,7 +329,7 @@
     <div class="max-w-md lg:max-w-7xl mx-auto flex items-center justify-between">
       
       <!-- User Profile Header Quick Avatar & Info -->
-      <div onclick="openProfileModal()" class="flex items-center space-x-2.5 cursor-pointer group">
+      <button type="button" onclick="openProfileModal()" class="flex items-center space-x-2.5 cursor-pointer group" data-btn-reset>
         <div class="relative">
           <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-sky-500 via-indigo-500 to-emerald-400 p-[2px] shadow-md shadow-sky-500/20 group-hover:scale-105 transition">
             <div class="w-full h-full rounded-full bg-slate-900 flex items-center justify-center text-white font-black text-xs" id="header-avatar-initials">
@@ -346,7 +347,7 @@
           </h1>
           <p class="text-[10px] text-slate-400" id="live-datetime">Daily Command Center</p>
         </div>
-      </div>
+      </button>
 
       <!-- Header Action Controls -->
       <div class="flex items-center space-x-1.5">
@@ -403,7 +404,7 @@
           type="text" 
           placeholder="Search profile, food, workouts, sleep, clips, training, teams, stocks..." 
           oninput="onSearchChange(event)"
-          class="w-full bg-slate-900 border border-slate-800 rounded-xl py-2 pl-9 pr-8 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-500 transition"
+          class="w-full bg-slate-900 border border-slate-800 rounded-xl py-2 pl-9 pr-8 text-xs text-slate-200 placeholder-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-sky-500 transition"
         />
         <button onclick="clearSearch()" class="absolute right-2.5 top-2 text-slate-500 hover:text-slate-300 text-xs hidden" id="search-clear-btn">✕</button>
       </div>
@@ -437,7 +438,7 @@
     <aside class="hidden lg:block lg:col-span-3 space-y-4 sticky top-[105px] h-[calc(100vh-125px)] overflow-y-auto no-scrollbar pb-8">
       
       <!-- Profile Mini Card -->
-      <div onclick="openProfileModal()" class="bg-gradient-to-br from-slate-900 via-slate-900 to-sky-950/40 border border-slate-800 hover:border-sky-500/40 rounded-3xl p-4 shadow-xl cursor-pointer transition group">
+      <button type="button" onclick="openProfileModal()" class="bg-gradient-to-br from-slate-900 via-slate-900 to-sky-950/40 border border-slate-800 hover:border-sky-500/40 rounded-3xl p-4 shadow-xl cursor-pointer transition group" data-btn-reset>
         <div class="flex items-center space-x-3">
           <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-sky-500 via-indigo-500 to-emerald-400 p-[2px] shadow-lg shadow-sky-500/20 group-hover:scale-105 transition">
             <div class="w-full h-full rounded-2xl bg-slate-950 flex items-center justify-center text-white font-black text-sm" id="left-sidebar-avatar">
@@ -452,7 +453,7 @@
             </span>
           </div>
         </div>
-      </div>
+      </button>
 
       <!-- 🌐 In-App Web Browser Quick Launcher & Bookmarks -->
       <div class="bg-gradient-to-br from-slate-900/90 via-sky-950/20 to-slate-900/90 border border-sky-500/30 rounded-3xl p-4 shadow-lg space-y-3">
@@ -471,37 +472,37 @@
 
         <!-- Bookmarked Fast Sites -->
         <div class="space-y-1.5 pt-1 text-xs">
-          <div onclick="openWebBrowser('https://learn.microsoft.com/training', '🎓 Q3 Security Training & Compliance')" class="p-2 rounded-xl bg-slate-950 hover:bg-slate-800/80 border border-slate-800/80 hover:border-purple-500/40 cursor-pointer transition flex items-center justify-between group">
+          <button type="button" onclick="openWebBrowser('https://learn.microsoft.com/training', '🎓 Q3 Security Training & Compliance')" class="p-2 rounded-xl bg-slate-950 hover:bg-slate-800/80 border border-slate-800/80 hover:border-purple-500/40 cursor-pointer transition flex items-center justify-between group" data-btn-reset>
             <div class="flex items-center space-x-2 truncate">
               <span class="text-sm">🎓</span>
               <span class="text-[11px] font-semibold text-slate-300 group-hover:text-white truncate">Q3 Security & Compliance</span>
             </div>
             <span class="text-[9px] px-1.5 py-0.2 rounded bg-purple-500/20 text-purple-300 font-bold">Work</span>
-          </div>
+          </button>
 
-          <div onclick="openWebBrowser('https://www.tradingview.com', '📈 TradingView Live Charts')" class="p-2 rounded-xl bg-slate-950 hover:bg-slate-800/80 border border-slate-800/80 hover:border-emerald-500/40 cursor-pointer transition flex items-center justify-between group">
+          <button type="button" onclick="openWebBrowser('https://www.tradingview.com', '📈 TradingView Live Charts')" class="p-2 rounded-xl bg-slate-950 hover:bg-slate-800/80 border border-slate-800/80 hover:border-emerald-500/40 cursor-pointer transition flex items-center justify-between group" data-btn-reset>
             <div class="flex items-center space-x-2 truncate">
               <span class="text-sm">📈</span>
               <span class="text-[11px] font-semibold text-slate-300 group-hover:text-white truncate">TradingView Market Charts</span>
             </div>
             <span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-bold">Stocks</span>
-          </div>
+          </button>
 
-          <div onclick="openWebBrowser('https://wavu.wiki/t/Tekken_8', '🎮 Tekken 8 Frame Data Wiki')" class="p-2 rounded-xl bg-slate-950 hover:bg-slate-800/80 border border-slate-800/80 hover:border-red-500/40 cursor-pointer transition flex items-center justify-between group">
+          <button type="button" onclick="openWebBrowser('https://wavu.wiki/t/Tekken_8', '🎮 Tekken 8 Frame Data Wiki')" class="p-2 rounded-xl bg-slate-950 hover:bg-slate-800/80 border border-slate-800/80 hover:border-red-500/40 cursor-pointer transition flex items-center justify-between group" data-btn-reset>
             <div class="flex items-center space-x-2 truncate">
               <span class="text-sm">🎮</span>
               <span class="text-[11px] font-semibold text-slate-300 group-hover:text-white truncate">Tekken 8 Frame Data Wiki</span>
             </div>
             <span class="text-[9px] px-1.5 py-0.2 rounded bg-red-500/20 text-red-300 font-bold">FGC</span>
-          </div>
+          </button>
 
-          <div onclick="openWebBrowser('https://fdc.nal.usda.gov', '🥗 USDA Food & Nutrition Database')" class="p-2 rounded-xl bg-slate-950 hover:bg-slate-800/80 border border-slate-800/80 hover:border-teal-500/40 cursor-pointer transition flex items-center justify-between group">
+          <button type="button" onclick="openWebBrowser('https://fdc.nal.usda.gov', '🥗 USDA Food & Nutrition Database')" class="p-2 rounded-xl bg-slate-950 hover:bg-slate-800/80 border border-slate-800/80 hover:border-teal-500/40 cursor-pointer transition flex items-center justify-between group" data-btn-reset>
             <div class="flex items-center space-x-2 truncate">
               <span class="text-sm">🥗</span>
               <span class="text-[11px] font-semibold text-slate-300 group-hover:text-white truncate">USDA Food & Nutrition DB</span>
             </div>
             <span class="text-[9px] px-1.5 py-0.2 rounded bg-teal-500/20 text-teal-300 font-bold">Health</span>
-          </div>
+          </button>
         </div>
       </div>
 
@@ -578,7 +579,7 @@
           </button>
           <div class="flex space-x-3.5 overflow-x-auto pb-2 no-scrollbar snap-x snap-mandatory seamless-shelf" id="stories-bar">
             <!-- Story 1: Here & Now Activity Match -->
-            <div onclick="openHereNowExplorerModal()" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group">
+            <button type="button" onclick="openHereNowExplorerModal()" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group" data-btn-reset>
               <div class="w-16 h-16 rounded-full p-[2.5px] bg-gradient-to-tr from-amber-400 via-orange-500 to-emerald-400 animate-pulse shadow-lg shadow-amber-500/20 group-hover:scale-105 transition">
                 <div class="w-full h-full rounded-full bg-slate-950 flex flex-col items-center justify-center text-amber-400 relative">
                   <i data-lucide="compass" class="w-5 h-5"></i>
@@ -586,10 +587,10 @@
                 </div>
               </div>
               <span class="text-[10px] font-semibold text-amber-300 truncate max-w-[64px]">Here & Now</span>
-            </div>
+            </button>
 
             <!-- Story 2: Profile Story -->
-            <div onclick="openProfileModal()" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group">
+            <button type="button" onclick="openProfileModal()" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group" data-btn-reset>
               <div class="w-16 h-16 rounded-full p-[2.5px] bg-gradient-to-tr from-sky-400 via-indigo-500 to-purple-500 shadow-lg shadow-sky-500/20 group-hover:scale-105 transition">
                 <div class="w-full h-full rounded-full bg-slate-950 flex flex-col items-center justify-center text-sky-400 font-bold">
                   <span class="text-xs font-black">CM</span>
@@ -597,10 +598,10 @@
                 </div>
               </div>
               <span class="text-[10px] font-semibold text-slate-200 truncate max-w-[64px]">Profile</span>
-            </div>
+            </button>
 
             <!-- Story 3: Health & Fitness Ring -->
-            <div onclick="openFoodScannerModal()" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group">
+            <button type="button" onclick="openFoodScannerModal()" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group" data-btn-reset>
               <div class="w-16 h-16 rounded-full p-[2.5px] bg-gradient-to-tr from-emerald-400 via-pink-500 to-cyan-400 shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition">
                 <div class="w-full h-full rounded-full bg-slate-950 flex flex-col items-center justify-center text-emerald-400">
                   <i data-lucide="heart-pulse" class="w-5 h-5"></i>
@@ -608,10 +609,10 @@
                 </div>
               </div>
               <span class="text-[10px] font-semibold text-emerald-400 truncate max-w-[64px]">Vitality</span>
-            </div>
+            </button>
 
             <!-- Story 4: Live Teams Meeting -->
-            <div onclick="joinCall('Sprint Standup & Sync', 'teams', 'Sarah Miller')" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group">
+            <button type="button" onclick="joinCall('Sprint Standup & Sync', 'teams', 'Sarah Miller')" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group" data-btn-reset>
               <div class="w-16 h-16 rounded-full p-[2.5px] bg-gradient-to-tr from-indigo-500 via-sky-400 to-purple-500 animate-pulse shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition">
                 <div class="w-full h-full rounded-full bg-slate-950 flex items-center justify-center text-indigo-400 relative">
                   <i data-lucide="video" class="w-6 h-6"></i>
@@ -619,10 +620,10 @@
                 </div>
               </div>
               <span class="text-[10px] font-semibold text-slate-200 truncate max-w-[64px]">Standup</span>
-            </div>
+            </button>
 
             <!-- Story 5: Latest Xbox Clip -->
-            <div onclick="openInlineViewer('xb-cap-1')" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group">
+            <button type="button" onclick="openInlineViewer('xb-cap-1')" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group" data-btn-reset>
               <div class="w-16 h-16 rounded-full p-[2.5px] bg-gradient-to-tr from-emerald-500 via-lime-400 to-emerald-600 shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition">
                 <div class="w-full h-full rounded-full bg-slate-950 flex items-center justify-center text-emerald-400 relative overflow-hidden">
                   <i data-lucide="gamepad-2" class="w-6 h-6"></i>
@@ -630,10 +631,10 @@
                 </div>
               </div>
               <span class="text-[10px] font-semibold text-slate-200 truncate max-w-[64px]">Xbox Clip</span>
-            </div>
+            </button>
 
             <!-- Story 6: NVDA Price Jump -->
-            <div onclick="openStockDetail('NVDA')" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group">
+            <button type="button" onclick="openStockDetail('NVDA')" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group" data-btn-reset>
               <div class="w-16 h-16 rounded-full p-[2.5px] bg-gradient-to-tr from-emerald-400 via-green-500 to-teal-400 shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition">
                 <div class="w-full h-full rounded-full bg-slate-950 flex flex-col items-center justify-center text-emerald-400 font-mono">
                   <span class="text-[9px] font-black leading-none">NVDA</span>
@@ -641,10 +642,10 @@
                 </div>
               </div>
               <span class="text-[10px] font-semibold text-slate-200 truncate max-w-[64px]">NVIDIA</span>
-            </div>
+            </button>
 
             <!-- Story 7: Tekken 8 God Rank -->
-            <div onclick="openGamerAchievementModal()" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group">
+            <button type="button" onclick="openGamerAchievementModal()" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group" data-btn-reset>
               <div class="w-16 h-16 rounded-full p-[2.5px] bg-gradient-to-tr from-red-500 via-amber-500 to-yellow-400 shadow-lg shadow-red-500/20 group-hover:scale-105 transition">
                 <div class="w-full h-full rounded-full bg-slate-950 flex flex-col items-center justify-center text-red-400 font-black">
                   <i data-lucide="trophy" class="w-4 h-4 text-amber-400"></i>
@@ -652,10 +653,10 @@
                 </div>
               </div>
               <span class="text-[10px] font-semibold text-red-300 truncate max-w-[64px]">Tekken 8</span>
-            </div>
+            </button>
 
             <!-- Story 8: AllTrails Sedona -->
-            <div onclick="openWebBrowser('https://www.alltrails.com')" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group">
+            <button type="button" onclick="openWebBrowser('https://www.alltrails.com')" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group" data-btn-reset>
               <div class="w-16 h-16 rounded-full p-[2.5px] bg-gradient-to-tr from-emerald-500 via-teal-400 to-green-600 shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition">
                 <div class="w-full h-full rounded-full bg-slate-950 flex flex-col items-center justify-center text-emerald-400">
                   <i data-lucide="trees" class="w-5 h-5"></i>
@@ -663,20 +664,20 @@
                 </div>
               </div>
               <span class="text-[10px] font-semibold text-emerald-300 truncate max-w-[64px]">Trails</span>
-            </div>
+            </button>
 
             <!-- Story 9: Zoom Architecture Sync -->
-            <div onclick="joinCall('Cloud Architecture Review', 'zoom', 'Alex Rivers')" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group">
+            <button type="button" onclick="joinCall('Cloud Architecture Review', 'zoom', 'Alex Rivers')" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group" data-btn-reset>
               <div class="w-16 h-16 rounded-full p-[2.5px] bg-gradient-to-tr from-blue-500 via-sky-400 to-indigo-500 shadow-lg shadow-blue-500/20 group-hover:scale-105 transition">
                 <div class="w-full h-full rounded-full bg-slate-950 flex items-center justify-center text-blue-400">
                   <i data-lucide="video" class="w-5 h-5"></i>
                 </div>
               </div>
               <span class="text-[10px] font-semibold text-blue-300 truncate max-w-[64px]">Zoom 1:1</span>
-            </div>
+            </button>
 
             <!-- Story 10: Protein Quinoa Fuel -->
-            <div onclick="openFoodScannerModal()" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group">
+            <button type="button" onclick="openFoodScannerModal()" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group" data-btn-reset>
               <div class="w-16 h-16 rounded-full p-[2.5px] bg-gradient-to-tr from-teal-400 via-emerald-400 to-amber-400 shadow-lg shadow-teal-500/20 group-hover:scale-105 transition">
                 <div class="w-full h-full rounded-full bg-slate-950 flex flex-col items-center justify-center text-teal-300 text-xs">
                   <span>🥗</span>
@@ -684,10 +685,10 @@
                 </div>
               </div>
               <span class="text-[10px] font-semibold text-teal-300 truncate max-w-[64px]">Fuel Log</span>
-            </div>
+            </button>
 
             <!-- Story 11: Tesla TSLA Stock -->
-            <div onclick="openStockDetail('TSLA')" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group">
+            <button type="button" onclick="openStockDetail('TSLA')" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group" data-btn-reset>
               <div class="w-16 h-16 rounded-full p-[2.5px] bg-gradient-to-tr from-slate-400 via-red-500 to-pink-500 shadow-lg shadow-red-500/20 group-hover:scale-105 transition">
                 <div class="w-full h-full rounded-full bg-slate-950 flex flex-col items-center justify-center text-red-400 font-mono">
                   <span class="text-[9px] font-black leading-none">TSLA</span>
@@ -695,10 +696,10 @@
                 </div>
               </div>
               <span class="text-[10px] font-semibold text-slate-200 truncate max-w-[64px]">Tesla</span>
-            </div>
+            </button>
 
             <!-- Story 12: Q3 Security Training -->
-            <div onclick="openWebBrowser('https://learn.microsoft.com/training')" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group">
+            <button type="button" onclick="openWebBrowser('https://learn.microsoft.com/training')" class="flex-shrink-0 flex flex-col items-center space-y-1.5 cursor-pointer snap-start group" data-btn-reset>
               <div class="w-16 h-16 rounded-full p-[2.5px] bg-gradient-to-tr from-purple-500 via-indigo-500 to-pink-500 shadow-lg shadow-purple-500/20 group-hover:scale-105 transition">
                 <div class="w-full h-full rounded-full bg-slate-950 flex flex-col items-center justify-center text-purple-400">
                   <i data-lucide="graduation-cap" class="w-5 h-5"></i>
@@ -706,7 +707,7 @@
                 </div>
               </div>
               <span class="text-[10px] font-semibold text-purple-300 truncate max-w-[64px]">Training</span>
-            </div>
+            </button>
           </div>
           <button onclick="glideShelf('stories-bar', 260)" class="shelf-nav-btn shelf-nav-next" title="Slide Right">
             <i data-lucide="chevron-right" class="w-4 h-4"></i>
@@ -715,7 +716,7 @@
       </section>
 
       <!-- 📍 SECTION: WHAT CAN I DO HERE • NOW • THERE (CONTEXT & BEHAVIOR MATCHER) -->
-      <section class="bento-card rounded-3xl p-4 sm:p-5 shadow-2xl glow-amber space-y-4 transition-all duration-200" id="sec-herenow" data-section-name="📍 What Can I Do: Here • Now • There">
+      <section class="bento-card rounded-3xl p-4 sm:p-5 shadow-2xl glow-amber space-y-4 transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-200" id="sec-herenow" data-section-name="📍 What Can I Do: Here • Now • There">
         
         <!-- Section Header -->
         <div class="flex items-center justify-between">
@@ -812,7 +813,7 @@
       </section>
 
       <!-- 🌟 SECTION 3: HEALTH & VITALITY COMMAND CENTER -->
-      <section class="bento-card rounded-3xl p-4 sm:p-5 shadow-2xl glow-emerald space-y-4 transition-all duration-200" id="sec-health" data-section-name="🏃 Health, Fuel & Sleep Command">
+      <section class="bento-card rounded-3xl p-4 sm:p-5 shadow-2xl glow-emerald space-y-4 transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-200" id="sec-health" data-section-name="🏃 Health, Fuel & Sleep Command">
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-3">
             <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-emerald-500/25">
@@ -848,7 +849,7 @@
         <div id="sec-health-content" class="space-y-3">
           <!-- Vitality Metrics Matrix -->
           <div class="grid grid-cols-4 gap-2.5 text-center">
-            <div onclick="openWorkoutScannerModal()" class="bg-slate-950/70 p-3 rounded-2xl border border-white/5 hover:border-emerald-500/40 cursor-pointer transition space-y-1.5 group">
+            <button type="button" onclick="openWorkoutScannerModal()" class="bg-slate-950/70 p-3 rounded-2xl border border-white/5 hover:border-emerald-500/40 cursor-pointer transition space-y-1.5 group" data-btn-reset>
               <div class="flex items-center justify-center text-emerald-400 group-hover:scale-110 transition">
                 <i data-lucide="footprints" class="w-5 h-5"></i>
               </div>
@@ -857,9 +858,9 @@
               <div class="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
                 <div class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full" style="width: 84%;"></div>
               </div>
-            </div>
+            </button>
 
-            <div onclick="openFoodScannerModal()" class="bg-slate-950/70 p-3 rounded-2xl border border-white/5 hover:border-pink-500/40 cursor-pointer transition space-y-1.5 group">
+            <button type="button" onclick="openFoodScannerModal()" class="bg-slate-950/70 p-3 rounded-2xl border border-white/5 hover:border-pink-500/40 cursor-pointer transition space-y-1.5 group" data-btn-reset>
               <div class="flex items-center justify-center text-pink-400 group-hover:scale-110 transition">
                 <i data-lucide="flame" class="w-5 h-5"></i>
               </div>
@@ -868,9 +869,9 @@
               <div class="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
                 <div class="bg-gradient-to-r from-pink-500 to-rose-400 h-full rounded-full" style="width: 78%;"></div>
               </div>
-            </div>
+            </button>
 
-            <div onclick="openSleepLogModal()" class="bg-slate-950/70 p-3 rounded-2xl border border-white/5 hover:border-indigo-500/40 cursor-pointer transition space-y-1.5 group">
+            <button type="button" onclick="openSleepLogModal()" class="bg-slate-950/70 p-3 rounded-2xl border border-white/5 hover:border-indigo-500/40 cursor-pointer transition space-y-1.5 group" data-btn-reset>
               <div class="flex items-center justify-center text-indigo-400 group-hover:scale-110 transition">
                 <i data-lucide="moon" class="w-5 h-5"></i>
               </div>
@@ -879,9 +880,9 @@
               <div class="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
                 <div class="bg-gradient-to-r from-indigo-500 to-purple-400 h-full rounded-full" style="width: 88%;"></div>
               </div>
-            </div>
+            </button>
 
-            <div onclick="openFoodScannerModal()" class="bg-slate-950/70 p-3 rounded-2xl border border-white/5 hover:border-amber-500/40 cursor-pointer transition space-y-1.5 group">
+            <button type="button" onclick="openFoodScannerModal()" class="bg-slate-950/70 p-3 rounded-2xl border border-white/5 hover:border-amber-500/40 cursor-pointer transition space-y-1.5 group" data-btn-reset>
               <div class="flex items-center justify-center text-amber-400 group-hover:scale-110 transition">
                 <i data-lucide="beef" class="w-5 h-5"></i>
               </div>
@@ -890,13 +891,13 @@
               <div class="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
                 <div class="bg-gradient-to-r from-amber-500 to-yellow-400 h-full rounded-full" style="width: 91%;"></div>
               </div>
-            </div>
+            </button>
           </div>
         </div>
       </section>
 
     <!-- 🥗 SECTION 4: MEAL SNAPS & NUTRITION CAROUSEL -->
-    <section class="bento-card bg-slate-900/40 backdrop-blur-xl border border-teal-500/20 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-3.5 transition-all duration-300 relative group" id="sec-meals" data-section-name="🥗 Meal Snaps & Nutrition Shelf">
+    <section class="bento-card bg-slate-900/40 backdrop-blur-xl border border-teal-500/20 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-3.5 transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-300 relative group" id="sec-meals" data-section-name="🥗 Meal Snaps & Nutrition Shelf">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-3">
           <div class="w-8 h-8 rounded-2xl bg-teal-500/10 border border-teal-500/25 flex items-center justify-center text-teal-400 shadow-inner">
@@ -1055,7 +1056,7 @@
     </section>
 
     <!-- 🏋️‍♂️ SECTION 5: WORKOUT & STRENGTH / CARDIO OCR CAROUSEL -->
-    <section class="bento-card bg-slate-900/40 backdrop-blur-xl border border-amber-500/20 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-3.5 transition-all duration-300 relative group" id="sec-workouts" data-section-name="🏋️‍♂️ Workouts & Volume OCR Shelf">
+    <section class="bento-card bg-slate-900/40 backdrop-blur-xl border border-amber-500/20 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-3.5 transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-300 relative group" id="sec-workouts" data-section-name="🏋️‍♂️ Workouts & Volume OCR Shelf">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-3">
           <div class="w-8 h-8 rounded-2xl bg-amber-500/10 border border-amber-500/25 flex items-center justify-center text-amber-400 shadow-inner">
@@ -1198,7 +1199,7 @@
     </section>
 
     <!-- 🎮 SECTION 6: GAMER PASSPORT & STREET CRED RANKINGS SHOWCASE -->
-    <section class="bento-card bg-slate-900/40 backdrop-blur-xl border border-emerald-500/20 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-3.5 transition-all duration-300 relative group" id="sec-gamer" data-section-name="🎮 Gamer Passport & Top Rankings">
+    <section class="bento-card bg-slate-900/40 backdrop-blur-xl border border-emerald-500/20 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-3.5 transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-300 relative group" id="sec-gamer" data-section-name="🎮 Gamer Passport & Top Rankings">
       
       <!-- Section Header -->
       <div class="flex items-center justify-between">
@@ -1286,7 +1287,7 @@
     </section>
 
     <!-- 🎮 SECTION 7: GAMING & MEDIA REELS -->
-    <section class="bento-card bg-slate-900/40 backdrop-blur-xl border border-indigo-500/20 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-3.5 transition-all duration-300 relative group" id="sec-gaming" data-section-name="🎮 Gaming & Media Reels">
+    <section class="bento-card bg-slate-900/40 backdrop-blur-xl border border-indigo-500/20 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-3.5 transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-300 relative group" id="sec-gaming" data-section-name="🎮 Gaming & Media Reels">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-3">
           <div class="w-8 h-8 rounded-2xl bg-indigo-500/10 border border-indigo-500/25 flex items-center justify-center text-indigo-400 shadow-inner">
@@ -1432,7 +1433,7 @@
     </section>
 
     <!-- 💼 SECTION 7: WORK & PRODUCTIVITY -->
-    <section class="bento-card bg-slate-900/40 backdrop-blur-xl border border-indigo-500/20 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-3.5 transition-all duration-300 relative group" id="sec-work" data-section-name="💼 Work & Productivity Shelf">
+    <section class="bento-card bg-slate-900/40 backdrop-blur-xl border border-indigo-500/20 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-3.5 transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-300 relative group" id="sec-work" data-section-name="💼 Work & Productivity Shelf">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-3">
           <div class="w-8 h-8 rounded-2xl bg-indigo-500/10 border border-indigo-500/25 flex items-center justify-center text-indigo-400 shadow-inner">
@@ -1584,7 +1585,7 @@
     </section>
 
     <!-- 📈 SECTION 8: STOCK & CRYPTO WATCHLIST -->
-    <section class="bento-card bg-slate-900/40 backdrop-blur-xl border border-emerald-500/20 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-3.5 transition-all duration-300 relative group" id="sec-stocks" data-section-name="📈 Market & Stock Watchlist">
+    <section class="bento-card bg-slate-900/40 backdrop-blur-xl border border-emerald-500/20 rounded-3xl p-4 sm:p-5 shadow-2xl space-y-3.5 transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-300 relative group" id="sec-stocks" data-section-name="📈 Market & Stock Watchlist">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-3">
           <div class="w-8 h-8 rounded-2xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-400 shadow-inner">
@@ -1821,27 +1822,27 @@
         <div class="space-y-2 text-xs">
           <div>
             <label class="text-[10px] font-semibold text-slate-400 uppercase">Display Name</label>
-            <input id="input-profile-name" type="text" value="Chase Miller" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-sky-500" />
+            <input id="input-profile-name" type="text" value="Chase Miller" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-sky-500" />
           </div>
 
           <div>
             <label class="text-[10px] font-semibold text-slate-400 uppercase">Handle / Gamertag</label>
-            <input id="input-profile-handle" type="text" value="@chasem" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-sky-500" />
+            <input id="input-profile-handle" type="text" value="@chasem" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-sky-500" />
           </div>
 
           <div>
             <label class="text-[10px] font-semibold text-slate-400 uppercase">Job Role & Focus</label>
-            <input id="input-profile-role" type="text" value="Platform Architect & AI Creator" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-sky-500" />
+            <input id="input-profile-role" type="text" value="Platform Architect & AI Creator" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-sky-500" />
           </div>
 
           <div class="grid grid-cols-2 gap-2 pt-1">
             <div>
               <label class="text-[10px] font-semibold text-slate-400 uppercase">Daily Step Target</label>
-              <input id="input-profile-steps" type="number" value="10000" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500" />
+              <input id="input-profile-steps" type="number" value="10000" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white font-mono focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-emerald-500" />
             </div>
             <div>
               <label class="text-[10px] font-semibold text-slate-400 uppercase">Daily Calorie Target</label>
-              <input id="input-profile-cals" type="number" value="2300" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white font-mono focus:outline-none focus:border-pink-500" />
+              <input id="input-profile-cals" type="number" value="2300" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white font-mono focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-pink-500" />
             </div>
           </div>
 
@@ -1926,11 +1927,11 @@
             <div class="grid grid-cols-2 gap-2">
               <div>
                 <label class="text-[9px] text-slate-400 uppercase">Xbox / FGC Gamertag</label>
-                <input id="input-profile-gamertag" type="text" value="ChasePro99" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono" />
+                <input id="input-profile-gamertag" type="text" value="ChasePro99" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2 text-xs text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-emerald-500 font-mono" />
               </div>
               <div>
                 <label class="text-[9px] text-slate-400 uppercase">Gamerscore (G)</label>
-                <input id="input-profile-gamerscore" type="number" value="142850" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono" />
+                <input id="input-profile-gamerscore" type="number" value="142850" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2 text-xs text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-emerald-500 font-mono" />
               </div>
             </div>
           </div>
@@ -1987,11 +1988,11 @@
           <div class="grid grid-cols-2 gap-2">
             <div>
               <label class="text-[10px] font-semibold text-slate-400 uppercase">Game Title</label>
-              <input id="input-game-title" type="text" placeholder="e.g. Tekken 8, Ninja Gaiden 4" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500" />
+              <input id="input-game-title" type="text" placeholder="e.g. Tekken 8, Ninja Gaiden 4" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-emerald-500" />
             </div>
             <div>
               <label class="text-[10px] font-semibold text-slate-400 uppercase">Platform</label>
-              <select id="input-game-platform" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500">
+              <select id="input-game-platform" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-emerald-500">
                 <option value="Xbox Series X">Xbox Series X</option>
                 <option value="PlayStation 5">PlayStation 5</option>
                 <option value="Steam / PC">Steam / PC</option>
@@ -2003,28 +2004,28 @@
 
           <div>
             <label class="text-[10px] font-semibold text-slate-400 uppercase">Achievement / Rank Title</label>
-            <input id="input-game-rank" type="text" placeholder="e.g. God of Destruction, Master Ninja 100% S-Rank" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500" />
+            <input id="input-game-rank" type="text" placeholder="e.g. God of Destruction, Master Ninja 100% S-Rank" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-emerald-500" />
           </div>
 
           <div class="grid grid-cols-2 gap-2">
             <div>
               <label class="text-[10px] font-semibold text-slate-400 uppercase">Key Stat / Metric</label>
-              <input id="input-game-metric" type="text" placeholder="e.g. 78.4% Win Rate, RL1 No-Hit" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500" />
+              <input id="input-game-metric" type="text" placeholder="e.g. 78.4% Win Rate, RL1 No-Hit" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white font-mono focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-emerald-500" />
             </div>
             <div>
               <label class="text-[10px] font-semibold text-slate-400 uppercase">Main Character / Role</label>
-              <input id="input-game-char" type="text" placeholder="e.g. Kazuya Mishima, Ryu Hayabusa" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500" />
+              <input id="input-game-char" type="text" placeholder="e.g. Kazuya Mishima, Ryu Hayabusa" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-emerald-500" />
             </div>
           </div>
 
           <div>
             <label class="text-[10px] font-semibold text-slate-400 uppercase">Street Cred Rationale (Validates Your Opinion)</label>
-            <input id="input-game-rationale" type="text" placeholder="e.g. Validates fighting game frame data & tier list authority" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-500" />
+            <input id="input-game-rationale" type="text" placeholder="e.g. Validates fighting game frame data & tier list authority" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-emerald-500" />
           </div>
 
           <div>
             <label class="text-[10px] font-semibold text-slate-400 uppercase">Proof Clip Video / Screenshot Path</label>
-            <input id="input-game-proof" type="text" value="captures/beast_of_reincarnation.mp4" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white font-mono focus:outline-none focus:border-emerald-500" />
+            <input id="input-game-proof" type="text" value="captures/beast_of_reincarnation.mp4" class="w-full mt-1 bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-xs text-white font-mono focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-emerald-500" />
           </div>
         </div>
 
@@ -2147,7 +2148,7 @@
               type="text" 
               placeholder="e.g. Sedona, Tokyo, Denver DIA, New York..." 
               oninput="onThereSearchInput(event)"
-              class="w-full bg-slate-900 border border-slate-800 rounded-xl py-2 pl-9 pr-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500"
+              class="w-full bg-slate-900 border border-slate-800 rounded-xl py-2 pl-9 pr-3 text-xs text-white placeholder-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-amber-500"
             />
           </div>
 
@@ -2238,13 +2239,13 @@
       </div>
 
       <div class="space-y-2">
-        <div class="w-full h-36 rounded-2xl border-2 border-dashed border-emerald-500/40 bg-slate-950/80 flex flex-col items-center justify-center text-center p-3 cursor-pointer hover:border-emerald-400 transition" onclick="simulateFoodScan('salmon')">
+        <button type="button" class="w-full h-36 rounded-2xl border-2 border-dashed border-emerald-500/40 bg-slate-950/80 flex flex-col items-center justify-center text-center p-3 cursor-pointer hover:border-emerald-400 transition" onclick="simulateFoodScan('salmon')" data-btn-reset>
           <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-1">
             <i data-lucide="upload-cloud" class="w-5 h-5"></i>
           </div>
           <span class="text-xs font-bold text-slate-200">Tap to Upload Food Screenshot / Camera</span>
           <span class="text-[10px] text-slate-500">Supports photos & Instagram food snaps</span>
-        </div>
+        </button>
 
         <div class="flex space-x-2 overflow-x-auto pb-1 no-scrollbar">
           <button onclick="simulateFoodScan('salmon')" class="flex-shrink-0 px-2.5 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] font-semibold">
@@ -2325,7 +2326,7 @@
   </div>
 
   <!-- 🚀 FLOATING IN-APP MEETING CALL OVERLAY -->
-  <div id="floating-call-pip" class="fixed bottom-16 inset-x-4 max-w-md mx-auto z-40 hidden transition-all duration-300">
+  <div id="floating-call-pip" class="fixed bottom-16 inset-x-4 max-w-md mx-auto z-40 hidden transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-300">
     <div class="bg-slate-900/95 glass-nav border-2 border-indigo-500/60 rounded-3xl p-3 shadow-2xl shadow-indigo-500/20 space-y-2.5">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-2">
@@ -2377,13 +2378,13 @@
         <h3 class="text-sm font-bold text-white">Add Stock / Crypto Ticker</h3>
         <button onclick="closeAddTickerModal()" class="text-slate-500 hover:text-slate-300">✕</button>
       </div>
-      <input id="ticker-symbol-input" type="text" placeholder="AMZN" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 uppercase font-bold focus:outline-none" />
+      <input id="ticker-symbol-input" type="text" placeholder="AMZN" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 uppercase font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400" />
       <button onclick="saveNewTicker()" class="w-full py-2 rounded-xl bg-emerald-500 text-white text-xs font-semibold">Add to Watchlist</button>
     </div>
   </div>
 
   <!-- 🌐 MODAL: ONESTOP IN-APP WEB BROWSER -->
-  <div id="web-browser-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 hidden flex flex-col justify-center p-1 sm:p-4 lg:p-6 transition-all duration-200">
+  <div id="web-browser-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 hidden flex flex-col justify-center p-1 sm:p-4 lg:p-6 transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-200">
     <div class="bg-slate-900 border border-slate-700/80 rounded-2xl lg:rounded-3xl w-full max-w-5xl h-[94vh] flex flex-col shadow-2xl overflow-hidden mx-auto">
       
       <!-- Browser Top Chrome Bar (Tabs + Window Controls) -->
@@ -2434,7 +2435,7 @@
             id="browser-url-input" 
             type="text" 
             placeholder="Search Google or enter web URL (https://...)" 
-            class="w-full bg-slate-950 border border-slate-800 rounded-xl py-1.5 pl-7 pr-16 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-500 transition font-mono"
+            class="w-full bg-slate-950 border border-slate-800 rounded-xl py-1.5 pl-7 pr-16 text-xs text-slate-200 placeholder-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-sky-500 transition font-mono"
           />
           <div class="absolute right-1.5 flex items-center space-x-1">
             <button type="button" onclick="toggleCurrentBookmark()" id="btn-browser-bookmark" title="Bookmark this page" class="p-1 text-slate-400 hover:text-amber-400 transition">
@@ -2461,7 +2462,7 @@
       <!-- Web Viewport (iframe + Reader + Fallback Card) -->
       <div class="flex-1 bg-slate-950 relative overflow-hidden flex flex-col">
         <!-- Loading bar -->
-        <div id="browser-loading-bar" class="h-0.5 bg-sky-500 w-0 transition-all duration-300"></div>
+        <div id="browser-loading-bar" class="h-0.5 bg-sky-500 w-0 transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-300"></div>
 
         <!-- Live iframe -->
         <iframe 
@@ -4556,7 +4557,7 @@
       const container = document.getElementById('stock-ticker-list');
       if (container) {
         container.innerHTML = stockWatchlist.map(stk => `
-          <div onclick="openStockDetail('${stk.symbol}')" class="flex-shrink-0 bg-slate-950/80 border border-slate-800/80 hover:border-emerald-500/50 rounded-2xl p-2.5 min-w-[110px] cursor-pointer transition active:scale-95 space-y-1">
+          <button type="button" onclick="openStockDetail('${stk.symbol}')" class="flex-shrink-0 bg-slate-950/80 border border-slate-800/80 hover:border-emerald-500/50 rounded-2xl p-2.5 min-w-[110px] cursor-pointer transition active:scale-95 space-y-1" data-btn-reset>
             <div class="flex items-center justify-between">
               <span class="text-xs font-black text-slate-100">${stk.symbol}</span>
               <span class="text-[9px] font-bold ${stk.positive ? 'text-emerald-400' : 'text-red-400'}">
@@ -4564,7 +4565,7 @@
               </span>
             </div>
             <div class="text-xs font-bold text-slate-300 font-mono">$${stk.price.toFixed(2)}</div>
-          </div>
+          </button>
         `).join('');
       }
 
@@ -4572,7 +4573,7 @@
       const sidebarContainer = document.getElementById('sidebar-stock-list');
       if (sidebarContainer) {
         sidebarContainer.innerHTML = stockWatchlist.map(stk => `
-          <div onclick="openStockDetail('${stk.symbol}')" class="p-2 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-500/50 cursor-pointer transition flex items-center justify-between">
+          <button type="button" onclick="openStockDetail('${stk.symbol}')" class="p-2 rounded-2xl bg-slate-950 border border-slate-800 hover:border-emerald-500/50 cursor-pointer transition flex items-center justify-between" data-btn-reset>
             <div class="space-y-0.5">
               <span class="text-xs font-bold text-white block">${stk.symbol}</span>
               <span class="text-[10px] text-slate-400 font-mono">$${stk.price.toFixed(2)}</span>
@@ -4580,7 +4581,7 @@
             <span class="text-[10px] px-2 py-0.5 rounded-lg font-bold ${stk.positive ? 'bg-emerald-500/20 text-emerald-300' : 'bg-red-500/20 text-red-300'}">
               ${stk.positive ? '▲' : '▼'}${Math.abs(stk.change)}%
             </span>
-          </div>
+          </button>
         `).join('');
       }
     }
@@ -4766,10 +4767,10 @@
         tabsContainer.innerHTML = browserTabs.map(tab => {
           const isActive = tab.id === activeBrowserTabId;
           return `
-            <div onclick="switchBrowserTab('${tab.id}')" class="flex-shrink-0 flex items-center space-x-1.5 px-3 py-1.5 rounded-xl cursor-pointer text-xs font-semibold transition ${isActive ? 'bg-slate-800 text-white border border-slate-700 shadow-sm' : 'bg-slate-950 text-slate-400 hover:text-slate-200 border border-slate-900'}">
+            <button type="button" onclick="switchBrowserTab('${tab.id}')" class="flex-shrink-0 flex items-center space-x-1.5 px-3 py-1.5 rounded-xl cursor-pointer text-xs font-semibold transition ${isActive ? 'bg-slate-800 text-white border border-slate-700 shadow-sm' : 'bg-slate-950 text-slate-400 hover:text-slate-200 border border-slate-900'}" data-btn-reset>
               <span class="truncate max-w-[120px] sm:max-w-[160px]">${tab.title}</span>
               <button onclick="closeBrowserTab('${tab.id}', event)" class="text-slate-500 hover:text-red-400 p-0.5 rounded-full hover:bg-slate-700">✕</button>
-            </div>
+            </button>
           `;
         }).join('');
       }
@@ -4864,7 +4865,7 @@
       const sidebarContainer = document.getElementById('sidebar-stock-list');
 
       const html = stockWatchlist.map(stk => `
-        <div onclick="openStockDetail('${stk.symbol}')" class="bento-card flex-shrink-0 px-3.5 py-2.5 rounded-2xl bg-slate-950/70 backdrop-blur-md border border-white/[0.06] hover:border-emerald-500/40 cursor-pointer transition space-y-1 shadow-sm">
+        <button type="button" onclick="openStockDetail('${stk.symbol}')" class="bento-card flex-shrink-0 px-3.5 py-2.5 rounded-2xl bg-slate-950/70 backdrop-blur-md border border-white/[0.06] hover:border-emerald-500/40 cursor-pointer transition space-y-1 shadow-sm" data-btn-reset>
           <div class="flex items-center justify-between space-x-3">
             <span class="text-xs font-black text-white">${stk.symbol}</span>
             <span class="text-[10px] font-mono font-bold ${stk.positive ? 'text-emerald-400' : 'text-red-400'}">
@@ -4872,7 +4873,7 @@
             </span>
           </div>
           <div class="text-xs font-mono font-bold text-slate-300">$${stk.price.toFixed(2)}</div>
-        </div>
+        </button>
       `).join('');
 
       if (container) {
@@ -4881,7 +4882,7 @@
       }
       if (sidebarContainer) {
         sidebarContainer.innerHTML = stockWatchlist.map(stk => `
-          <div onclick="openStockDetail('${stk.symbol}')" class="bento-card flex items-center justify-between p-2.5 rounded-2xl bg-slate-950/70 border border-white/[0.06] hover:border-emerald-500/40 cursor-pointer transition shadow-sm">
+          <button type="button" onclick="openStockDetail('${stk.symbol}')" class="bento-card flex items-center justify-between p-2.5 rounded-2xl bg-slate-950/70 border border-white/[0.06] hover:border-emerald-500/40 cursor-pointer transition shadow-sm" data-btn-reset>
             <div>
               <span class="text-xs font-extrabold text-white block">${stk.symbol}</span>
               <span class="text-[10px] text-slate-400 truncate max-w-[120px] block">${stk.name}</span>
@@ -4892,7 +4893,7 @@
                 ${stk.positive ? '+' : ''}${stk.change.toFixed(2)}%
               </span>
             </div>
-          </div>
+          </button>
         `).join('');
       }
       initInfiniteShelves();
@@ -5219,7 +5220,7 @@
         const isXboxVideo = item.mediaType === 'xbox_capture';
 
         return `
-          <div class="bento-card bg-slate-900/40 backdrop-blur-xl border border-white/[0.06] hover:border-sky-500/30 rounded-2xl sm:rounded-3xl p-4 sm:p-5 space-y-3 relative group transition-all duration-300 shadow-xl">
+          <div class="bento-card bg-slate-900/40 backdrop-blur-xl border border-white/[0.06] hover:border-sky-500/30 rounded-2xl sm:rounded-3xl p-4 sm:p-5 space-y-3 relative group transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-300 shadow-xl">
             <div class="flex items-center justify-between">
               <div class="flex items-center space-x-2.5">
                 <div class="w-7 h-7 rounded-xl ${app.color} flex items-center justify-center text-white text-xs shadow-md">

@@ -211,7 +211,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
@@ -307,7 +307,7 @@
             justify-content: center;
             gap: 6px;
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
             border: 1px solid transparent;
         }
 
@@ -379,7 +379,7 @@
             height: 6px;
             background: #1f293d;
             border-radius: 4px;
-            outline: none;
+            outline: 2px solid transparent; outline-offset: 2px;
             accent-color: #3b82f6;
         }
 
@@ -432,7 +432,7 @@
             text-decoration: none;
             font-size: 13px;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: transform 0.2s, opacity 0.2s, background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
         }
 
         .quick-links a:hover {

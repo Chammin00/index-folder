@@ -55,7 +55,7 @@
       border-radius: 8px;
       padding: 0.65rem 0.85rem;
       cursor: pointer;
-      transition: all 0.18s ease;
+      transition: transform 0.18s ease, opacity 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
     }
 
     .stage-node-pill:hover,
@@ -75,7 +75,7 @@
       font-weight: 600;
       text-align: left;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
     }
 
     .scenario-select-btn:hover {
@@ -94,6 +94,7 @@
     .custom-scrollbar::-webkit-scrollbar-track { background: #090d16; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
   </style>
+<style>:where(button[data-btn-reset]){font:inherit;color:inherit;background:transparent;border:none;padding:0;margin:0;text-align:inherit;}</style>
 </head>
 <body>
   <div class="app-root">
@@ -194,7 +195,7 @@
             <span id="sidebar-readiness-pct" class="font-mono font-bold text-[#3fb950]">0%</span>
           </div>
           <div class="w-full h-1.5 bg-[#21262d] rounded-full overflow-hidden">
-            <div id="sidebar-readiness-bar" class="h-full bg-[#3fb950] transition-all duration-300" style="width: 0%"></div>
+            <div id="sidebar-readiness-bar" class="h-full bg-[#3fb950] transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-300" style="width: 0%"></div>
           </div>
           <div class="text-[11px] text-[#8b949e] font-mono flex justify-between pt-1">
             <span>Confidence Avg:</span>
@@ -258,12 +259,12 @@
         <div id="pane-operations" class="perspective-pane active-pane">
           
           <!-- Drag & Drop Multi-Format Ingestion Zone -->
-          <div id="drop-zone"
+          <button type="button" id="drop-zone"
             class="detail-card border-dashed border-2 border-[#30363d] hover:border-[#58a6ff] cursor-pointer text-center py-6 transition"
             onclick="document.getElementById('file-input').click()"
             ondragover="event.preventDefault(); this.style.borderColor='#58a6ff'"
             ondragleave="this.style.borderColor='#30363d'"
-            ondrop="handleDrop(event)">
+            ondrop="handleDrop(event)" data-btn-reset>
             <input type="file" id="file-input" class="hidden" multiple accept=".pdf,.csv,.txt" onchange="handleFileSelect(event)">
             <div class="flex flex-col items-center gap-2">
               <div class="w-11 h-11 rounded-lg bg-[#58a6ff]/10 border border-[#58a6ff]/30 flex items-center justify-center">
@@ -277,7 +278,7 @@
                 <span>[Rule #4: &gt;= $5,000 Sign-Off Gate]</span>
               </div>
             </div>
-          </div>
+          </button>
 
           <!-- Document Queue Table Card -->
           <div class="detail-card p-0 overflow-hidden">
@@ -348,26 +349,26 @@
 
               <!-- 5 Interactive Stage Node Selector Pills -->
               <div class="p-3 bg-[#010409] border-t border-[#30363d] grid grid-cols-2 sm:grid-cols-5 gap-2">
-                <div class="stage-node-pill active-stage-node" onclick="window.NPR3DEngine.focusNode(0, true)">
+                <button type="button" class="stage-node-pill active-stage-node" onclick="window.NPR3DEngine.focusNode(0, true)" data-btn-reset>
                   <div class="text-[10px] font-mono text-[#58a6ff] font-bold">STAGE 01</div>
                   <div class="text-xs font-bold text-white mt-0.5">TLS Ingestion</div>
-                </div>
-                <div class="stage-node-pill" onclick="window.NPR3DEngine.focusNode(1, true)">
+                </button>
+                <button type="button" class="stage-node-pill" onclick="window.NPR3DEngine.focusNode(1, true)" data-btn-reset>
                   <div class="text-[10px] font-mono text-[#bc8cff] font-bold">STAGE 02</div>
                   <div class="text-xs font-bold text-white mt-0.5">AST Regex Parser</div>
-                </div>
-                <div class="stage-node-pill" onclick="window.NPR3DEngine.focusNode(2, true)">
+                </button>
+                <button type="button" class="stage-node-pill" onclick="window.NPR3DEngine.focusNode(2, true)" data-btn-reset>
                   <div class="text-[10px] font-mono text-[#f0883e] font-bold">STAGE 03</div>
                   <div class="text-xs font-bold text-white mt-0.5">Math & Dup Rules</div>
-                </div>
-                <div class="stage-node-pill" onclick="window.NPR3DEngine.focusNode(3, true)">
+                </button>
+                <button type="button" class="stage-node-pill" onclick="window.NPR3DEngine.focusNode(3, true)" data-btn-reset>
                   <div class="text-[10px] font-mono text-[#d29922] font-bold">STAGE 04</div>
                   <div class="text-xs font-bold text-white mt-0.5">HITL Checkpoint</div>
-                </div>
-                <div class="stage-node-pill" onclick="window.NPR3DEngine.focusNode(4, true)">
+                </button>
+                <button type="button" class="stage-node-pill" onclick="window.NPR3DEngine.focusNode(4, true)" data-btn-reset>
                   <div class="text-[10px] font-mono text-[#3fb950] font-bold">STAGE 05</div>
                   <div class="text-xs font-bold text-white mt-0.5">ERP Ledger Sink</div>
-                </div>
+                </button>
               </div>
             </div>
 
@@ -541,7 +542,7 @@
                   <span class="text-xs font-mono text-[#8b949e] uppercase">Ready-to-Send Client Statement of Work (Markdown)</span>
                   <span id="sow-copy-status" class="text-xs font-mono text-[#3fb950] hidden">Copied to clipboard!</span>
                 </div>
-                <textarea id="sow-markdown-preview" readonly class="w-full h-72 bg-[#010409] border border-[#30363d] rounded-lg p-3 font-mono text-xs text-[#e2e8f0] focus:outline-none custom-scrollbar"></textarea>
+                <textarea id="sow-markdown-preview" readonly class="w-full h-72 bg-[#010409] border border-[#30363d] rounded-lg p-3 font-mono text-xs text-[#e2e8f0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 custom-scrollbar"></textarea>
               </div>
             </div>
 
@@ -582,7 +583,7 @@
       </main>
 
       <!-- 3. DOCKABLE ARCHITECTURE INSPECTOR (Center Modal / Left Dock / Right Dock) -->
-      <div class="inspector-backdrop" onclick="window.AntigravityEnterprise.closeInspector()"></div>
+      <button type="button" class="inspector-backdrop" onclick="window.AntigravityEnterprise.closeInspector()" data-btn-reset></button>
       <aside class="app-inspector mode-right hidden custom-scrollbar">
         <div class="inspector-head">
           <div class="inspector-head-title">

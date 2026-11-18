@@ -123,7 +123,7 @@
       border-radius: 8px;
       color: var(--text);
       font-size: 13px;
-      outline: none;
+      outline: 2px solid transparent; outline-offset: 2px;
       cursor: pointer;
     }
 
@@ -149,7 +149,7 @@
       font-weight: 600;
       cursor: pointer;
       text-align: center;
-      transition: all 0.15s ease;
+      transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
     }
 
     .tab-btn.active {
@@ -170,7 +170,7 @@
       border-radius: 6px;
       color: var(--text);
       font-size: 12px;
-      outline: none;
+      outline: 2px solid transparent; outline-offset: 2px;
     }
 
     .items-list {
@@ -186,7 +186,7 @@
       background: var(--bg-tertiary);
       border: 1px solid transparent;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
     }
 
     .item-card:hover {
@@ -261,7 +261,7 @@
       border: 1px solid var(--border);
       background: var(--bg-tertiary);
       color: var(--text);
-      transition: all 0.15s;
+      transition: transform 0.15s, opacity 0.15s, background-color 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
     }
 
     .btn:hover {
@@ -356,7 +356,7 @@
       font-size: 14px;
       resize: none;
       height: 52px;
-      outline: none;
+      outline: 2px solid transparent; outline-offset: 2px;
     }
 
     textarea:focus {

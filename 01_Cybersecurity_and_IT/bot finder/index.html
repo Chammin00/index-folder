@@ -32,7 +32,7 @@
       border: 1px solid rgba(200, 169, 110, 0.22);
       border-radius: 14px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 16px rgba(200, 169, 110, 0.08);
-      transition: all 0.2s ease;
+      transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
     }
     .glass-panel:hover {
       border-color: rgba(200, 169, 110, 0.7);
@@ -191,7 +191,7 @@
         <div class="flex flex-col sm:flex-row gap-3">
           <div class="relative flex-1">
             <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-500 text-sm">@</span>
-            <input type="text" id="inspector-handle" value="rage_daily_news88" placeholder="Enter username (e.g. elonmusk, user982371982)" class="w-full pl-8 pr-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-sm focus:outline-none focus:border-blue-500 transition">
+            <input type="text" id="inspector-handle" value="rage_daily_news88" placeholder="Enter username (e.g. elonmusk, user982371982)" class="w-full pl-8 pr-4 py-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-blue-500 transition">
           </div>
           <button id="btn-inspect-profile" class="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 font-bold text-sm text-white shadow-lg shadow-blue-600/20 transition flex items-center justify-center gap-2">
             <i class="fa-solid fa-magnifying-glass"></i> Deep Scan Profile
@@ -233,7 +233,7 @@
                 <span class="text-blue-400 font-bold" id="res-bot-score">85%</span>
               </div>
               <div class="w-full h-2.5 bg-zinc-900 rounded-full overflow-hidden">
-                <div id="bar-bot" class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-all duration-500" style="width: 85%;"></div>
+                <div id="bar-bot" class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-500" style="width: 85%;"></div>
               </div>
             </div>
 
@@ -243,7 +243,7 @@
                 <span class="text-red-400 font-bold" id="res-rage-score">92%</span>
               </div>
               <div class="w-full h-2.5 bg-zinc-900 rounded-full overflow-hidden">
-                <div id="bar-rage" class="h-full bg-gradient-to-r from-orange-500 to-red-500 transition-all duration-500" style="width: 92%;"></div>
+                <div id="bar-rage" class="h-full bg-gradient-to-r from-orange-500 to-red-500 transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-500" style="width: 92%;"></div>
               </div>
             </div>
           </div>
@@ -310,7 +310,7 @@
         <h2 class="text-base font-bold text-white">Ragebait & Outrage Text Classifier</h2>
         <p class="text-xs text-zinc-400">Paste any headline, tweet, or statement to detect moral outrage lexicon, engagement-farming traps, and formatting intensity.</p>
         
-        <textarea id="rage-input" rows="4" class="w-full p-4 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-sm focus:outline-none focus:border-red-500 transition" placeholder="Paste tweet text or post title here..."></textarea>
+        <textarea id="rage-input" rows="4" class="w-full p-4 rounded-xl bg-zinc-900 border border-zinc-800 text-white text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-red-500 transition" placeholder="Paste tweet text or post title here..."></textarea>
         
         <div class="flex justify-between items-center">
           <div class="flex gap-2">

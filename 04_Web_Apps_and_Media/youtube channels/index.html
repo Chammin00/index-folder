@@ -87,7 +87,7 @@
       border: 1px solid var(--border-subtle);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
       cursor: pointer;
-      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s cubic-bezier(0.16, 1, 0.3, 1), color 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .step-nav-pill:hover {
       color: var(--text-ivory);
@@ -175,7 +175,7 @@
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
     .tactile-card::before {
@@ -226,7 +226,7 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .btn-walk-next:hover {
       background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
@@ -257,7 +257,7 @@
       backdrop-filter: blur(20px);
       opacity: 0;
       pointer-events: none;
-      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s cubic-bezier(0.16, 1, 0.3, 1), color 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .walking-hud.active {
       opacity: 1;
@@ -276,7 +276,7 @@
       font-size: 11px;
       font-weight: 800;
       color: var(--text-muted);
-      transition: all 0.14s ease;
+      transition: transform 0.14s ease, opacity 0.14s ease, background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
     }
     .foot-dot.step-hit {
       background: var(--brass-gold);
@@ -344,6 +344,7 @@
       background: rgba(212, 175, 55, 0.75);
     }
   </style>
+<style>:where(button[data-btn-reset]){font:inherit;color:inherit;background:transparent;border:none;padding:0;margin:0;text-align:inherit;}</style>
 </head>
 <body class="min-h-screen relative flex items-center justify-end pr-4 md:pr-10 pt-16 pb-12">
 
@@ -449,7 +450,7 @@
         Walking Down Corridor to Picture 2...
       </div>
       <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden mt-1.5">
-        <div id="walking-hud-bar" class="h-full bg-gradient-to-r from-amber-400 to-emerald-400 transition-all duration-75" style="width: 0%;"></div>
+        <div id="walking-hud-bar" class="h-full bg-gradient-to-r from-amber-400 to-emerald-400 transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-75" style="width: 0%;"></div>
       </div>
     </div>
     <button onclick="skipCurrentWalk()" class="px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-xs font-bold text-white transition">
@@ -599,7 +600,7 @@
         <!-- Search & Filter Bar -->
         <div class="space-y-2">
           <div class="relative">
-            <input type="text" id="music-search-input" oninput="onMusicSearchInput(this.value)" placeholder="Search tracks by name or artist..." class="w-full rounded-xl bg-[#12141e] border border-white/12 px-3.5 py-2.5 text-xs text-white placeholder-slate-500 outline-none focus:border-amber-400 transition" />
+            <input type="text" id="music-search-input" oninput="onMusicSearchInput(this.value)" placeholder="Search tracks by name or artist..." class="w-full rounded-xl bg-[#12141e] border border-white/12 px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-amber-400 transition" />
             <span class="absolute right-3 top-2.5 text-slate-500 text-xs pointer-events-none">🔍</span>
           </div>
 
@@ -674,10 +675,10 @@
             <div class="relative h-6 bg-[#1a1d2b] rounded-lg cursor-pointer">
               <div id="p3-progress-fill" class="h-full bg-gradient-to-r from-amber-400/40 to-rose-500/50 rounded-lg border-r-2 border-amber-300" style="width: 0%;"></div>
               <!-- 4 Interactive Clickable Star Pins -->
-              <span onclick="jumpVideoToMarker(0)" class="absolute -top-0.5 text-amber-400 font-black text-sm cursor-pointer hover:scale-125 transition" style="left: 12%;" title="★ 02.4s Tension">★</span>
-              <span onclick="jumpVideoToMarker(1)" class="absolute -top-0.5 text-rose-400 font-black text-sm cursor-pointer hover:scale-125 transition" style="left: 34%;" title="★ 06.8s Kill">★</span>
-              <span onclick="jumpVideoToMarker(2)" class="absolute -top-0.5 text-purple-400 font-black text-sm cursor-pointer hover:scale-125 transition" style="left: 58%;" title="★ 11.5s Loss">★</span>
-              <span onclick="jumpVideoToMarker(3)" class="absolute -top-0.5 text-emerald-400 font-black text-sm cursor-pointer hover:scale-125 transition" style="left: 81%;" title="★ 16.2s Win">★</span>
+              <button type="button" onclick="jumpVideoToMarker(0)" class="absolute -top-0.5 text-amber-400 font-black text-sm cursor-pointer hover:scale-125 transition" style="left: 12%;" title="★ 02.4s Tension" data-btn-reset>★</button>
+              <button type="button" onclick="jumpVideoToMarker(1)" class="absolute -top-0.5 text-rose-400 font-black text-sm cursor-pointer hover:scale-125 transition" style="left: 34%;" title="★ 06.8s Kill" data-btn-reset>★</button>
+              <button type="button" onclick="jumpVideoToMarker(2)" class="absolute -top-0.5 text-purple-400 font-black text-sm cursor-pointer hover:scale-125 transition" style="left: 58%;" title="★ 11.5s Loss" data-btn-reset>★</button>
+              <button type="button" onclick="jumpVideoToMarker(3)" class="absolute -top-0.5 text-emerald-400 font-black text-sm cursor-pointer hover:scale-125 transition" style="left: 81%;" title="★ 16.2s Win" data-btn-reset>★</button>
             </div>
           </div>
         </div>
@@ -790,7 +791,7 @@
               <span>Copy Description</span>
             </button>
           </div>
-          <textarea id="p4-credits-box" rows="3" readonly class="w-full rounded-xl bg-[#0e1017] border border-white/10 p-2.5 text-[11px] font-mono text-slate-300 outline-none resize-none"></textarea>
+          <textarea id="p4-credits-box" rows="3" readonly class="w-full rounded-xl bg-[#0e1017] border border-white/10 p-2.5 text-[11px] font-mono text-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 resize-none"></textarea>
         </div>
 
         <!-- 1-Click High-Res Video Frame Snapshot & Viral Thumbnail (VidIQ & YouTube Studio) -->
@@ -841,7 +842,7 @@
   </aside>
 
   <!-- 4.5 APPS & WEBPAGES INSPIRATION MODAL (MCP Suggestions & Live Edits) -->
-  <div id="modal-app-inspirations" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+  <div id="modal-app-inspirations" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-300">
     <div class="relative w-full max-w-3xl max-h-[85vh] bg-[#0c0e17] border border-amber-400/40 rounded-3xl shadow-2xl overflow-hidden flex flex-col">
       <!-- Modal Header -->
       <div class="px-6 py-4 bg-gradient-to-r from-[#171a27] via-[#1c2032] to-[#12141f] border-b border-white/10 flex items-center justify-between">
@@ -1275,7 +1276,7 @@
           const row = document.createElement('div');
           row.className = `tactile-card flex items-center justify-between gap-3 ${isSel ? 'selected' : ''}`;
           row.innerHTML = `
-            <div class="min-w-0 flex-1 cursor-pointer" onclick="chooseMusicTrack('${t.id}')">
+            <button type="button" class="min-w-0 flex-1 cursor-pointer" onclick="chooseMusicTrack('${t.id}')" data-btn-reset>
               <div class="flex items-center gap-2">
                 ${
                   isPlaying
@@ -1293,7 +1294,7 @@
               <div class="text-[11px] text-slate-400 truncate mt-0.5">
                 ${t.artist} • <span class="text-emerald-400 font-semibold">${t.license}</span>
               </div>
-            </div>
+            </button>
             <div class="flex items-center gap-2 shrink-0">
               <button onclick="auditionMusicTrack('${t.id}')" class="px-3 py-1.5 rounded-xl text-xs font-extrabold border transition flex items-center gap-1.5 ${
                 isPlaying
@@ -1403,7 +1404,7 @@
           </div>
 
           <div class="flex items-center gap-2">
-            <select onchange="onChangeMarkerSfx('${m.id}', this.value)" class="flex-1 rounded-xl bg-[#12141f] border border-white/15 text-xs font-bold text-white px-3 py-2 outline-none focus:border-amber-400 transition cursor-pointer">
+            <select onchange="onChangeMarkerSfx('${m.id}', this.value)" class="flex-1 rounded-xl bg-[#12141f] border border-white/15 text-xs font-bold text-white px-3 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus:border-amber-400 transition cursor-pointer">
               ${pool.map((s) => `<option value="${s.id}" ${m.sfx && m.sfx.id === s.id ? 'selected' : ''}>${s.title} (${s.license})</option>`).join('')}
             </select>
             <button onclick="auditionMarkerSfx('${m.id}')" class="px-3.5 py-2 rounded-xl bg-amber-400/20 hover:bg-amber-400/35 border border-amber-400/50 text-amber-200 text-xs font-extrabold whitespace-nowrap transition flex items-center gap-1.5">
@@ -1665,7 +1666,7 @@
       const bars = [];
       for (let i = 0; i < 12; i++) {
         const b = document.createElement('div');
-        b.className = 'w-1 bg-amber-400 rounded-t transition-all duration-75';
+        b.className = 'w-1 bg-amber-400 rounded-t transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-75';
         b.style.height = '3px';
         container.appendChild(b);
         bars.push(b);
@@ -1716,7 +1717,7 @@
         if (label) label.textContent = '9:16 SHORTS';
         if (icon) icon.textContent = '📱';
         if (videoEl) {
-          videoEl.className = 'w-full max-w-[240px] mx-auto aspect-[9/16] object-cover bg-black rounded-xl transition-all duration-300';
+          videoEl.className = 'w-full max-w-[240px] mx-auto aspect-[9/16] object-cover bg-black rounded-xl transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-300';
         }
         if (window.AntigravityMCP) {
           window.AntigravityMCP.logNotification("Switched to 9:16 Vertical Shorts/TikTok Mode (CapCut Preset)", "info");
@@ -1725,7 +1726,7 @@
         if (label) label.textContent = '16:9 WIDE';
         if (icon) icon.textContent = '🖥️';
         if (videoEl) {
-          videoEl.className = 'w-full aspect-video object-cover bg-black rounded-xl transition-all duration-300';
+          videoEl.className = 'w-full aspect-video object-cover bg-black rounded-xl transition-[transform,opacity,background-color,border-color,color,box-shadow] duration-300';
         }
         if (window.AntigravityMCP) {
           window.AntigravityMCP.logNotification("Switched to 16:9 Widescreen YouTube Mode", "info");

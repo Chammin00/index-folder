@@ -66,7 +66,7 @@
       display: block;
       width: 100%;
       height: 100%;
-      outline: none;
+      outline: 2px solid transparent; outline-offset: 2px;
       cursor: grab;
     }
     #canvas-container canvas:active {
@@ -148,7 +148,7 @@
       display: flex;
       align-items: center;
       gap: 5px;
-      transition: all 0.2s ease;
+      transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
     }
     .wing-btn:hover {
       background: rgba(255, 255, 255, 0.08);
@@ -184,8 +184,8 @@
       border-radius: 8px;
       padding: 6px 10px 6px 30px;
       font-size: 11px;
-      outline: none;
-      transition: all 0.2s;
+      outline: 2px solid transparent; outline-offset: 2px;
+      transition: transform 0.2s, opacity 0.2s, background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
     }
     .search-box input:focus {
       border-color: var(--gold-bright);
@@ -211,7 +211,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      transition: all 0.2s ease;
+      transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
       text-decoration: none;
     }
     .btn-gold {
@@ -358,7 +358,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
     }
     .pad-btn:hover {
       background: rgba(197, 160, 89, 0.25);
@@ -563,7 +563,7 @@
       align-items: center;
       justify-content: center;
       font-size: 16px;
-      transition: all 0.2s;
+      transition: transform 0.2s, opacity 0.2s, background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
     }
     .close-modal-btn:hover {
       background: rgba(239, 68, 68, 0.2);
@@ -621,7 +621,7 @@
       border-radius: 12px;
       text-decoration: none;
       color: inherit;
-      transition: all 0.2s;
+      transition: transform 0.2s, opacity 0.2s, background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s;
       cursor: pointer;
     }
     .action-card:hover {
@@ -862,6 +862,7 @@
   <script src="cosmic-background.js"></script>
   <script src="mcp-baseline.js"></script>
   <script src="aws-enterprise-baseline.js"></script>
+<style>:where(button[data-btn-reset]){font:inherit;color:inherit;background:transparent;border:none;padding:0;margin:0;text-align:inherit;}</style>
 </head>
 <body>
 
@@ -945,10 +946,10 @@
   </header>
 
   <!-- Minimap Radar (Top-Right) -->
-  <div id="radar-container" onclick="GalleryApp.handleRadarClick(event)" title="Click radar to walk/teleport">
+  <button type="button" id="radar-container" onclick="GalleryApp.handleRadarClick(event)" title="Click radar to walk/teleport" data-btn-reset>
     <canvas id="radar-canvas" width="154" height="154"></canvas>
     <div class="radar-label">MUSEUM RADAR</div>
-  </div>
+  </button>
 
   <!-- Tour Narration Banner (Active during Auto-Walk VIP Tour) -->
   <div id="tour-banner">
@@ -1001,7 +1002,7 @@
   </div>
 
   <!-- Project Inspection & Index Launcher Modal -->
-  <div id="project-modal-backdrop" onclick="GalleryApp.handleBackdropClick(event)">
+  <button type="button" id="project-modal-backdrop" onclick="GalleryApp.handleBackdropClick(event)" data-btn-reset>
     <div id="project-modal" role="dialog" aria-modal="true">
       <div class="modal-header">
         <div class="modal-title-group">
@@ -1100,7 +1101,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </button>
 
   <!-- Help & Keyboard Controls Modal -->
   <div id="help-modal">
